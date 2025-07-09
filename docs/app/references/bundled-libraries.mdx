@@ -1,0 +1,112 @@
+---
+title: 'Cypress 内置库'
+description: 'Cypress 集成的开源测试库'
+sidebar_label: '内置库'
+---
+
+<ProductHeading product="app" />
+
+# 内置库
+
+:::info
+
+Cypress 集成了众多开源测试库，从底层为平台提供稳定性和熟悉度。如果您曾使用 JavaScript 进行测试，会在这个列表中看到许多熟悉的身影。
+
+:::
+
+## Mocha
+
+<Icon name="github" url="http://mochajs.org/" />
+
+Cypress 采用了 Mocha 的 `bdd` 语法，完美适配集成测试和单元测试。您编写的所有测试都基于 Mocha 提供的基础框架，包括：
+
+- [`describe()`](http://mochajs.org/#bdd)
+- [`context()`](http://mochajs.org/#bdd)
+- [`it()`](http://mochajs.org/#bdd)
+- [`before()`](http://mochajs.org/#hooks)
+- [`beforeEach()`](http://mochajs.org/#hooks)
+- [`afterEach()`](http://mochajs.org/#hooks)
+- [`after()`](http://mochajs.org/#hooks)
+- [`.only()`](http://mochajs.org/#exclusive-tests)
+- [`.skip()`](http://mochajs.org/#exclusive-tests)
+
+此外，Mocha 提供了出色的 [`async` 支持](http://mochajs.org/#asynchronous-code)。Cypress 对 Mocha 进行了扩展，消除了粗糙边缘、怪异边界情况、错误和错误信息。这些改进都是完全透明的。
+
+:::info
+
+[查看我们的测试编写和组织指南。](/app/core-concepts/writing-and-organizing-tests)
+
+:::
+
+## Chai
+
+<Icon name="github" url="http://chaijs.com/" />
+
+Mocha 提供了测试结构框架，而 Chai 则让我们能够轻松编写断言。Chai 提供了可读性强的断言和出色的错误信息。Cypress 在此基础上进行了扩展，修复了几个常见陷阱，并使用[主题](/app/core-concepts/introduction-to-cypress#Assertions)和[`.should()`](/api/commands/should)命令封装了 Chai 的 DSL。
+
+:::note
+
+<Icon
+  name="chevron-right"
+  url="/app/references/assertions#Chai"
+  callout="可用的 Chai 断言列表"
+/>
+
+:::
+
+## Chai-jQuery
+
+<Icon name="github" url="https://github.com/chaijs/chai-jquery" />
+
+编写集成测试时，您会经常与 DOM 打交道。Cypress 集成了 Chai-jQuery，它自动为 Chai 扩展了特定的 jQuery 链式方法。
+
+:::note
+
+<Icon
+  name="chevron-right"
+  url="/app/references/assertions#Chai-jQuery"
+  callout="可用的 Chai-jQuery 断言列表"
+/>
+
+:::
+
+## Sinon.js
+
+<Icon name="github" url="https://github.com/sinonjs/sinon" />
+
+编写单元测试或类集成测试时，经常需要存根和监视方法。Cypress 提供了两个方法：[`cy.stub()`](/api/commands/stub) 和 [`cy.spy()`](/api/commands/spy)，分别返回 Sinon 的存根和间谍。
+
+Cypress 还暴露了一个工具，可以在测试中使用 [`Cypress.sinon`](/api/utilities/sinon) 调用 `sinon`。
+
+:::info
+
+[查看我们的间谍、存根和时钟使用指南。](/app/guides/stubs-spies-and-clocks)
+
+:::
+
+## Sinon-Chai
+
+<Icon name="github" url="https://github.com/cypress-io/sinon-chai" />
+
+使用 `stubs` 或 `spies` 时，您通常会希望在编写 Chai 断言时使用它们。Cypress 集成了 Sinon-Chai，它扩展了 Chai，允许您[编写断言](https://github.com/cypress-io/sinon-chai)来验证 `stubs` 和 `spies`。
+
+:::note
+
+<Icon
+  name="chevron-right"
+  url="/app/references/assertions#Sinon-Chai"
+  callout="可用的 Sinon-Chai 断言列表"
+/>
+
+:::
+
+## 其他工具库
+
+Cypress 还在 `Cypress` 对象上集成了以下工具。这些工具可以在测试中的任何地方使用。
+
+- [`Cypress._`](/api/utilities/_) (lodash)
+- [`Cypress.$`](/api/utilities/$) (jQuery)
+- [`Cypress.minimatch`](/api/utilities/minimatch) (minimatch.js)
+- [`Cypress.Blob`](/api/utilities/blob) (Blob 工具)
+- [`Cypress.Buffer`](/api/utilities/buffer) (Buffer 工具)
+- [`Cypress.Promise`](/api/utilities/promise) (Bluebird)
