@@ -15,5 +15,7 @@
       "destination": "/app/references/bundled-libraries",
       "permanent": true
     }
-  ]
+  ],
+  "outputDirectory": "dist",
+  "buildCommand": "npm run vercel-build"
 }

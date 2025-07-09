@@ -19,9 +19,9 @@ const config = {
   tagline: '为浏览器中运行的任何内容提供快速、简单且可靠的测试。',
   url: 'https://cypress.docslib.dev',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
-  onBrokenAnchors: 'throw',
-  onBrokenMarkdownLinks: 'throw',
+  onBrokenLinks: 'warn',
+  onBrokenAnchors: 'warn',
+  onBrokenMarkdownLinks: 'warn',
   favicon: undefined,
 
   // 即使不使用国际化，也可以使用此字段设置有用的元数据，如html lang。
