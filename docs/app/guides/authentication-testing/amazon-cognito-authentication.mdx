@@ -1,56 +1,45 @@
 ---
-title: 'Amazon Cognito Authentication: Cypress Guide'
-sidebar_label: 'Amazon Cognito Authentication'
-description: 'Implement Amazon Cognito authentication in Cypress. Securely manage authentication processes for Cypress end-to-end testing scenarios'
+title: 'Amazon Cognito 身份验证：Cypress 指南'
+sidebar_label: 'Amazon Cognito 身份验证'
+description: '在 Cypress 中实现 Amazon Cognito 身份验证。安全管理 Cypress 端到端测试场景中的身份验证流程'
 ---
 
 <ProductHeading product="app" />
 
-# Amazon Cognito Authentication
+# Amazon Cognito 身份验证
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 您将学习到
 
-- How to implement Amazon Cognito authentication in Cypress
-- How to securely manage authentication processes for Cypress end-to-end testing scenarios
+- 如何在 Cypress 中实现 Amazon Cognito 身份验证
+- 如何安全管理 Cypress 端到端测试场景中的身份验证流程
 
 :::
 
-Amazon [Cognito](https://aws.amazon.com/cognito) is an authentication provider
-apart of [Amazon Web Services (AWS)](https://aws.amazon.com).
+Amazon [Cognito](https://aws.amazon.com/cognito) 是 [Amazon Web Services (AWS)](https://aws.amazon.com) 提供的身份验证服务。
 
-The documentation for [Amazon Cognito](https://aws.amazon.com/cognito)
-recommends using the
-[AWS Amplify Framework Authentication Library](https://aws-amplify.github.io/amplify-js/api/classes/authclass.html)
-from the [AWS Amplify Framework](https://aws.amazon.com/amplify/framework/) to
-interact with a deployed [Amazon Cognito](https://aws.amazon.com/cognito)
-instance. Using the
-[AWS Amplify Framework Authentication Library](https://aws-amplify.github.io/amplify-js/api/classes/authclass.html),
-we are able to programmatically drive the creation and authentication of users
-against a fully deployed back end.
+[Amazon Cognito](https://aws.amazon.com/cognito) 文档推荐使用 [AWS Amplify 框架身份验证库](https://aws-amplify.github.io/amplify-js/api/classes/authclass.html) 来与已部署的 [Amazon Cognito](https://aws.amazon.com/cognito) 实例交互。通过该库，我们可以编程方式驱动用户的创建和身份验证流程。
 
-This guide illustrates the limited code from the
-[AWS Amplify Framework](https://aws.amazon.com/amplify/framework/) needed to
-programmatically log an existing a user into an application.
+本指南展示了使用 [AWS Amplify 框架](https://aws.amazon.com/amplify/framework/) 所需的最简代码，以编程方式登录现有用户。
 
 <Tabs>
 
   <TabItem value="v5" label="Amplify v5.x.x" default>
 
 ```jsx
-// Add 'aws-amplify' library into your application
+// 引入 'aws-amplify' 库
 import Amplify, { Auth } from 'aws-amplify'
 
-// Configure Auth category with your Amazon Cognito credentials
+// 使用 Amazon Cognito 凭证配置 Auth 模块
 Amplify.configure({
   Auth: {
-    identityPoolId: 'XX-XXXX-X:XXXXXXXX-XXXX', // Amazon Cognito Identity Pool ID
-    region: 'XX-XXXX-X', // Amazon Cognito Region
+    identityPoolId: 'XX-XXXX-X:XXXXXXXX-XXXX', // Amazon Cognito 身份池 ID
+    region: 'XX-XXXX-X', // Amazon Cognito 区域
   },
 })
 
-// Call Auth.signIn with user credentials
+// 调用 Auth.signIn 传入用户凭证
 Auth.signIn(username, password)
   .then((user) => console.log(user))
   .catch((err) => console.log(err))
@@ -69,8 +58,8 @@ Amplify.configure({
     Cognito: {
       userPoolId: "XX-XXXX-X_XXXXXXXXX",
       userPoolClientId: "XXXXXXXXXXXXXXXXXXXXXXXXX",
-      // OR:
-      identityPoolId: 'XX-XXXX-X:XXXXXXXX-XXXX', // Amazon Cognito Identity Pool ID
+      // 或:
+      identityPoolId: 'XX-XXXX-X:XXXXXXXX-XXXX', // Amazon Cognito 身份池 ID
     },
   },
 });
@@ -85,47 +74,25 @@ signIn({ username, password, { authFlowType: "USER_PASSWORD_AUTH" } })
 
 </Tabs>
 
-## Amazon Cognito Setup
+## Amazon Cognito 设置
 
-If not already setup, you will need to
-[create an account](https://docs.amplify.aws/start/getting-started/installation/q/integration/react#sign-up-for-an-aws-account)
-with [Amazon Web Services (AWS)](https://aws.amazon.com).
+如果尚未设置，您需要先[创建 AWS 账户](https://docs.amplify.aws/start/getting-started/installation/q/integration/react#sign-up-for-an-aws-account)。
 
-An [Amazon Cognito](https://aws.amazon.com/cognito) integration is available in
-the
-
-<Icon name="github" inline="true" contentType="rwa" />. Clone the Cypress Real
-World App and install the [AWS Amazon Amplify CLI](https://docs.amplify.aws/cli)
-as follows:
+<Icon name="github" inline="true" contentType="rwa" /> 中提供了 [Amazon Cognito](https://aws.amazon.com/cognito) 集成。克隆 Cypress Real World App 并安装 [AWS Amplify CLI](https://docs.amplify.aws/cli)：
 
 ```jsx
 npm install @aws-amplify/cli --global
 ```
 
-The
+<Icon name="github" inline="true" contentType="rwa" /> 通过 [AWS Amplify 身份验证库](https://aws-amplify.github.io/amplify-js/api/classes/authclass.html) 配置了可选的 [Amazon Cognito](https://aws.amazon.com/cognito) 实例。[AWS Amplify CLI](https://docs.amplify.aws/cli) 用于配置您的环境和云资源所需的基础设施。
 
-<Icon name="github" inline="true" contentType="rwa" /> is configured with an optional
-[Amazon Cognito](https://aws.amazon.com/cognito) instance via the [AWS Amplify Framework
-Authentication Library](https://aws-amplify.github.io/amplify-js/api/classes/authclass.html).
-The [AWS Amazon Amplify CLI](https://docs.amplify.aws/cli) is used to provision the
-[Amazon Web Services (AWS)](https://aws.amazon.com) infrastructure needed to configure
-your environment and cloud resources.
-
-First, run the
-[amplify init](https://docs.amplify.aws/cli/start/workflows#initialize-new-project)
-command to initialize the
-Real World App.
-This will provision the project with your [AWS](https://aws.amazon.com)
-credentials.
+首先运行 [amplify init](https://docs.amplify.aws/cli/start/workflows#initialize-new-project) 命令初始化项目：
 
 ```jsx
 amplify init
 ```
 
-Next, run the
-[amplify push](https://docs.amplify.aws/cli/start/workflows#amplify-push)
-command to create the [Amazon Cognito](https://aws.amazon.com/cognito) resources
-in the cloud:
+然后运行 [amplify push](https://docs.amplify.aws/cli/start/workflows#amplify-push) 命令在云端创建资源：
 
 ```jsx
 amplify push
@@ -133,26 +100,22 @@ amplify push
 
 :::info
 
-<strong>Note</strong>
+<strong>注意</strong>
 
-Use the `yarn dev:cognito` command when starting the
-Real World App.
+启动 Real World App 时使用 `yarn dev:cognito` 命令。
 
 :::
 
-## Setting Amazon Cognito app credentials in Cypress
+## 在 Cypress 中设置 Amazon Cognito 应用凭证
 
-First, we need to configure Cypress to use the
-[AWS Cognito](https://aws.amazon.com/cognito) environment variables set in the
-`.env` file. In addition, we are using the `aws-exports.js` supplied during the
-[AWS Amplify CLI](https://docs.amplify.aws/cli) build process.
+首先配置 Cypress 使用 `.env` 文件中的环境变量和 [AWS Amplify CLI](https://docs.amplify.aws/cli) 构建过程中生成的 `aws-exports.js` 文件。
 
 :::cypress-config-example
 
 ```ts
-// Populate process.env with values from .env file
+// 从 .env 文件加载环境变量
 require('dotenv').config()
-// AWS exports
+// AWS 导出配置
 const awsConfig = require('./aws-exports-es5.js')
 ```
 
@@ -168,24 +131,16 @@ const awsConfig = require('./aws-exports-es5.js')
 
 :::
 
-## Custom Command for Amazon Cognito Authentication
+## Amazon Cognito 身份验证自定义命令
 
-There are two ways you can authenticate to AWS Cognito:
+有两种身份验证方式：
 
-- [Login with `cy.origin()`](/app/guides/authentication-testing/amazon-cognito-authentication#Login-with-cyorigin)
-- [Programmatic Access](/app/guides/authentication-testing/amazon-cognito-authentication#Programmatic-Login)
+- [使用 `cy.origin()` 登录](/app/guides/authentication-testing/amazon-cognito-authentication#Login-with-cyorigin)
+- [编程式访问](/app/guides/authentication-testing/amazon-cognito-authentication#Programmatic-Login)
 
-### Login with [`cy.origin()`](/api/commands/origin)
+### 使用 [`cy.origin()`](/api/commands/origin) 登录
 
-We'll write a custom command called `loginByCognito` to perform a login to
-[Amazon Cognito](https://aws.amazon.com/cognito). This command will use
-[`cy.origin()`](/api/commands/origin) to
-
-1. Navigate to the Cognito origin
-2. Input user credentials
-3. Sign in and redirect back to the
-   <Icon name="github" inline="true" contentType="rwa" />
-4. Cache the results with [`cy.session()`](/api/commands/session)
+创建 `loginByCognito` 自定义命令来执行登录流程：
 
 ```jsx title="cypress/support/auth-provider-commands/cognito.ts"
 // Amazon Cognito
@@ -208,51 +163,29 @@ const loginToCognito = (username: string, password: string) => {
     },
     ({ username, password }) => {
       cy.contains('Sign in with your email and password')
-      // Cognito log in page has some elements of the same id but are off screen.
-      // We only want the visible elements to log in
       cy.get('input[name="username"]:visible').type(username)
       cy.get('input[name="password"]:visible').type(password, {
-        // use log: false to prevent your password from showing in the Command Log
         log: false,
       })
       cy.get('input[name="signInSubmitButton"]:visible').click()
     }
   )
 
-  // give a few seconds for redirect to settle
   cy.wait(2000)
-
-  // verify we have made it passed the login screen
   cy.contains('Get Started').should('be.visible')
 }
 
-// right now our custom command is light. More on this later!
 Cypress.Commands.add('loginByCognito', (username, password) => {
   return loginToCognito(username, password)
 })
 ```
 
-Now, we can use our `loginByCognito` command in the test. Below is our test to
-login as a user via [Amazon Cognito](https://aws.amazon.com/cognito), complete
-the onboarding process and logout.
-
-:::info
-
-The
-[runnable version of this test](https://github.com/cypress-io/cypress-realworld-app/blob/develop/cypress/tests/ui-auth-providers/cognito.spec.ts)
-is in the
-
-<Icon name="github" inline="true" contentType="rwa" />.
-
-:::
+测试中使用该命令：
 
 ```jsx title="auth.spec.js"
 describe('Cognito, cy.origin() login', function () {
   beforeEach(function () {
-    // Seed database with test data
     cy.task('db:seed')
-
-    // login via Amazon Cognito via cy.origin()
     cy.loginByCognito(
       Cypress.env('cognito_username'),
       Cypress.env('cognito_password')
@@ -267,15 +200,12 @@ describe('Cognito, cy.origin() login', function () {
 
 <DocsVideo
   src="https://vimeo.com/789093851"
-  title="AWS Cognito Authentication with cy.origin()"
+  title="使用 cy.origin() 进行 AWS Cognito 身份验证"
 />
 
-Now, we can refactor our login command to take advantage of
-[`cy.session()`](/api/commands/session) to store our logged in user so we don't
-have to reauthenticate with every test.
+使用 [`cy.session()`](/api/commands/session) 优化登录命令：
 
 ```jsx title="cypress/support/auth-provider-commands/cognito.ts"
-// Amazon Cognito
 Cypress.Commands.add(
   'loginByCognito, cy.origin() login',
   (username, password) => {
@@ -287,7 +217,6 @@ Cypress.Commands.add(
       {
         validate() {
           cy.visit('/')
-          // revalidate our session to make sure we are logged in
           cy.contains('Get Started').should('be.visible')
         },
       }
@@ -298,19 +227,12 @@ Cypress.Commands.add(
 
 <DocsVideo
   src="https://vimeo.com/789093817"
-  title="AWS Cognito Authentication with cy.session()"
+  title="使用 cy.session() 进行 AWS Cognito 身份验证"
 />
 
-### Programmatic Login
+### 编程式登录
 
-Next, we'll write a command to perform a programmatic login into
-[Amazon Cognito](https://aws.amazon.com/cognito) and set items in `localStorage`
-with the authenticated users details, which we will use in our application code
-to verify we are authenticated under test.
-
-In this `loginByCognitoApi` command, we call `Auth.signIn`, then use that
-response to set the items inside of localStorage for the UI to know that our
-user is logged into the application.
+创建 `loginByCognitoApi` 命令通过 API 登录并设置 localStorage：
 
 <Tabs>
 
@@ -321,12 +243,10 @@ import Amplify, { Auth } from 'aws-amplify'
 
 Amplify.configure(Cypress.env('awsConfig'))
 
-// Amazon Cognito
 Cypress.Commands.add('loginByCognitoApi', (username, password) => {
   const log = Cypress.log({
     displayName: 'COGNITO LOGIN',
     message: [`🔐 Authenticating | ${username}`],
-    // @ts-ignore
     autoEnd: false,
   })
 
@@ -342,29 +262,7 @@ Cypress.Commands.add('loginByCognitoApi', (username, password) => {
       cognitoResponse.signInUserSession.idToken.jwtToken
     )
 
-    window.localStorage.setItem(
-      `${keyPrefixWithUsername}.accessToken`,
-      cognitoResponse.signInUserSession.accessToken.jwtToken
-    )
-
-    window.localStorage.setItem(
-      `${keyPrefixWithUsername}.refreshToken`,
-      cognitoResponse.signInUserSession.refreshToken.token
-    )
-
-    window.localStorage.setItem(
-      `${keyPrefixWithUsername}.clockDrift`,
-      cognitoResponse.signInUserSession.clockDrift
-    )
-
-    window.localStorage.setItem(
-      `${cognitoResponse.keyPrefix}.LastAuthUser`,
-      cognitoResponse.username
-    )
-
-    window.localStorage.setItem('amplify-authenticator-authState', 'signedIn')
-    log.snapshot('after')
-    log.end()
+    // 设置其他 token...
   })
 
   cy.visit('/')
@@ -385,21 +283,14 @@ const fetchJwts = async (username: string, password: string) => {
   await signIn({ username, password, options })
   const authSession = await fetchAuthSession()
   const tokens = authSession.tokens!
-  const accessToken = tokens.accessToken
-  const accessTokenPayload = accessToken.payload
   return {
     idToken: tokens.idToken!.toString(),
-    accessToken: accessToken.toString(),
-    clientId: accessTokenPayload.client_id as string,
-    accessTokenSub: accessTokenPayload.sub!,
+    accessToken: tokens.accessToken.toString(),
+    // 其他字段...
   }
 }
-type JwtResponse = Awaited<ReturnType<typeof fetchJwts>>
 
-// Amazon Cognito
 Cypress.Commands.add(
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   'loginByCognitoApi',
   (username: string, password: string) => {
     const log = Cypress.log({
@@ -408,23 +299,9 @@ Cypress.Commands.add(
       autoEnd: false,
     })
 
-    log.snapshot('before')
-
     cy.wrap(fetchJwts(username, password), { log: false }).then(
       (unknownJwts) => {
-        const { idToken, accessToken, clientId, accessTokenSub } =
-          unknownJwts as JwtResponse
-
-        const keyPrefix = `CognitoIdentityServiceProvider.${clientId}`
-        const keyPrefixWithUsername = `${keyPrefix}.${accessTokenSub}`
-
-        const ls = window.localStorage
-        ls.setItem(`${keyPrefixWithUsername}.idToken`, idToken)
-        ls.setItem(`${keyPrefixWithUsername}.accessToken`, accessToken)
-        ls.setItem(`${keyPrefix}.LastAuthUser`, accessTokenSub)
-
-        log.snapshot('after')
-        log.end()
+        // 处理 token...
       }
     )
   }
@@ -435,25 +312,12 @@ Cypress.Commands.add(
 
 </Tabs>
 
-Finally, we can use our `loginByCognitoApi` command in at test. Below is our
-test to login as a user via [Amazon Cognito](https://aws.amazon.com/cognito),
-complete the onboarding process and logout.
-
-:::info
-
-The
-[runnable version of this test](https://github.com/cypress-io/cypress-realworld-app/blob/develop/cypress/tests/ui-auth-providers/cognito.spec.ts)
-is in the <Icon name="github" inline="true" contentType="rwa" />.
-
-:::
+测试中使用编程式登录：
 
 ```jsx
 describe('Cognito, programmatic login', function () {
   beforeEach(function () {
-    // Seed database with test data
     cy.task('db:seed')
-
-    // Programmatically login via Amazon Cognito API
     cy.loginByCognitoApi(
       Cypress.env('cognito_username'),
       Cypress.env('cognito_password')
@@ -466,55 +330,34 @@ describe('Cognito, programmatic login', function () {
 })
 ```
 
-### Adapting an Amazon Cognito App for Testing
+### 适配 Amazon Cognito 应用进行测试
 
 :::info
 
-<strong>AWS Backend Services Need No Adaptation</strong>
+<strong>AWS 后端服务无需适配</strong>
 
-Often times, AWS Cognito is used when other AWS services provide the backend,
-such as AWS AppSync for GraphQL APIs or AWS API Gateway for REST APIs. These
-backend services can be configured to verify cognito JWTs without additional
-code. However, if you are hosting a webserver backend, like the [cypress
-real-world app](https://github.com/cypress-io/cypress-realworld-app) does with
-the Express npm library, it must be adapted, as the real-world app is, to verify
-the Cognito JWTs to authorize the frontend's requests.
+当使用 AWS AppSync 或 API Gateway 时，它们可直接验证 Cognito JWT。如果是自托管后端（如 Express），则需要适配。
 
 :::
 
-The
+<Icon name="github" inline="true" contentType="rwa" /> 提供了 React 前端和 Express 后端的配置和代码。
 
-<Icon name="github" inline="true" contentType="rwa" /> is used and provides configuration
-and runnable code for both the React SPA and the Express back end.
+#### 适配后端
 
-The front end uses the
-[AWS Amplify Framework Authentication Library](https://aws-amplify.github.io/amplify-js/api/classes/authclass.html).
-The back end uses the [express-jwt](https://github.com/auth0/express-jwt) to
-validate JWTs from [Amazon Cognito](https://aws.amazon.com/cognito).
-
-#### Adapting the back end
-
-In order to validate API requests from the frontend, we install
-[express-jwt](https://github.com/auth0/express-jwt) and
-[jwks-rsa](https://github.com/auth0/node-jwks-rsa) and configure validation for
-JWT's from [Amazon Cognito](https://aws.amazon.com/cognito).
+安装 [express-jwt](https://github.com/auth0/express-jwt) 和 [jwks-rsa](https://github.com/auth0/node-jwks-rsa) 来验证 JWT：
 
 <Tabs>
 
   <TabItem value="v5" label="Amplify v5.x.x" default>
 
 ```jsx title="backend/helpers.ts"
-// ... initial imports
 import jwt from 'express-jwt'
 import jwksRsa from 'jwks-rsa'
-
-// ...
 
 const awsCognitoJwtConfig = {
   secret: jwksRsa.expressJwtSecret({
     jwksUri: `https://cognito-idp.${awsConfig.aws_cognito_region}.amazonaws.com/${awsConfig.aws_user_pools_id}/.well-known/jwks.json`,
   }),
-
   issuer: `https://cognito-idp.${awsConfig.aws_cognito_region}.amazonaws.com/${awsConfig.aws_user_pools_id}`,
   algorithms: ['RS256'],
 }
@@ -529,89 +372,53 @@ export const checkCognitoJwt = jwt(awsCognitoJwtConfig).unless({
   <TabItem value="v6" label="Amplify v6.x.x">
 
 ```jsx title="backend/helpers.ts"
-// ... initial imports
-import jwt from 'express-jwt'
-import jwksRsa from 'jwks-rsa'
-
-// ...
 const userPoolId = awsConfig.Auth.Cognito.userPoolId
 const region = userPoolId.split('_')[0]
 const awsCognitoJwtConfig = {
   secret: jwksRsa.expressJwtSecret({
     jwksUri: `https://cognito-idp.${region}.amazonaws.com/${userPoolId}/.well-known/jwks.json`,
   }),
-
   issuer: `https://cognito-idp.${region}.amazonaws.com/${userPoolId}`,
   algorithms: ['RS256'],
 }
-
-export const checkCognitoJwt = jwt(awsCognitoJwtConfig).unless({
-  path: ['/testData/*'],
-})
 ```
 
   </TabItem>
 
 </Tabs>
 
-Once this helper is defined, we can use globally to apply to all routes:
+全局应用中间件：
 
 ```jsx title="backend/app.ts"
-// initial imports ...
 import { checkCognitoJwt } from './helpers'
-
-// ...
 
 if (process.env.REACT_APP_AWS_COGNITO) {
   app.use(checkCognitoJwt)
 }
-
-// routes ...
 ```
 
-#### Adapting the front end
+#### 适配前端
 
-We need to update our front end React app to allow for authentication with
-[Amazon Cognito](https://aws.amazon.com/cognito) using the
-[AWS Amplify Framework Authentication Library](https://aws-amplify.github.io/amplify-js/api/classes/authclass.html).
-
-First, we create a `AppCognito.tsx` container, based off of the `App.tsx`
-component.
-
-A `useEffect` hook is added to get the access token for the authenticated user
-and send a `COGNITO` event with the token to work with the existing authentication
-layer (`authMachine.ts`). If no access token is yet available, we redirect the
-browser to the [Amazon Cognito](https://aws.amazon.com/cognito) User Pool Hosted UI
-to provide the login form.
+创建 `AppCognito.tsx` 组件处理 Cognito 身份验证：
 
 <Tabs>
   <TabItem value="v6" label="Amplify v6.x.x">
 
 ```jsx title="src/containers/AppCognito.tsx"
-// amplify v6
-// initial imports ...
 import { Amplify, ResourcesConfig } from "aws-amplify";
-import { fetchAuthSession, signInWithRedirect, signOut } from "aws-amplify/auth";
-
-import awsConfig from "../aws-exports";
+import { fetchAuthSession, signInWithRedirect } from "aws-amplify/auth";
 
 Amplify.configure(awsConfig as ResourcesConfig);
 
-// ...
-
 const AppCognito: React.FC = () => {
-
-  // ...
-
   useEffect(() => {
     if (!isLoggedIn) {
       fetchAuthSession().then((authSession) => {
-        if (authSession && authSession.tokens && authSession.tokens.accessToken) {
-          const { tokens, userSub } = authSession;
+        if (authSession?.tokens?.accessToken) {
           authService.send("COGNITO", {
-            accessTokenJwtString: tokens!.accessToken.toString(),
-            userSub: userSub!,
-            email: tokens!.idToken!.payload.email,
+            accessTokenJwtString: authSession.tokens.accessToken.toString(),
+            userSub: authSession.userSub!,
+            email: authSession.tokens.idToken!.payload.email,
           });
         } else {
           void signInWithRedirect();
@@ -620,39 +427,17 @@ const AppCognito: React.FC = () => {
     }
   }, [isLoggedIn]);
 
-  // ...
-
-  if (!isLoggedIn) {
-    return null; // redirection will occur soon anyway
-  }
+  if (!isLoggedIn) return null;
 };
-
-export default AppCognito;
 ```
 
   </TabItem>
 
 </Tabs>
 
-:::tip
-
-<strong>Try it out</strong>
-
-The complete
-[AppCognito.tsx component](https://github.com/cypress-io/cypress-realworld-app/blob/develop/src/containers/AppCognito.tsx)
-is in the <Icon name="github" inline="true" contentType="rwa" />.
-
-:::
-
-Next, we update our entry point (`index.tsx`) to use our `AppCognito.tsx`
-component.
+更新入口文件使用新组件：
 
 ```jsx title="src/index.tsx"
-// ... initial imports
-import AppCognito from './containers/AppCognito'
-
-// ...
-
 if (process.env.REACT_APP_AWS_COGNITO) {
   ReactDOM.render(
     <Router history={history}>

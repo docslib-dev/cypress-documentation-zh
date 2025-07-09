@@ -1,6 +1,6 @@
 ---
-title: 'nextAll | Cypress Documentation'
-description: Get all following siblings of each DOM element in a set of matched DOM elements in Cypress.
+title: 'nextAll | Cypress 文档'
+description: 在Cypress中获取一组匹配的DOM元素中每个DOM元素的所有后续兄弟元素。
 sidebar_label: nextAll
 slug: /api/commands/nextall
 ---
@@ -9,16 +9,16 @@ slug: /api/commands/nextall
 
 # nextAll
 
-Get all following siblings of each DOM element in a set of matched DOM elements.
+获取一组匹配的DOM元素中每个DOM元素的所有后续兄弟元素。
 
 :::info
 
-The querying behavior of this command matches exactly how
-[`.nextAll()`](http://api.jquery.com/nextAll) works in jQuery.
+该命令的查询行为与jQuery中的
+[`.nextAll()`](http://api.jquery.com/nextAll)完全一致。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .nextAll()
@@ -27,125 +27,124 @@ The querying behavior of this command matches exactly how
 .nextAll(selector, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('.active').nextAll() // Yield all links next to `.active`
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.nextAll() // Errors, cannot be chained off 'cy'
-cy.getCookies().nextAll() // Errors, 'getCookies' does not yield DOM element
+cy.get('.active').nextAll() // 获取`.active`之后的所有链接
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
-<Icon name="angle-right" /> **selector _(String selector)_**
+```javascript
+cy.nextAll() // 错误，不能直接链式调用'cy'
+cy.getCookies().nextAll() // 错误，'getCookies'不返回DOM元素
+```
 
-A selector used to filter matching DOM elements.
+### 参数
 
-<Icon name="angle-right" /> **options _(Object)_**
+<Icon name="angle-right" /> **selector _(字符串选择器)_**
 
-Pass in an options object to change the default behavior of `.nextAll()`.
+用于过滤匹配DOM元素的选择器。
 
-| Option    | Default                                                           | Description                                                                         |
+<Icon name="angle-right" /> **options _(对象)_**
+
+传入一个选项对象以改变`.nextAll()`的默认行为。
+
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.nextAll()` to resolve before [timing out](#Timeouts)             |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 等待`.nextAll()`解析的时长，超过则[超时](#Timeouts)             |
 
 <HeaderYields />
 
-- `.nextAll()` yields the new DOM element(s) it found.
-- `.nextAll()` is a query, and it is _safe_ to chain further commands.
+- `.nextAll()`返回找到的新DOM元素。
+- `.nextAll()`是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Find all of the element's siblings following `.second`
+#### 查找`.second`之后的所有兄弟元素
 
 ```html
 <ul>
-  <li>apples</li>
-  <li class="second">oranges</li>
-  <li>bananas</li>
-  <li>pineapples</li>
-  <li>grapes</li>
+  <li>苹果</li>
+  <li class="second">橙子</li>
+  <li>香蕉</li>
+  <li>菠萝</li>
+  <li>葡萄</li>
 </ul>
 ```
 
 ```javascript
-// yields [<li>bananas</li>, <li>pineapples</li>, <li>grapes</li>]
+// 返回 [<li>香蕉</li>, <li>菠萝</li>, <li>葡萄</li>]
 cy.get('.second').nextAll()
 ```
 
-### Selector
+### 选择器
 
-#### Find all of the following siblings of each li. Keep only the ones with a class `selected`
+#### 查找每个li之后的所有兄弟元素，仅保留带有`selected`类的元素
 
 ```html
 <ul>
-  <li>apples</li>
-  <li>oranges</li>
-  <li>bananas</li>
-  <li class="selected">pineapples</li>
-  <li>grapes</li>
+  <li>苹果</li>
+  <li>橙子</li>
+  <li>香蕉</li>
+  <li class="selected">菠萝</li>
+  <li>葡萄</li>
 </ul>
 ```
 
 ```javascript
-// yields <li>pineapples</li>
+// 返回 <li>菠萝</li>
 cy.get('li').nextAll('.selected')
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.nextAll()` requires being chained off a command that yields DOM element(s).
+- `.nextAll()`必须链式调用在返回DOM元素的命令之后。
 
 <HeaderAssertions />
 
-- `.nextAll()` will automatically [retry](/app/core-concepts/retry-ability)
-  until the element(s)
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.nextAll()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed.
+- `.nextAll()`会自动[重试](/app/core-concepts/retry-ability)
+  直到元素
+  [存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)。
+- `.nextAll()`会自动[重试](/app/core-concepts/retry-ability)
+  直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `.nextAll()` can time out waiting for the element(s) to
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.nextAll()` can time out waiting for assertions you've added to pass.
+- `.nextAll()`可能因等待元素
+  [存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)而超时。
+- `.nextAll()`可能因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Find all elements following the `.active` li_**
+**_查找`.active` li之后的所有元素_**
 
 ```javascript
 cy.get('.left-nav').find('li.active').nextAll()
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/nextall/next-all-traversal-command-for-the-dom.png"
-  alt="Command Log nextAll"
+  alt="命令日志 nextAll"
 />
 
-When clicking on `nextAll` within the command log, the console outputs the
-following:
+当点击命令日志中的`nextAll`时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/nextall/all-next-elements-are-logged-in-console.png"
-  alt="Console Log nextAll"
+  alt="控制台日志 nextAll"
 />
 
-## See also
+## 另请参阅
 
 - [`.next()`](/api/commands/next)
 - [`.nextUntil()`](/api/commands/nextuntil)

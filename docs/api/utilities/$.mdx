@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.$ | Cypress Documentation'
-description: Cypress automatically includes jQuery and exposes it as Cypress.$.
+title: 'Cypress.$ | Cypress 文档'
+description: Cypress 自动包含 jQuery 并将其暴露为 Cypress.$。
 sidebar_label: Cypress.$
 ---
 
@@ -8,18 +8,17 @@ sidebar_label: Cypress.$
 
 # Cypress.$
 
-Cypress automatically includes [jQuery](http://jquery.com) and exposes it as
-`Cypress.$`.
+Cypress 自动包含 [jQuery](http://jquery.com) 并将其暴露为
+`Cypress.$`。
 
-This is a great way to _synchronously_ query for elements when debugging from
-Developer Tools.
+这是在开发者工具中调试时_同步_查询元素的绝佳方式。
 
-## Syntax
+## 语法
 
 ```javascript
 Cypress.$(selector)
 
-// other proxied jQuery methods
+// 其他代理的 jQuery 方法
 Cypress.$.Event
 Cypress.$.Deferred
 Cypress.$.ajax
@@ -29,23 +28,23 @@ Cypress.$.getScript
 Cypress.$.post
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 Cypress.$('p')
 ```
 
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
 ```javascript
-cy.$('p') // Errors, cannot be chained off 'cy'
+cy.$('p') // 错误，不能链式调用 'cy'
 ```
 
-## Examples
+## 示例
 
-### Selector
+### 选择器
 
 ```javascript
 const $li = Cypress.$('ul li:first')
@@ -56,39 +55,34 @@ cy.wrap($li)
   .should('have.class', 'active')
 ```
 
-## Notes
+## 注意事项
 
-### Cypress.$ vs. cy.$$
+### Cypress.$ 与 cy.$$
 
-You can also query DOM elements with `cy.$$`. But `Cypress.$` and `cy.$$` are
-different.
+你也可以使用 `cy.$$` 查询 DOM 元素。但 `Cypress.$` 和 `cy.$$` 是不同的。
 
-`Cypress.$` refers to the `jQuery` function itself. You can do anything with
-`Cypress.$` if you can do it with the `jQuery` function. So, both of the
-examples below work.
+`Cypress.$` 指的是 `jQuery` 函数本身。你可以用 `Cypress.$` 做任何能用 `jQuery` 函数做的事情。因此，以下两个示例都有效。
 
 ```js
 Cypress.$.each([1, 2, 3], (index, value) => {
   expect(index).to.eq(value)
-}) // works
+}) // 有效
 ```
 
 ```js
 $.each([1, 2, 3], (index, value) => {
   expect(index).to.eq(value)
-}) // also works
+}) // 同样有效
 ```
 
-But `cy.$$` is a wrapper of the `jQuery.fn.init` function. In other words, you
-can only query DOM elements with `cy.$$`. Because of that, the jQuery utility
-functions like `jQuery.each`, `jQuery.grep` don't work with `cy.$$`.
+但 `cy.$$` 是 `jQuery.fn.init` 函数的包装器。换句话说，你只能用 `cy.$$` 查询 DOM 元素。因此，像 `jQuery.each`、`jQuery.grep` 这样的 jQuery 工具函数在 `cy.$$` 上不起作用。
 
 ```js
 cy.$$.each([1, 2, 3], (index, value) => {
   expect(index).to.eq(value)
-}) // fails
+}) // 失败
 ```
 
-## See also
+## 另请参阅
 
-- [Bundled Libraries](/app/references/bundled-libraries)
+- [捆绑的库](/app/references/bundled-libraries)

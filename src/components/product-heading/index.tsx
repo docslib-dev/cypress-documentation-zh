@@ -7,27 +7,27 @@ import ComponentOnlyBadge from "@site/src/components/component-only-badge";
 
 import React from 'react';
 
-// Define the types for the props
+// 定义props的类型
 interface ProductHeadingProps {
     product: 'app' | 'cloud' | 'accessibility' | 'ui-coverage'
     plan?: 'team' | 'business' | 'enterprise'
     badge?: React.ReactNode
 }
 
-// Build the Button component with the specified props
+// 使用指定props构建按钮组件
 const DocProductHeading: React.FC<ProductHeadingProps> = ({ 
-    product, // The product to display
-    plan, // The plan to display for Cloud product
-    badge, // The badge to display
+    product, // 要显示的产品
+    plan, // 云产品的套餐类型
+    badge, // 要显示的徽章
 }) => {
-    const productName = product === 'ui-coverage' ? 'UI Coverage' : product === 'accessibility' ? 'Cypress Accessibility' : product === 'cloud' ? 'Cypress Cloud' : 'Cypress App'
+    const productName = product === 'ui-coverage' ? 'UI覆盖率' : product === 'accessibility' ? 'Cypress无障碍测试' : product === 'cloud' ? 'Cypress云服务' : 'Cypress应用'
     const iconName = product === 'ui-coverage' ? 'technology-ui-coverage' : product === 'accessibility' ? 'cypress-accessibility-outline' : 'technology-cypress'
     const linkPath  = product === 'cloud' ? 'pricing' : product
 
-    let badgeContent = product === 'cloud' ? 'Free Trial' : 'Premium Solution'
+    let badgeContent = product === 'cloud' ? '免费试用' : '高级解决方案'
 
     if (product === 'cloud' && plan) {
-        badgeContent = plan === 'team' ? 'Team Plan' : plan === 'business' ? 'Business Plan' : 'Enterprise Plan'
+        badgeContent = plan === 'team' ? '团队套餐' : plan === 'business' ? '商业套餐' : '企业套餐'
     }
 
     return (
@@ -42,7 +42,7 @@ const DocProductHeading: React.FC<ProductHeadingProps> = ({
         <a 
           href={`https://www.cypress.io/${linkPath}?utm_source=docs&utm_medium=product-heading-${product}&utm_content=${badgeContent}`}
           target="_blank"
-          title="Learn more"
+          title="了解更多"
           className={s.productHeadingLink}
           >
             { product !== 'app' &&  <Badge type="success">{badgeContent}</Badge>}

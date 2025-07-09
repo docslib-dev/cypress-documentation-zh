@@ -1,6 +1,6 @@
 ---
-title: 'stub | Cypress Documentation'
-description: Replace a function, record its usage and control its behavior in Cypress.
+title: 'stub | Cypress 文档'
+description: 替换函数、记录其使用情况并控制其在 Cypress 中的行为。
 sidebar_label: stub
 ---
 
@@ -8,79 +8,76 @@ sidebar_label: stub
 
 # stub
 
-Replace a function, record its usage and control its behavior.
+替换函数、记录其使用情况并控制其行为。
 
-`cy.stub()` is a utility function, and is not a Cypress command, query or
-assertion. It is not retryable, chainable, or timeout-able.
+`cy.stub()` 是一个实用函数，不是 Cypress 命令、查询或断言。它不可重试、不可链式调用、也不支持超时。
 
 :::info
 
-**Note:** `.stub()` assumes you are already familiar with our guide:
-[Stubs, Spies, and Clocks](/app/guides/stubs-spies-and-clocks)
+**注意：** `.stub()` 假设您已熟悉我们的指南：
+[存根、间谍和时钟](/app/guides/stubs-spies-and-clocks)
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 cy.stub()
 cy.stub(object, method)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 cy.stub(user, 'addFriend')
 cy.stub(user, 'addFriend').as('addFriend')
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **object _(Object)_**
 
-The `object` that has the `method` to be replaced.
+包含要被替换 `method` 的 `object`。
 
 <Icon name="angle-right" /> **method _(String)_**
 
-The name of the `method` on the `object` to be wrapped.
+要被替换的 `object` 上的 `method` 名称。
 
 <HeaderYields />
 
-- `cy.stub()` is _synchronous_ and returns a value (the stub) instead of a
-  Promise-like chain-able object. It can be aliased.
-- `cy.stub()` returns a [Sinon.js stub](http://sinonjs.org). All methods found
-  on [Sinon.js](http://sinonjs.org) spies and stubs are supported.
+- `cy.stub()` 是 _同步_ 的，返回一个值（存根）而不是类似 Promise 的可链式对象。它可以被别名化。
+- `cy.stub()` 返回一个 [Sinon.js 存根](http://sinonjs.org)。支持 [Sinon.js](http://sinonjs.org) 间谍和存根的所有方法。
 
-## Examples
+## 示例
 
-### Method
+### 方法
 
-#### Create a stub and manually replace a function
+#### 创建存根并手动替换函数
 
 ```javascript
-// assume App.start calls util.addListeners
+// 假设 App.start 调用 util.addListeners
 util.addListeners = cy.stub()
 
 App.start()
 expect(util.addListeners).to.be.called
 ```
 
-#### Replace a method with a stub
+#### 用存根替换方法
 
 ```javascript
-// assume App.start calls util.addListeners
+// 假设 App.start 调用 util.addListeners
 cy.stub(util, 'addListeners')
 
 App.start()
 expect(util.addListeners).to.be.called
 ```
 
-#### Replace a method with a function
+#### 用函数替换方法
 
 ```javascript
-// assume App.start calls util.addListeners
+// 假设 App.start 调用 util.addListeners
 let listenersAdded = false
 
 cy.stub(util, 'addListeners').callsFake(() => {
@@ -91,11 +88,11 @@ App.start()
 expect(listenersAdded).to.be.true
 ```
 
-#### Specify the return value of a stubbed method
+#### 指定存根方法的返回值
 
 ```javascript
-// assume App.start calls util.addListeners, which returns a function
-// that removes the listeners
+// 假设 App.start 调用 util.addListeners，它返回一个
+// 用于移除监听器的函数
 const removeStub = cy.stub()
 
 cy.stub(util, 'addListeners').returns(removeStub)
@@ -105,31 +102,27 @@ App.stop()
 expect(removeStub).to.be.called
 ```
 
-#### Replace built-in window methods like prompt
+#### 替换内置窗口方法如 prompt
 
-In end-to-end tests, replacing built-in `window` methods needs to happen _after_
-the page is visited, but _before_ the application under test is loaded. You can
-do this by stubbing functions inside the [`cy.visit()`](/api/commands/visit)
-command `onBeforeLoad` function.
+在端到端测试中，替换内置的 `window` 方法需要在页面访问 _之后_，但在被测应用加载 _之前_ 进行。您可以通过在 [`cy.visit()`](/api/commands/visit) 命令的 `onBeforeLoad` 函数中存根函数来实现。
 
-In Component tests, because the page isn't being reloaded, all you need to do is
-stub functions before mounting your component.
+在组件测试中，因为页面不会重新加载，您只需要在挂载组件之前存根函数。
 
 :::visit-mount-example
 
 ```js
 -{cy.visit('http://localhost:3000', {
   onBeforeLoad(win) {
-    // Stub your functions here
+    // 在这里存根您的函数
     cy.stub(win, 'prompt').returns('my custom message')
   },
 })
 
-App.start()::// Stub your functions here
+App.start()::// 在这里存根您的函数
 cy.mount()
 cy.stub(window, 'prompt').returns('my custom message')
 
-// After that, mount your component
+// 然后挂载您的组件
 cy.mount(<MyComponent />)}-
 
 cy.window().its('prompt').should('be.called')
@@ -138,11 +131,9 @@ cy.get('.name').should('have.value', 'my custom message')
 
 :::
 
-#### Disable logging to Command Log
+#### 禁用命令日志记录
 
-You can chain a `.log(bool)` method to disable `cy.stub()` calls from being
-shown in the Command Log. This may be useful when your stubs are called an
-excessive number of times.
+您可以链式调用 `.log(bool)` 方法来禁止 `cy.stub()` 调用显示在命令日志中。这在存根被调用次数过多时可能有用。
 
 ```javascript
 const obj = {
@@ -151,19 +142,17 @@ const obj = {
 const stub = cy.stub(obj, 'foo').log(false)
 ```
 
-#### More `cy.stub()` examples
+#### 更多 `cy.stub()` 示例
 
 :::info
 
-[Check out our example recipe testing spying, stubbing and time](/app/references/recipes#Stubbing-and-spying)
+[查看我们测试间谍、存根和时间的示例配方](/app/references/recipes#Stubbing-and-spying)
 
 :::
 
-### Aliases
+### 别名
 
-You can alias stubs, similar to how [`.as()`](/api/commands/as) works. This can
-make your stubs easier to identify in error messages and Cypress's command log,
-and allows you to assert against them later using `cy.get()`.
+您可以给存根起别名，类似于 [`.as()`](/api/commands/as) 的工作方式。这可以使您的存根在错误消息和 Cypress 的命令日志中更容易识别，并允许您稍后使用 `cy.get()` 对它们进行断言。
 
 ```javascript
 const obj = {
@@ -175,40 +164,33 @@ const withFoo = stub.withArgs('foo').as('withFoo')
 obj.foo()
 
 expect(stub).to.be.called
-cy.get('@withFoo').should('be.called') // purposefully failing assertion
+cy.get('@withFoo').should('be.called') // 故意失败的断言
 ```
 
-You will see the following in the command log:
+您将在命令日志中看到以下内容：
 
 <DocsImage
   src="/img/api/stub/stubs-with-aliases-and-error-in-command-log.png"
-  alt="stubs with aliases"
+  alt="带别名的存根"
 />
 
-## Notes
+## 注意事项
 
-### Restores
+### 恢复
 
-#### Automatic reset/restore between tests
+#### 测试之间的自动重置/恢复
 
-`cy.stub()` creates stubs in a
-[sandbox](http://sinonjs.org/releases/v8/sandbox/), so all stubs created are
-automatically reset/restored between tests without you having to explicitly
-reset/restore them.
+`cy.stub()` 在 [沙盒](http://sinonjs.org/releases/v8/sandbox/) 中创建存根，因此所有创建的存根都会在测试之间自动重置/恢复，无需您显式重置/恢复它们。
 
-### Differences
+### 差异
 
-#### Difference between cy.spy() and cy.stub()
+#### cy.spy() 和 cy.stub() 的区别
 
-The main difference between `cy.spy()` and [`cy.stub()`](/api/commands/stub) is
-that `cy.spy()` does not replace the method, it only wraps it. So, while
-invocations are recorded, the original method is still called. This can be very
-useful when testing methods on native browser objects. You can verify a method
-is being called by your test and still have the original method action invoked.
+`cy.spy()` 和 [`cy.stub()`](/api/commands/stub) 的主要区别在于 `cy.spy()` 不会替换方法，它只是包装方法。因此，虽然调用被记录，但原始方法仍会被调用。这在测试原生浏览器对象上的方法时非常有用。您可以验证方法是否被测试调用，同时仍然调用原始方法操作。
 
-## Command Log
+## 命令日志
 
-**_Create a stub, alias it, and call it_**
+**_创建存根、起别名并调用它_**
 
 ```javascript
 const obj = {
@@ -220,30 +202,29 @@ obj.foo('foo', 'bar')
 expect(stub).to.be.called
 ```
 
-The command above will display in the Command Log as:
+上面的命令将在命令日志中显示为：
 
-<DocsImage src="/img/api/stub/stub-in-command-log.png" alt="Command Log stub" />
+<DocsImage src="/img/api/stub/stub-in-command-log.png" alt="命令日志中的存根" />
 
-When clicking on the `(stub-1)` event within the command log, the console
-outputs the following:
+当点击命令日志中的 `(stub-1)` 事件时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/stub/inspect-the-stubbed-object-and-any-calls-or-arguments-made.png"
-  alt="Console Log stub"
+  alt="控制台日志中的存根"
 />
 
-## History
+## 历史
 
-| Version                                    | Changes                   |
+| 版本                                       | 变更                      |
 | ------------------------------------------ | ------------------------- |
-| [0.20.0](/app/references/changelog#0-20-0) | Added `.log(bool)` method |
-| [0.18.8](/app/references/changelog#0-18-8) | `cy.stub()` command added |
+| [0.20.0](/app/references/changelog#0-20-0) | 添加了 `.log(bool)` 方法  |
+| [0.18.8](/app/references/changelog#0-18-8) | 添加了 `cy.stub()` 命令   |
 
-## See also
+## 另请参阅
 
 - [`.as()`](/api/commands/as)
 - [`cy.clock()`](/api/commands/clock)
 - [`cy.spy()`](/api/commands/spy)
-- [Guide: Stubs, Spies and Clocks](/app/guides/stubs-spies-and-clocks)
-- [Recipe: Stubbing, Spying](/app/references/recipes#Stubbing-and-spying)
-- [Recipe: Unit Test - Stubbing Dependencies](/app/references/recipes)
+- [指南：存根、间谍和时钟](/app/guides/stubs-spies-and-clocks)
+- [配方：存根、间谍](/app/references/recipes#Stubbing-and-spying)
+- [配方：单元测试 - 存根依赖项](/app/references/recipes)

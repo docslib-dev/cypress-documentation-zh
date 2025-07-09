@@ -1,8 +1,8 @@
 ---
-title: 'mount | Cypress Documentation'
-description: Set up a mount command in your support file for Cypress Component Testing
-sidebar_label: mount
-slug: /api/commands/mount
+title: 'mount | Cypress 文档'
+description: '在支持文件中为 Cypress 组件测试设置 mount 命令'
+sidebar_label: 'mount'
+slug: '/api/commands/mount'
 componentSpecific: true
 ---
 
@@ -10,33 +10,22 @@ componentSpecific: true
 
 # mount
 
-Cypress does not have a built-in `cy.mount()` command. The command must be set
-up in your support file. By default, when you use Cypress to configure your
-project, one will be automatically scaffolded for you.
+Cypress 没有内置的 `cy.mount()` 命令。该命令必须在您的支持文件中设置。默认情况下，当您使用 Cypress 配置项目时，系统会自动为您生成一个。
 
-This guide covers how to customize the `cy.mount()` command to fit the needs of
-your app.
+本指南介绍如何自定义 `cy.mount()` 命令以满足应用程序的需求。
 
-We recommend setting up a custom `cy.mount()` command instead of importing the
-mount command from the mounting libraries. Doing so offers a few advantages:
+我们建议设置自定义的 `cy.mount()` 命令，而不是从挂载库中导入 mount 命令。这样做有几个优点：
 
-- You don't need to import the mount command into every test as the `cy.mount()`
-  command is available globally.
-- You can set up common scenarios that you usually have to do in each test, like
-  wrapping a component in a
-  [React Provider](https://reactjs.org/docs/context.html) or adding
-  [Vue plugins](https://vuejs.org/v2/guide/plugins.html).
+- 您无需在每个测试中导入 mount 命令，因为 `cy.mount()` 命令是全局可用的。
+- 您可以设置通常在每次测试中需要执行的常见场景，例如将组件包装在 [React Provider](https://reactjs.org/docs/context.html) 中或添加 [Vue 插件](https://vuejs.org/v2/guide/plugins.html)。
 
-Let's take a look at how to implement the command.
+让我们看看如何实现该命令。
 
-## Creating a New `cy.mount()` Command
+## 创建新的 `cy.mount()` 命令
 
 <ImportMountFunctions />
 
-To use `cy.mount()`, add a [custom command](/api/cypress-api/custom-commands) to
-the commands file using
-[`Cypress.Commands.add()`](/api/cypress-api/custom-commands). Below are examples
-to start with for your commands:
+要使用 `cy.mount()`，请使用 [`Cypress.Commands.add()`](/api/cypress-api/custom-commands) 将 [自定义命令](/api/cypress-api/custom-commands) 添加到命令文件中。以下是您可以参考的示例命令：
 
 <Tabs>
 <TabItem value='React'>
@@ -45,8 +34,8 @@ to start with for your commands:
 import { mount } from 'cypress/react'
 
 Cypress.Commands.add('mount', (component, options) => {
-  // Wrap any parent components needed
-  // ie: return mount(<MyProvider>{component}</MyProvider>, options)
+  // 包装所需的任何父组件
+  // 例如：return mount(<MyProvider>{component}</MyProvider>, options)
   return mount(component, options)
 })
 ```
@@ -58,21 +47,21 @@ Cypress.Commands.add('mount', (component, options) => {
 import { mount } from 'cypress/vue'
 
 Cypress.Commands.add('mount', (component, options = {}) => {
-  // Setup options object
+  // 设置 options 对象
   options.global = options.global || {}
   options.global.stubs = options.global.stubs || {}
   options.global.stubs['transition'] = false
   options.global.components = options.global.components || {}
   options.global.plugins = options.global.plugins || []
 
-  /* Add any global plugins */
+  /* 添加任何全局插件 */
   // options.global.plugins.push({
   //   install(app) {
   //     app.use(MyPlugin);
   //   },
   // });
 
-  /* Add any global components */
+  /* 添加任何全局组件 */
   // options.global.components['Button'] = Button;
 
   return mount(component, options)
@@ -93,16 +82,11 @@ Cypress.Commands.add('mount', (component, config) => {
 </TabItem>
 </Tabs>
 
-## Adding TypeScript Typings for `cy.mount()` Commands
+## 为 `cy.mount()` 命令添加 TypeScript 类型定义
 
-When working in
-[TypeScript](/app/tooling/typescript-support), you
-will need to add custom typings for your commands to get code completion and to
-avoid any TypeScript errors.
+在使用 [TypeScript](/app/tooling/typescript-support) 时，您需要为自定义命令添加类型定义，以获取代码补全并避免任何 TypeScript 错误。
 
-The typings need to be in a location that any code can access, therefore, we
-recommend creating a `cypress.d.ts` file in the root directory, and use this
-example as a starting point for customizing your own command:
+类型定义需要放在任何代码都可以访问的位置，因此我们建议在根目录中创建一个 `cypress.d.ts` 文件，并使用以下示例作为自定义命令的起点：
 
 <Tabs>
 <TabItem value="React">
@@ -155,18 +139,12 @@ declare global {
 </TabItem>
 </Tabs>
 
-If your tests have trouble finding the types for the custom commands, manually
-include the `cypress.d.ts` file in all your `tsconfig.json` files like so:
+如果您的测试无法找到自定义命令的类型，请手动将 `cypress.d.ts` 文件包含到所有 `tsconfig.json` 文件中，如下所示：
 
 ```json
 "include": ["./src", "cypress.d.ts"]
 ```
 
-## Additional Mount Command Examples
+## 更多 mount 命令示例
 
-Visit the guides for scenarios in
-[React](/app/component-testing/react/examples),
-[Vue](/app/component-testing/vue/examples),
-[Angular](/app/component-testing/angular/examples), and
-[Svelte](/app/component-testing/svelte/examples) for customizing a mount
-command.
+访问 [React](/app/component-testing/react/examples)、[Vue](/app/component-testing/vue/examples)、[Angular](/app/component-testing/angular/examples) 和 [Svelte](/app/component-testing/svelte/examples) 的指南，了解如何自定义 mount 命令。

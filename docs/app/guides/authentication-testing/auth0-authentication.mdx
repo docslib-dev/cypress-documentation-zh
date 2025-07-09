@@ -1,89 +1,63 @@
 ---
-title: 'Auth0 Integration: Cypress Guide'
-sidebar_label: 'Auth0 Authentication'
-description: 'Seamlessly implement Auth0 authentication with Cypress. Integrate Auth0 authentication for secure testing'
+title: 'Auth0集成：Cypress指南'
+sidebar_label: 'Auth0认证'
+description: '使用Cypress无缝实现Auth0认证。集成Auth0认证进行安全测试'
 ---
 
 <ProductHeading product="app" />
 
-# Auth0 Authentication
+# Auth0认证
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学习到
 
-- How to authenticate with Auth0 in Cypress tests
-- How to adapt an Auth0 app for testing
-- Caveats and considerations for Auth0 rate limiting
+- 如何在Cypress测试中使用Auth0进行认证
+- 如何为测试适配Auth0应用
+- Auth0速率限制的注意事项
 
 :::
 
-This guide is setup for testing against an [Auth0](https://auth0.com) Single
-Page Application using the
-[Classic Universal Login Experience](https://auth0.com/docs/universal-login/classic).
-This configuration is recommended for a "Test Tenant" and/or "Test API" setup
-for automated end-to-end testing.
+本指南针对使用[经典通用登录体验](https://auth0.com/docs/universal-login/classic)的[Auth0](https://auth0.com)单页应用测试进行设置。此配置推荐用于自动化端到端测试的"测试租户"和/或"测试API"设置。
 
-## Auth0 Application Setup
+## Auth0应用设置
 
-To get started with Auth0, an application needs to be setup within the
-[Auth0 Dashboard](https://auth0.com/docs/get-started/auth0-overview/dashboard) via the following steps:
+要开始使用Auth0，需要通过以下步骤在[Auth0仪表板](https://auth0.com/docs/get-started/auth0-overview/dashboard)中设置应用：
 
-1. Visit the [Auth0 Dashboard](https://auth0.com/docs/get-started/auth0-overview/dashboard) and click the
-   "Create Application" button.
-2. Enter the desired name for your application.
-3. Select "Single Page Application"
+1. 访问[Auth0仪表板](https://auth0.com/docs/get-started/auth0-overview/dashboard)并点击"创建应用"按钮。
+2. 输入应用的名称。
+3. 选择"单页应用"
 
-Once your application is created, visit the
-[Application Settings](https://auth0.com/docs/dashboard/reference/settings-application)
-tab under your application, and add your local development URL and port (e.g
-`http://localhost:3000`) under the following sections:
+应用创建后，访问应用下的[应用设置](https://auth0.com/docs/dashboard/reference/settings-application)标签页，并在以下部分添加本地开发URL和端口（例如`http://localhost:3000`）：
 
-- Allowed Callback URLs
-- Allowed Logout URLs
-- Allowed Web Origins
-- Allowed Origins (CORS)
+- 允许的回调URL
+- 允许的登出URL
+- 允许的Web来源
+- 允许的来源(CORS)
 
-In the bottom of
-[Application Settings](https://auth0.com/docs/dashboard/reference/settings-application),
-click
-[Show Advanced Settings](https://auth0.com/docs/dashboard/reference/settings-application#advanced-settings),
-select "Grant Types" tab and check "Password" (unchecked by default).
+在[应用设置](https://auth0.com/docs/dashboard/reference/settings-application)底部，点击[显示高级设置](https://auth0.com/docs/dashboard/reference/settings-application#advanced-settings)，选择"授权类型"标签页并勾选"密码"（默认未勾选）。
 
-Next, click your Tenant icon (upper right avatar menu) to go to your
-[Tenant Settings](https://auth0.com/docs/get-started/tenant-settings). On the
-[General](https://auth0.com/docs/dashboard/reference/settings-tenant#general)
-tab go to the
-[API Authorization Settings](https://auth0.com/docs/dashboard/reference/settings-tenant#api-authorization-settings)
+接下来，点击租户图标（右上角头像菜单）进入[租户设置](https://auth0.com/docs/get-started/tenant-settings)。在[常规](https://auth0.com/docs/dashboard/reference/settings-tenant#general)标签页中，前往[API授权设置](https://auth0.com/docs/dashboard/reference/settings-tenant#api-authorization-settings)
 
-- Set "Default Audience" to the Audience URL for the Application you are testing
-  (e.g. `https://your-api-id.auth0.com/api/v2/`)
-- Set "Default Directory" to **"Username-Password-Authentication"**
+- 将"默认受众"设置为测试应用的受众URL（例如`https://your-api-id.auth0.com/api/v2/`）
+- 将"默认目录"设置为**"用户名-密码认证"**
 
 :::info
 
-Refer to the
-[Auth0 Tenant Settings documentation](https://auth0.com/docs/dashboard/reference/settings-tenant)
-for additional details.
+参考[Auth0租户设置文档](https://auth0.com/docs/dashboard/reference/settings-tenant)获取更多详情。
 
 :::
 
-Finally, create a user in the
-[Auth0 User Store](https://auth0.com/docs/connections/database#using-the-auth0-user-store)
-for testing with Cypress. This testing-dedicated target user will be login to
-your application within your test specs. If required for your testing purposes,
-you can make as many users needed to test your specific application.
+最后，在[Auth0用户存储](https://auth0.com/docs/connections/database#using-the-auth0-user-store)中为Cypress测试创建一个用户。这个专用于测试的目标用户将在测试规范中登录你的应用。如果测试需要，你可以创建多个用户来测试特定应用。
 
-## Setting Auth0 app credentials in Cypress
+## 在Cypress中设置Auth0应用凭证
 
-To have access to test user credentials within our tests we need to configure
-Cypress to use the [Auth0](https://auth0.com) environment variables set in the
-`.env` file.
+为了在测试中访问测试用户凭证，我们需要配置Cypress使用`.env`文件中设置的[Auth0](https://auth0.com)环境变量。
 
 :::cypress-config-example
 
 ```js
-// Populate process.env with values from .env file
+// 从.env文件填充process.env
 require('dotenv').config()
 ```
 
@@ -103,34 +77,30 @@ require('dotenv').config()
 
 :::
 
-Note that `auth0_client_secret` is only needed for
-[programmatic login](#Programmatic-Login).
+注意`auth0_client_secret`仅用于[编程式登录](#Programmatic-Login)。
 
-## Custom Command for Auth0 Authentication
+## Auth0认证的自定义命令
 
-There are two ways you can authenticate to Auth0:
+有两种方式可以认证到Auth0：
 
-- [Login with `cy.origin()`](#Login-with-cyorigin)
-- [Programmatic Login](#Programmatic-Login)
+- [使用`cy.origin()`登录](#Login-with-cyorigin)
+- [编程式登录](#Programmatic-Login)
 
-### Login with [`cy.origin()`](/api/commands/origin)
+### 使用[`cy.origin()`](/api/commands/origin)登录
 
-Next, we'll write a custom command called `loginToAuth0` to perform a login to
-[Auth0](https://auth0.com). This command will use
-[`cy.origin()`](/api/commands/origin) to
+接下来，我们将编写一个名为`loginToAuth0`的自定义命令来执行[Auth0](https://auth0.com)登录。该命令将使用[`cy.origin()`](/api/commands/origin)来：
 
-1. Navigate to the Auth0 login
-2. Input user credentials
-3. Sign in and redirect back to the
-   [Cypress Real World App](https://github.com/cypress-io/cypress-realworld-app)
-4. Cache the results with [`cy.session()`](/api/commands/session)
+1. 导航到Auth0登录页
+2. 输入用户凭证
+3. 登录并重定向回[Cypress Real World App](https://github.com/cypress-io/cypress-realworld-app)
+4. 使用[`cy.session()`](/api/commands/session)缓存结果
 
 ```js title="cypress/support/auth-provider-commands/auth0.ts"
 function loginViaAuth0Ui(username: string, password: string) {
-  // App landing page redirects to Auth0.
+  // 应用登录页重定向到Auth0
   cy.visit('/')
 
-  // Login on Auth0.
+  // 在Auth0上登录
   cy.origin(
     Cypress.env('auth0_domain'),
     { args: { username, password } },
@@ -141,14 +111,14 @@ function loginViaAuth0Ui(username: string, password: string) {
     }
   )
 
-  // Ensure Auth0 has redirected us back to the RWA.
+  // 确保Auth0已将我们重定向回RWA
   cy.url().should('equal', 'http://localhost:3000/')
 }
 
 Cypress.Commands.add('loginToAuth0', (username: string, password: string) => {
   const log = Cypress.log({
     displayName: 'AUTH0 LOGIN',
-    message: [`🔐 Authenticating | ${username}`],
+    message: [`🔐 认证中 | ${username}`],
     // @ts-ignore
     autoEnd: false,
   })
@@ -161,14 +131,11 @@ Cypress.Commands.add('loginToAuth0', (username: string, password: string) => {
 })
 ```
 
-Now, we can use our `loginToAuth0` command in the test. Below is our test to
-login as a user via Auth0 and run a basic sanity check.
+现在，我们可以在测试中使用`loginToAuth0`命令。以下是通过Auth0登录用户并运行基本健全性检查的测试。
 
 :::info
 
-The
-[runnable version of this test](https://github.com/cypress-io/cypress-realworld-app/blob/develop/cypress/tests/ui-auth-providers/auth0.spec.ts)
-is in the <Icon name="github" inline="true" contentType="rwa" />.
+此测试的[可运行版本](https://github.com/cypress-io/cypress-realworld-app/blob/develop/cypress/tests/ui-auth-providers/auth0.spec.ts)在<Icon name="github" inline="true" contentType="rwa" />中。
 
 :::
 
@@ -184,7 +151,7 @@ describe('Auth0', function () {
     cy.visit('/')
   })
 
-  it('shows onboarding', function () {
+  it('显示引导页面', function () {
     cy.contains('Get Started').should('be.visible')
   })
 })
@@ -192,18 +159,16 @@ describe('Auth0', function () {
 
 <DocsVideo
   src="https://vimeo.com/789093942"
-  title="Auth0 authentication with cy.origin()"
+  title="使用cy.origin()进行Auth0认证"
 />
 
-Lastly, we can refactor our login command to take advantage of
-[`cy.session()`](/api/commands/session) to store our logged in user so we don't
-have to reauthenticate before every test.
+最后，我们可以重构登录命令以利用[`cy.session()`](/api/commands/session)存储已登录用户，这样我们就不必在每次测试前重新认证。
 
 ```js title="cypress/support/commands.js"
 Cypress.Commands.add('loginToAuth0', (username: string, password: string) => {
   const log = Cypress.log({
     displayName: 'AUTH0 LOGIN',
-    message: [`🔐 Authenticating | ${username}`],
+    message: [`🔐 认证中 | ${username}`],
     // @ts-ignore
     autoEnd: false,
   })
@@ -216,7 +181,7 @@ Cypress.Commands.add('loginToAuth0', (username: string, password: string) => {
     },
     {
       validate: () => {
-        // Validate presence of access token in localStorage.
+        // 验证localStorage中是否存在访问令牌
         cy.wrap(localStorage)
           .invoke('getItem', 'authAccessToken')
           .should('exist')
@@ -231,30 +196,23 @@ Cypress.Commands.add('loginToAuth0', (username: string, password: string) => {
 
 <DocsVideo
   src="https://vimeo.com/789093910"
-  title="Auth0 authentication with cy.session()"
+  title="使用cy.session()进行Auth0认证"
 />
 
-### Programmatic Login
+### 编程式登录
 
-Below is a command to programmatically login into [Auth0](https://auth0.com),
-using the
-[/oauth/token endpoint](https://auth0.com/docs/protocols/protocol-oauth2#token-endpoint)
-and set an item in `localStorage` with the authenticated users details, which we
-will use in our application code to verify we are authenticated under test.
+以下是使用[/oauth/token端点](https://auth0.com/docs/protocols/protocol-oauth2#token-endpoint)编程式登录[Auth0](https://auth0.com)的命令，并在`localStorage`中设置一个包含认证用户详情的项，我们将在应用代码中使用它来验证测试中的认证状态。
 
-The `loginByAuth0Api` command will execute the following steps:
+`loginByAuth0Api`命令将执行以下步骤：
 
-1. Use the
-   [/oauth/token endpoint](https://auth0.com/docs/protocols/protocol-oauth2#token-endpoint)
-   to perform the programmatic login.
-2. Finally the `auth0Cypress` `localStorage` item is set with the
-   `access token`, `id_token` and user profile.
+1. 使用[/oauth/token端点](https://auth0.com/docs/protocols/protocol-oauth2#token-endpoint)执行编程式登录。
+2. 最后将`access token`、`id_token`和用户配置文件设置为`localStorage`中的`auth0Cypress`项。
 
 ```jsx title="cypress/support/commands.js"
 Cypress.Commands.add(
   'loginByAuth0Api',
   (username: string, password: string) => {
-    cy.log(`Logging in as ${username}`)
+    cy.log(`以${username}身份登录`)
     const client_id = Cypress.env('auth0_client_id')
     const client_secret = Cypress.env('auth0_client_secret')
     const audience = Cypress.env('auth0_audience')
@@ -314,11 +272,7 @@ Cypress.Commands.add(
 )
 ```
 
-With our Auth0 app setup properly in the Auth0 Developer console, necessary
-environment variables in place, and our `loginByAuth0Api` command implemented,
-we will be able to authenticate with Auth0 while our app is under test. Below is
-a test to login as a user via [Auth0](https://auth0.com), complete the
-onboarding process and logout.
+通过正确设置Auth0开发者控制台中的应用、必要的环境变量以及实现`loginByAuth0Api`命令，我们能够在测试应用时使用Auth0进行认证。以下是通过[Auth0](https://auth0.com)登录用户、完成引导流程并登出的测试。
 
 ```jsx title="auth.cy.js"
 describe('Auth0', function () {
@@ -330,57 +284,39 @@ describe('Auth0', function () {
     )
   })
 
-  it('shows onboarding', function () {
+  it('显示引导页面', function () {
     cy.contains('Get Started').should('be.visible')
   })
 })
 ```
 
-## Adapting an Auth0 App for Testing
+## 为测试适配Auth0应用
 
 :::info
 
-<strong>Note</strong>
+<strong>注意</strong>
 
-The previous sections focused on the recommended Auth0 authentication practice
-within Cypress tests. To use this practice it is assumed you are testing an app
-appropriately built or adapted to use Auth0.
+前几节重点介绍了Cypress测试中推荐的Auth0认证实践。要使用此实践，假设你正在测试一个已正确构建或适配为使用Auth0的应用。
 
-The following sections provide guidance on building or adapting an app to use
-Auth0 authentication. Please note that if you are
-[logging in with `cy.origin()`](#Login-with-cyorigin) and your app is already
-successfully integrated with Auth0, you don't need to make any further changes
-to your app and the remainder of this guide should be regarded as purely
-informational.
+以下部分提供了构建或适配应用以使用Auth0认证的指南。请注意，如果你正在[使用`cy.origin()`登录](#Login-with-cyorigin)且你的应用已成功集成Auth0，则无需对应用进行任何更改，本指南的其余部分应仅作为信息参考。
 
 :::
 
-The
+<Icon name="github" inline="true" contentType="rwa" />被使用，并为React SPA和Express后端提供了配置和可运行代码。
 
-<Icon name="github" inline="true" contentType="rwa" /> is used and provides configuration
-and runnable code for both the React SPA and the Express back end.
-
-The front end uses the [auth0-react SDK](https://github.com/auth0/auth0-react)
-for React Single Page Applications (SPA), which uses the
-[auth0-spa-js SDK](https://github.com/auth0/auth0-spa-js) underneath. The back
-end uses [express-jwt](https://github.com/auth0/express-jwt) to validate JWT's
-against [Auth0](https://auth0.com).
+前端使用[auth0-react SDK](https://github.com/auth0/auth0-react)用于React单页应用(SPA)，其底层使用[auth0-spa-js SDK](https://github.com/auth0/auth0-spa-js)。后端使用[express-jwt](https://github.com/auth0/express-jwt)来验证针对[Auth0](https://auth0.com)的JWT。
 
 :::info
 
-<strong>Note</strong>
+<strong>注意</strong>
 
-Use the `yarn dev:auth0` command when starting the
-[Cypress Real World App](https://github.com/cypress-io/cypress-realworld-app).
+启动[Cypress Real World App](https://github.com/cypress-io/cypress-realworld-app)时使用`yarn dev:auth0`命令。
 
 :::
 
-### Adapting the back end
+### 适配后端
 
-In order to validate API requests from the frontend, we install
-[express-jwt](https://github.com/auth0/express-jwt) and
-[jwks-rsa](https://github.com/auth0/node-jwks-rsa) and configure validation for
-JWT's from [Auth0](https://auth0.com).
+为了验证来自前端的API请求，我们安装[express-jwt](https://github.com/auth0/express-jwt)和[jwks-rsa](https://github.com/auth0/node-jwks-rsa)并配置验证来自[Auth0](https://auth0.com)的JWT。
 
 ```jsx title='backend/helpers.ts'
 import jwt from 'express-jwt'
@@ -396,16 +332,14 @@ const auth0JwtConfig = {
     jwksUri: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/.well-known/jwks.json`,
   }),
 
-  // Validate the audience and the issuer.
+  // 验证受众和发行者
   audience: process.env.REACT_APP_AUTH0_AUDIENCE,
   issuer: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/`,
   algorithms: ['RS256'],
 }
 ```
 
-Next, we'll define an Express middleware function to be use in our routes to
-verify the [Auth0](https://auth0.com) JWT sent by the front end API requests as
-the `Bearer` token.
+接下来，我们将定义一个Express中间件函数，用于在我们的路由中验证前端API请求发送的[Auth0](https://auth0.com) JWT作为`Bearer`令牌。
 
 ```jsx title='backend/helpers.ts'
 // ...
@@ -413,10 +347,10 @@ the `Bearer` token.
 export const checkJwt = jwt(auth0JwtConfig).unless({ path: ['/testData/*'] })
 ```
 
-Once this helper is defined, we can use globally to apply to all routes:
+定义此辅助函数后，我们可以全局应用它到所有路由：
 
 ```jsx title='backend/app.ts'
-// initial imports ...
+// 初始导入...
 import { checkJwt } from './helpers'
 
 // ...
@@ -425,28 +359,19 @@ if (process.env.REACT_APP_AUTH0) {
   app.use(checkJwt)
 }
 
-// routes ...
+// 路由...
 ```
 
-### Adapting the front end
+### 适配前端
 
-We need to update our front end React app to allow for authentication with
-[Auth0](https://auth0.com). As mentioned above, the
-[auth0-react SDK](https://github.com/auth0/auth0-react) for React Single Page
-Applications (SPA) is used.
+我们需要更新前端React应用以允许使用[Auth0](https://auth0.com)进行认证。如上所述，使用[auth0-react SDK](https://github.com/auth0/auth0-react)用于React单页应用(SPA)。
 
-First, we create a `AppAuth0.tsx` container to render our application as it is
-authenticated with [Auth0](https://auth0.com). The component is identical to the
-`App.tsx` component, but uses the `useAuth0` React Hook, removes the need for
-the Sign Up and Sign In routes and wraps the component with the
-`withAuthenticationRequired` higher order function (HOC).
+首先，我们创建一个`AppAuth0.tsx`容器来渲染我们的应用，因为它已通过[Auth0](https://auth0.com)认证。该组件与`App.tsx`组件相同，但使用了`useAuth0` React Hook，移除了注册和登录路由的需求，并用`withAuthenticationRequired`高阶函数(HOC)包装了组件。
 
-A `useEffect` hook is added to get the access token for the authenticated user
-and send an `AUTH0` event with the `user` and `token` objects to work with the
-existing authentication layer (`authMachine.ts`).
+添加了一个`useEffect`钩子来获取认证用户的访问令牌，并发送一个带有`user`和`token`对象的`AUTH0`事件，以与现有的认证层(`authMachine.ts`)一起工作。
 
 ```jsx title='containers/AppAuth0.tsx'
-// initial imports ...
+// 初始导入...
 
 import { withAuthenticationRequired, useAuth0 } from '@auth0/auth0-react'
 
@@ -478,20 +403,12 @@ const AppAuth0 = () => {
 export default withAuthenticationRequired(AppAuth0)
 ```
 
-Note: The full
-[AppAuth0.tsx component](https://github.com/cypress-io/cypress-realworld-app/blob/develop/src/containers/AppAuth0.tsx)
-is in the
+注意：完整的[AppAuth0.tsx组件](https://github.com/cypress-io/cypress-realworld-app/blob/develop/src/containers/AppAuth0.tsx)在<Icon name="github" inline="true" contentType="rwa" />中。
 
-<Icon name="github" inline="true" contentType="rwa" />.
-
-Next, we update our entry point (`index.tsx`) to wrap our application with the
-`<Auth0Provider>` from the
-[auth0-react SDK](https://github.com/auth0/auth0-react) SDK providing a custom
-`onRedirectCallback`. We pass props for the Auth0 environment variables set in
-`.env` above, and render our `<AppAuth0>` component as the application.
+接下来，我们更新入口点(`index.tsx`)，用[auth0-react SDK](https://github.com/auth0/auth0-react)的`<Auth0Provider>`包装我们的应用，提供一个自定义的`onRedirectCallback`。我们传递上面`.env`中设置的Auth0环境变量的props，并渲染我们的`<AppAuth0>`组件作为应用。
 
 ```jsx title='index.tsx'
-// initial imports ...
+// 初始导入...
 
 import AppAuth0 from "./containers/AppAuth0";
 
@@ -520,24 +437,18 @@ if (process.env.REACT_APP_AUTH0) {
     document.getElementById("root")
   );
 } else {
-  // render passport-local App.tsx
+  // 渲染passport-local App.tsx
 }
 ```
 
-An update to our
-[AppAuth0.tsx component](https://github.com/cypress-io/cypress-realworld-app/blob/develop/src/containers/AppAuth0.tsx)
-is needed to conditionally use the `auth0Cypress` `localStorage` item.
+需要更新我们的[AppAuth0.tsx组件](https://github.com/cypress-io/cypress-realworld-app/blob/develop/src/containers/AppAuth0.tsx)以有条件地使用`auth0Cypress` `localStorage`项。
 
-In the code below, we conditionally apply a `useEffect` block based on being
-under test with Cypress (using `window.Cypress`).
+在下面的代码中，我们基于在Cypress下测试（使用`window.Cypress`）有条件地应用`useEffect`块。
 
-In addition, we will update the export to be wrapped with
-`withAuthenticationRequired` if we are not under test in Cypress. This allows
-our application to work with the [Auth0](https://auth0.com) redirect login flow
-in development/production but not when under test in Cypress.
+此外，我们将更新导出，如果不在Cypress测试中，则用`withAuthenticationRequired`包装。这允许我们的应用在开发/生产中使用[Auth0](https://auth0.com)重定向登录流程，但在Cypress测试中不使用。
 
 ```jsx title='containers/AppAuth0.tsx'
-// initial imports ...
+// 初始导入...
 
 import { withAuthenticationRequired, useAuth0 } from "@auth0/auth0-react";
 
@@ -555,8 +466,8 @@ const AppAuth0 = () => {
       })();
     }, [user, getAccessTokenSilently]);
 
-  // If under test in Cypress, get credentials from "auth0Cypress"
-  // localstorage and send event to our state management to log the user into the SPA
+  // 如果在Cypress测试中，从"auth0Cypress" localstorage获取凭证
+  // 并向我们的状态管理发送事件以将用户登录到SPA
   if (window.Cypress) {
     useEffect(() => {
       const auth0 = JSON.parse(localStorage.getItem("auth0Cypress")!);
@@ -589,55 +500,39 @@ const AppAuth0 = () => {
   );
 };
 
-// Conditional export wrapped with `withAuthenticationRequired`
-// if we aren't under test in Cypress.
+// 如果不在Cypress测试中，则有条件导出用`withAuthenticationRequired`包装
 let appAuth0 = window.Cypress ? AppAuth0 : withAuthenticationRequired(AppAuth0);
 export default appAuth0
 ```
 
-## Auth0 Rate Limiting Logins
+## Auth0登录速率限制
 
-Be aware of the rate limit in [Auth0's documentation](https://auth0.com/docs/connections/database/rate-limits) -
+注意[Auth0文档](https://auth0.com/docs/connections/database/rate-limits)中的速率限制 -
 
-This limit can be reached as the size of a test suite grows along with enabling
-[parallelized runs](/cloud/features/smart-orchestration/parallelization) to speed up test run
-duration.
+随着测试套件规模的增大以及启用[并行运行](/cloud/features/smart-orchestration/parallelization)以加快测试运行时间，可能会达到此限制。
 
-If you run into this rate limit, a programmatic approach can be added to the
-`loginByAuth0` command to clear a blocked IP prior to the test run.
+如果遇到此速率限制，可以在测试运行前向`loginByAuth0`命令添加编程式方法来清除被阻止的IP。
 
-You'll need to obtain an
-[API token](https://auth0.com/docs/api/management/v2/tokens) to interact with
-the [Auth0 Management API](https://auth0.com/docs/api/management/v2). This token
-is a JSON Web Token (JWT) and it contains specific granted permissions for the
-API.
+你需要获取一个[API令牌](https://auth0.com/docs/api/management/v2/tokens)来与[Auth0管理API](https://auth0.com/docs/api/management/v2)交互。此令牌是一个JSON Web令牌(JWT)，它包含API的特定授予权限。
 
-Add this token as environment variable `AUTH0_MGMT_API_TOKEN` to our
-
-<Icon name="github" inline="true" contentType="rwa" /> `.env` file with your API
-token.
+将此令牌作为环境变量`AUTH0_MGMT_API_TOKEN`添加到我们的<Icon name="github" inline="true" contentType="rwa" /> `.env`文件中，使用你的API令牌。
 
 ```jsx title='.env'
-// ... additional keys
-AUTH0_MGMT_API_TOKEN = 'YOUR-MANAGEMENT-API-TOKEN'
+// ... 其他键
+AUTH0_MGMT_API_TOKEN = '你的管理API令牌'
 ```
 
-With this token in place, we can add interaction with the
-[Auth0 Anomaly remove the blocked IP address endpoint](https://auth0.com/docs/api/management/v2#!/Anomaly/delete_ips_by_id)
-to our `loginByAuth0Api` command. This will send a delete request to
-[Auth0 Management API](https://auth0.com/docs/api/management/v2) anomaly
-endpoint to unblock an IP that may become blocked during the test run.
+有了这个令牌，我们可以向[Auth0异常删除被阻止IP地址端点](https://auth0.com/docs/api/management/v2#!/Anomaly/delete_ips_by_id)添加交互到我们的`loginByAuth0Api`命令。这将向[Auth0管理API](https://auth0.com/docs/api/management/v2)异常端点发送删除请求，以解除可能在测试运行期间被阻止的IP。
 
 :::info
 
-[icanhazip.com](http://icanhazip.com/) is a free, hosted service to find a
-system's current external IP address.
+[icanhazip.com](http://icanhazip.com/)是一个免费的托管服务，用于查找系统的当前外部IP地址。
 
 :::
 
 ```jsx title='cypress/support/commands.js'
 Cypress.Commands.add('loginByAuth0Api', (username, password) => {
-  // Useful when rate limited by Auth0
+  // 当被Auth0速率限制时有用
   cy.exec('curl -4 icanhazip.com')
     .its('stdout')
     .then((ip) => {
@@ -652,6 +547,6 @@ Cypress.Commands.add('loginByAuth0Api', (username, password) => {
       })
     })
 
-  // ... remaining loginByAuth0Api command
+  // ... loginByAuth0Api命令的剩余部分
 })
 ```

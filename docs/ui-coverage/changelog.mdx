@@ -1,107 +1,104 @@
 ---
-title: 'Changelog | Cypress UI Coverage'
-description: 'Stay up to date with the latest features, improvements, and bug fixes for UI Coverage.'
-sidebar_label: Changelog
+title: '更新日志 | Cypress UI 覆盖率'
+description: '了解 UI 覆盖率的最新功能、改进和错误修复。'
+sidebar_label: 更新日志
 sidebar_position: 200
 ---
 
 <ProductHeading product="ui-coverage" />
 
-# Changelog
+# 更新日志
 
-## Week of 6/23/25
+## 2025年6月23日当周
 
-UI Coverage now supports defining custom commands that will count towards coverage scores, restricting which kinds of interactions are allowed for certain elements, and including assertions in the UI Coverage calculations. See the following new properties for more details:
+UI 覆盖率现在支持定义将计入覆盖率分数的自定义命令，限制某些元素允许的交互类型，并在 UI 覆盖率计算中包含断言。详情请参阅以下新属性：
 
 - [`additionalInteractionCommands`](/ui-coverage/configuration/additionalinteractioncommands)
 - [`allowedInteractionCommands`](/ui-coverage/configuration/allowedinteractioncommands)
 
-## Week of 5/26/2025
+## 2025年5月26日当周
 
-- Launched AI-powered Test Generation in Cypress Cloud, to help you quickly add tests for the untested elements detected in UI Coverage reports, in a way that follows your existing practices and conventions. For more details, read [our blog post](https://www.cypress.io/blog/add-your-missing-tests-faster-with-test-generation-in-ui-coverage).
+- 在 Cypress Cloud 中推出了 AI 驱动的测试生成功能，帮助您快速为 UI 覆盖率报告中检测到的未测试元素添加测试，同时遵循您现有的实践和约定。详情请阅读[我们的博客文章](https://www.cypress.io/blog/add-your-missing-tests-faster-with-test-generation-in-ui-coverage)。
 
-## Week of 4/1/2024
+## 2024年4月1日当周
 
-- **Shadow DOM and iFrame Support:** UI Coverage now supports Shadow DOM and iFrames for reporting on interactions. Both of these settings are off by default. Please contact your Cypress representative to opt in.
+- **Shadow DOM 和 iFrame 支持：** UI 覆盖率现在支持 Shadow DOM 和 iFrames 的交互报告。这两个设置默认关闭。请联系您的 Cypress 代表以启用。
 
-## Week of 3/24/2025
+## 2025年3月24日当周
 
-- UI Coverage results are now included in the [Data Extract API](/cloud/integrations/data-extract-api) so that you can retrieve data over time.
+- UI 覆盖率结果现在包含在[数据提取 API](/cloud/integrations/data-extract-api) 中，以便您可以随时间检索数据。
 
-## Week of 1/15/2024
+## 2024年1月15日当周
 
-- **Branch Review Integration (Beta):** Added UI Coverage comparisons to Branch Review, enabling teams to see how code changes impact test coverage across branches. Available for all Git providers and includes manual run selection for customized comparisons.
+- **分支评审集成（Beta）：** 在分支评审中添加了 UI 覆盖率比较，使团队能够查看代码更改如何影响跨分支的测试覆盖率。适用于所有 Git 提供商，并包括手动运行选择以进行自定义比较。
 
-## Week of 12/16/2023
+## 2023年12月16日当周
 
-- **URL Handling:** Fixed issues with URLs containing special characters (like parentheses) that could break view generation.
-- **Performance Improvements:** Optimized rendering performance for reports containing large numbers of elements and snapshots.
+- **URL 处理：** 修复了包含特殊字符（如括号）的 URL 可能破坏视图生成的问题。
+- **性能改进：** 优化了包含大量元素和快照的报告的渲染性能。
 
-## Week of 10/7/2024
+## 2024年10月7日当周
 
-- **Improved Table Grouping:** The default grouping rules have been updated to more accurately identify and group elements in tables.
+- **改进的表格分组：** 更新了默认分组规则，以更准确地识别和分组表格中的元素。
 
-## Week of 9/30/2024
+## 2024年9月30日当周
 
-- **Slack Messages:** UI Coverage results results are now included in Slack messages alongside test results. [Learn more about our Slack integration here](/cloud/integrations/slack).
+- **Slack 消息：** UI 覆盖率结果现在与测试结果一起包含在 Slack 消息中。[在此了解更多关于我们的 Slack 集成](/cloud/integrations/slack)。
 
-## Week of 9/23/2024
+## 2024年9月23日当周
 
-- **Improved Link Display Logic:** Links will now more consistently display across the reports, matching defined views more closely.
+- **改进的链接显示逻辑：** 链接现在在报告中更一致地显示，更紧密地匹配定义的视图。
 
-## Week of 9/9/2024
+## 2024年9月9日当周
 
-- **Element Tooltips:** We have improved the user experience of UI Coverage by adding tooltips for elements, emphasizing their selectors, making it easier to navigate coverage reports and identify elements.
+- **元素工具提示：** 我们通过为元素添加工具提示（强调其选择器）改进了 UI 覆盖率的用户体验，使导航覆盖率报告和识别元素更加容易。
 
-## Week of 8/19/2024
+## 2024年8月19日当周
 
-- **Results API:** We have added the new [Results API](/ui-coverage/results-api) which enables you to programmatically fetch your run's UI Coverage results in a CI environment. This allows you to act the results within CI by allowing you to determine if the results are acceptable or need to be addressed before code changes can merge.
-- **Pull and Merge Request Comments:** UI Coverage results will now appear in [GitHub](/cloud/integrations/source-control/github), [GitLab](/cloud/integrations/source-control/gitlab) and [Bitbucket](/cloud/integrations/source-control/bitbucket) pull request and merge request comments alongside test results. Integrations can be installed and comments can be enabled in Project Settings.
+- **结果 API：** 我们添加了新的[结果 API](/ui-coverage/results-api)，使您能够在 CI 环境中以编程方式获取运行的 UI 覆盖率结果。这允许您根据结果采取行动，通过确定结果是否可接受或需要在代码更改合并之前解决。
+- **拉取和合并请求评论：** UI 覆盖率结果现在出现在 [GitHub](/cloud/integrations/source-control/github)、[GitLab](/cloud/integrations/source-control/gitlab) 和 [Bitbucket](/cloud/integrations/source-control/bitbucket) 的拉取请求和合并请求评论中，与测试结果一起。集成可以在项目设置中安装，评论可以启用。
 
-## Week of 8/12/2024
+## 2024年8月12日当周
 
-- **Improved attributeFilters Behavior:** When matching against class attributes, the [attributeFilters](/ui-coverage/configuration/attributefilters) configuration option now targets and filters individual class names rather than the entire value of the class attribute.
+- **改进的 attributeFilters 行为：** 当匹配类属性时，[attributeFilters](/ui-coverage/configuration/attributefilters) 配置选项现在针对并过滤单个类名，而不是类属性的整个值。
 
-## Week of 8/5/2024
+## 2024年8月5日当周
 
-- **View Untested Elements:** You can now quickly access all of the untested elements across all views in the "Untested elements" section.
-  Save time and improve your coverage by testing these areas of your application, or use
-  [elementFilters](/ui-coverage/configuration/elementfilters) in UI Coverage [configuration](/ui-coverage/configuration/overview) to ignore certain elements.
-- **View Tested Elements:** You can now quickly access all of the tested elements across all views in the "Tested elements" section. Identify potential redundant coverage by looking through the elements with the highest numbers of interactions and tests.
+- **查看未测试元素：** 您现在可以在“未测试元素”部分快速访问所有视图中的所有未测试元素。通过测试应用程序的这些区域来节省时间并提高覆盖率，或使用 UI 覆盖率[配置](/ui-coverage/configuration/overview)中的 [elementFilters](/ui-coverage/configuration/elementfilters) 忽略某些元素。
+- **查看已测试元素：** 您现在可以在“已测试元素”部分快速访问所有视图中的所有已测试元素。通过查看具有最高交互和测试次数的元素，识别潜在的冗余覆盖率。
 
-## Week of 7/22/2024
+## 2024年7月22日当周
 
-- **View Untested Links:** You can now quickly access all of the untested links across all views in the "Untested links" section. Save time and improve your coverage by testing these areas of your application,
-  or use [viewFilters](/ui-coverage/configuration/viewfilters) in UI Coverage [configuration](/ui-coverage/configuration/overview) to ignore certain links.
+- **查看未测试链接：** 您现在可以在“未测试链接”部分快速访问所有视图中的所有未测试链接。通过测试应用程序的这些区域来节省时间并提高覆盖率，或使用 UI 覆盖率[配置](/ui-coverage/configuration/overview)中的 [viewFilters](/ui-coverage/configuration/viewfilters) 忽略某些链接。
 
-## Week of 6/24/2024
+## 2024年6月24日当周
 
-- **View** [**configuration information for each run**](/accessibility/configuration/overview#Viewing-Configuration-for-a-Run) **in the properties tab:** There, you'll find the configuration set for the project at the start of the run. This will help you understand what factors might be driving a score change. This helps distinguish config criteria changes from other factors such as changes to your application, tests, Cypress versions, and more.
-- **Anchor elements considered interactive:** Anchor elements (`a` tags) are now considered interactive even when they do not have an `href` attribute.
+- **在属性选项卡中查看[每次运行的配置信息](/accessibility/configuration/overview#Viewing-Configuration-for-a-Run)：** 在那里，您将找到运行开始时为项目设置的配置。这将帮助您理解可能驱动分数变化的因素。这有助于区分配置标准更改与其他因素，如应用程序更改、测试更改、Cypress 版本更改等。
+- **锚元素被视为交互式：** 锚元素（`a` 标签）现在即使没有 `href` 属性也被视为交互式。
 
-## Week of 5/20/2024
+## 2024年5月20日当周
 
-- **Manage Configuration in Project Settings:** Added the ability to configure what should be tested or ignored in your score calculations to ensure your team is capturing what's relevant to your testing strategy. This feature allows owners and admins to easily update and manage settings using an editor within Project Settings.
-  - `elementFilters`: Exclude specific elements by CSS selector.
-  - `views`: Define URL patterns for grouping in the UI.
-  - `viewFilters`: Exclude groups of URLs from reports.
-  - `attributeFilters`: Determine which attributes are used for identifying and grouping elements.
-  - `elementGroups`: Create custom rules for grouping elements to reduce noise in scores.
-  - `significantAttributes`: Prioritize custom attributes over defaults for element identification and grouping.
+- **在项目设置中管理配置：** 添加了配置在分数计算中应测试或忽略的内容的能力，以确保您的团队捕获与测试策略相关的内容。此功能允许所有者和管理员使用项目设置中的编辑器轻松更新和管理设置。
+  - `elementFilters`：通过 CSS 选择器排除特定元素。
+  - `views`：定义用于 UI 中分组的 URL 模式。
+  - `viewFilters`：从报告中排除 URL 组。
+  - `attributeFilters`：确定哪些属性用于识别和分组元素。
+  - `elementGroups`：创建用于分组元素的自定义规则，以减少分数中的噪音。
+  - `significantAttributes`：优先考虑自定义属性而非默认属性，用于元素识别和分组。
 
-## Week of 3/25/2024
+## 2024年3月25日当周
 
-- **Project-Level Configuration Options:** UI Coverage now supports project-level configuration, enabling users to customize UI Coverage settings without updating their HTML. Users can exclude specific URLs and elements by selector and group elements to simplify coverage analysis. For configuration assistance, contact your Account Executive.
+- **项目级配置选项：** UI 覆盖率现在支持项目级配置，使用户无需更新 HTML 即可自定义 UI 覆盖率设置。用户可以通过选择器排除特定 URL 和元素，并分组元素以简化覆盖率分析。如需配置帮助，请联系您的客户经理。
 
-## Week of 3/4/2024
+## 2024年3月4日当周
 
-- **Element Interaction Details:** UI Coverage now provides detailed insights into the testing status of every interactive element, including interaction types, frequency, and locations within the UI. A new tracking system shows where each element has been identified and tested, and link details indicate visit frequency.
+- **元素交互详情：** UI 覆盖率现在提供每个交互元素的测试状态的详细洞察，包括交互类型、频率和 UI 中的位置。一个新的跟踪系统显示每个元素被识别和测试的位置，链接详情指示访问频率。
 
-## Week of 2/26/2024
+## 2024年2月26日当周
 
-- **Element Grouping Improvements:** Introduced "cascade" behavior for the `data-cy-ui-group` attribute, which now allows users to place the attribute on a wrapper or parent element, so that it pass grouping values to child interactive elements.
-- **Text Filter:** Text filtering has been added to UI Coverage reports, allowing users to filter the "Views" list by name for easy searching.
+- **元素分组改进：** 为 `data-cy-ui-group` 属性引入了“级联”行为，现在允许用户将属性放在包装器或父元素上，以便将分组值传递给子交互元素。
+- **文本过滤器：** 在 UI 覆盖率报告中添加了文本过滤功能，允许用户按名称过滤“视图”列表以便于搜索。
 
-## Week of 12/31/2023
+## 2023年12月31日当周
 
-- **URL Grouping:** UI Coverage reports now intelligently group repeated URLs to reduce duplicate Views. This update simplifies reports, making it easier to identify and prioritize issues by minimizing duplicate Views, resulting in a more polished and user-friendly experience.
+- **URL 分组：** UI 覆盖率报告现在智能地分组重复的 URL 以减少重复视图。此更新简化了报告，通过最小化重复视图使识别和优先处理问题更加容易，从而提供更精致和用户友好的体验。

@@ -28,7 +28,7 @@ function ResultsFooter({ state, onClose }) {
         id="theme.SearchBar.seeAll"
         values={{ count: state.context.nbHits }}
       >
-        {'See all {count} results'}
+        {'查看全部 {count} 条结果'}
       </Translate>
     </Link>
   )
@@ -43,11 +43,11 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   const contextualSearchFacetFilters = useAlgoliaContextualFacetFilters()
   const configFacetFilters = props.searchParameters?.facetFilters ?? []
   const facetFilters = contextualSearch
-    ? // Merge contextual search filters with config filters
+    ? // 合并上下文搜索筛选器和配置筛选器
       mergeFacetFilters(contextualSearchFacetFilters, configFacetFilters)
-    : // ... or use config facetFilters
+    : // ...或使用配置的facetFilters
       configFacetFilters
-  // We let user override default searchParameters if she wants to
+  // 允许用户覆盖默认的searchParameters
   const searchParameters = {
     ...props.searchParameters,
     facetFilters,
@@ -94,8 +94,8 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   )
   const navigator = useRef({
     navigate({ itemUrl }) {
-      // Algolia results could contain URL's from other domains which cannot
-      // be served through history and should navigate with window.location
+      // Algolia结果可能包含来自其他域的URL
+      // 这些URL无法通过history处理，应使用window.location导航
       if (isRegexpStringMatch(externalUrlRegex, itemUrl)) {
         window.location.href = itemUrl
       } else {
@@ -105,9 +105,9 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   }).current
   const transformItems = useRef((items) =>
     props.transformItems
-      ? // Custom transformItems
+      ? // 自定义transformItems
         props.transformItems(items)
-      : // Default transformItems
+      : // 默认transformItems
         items.map((item) => ({
           ...item,
           url: processSearchResultUrl(item.url),
@@ -137,9 +137,9 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   return (
     <>
       <Head>
-        {/* This hints the browser that the website will load data from Algolia,
-        and allows it to preconnect to the DocSearch cluster. It makes the first
-        query faster, especially on mobile. */}
+        {/* 提示浏览器网站将从Algolia加载数据，
+        并允许其预先连接到DocSearch集群。这使首次查询更快，
+        尤其是在移动设备上。 */}
         <link
           rel="preconnect"
           href={`https://${props.appId}-dsn.algolia.net`}
@@ -156,7 +156,7 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
         className="gap-[16px] sm:w-[180px] bg-white dark:bg-gray-1000 text-gray-400 dark:text-gray-600 rounded-full p-[12px] sm:px-[16px] sm:h-[38px] border border-gray-100 dark:border-gray-900 flex items-center xl:mx-[16px]"
       >
         <IconObjectMagnifyingGlass fillColor="transparent" />
-        <span className="hidden sm:inline">Search ⌘K</span>
+        <span className="hidden sm:inline">搜索 ⌘K</span>
       </button>
 
       {isOpen &&

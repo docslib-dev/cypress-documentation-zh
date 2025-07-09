@@ -1,27 +1,27 @@
 ---
-title: 'Testing interactive elements | Cypress UI Coverage'
-description: 'UI Coverage uses a set of rules, based on HTML semantics, WHATWG standards, as well as some additional rules defined by Cypress, to determine which elements are interactive.'
-sidebar_label: Interactivity
+title: '测试交互元素 | Cypress UI覆盖率'
+description: 'UI覆盖率基于HTML语义、WHATWG标准以及Cypress定义的一些额外规则，来确定哪些元素是可交互的。'
+sidebar_label: 交互性
 sidebar_position: 10
 ---
 
 <ProductHeading product="ui-coverage" />
 
-# Interactivity
+# 交互性
 
-## Interactive Elements
+## 交互元素
 
-UI Coverage determines interactivity based on a combination of HTML semantics, [WHATWG standards](https://html.spec.whatwg.org/dev/dom.html#interactive-content), and Cypress-specific rules. Interactive elements included in UI Coverage are:
+UI覆盖率根据HTML语义、[WHATWG标准](https://html.spec.whatwg.org/dev/dom.html#interactive-content)以及Cypress特定规则的综合考量来确定交互性。UI覆盖率中包含的交互元素有：
 
-- **Implicit interactive roles**: Elements with a tag of `a`, `button`, `input`, `select`, `textarea`, etc.
-- **Explicit interactive roles**: Elements with a `role` attribute set to values like `button`, `checkbox`, `radio`, `tab`, `textbox`, etc.
-- **Tab-navigable elements**: Elements with a `tabindex` attribute set to `>= 0`.
+- **隐式交互角色**：标签为`a`、`button`、`input`、`select`、`textarea`等的元素
+- **显式交互角色**：`role`属性设置为`button`、`checkbox`、`radio`、`tab`、`textbox`等值的元素
+- **可Tab导航元素**：`tabindex`属性设置为`>= 0`的元素
 
-These elements are tracked for interaction to provide actionable insights into test coverage.
+这些元素会被追踪交互情况，以提供可操作的测试覆盖率洞察。
 
-## Interaction Commands
+## 交互命令
 
-Interactive elements are marked as "tested" when they are interacted with using specific Cypress commands. These include:
+当使用特定的Cypress命令与交互元素进行交互时，这些元素会被标记为"已测试"。这些命令包括：
 
 - `blur`
 - `check`
@@ -39,24 +39,24 @@ Interactive elements are marked as "tested" when they are interacted with using 
 - `type`
 - `uncheck`
 
-By ensuring these commands interact with the appropriate elements, UI Coverage accurately reflects your test coverage.
+通过确保这些命令与适当的元素交互，UI覆盖率能准确反映您的测试覆盖情况。
 
-## Untested Links
+## 未测试链接
 
-UI Coverage tracks `<a>` elements (links) that are not visited during testing. For each untested link, detailed information is available:
+UI覆盖率会追踪测试过程中未被访问的`<a>`元素（链接）。对于每个未测试链接，提供以下详细信息：
 
-### Referrers
+### 引用来源
 
-The **Referrers** section identifies views that contain links to the untested destination, helping you:
+**引用来源**部分标识了包含指向未测试目标链接的视图，帮助您：
 
-- Pinpoint untested areas referenced from these links.
-- Understand navigation paths leading to untested sections.
-- Gain context on where these links appear within your application.
+- 定位从这些链接引用的未测试区域
+- 理解导致未测试部分的导航路径
+- 获取这些链接在应用程序中出现位置的上下文
 
-### URLs
+### URL模式
 
-The **URLs** section groups similar patterns for dynamic routing. For instance, links to `/users/1`, `/users/2`, and `/users/3` are grouped as /users/\*. This grouping aids in:
+**URL模式**部分会对动态路由的相似模式进行分组。例如，指向`/users/1`、`/users/2`和`/users/3`的链接会被分组为/users/\*。这种分组有助于：
 
-- Understanding the scope of dynamic routes in your application
-- Viewing the count and variations of a URL pattern.
-- Writing configuration rules to handle these patterns effectively.
+- 理解应用程序中动态路由的范围
+- 查看URL模式的数量和变体
+- 编写配置规则以有效处理这些模式

@@ -1,197 +1,197 @@
 ---
-title: Accessibility Testing
-description: Learn how to ensure your application works for users with disabilities, and how to write accessibility-specific tests in Cypress.
+title: 无障碍测试
+description: 学习如何确保您的应用程序对残障用户可用，以及如何在Cypress中编写专门的无障碍测试。
 ---
 
 <ProductHeading product="app" />
 
-# Accessibility Testing
+# 无障碍测试
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 您将学习到
 
-- Strategies for ensuring your application works for users with disabilities
-- What accessibility scans are available via plugins vs [Cypress Accessibility](/accessibility/get-started/introduction)
-- Performance impacts of in-test accessibility checks
-- How to write accessibility-specific tests
-- The difference between Testing Library locators and Test IDs
+- 确保应用程序对残障用户可用的策略
+- 通过插件与[Cypress无障碍功能](/accessibility/get-started/introduction)提供的无障碍扫描有何区别
+- 测试中无障碍检查的性能影响
+- 如何编写专门的无障碍测试
+- Testing Library定位器与测试ID的区别
 
 :::
 
-Accessibility testing helps to confirm that an application works correctly for people with disabilities.
+无障碍测试有助于确认应用程序对残障用户能否正常工作。
 
-To set a good foundation for an accessible user experience, web sites and apps must conform to certain guidelines, known as the [Web Content Accessibility Guidelines](https://www.w3.org/WAI/standards-guidelines/wcag/) (WCAG). Meeting or exceeding these guidelines will help ensure your disabled users can independently perceive the content of your application, navigate through your pages and sections, and complete the available actions.
+为了奠定良好的无障碍用户体验基础，网站和应用必须符合特定指南，即[网页内容无障碍指南](https://www.w3.org/WAI/standards-guidelines/wcag/)(WCAG)。达到或超越这些指南将确保您的残障用户能够独立感知应用内容、浏览页面和区域，并完成可用操作。
 
-Cypress supports many kinds of accessibility testing, through standard test practices, a rich plugin ecosystem, as well as [Cypress Accessibility](/accessibility/get-started/introduction), a commercial, enterprise-ready solution in Cypress Cloud.
+Cypress通过标准测试实践、丰富的插件生态系统以及[Cypress无障碍功能](/accessibility/get-started/introduction)(Cypress Cloud中的商业企业级解决方案)支持多种无障碍测试。
 
-## Including accessibility in your Cypress tests
+## 在Cypress测试中纳入无障碍考量
 
-Here are the main ways to account for accessibility when testing with Cypress:
+以下是使用Cypress测试时考虑无障碍的主要方式：
 
-### Accessibility scans
+### 无障碍扫描
 
-- [In-test plugins](#In-test-plugins)
-- [Cypress Accessibility](#Cypress-Accessibility)
+- [测试中插件](#测试中插件)
+- [Cypress无障碍功能](#Cypress无障碍功能)
 
 <AccessibilityPremiumNote />
 
-### Explicit, application-specific tests
+### 明确的、应用特定的测试
 
-- Accessibility-focused assertions and locators
-- Tests for specific functionality relevant to assistive technology
+- 专注无障碍的断言和定位器
+- 针对辅助技术相关特定功能的测试
 
-We will discuss each of these below.
+下文将逐一讨论这些方法。
 
-## Accessibility Scans
+## 无障碍扫描
 
 :::info
-Automated scans are effective because many accessibility issues are caused by incorrect HTML structure or missing data that would be required by assistive technologies like screen readers, voice control systems, Braille displays, and more. Browsers transform the current HTML on the page into a standardized format that other technologies can hook into. Automated scans in your tests will alert you if specific items needed for this process are missing.
+自动化扫描非常有效，因为许多无障碍问题是由错误的HTML结构或辅助技术(如屏幕阅读器、语音控制系统、盲文显示器等)所需数据缺失引起的。浏览器将页面上的当前HTML转换为标准化格式供其他技术接入。测试中的自动化扫描会在这一过程所需特定项目缺失时发出警报。
 :::
 
 :::warning
-Note that while automated scans do a good job at detecting violations of a known list of rules, no automated scan can prove that the interface is **fully** accessible and works well for users with disabilities. It is always necessary to understand the limitations and expected coverage provided by the library you choose, and then make a plan to cover the gaps with manual testing and/or traditional Cypress assertions about additional expected behavior, based on your knowledge of what is needed by your users.
+请注意，虽然自动化扫描能很好地检测已知规则集的违规情况，但没有任何自动化扫描能证明界面**完全**无障碍且对残障用户友好。始终需要了解所选库的局限性和预期覆盖范围，然后根据用户需求，通过手动测试和/或传统Cypress断言来补充覆盖空白。
 :::
 
-### In-test plugins
+### 测试中插件
 
-The [`cypress-axe`](https://www.npmjs.com/package/cypress-axe) plugin is a community plugin that integrates the popular [Axe Core® library by Deque Systems](https://github.com/dequelabs/axe-core/) into your Cypress tests.
+[`cypress-axe`](https://www.npmjs.com/package/cypress-axe)插件是一个社区插件，它将Deque Systems开发的流行[Axe Core®库](https://github.com/dequelabs/axe-core/)集成到Cypress测试中。
 
-After setting up the plugin, commands are added to your project to inject the library and use it to run an accessibility check. Running the included `checkA11y()` command performs a scan of the current state of the page or component that you are testing, and you can choose to fail the test in response to accessibility issues detected. Detailed configuration is available to scope this to the specific WCAG Success Criteria and related rules that you want to test.
+设置插件后，项目中会添加命令来注入该库并运行无障碍检查。运行包含的`checkA11y()`命令会对当前测试页面或组件的状态进行扫描，您可以选择在检测到无障碍问题时使测试失败。详细配置可用于限定您想要测试的特定WCAG成功标准及相关规则。
 
-There are also some newer community plugins that are themselves built on top of `cypress-axe` and extend it in various ways, such as [`wick-a11y`](https://www.npmjs.com/package/wick-a11y) and [`cypress-a11y-report`](https://www.npmjs.com/package/cypress-a11y-report), as well as other accessibility testing libraries like the [IBM Equal Access Checker](https://www.npmjs.com/package/cypress-accessibility-checker). All of these tools have their own dedicated documentation for installation, setup, and executing the checks, which we won't repeat here.
+还有一些基于`cypress-axe`构建的新社区插件以各种方式扩展其功能，如[`wick-a11y`](https://www.npmjs.com/package/wick-a11y)和[`cypress-a11y-report`](https://www.npmjs.com/package/cypress-a11y-report)，以及其他无障碍测试库如[IBM Equal Access Checker](https://www.npmjs.com/package/cypress-accessibility-checker)。这些工具都有各自的安装、设置和执行检查的文档，此处不再赘述。
 
-The general "add a command to trigger a scan" approach helps detect and prevent all-too-common issues like poor color contrast, missing labels for icons and buttons, images without alt text, and other errors in the implementation of a user interface that can be detected with generic checks.
+通用的"添加命令触发扫描"方法有助于检测和预防常见问题，如颜色对比度差、图标和按钮标签缺失、图像缺少alt文本等可通过通用检查发现的用户界面实现错误。
 
-#### Managing test performance
+#### 管理测试性能
 
-In-test automated accessibility checks are so valuable because they bundle a large amount of assertions about all kinds of rules and criteria into one simple command. But this also means they come with some overhead: for example, each call to `cy.checkA11y()` evaluates DOM elements to see which accessibility rules apply to each element in the page, and then runs specific DOM checks for those elements for each of the rules, and computes the results, all of which takes time to complete. If other assets like screenshots are generated at the same time, the performance of this should also be considered, and assets should be generated only when needed.
+测试中自动化无障碍检查非常有价值，因为它们将大量关于各种规则和标准的断言捆绑到一个简单命令中。但这也意味着它们会带来一些开销：例如，每次调用`cy.checkA11y()`都会评估DOM元素以确定哪些无障碍规则适用于页面中的每个元素，然后为这些元素运行特定的DOM检查，并计算结果，所有这些都需要时间完成。如果同时生成截图等其他资源，也应考虑其性能影响，并仅在需要时生成资源。
 
-Generally this is not a problem if you have a small number of accessibility checks, but it can become a big contributor to your pipeline's overall execution time as you scale up your accessibility testing and want to run checks against hundreds or even thousands of unique states of complex applications and workflows. Since accessibility checks tend to be added gradually over time, the time taken is often not obvious, but it is definitely worth paying attention to.
+通常，如果无障碍检查数量较少，这不是问题，但随着无障碍测试规模的扩大，需要对复杂应用和工作流的数百甚至数千种独特状态进行检查时，这可能成为管道总执行时间的主要贡献者。由于无障碍检查往往是逐步添加的，所花费的时间通常不明显，但绝对值得关注。
 
-To avoid performance bloat, you will want to actively manage the tradeoff between test performance and how often tests are executed. This is sometimes solved by testing only the initial pageload, or the state at the end of a test, but this approach misses many important states like modals, multistep workflows, error states in forms, open states of menus, and more. And since many tests may begin or end at the same page state as other tests, there can be a lot of redundant scans, so it pays to be more precise and intentional in what you test.
+为避免性能膨胀，您需要积极管理测试性能与测试执行频率之间的权衡。有时通过仅测试初始页面加载或测试结束时的状态来解决，但这种方法会遗漏许多重要状态，如模态框、多步骤工作流、表单错误状态、菜单打开状态等。由于许多测试可能与其他测试开始或结束于相同的页面状态，因此可能存在大量冗余扫描，因此更有针对性地进行测试会带来回报。
 
-Performance can also be managed by targeting the accessibility checks to only certain rules or certain parts of the page, or confining them to component tests. Testers should be trained on how and when to run accessibility checks to get the best feedback possible while eliminating redundant checks that don't add value, and minimizing the disruption to the test pipeline.
+还可以通过将无障碍检查限定为仅针对特定规则或页面特定部分，或将其限制在组件测试中来管理性能。应培训测试人员如何以及何时运行无障碍检查，以获得最佳反馈，同时消除不增加价值的冗余检查，并最小化对测试管道的干扰。
 
-It is best to proactively manage this, because unnecessary flake, failures, or timeouts related to accessibility checks can cause frustration and lead to resistance in adopting this form of testing, which in turn makes it harder to gain momentum towards meeting your accessibility goals.
+最好主动管理这一点，因为与无障碍检查相关的不必要的波动、失败或超时可能会引起挫败感，并导致对这种测试形式的抵制，进而更难实现无障碍目标。
 
-### Cypress Accessibility
+### Cypress无障碍功能
 
-In-test accessibility checks are the only kind available in typical testing scenarios. They come with some limitations and tradeoffs that [Cypress Accessibility](/accessibility/get-started/introduction), available in Cypress Cloud, is designed to solve. By moving the checks outside of the test context and running them in Cypress Cloud as tests are recorded, Cypress Accessibility removes adoption, training, and test performance hurdles that can hinder the effective implementation of in-test checks. Cypress automatically detects all the steps within user flows, requiring no test code to be written.
+测试中无障碍检查是典型测试场景中唯一可用的类型。它们带有一些限制和权衡，而[Cypress无障碍功能](/accessibility/get-started/introduction)(Cypress Cloud中提供)旨在解决这些问题。通过将检查移出测试上下文并在记录测试时在Cypress Cloud中运行，Cypress无障碍功能消除了可能阻碍测试中检查有效实施的采用、培训和测试性能障碍。Cypress自动检测用户流中的所有步骤，无需编写测试代码。
 
-To learn more, you can read our [dedicated docs](/accessibility/get-started/introduction), or review a [public live example of an automatically-generated accessibility report](https://cloud.cypress.io/projects/7s5okt/runs/6520/accessibility?tab=views&columnHeading=Views&direction=ascending&rulesColumnHeading=Rules&rulesDirection=ascending&impact=critical%2Cserious%2Cmoderate%2Cminor&ruleset=wcag21a%2Cwcag21aa%2Cbest-practice&status=fail%2Cincomplete) in our Cypress Realworld App demo project.
+要了解更多信息，您可以阅读我们的[专用文档](/accessibility/get-started/introduction)，或查看[Cypress Realworld App演示项目中的自动生成无障碍报告公开示例](https://cloud.cypress.io/projects/7s5okt/runs/6520/accessibility?tab=views&columnHeading=Views&direction=ascending&rulesColumnHeading=Rules&rulesDirection=ascending&impact=critical%2Cserious%2Cmoderate%2Cminor&ruleset=wcag21a%2Cwcag21aa%2Cbest-practice&status=fail%2Cincomplete)。
 
 <AccessibilityPremiumNote />
 
 <DocsImage
   src="/img/accessibility/cy-a11y-detail.png"
-  alt="Cypress Accessibility UI displaying a 'Buttons must have discernible text' violation example"
+  alt="Cypress无障碍功能UI展示'按钮必须具有可识别文本'违规示例"
 />
 
-## Accessibility-specific tests
+## 专门的无障碍测试
 
-While automation like Axe Core® can detect missing attributes and other aspects of code quality that impact the experience of people with disabilities using the web, this kind of automation doesn't know anything about your specific application and the expectations you have for your users. That's where including accessibility in your specs comes in.
+虽然像Axe Core®这样的自动化工具可以检测缺失属性和其他影响残障人士使用网络体验的代码质量问题，但这种自动化对您的特定应用及对用户的期望一无所知。这就是在规范中包含无障碍考量的用武之地。
 
-### Keyboard navigation
+### 键盘导航
 
-To test in-page navigation with the keyboard, you can use the [`cy.press()`](/api/commands/press) to dispatch native tab events. This can also be used to test custom behavior like autocomplete.
+要测试页面内的键盘导航，您可以使用[`cy.press()`](/api/commands/press)来分发原生tab事件。这也可用于测试自动完成等自定义行为。
 
-### Asserting alt text of images
+### 断言图像的替代文本
 
-To assert that the correct alternative text is present on your logo image, an explicit test can be written:
+要为徽标图像断言正确的替代文本是否存在，可以编写明确的测试：
 
 ```js
 it('adds todos', () => {
   cy.visit('https://example.cypress.io/')
-  // explicitly check the alt text of an image
+  // 明确检查图像的alt文本
   cy.get('img[data-cy="logo"]').should('have.attr', 'alt', 'Cypress Logo')
 })
 ```
 
-It's also possible to use an accessibility-aware locator approach to find the element while performing some other assertion. Here instead of using the element's test ID, we locate the image by its `alt` text. This is more concise, and the decision of which format to prefer is up to your team's preferences:
+也可以使用无障碍感知定位器方法在执行其他断言时查找元素。这里我们没有使用元素的测试ID，而是通过其`alt`文本定位图像。这更简洁，选择哪种格式取决于团队的偏好：
 
 ```js
-// use the `alt` content to target the image
+// 使用`alt`内容定位图像
 cy.get('img[alt="Cypress Logo"]').should('be.visible')
 ```
 
-This kind of accessibility-friendly locator approach is also possible with the [Cypress Testing Library](https://testing-library.com/docs/cypress-testing-library/intro) plugin, which provides some helpers for this purpose:
+这种无障碍友好的定位器方法也可以通过[Cypress Testing Library](https://testing-library.com/docs/cypress-testing-library/intro)插件实现，该插件为此提供了一些辅助工具：
 
 ```js
-// use the recommended ByRole Testing Library locator
+// 使用推荐的ByRole Testing Library定位器
 cy.findByRole('img', { name: 'Cypress Logo' }).should('be.visible')
 ```
 
-### Asserting the accessible name of a button
+### 断言按钮的可访问名称
 
-A similar accessibility-minded locator technique can be used with interactive elements like buttons:
+类似的无障碍思维定位器技术可用于按钮等交互元素：
 
 ```js
-// click the "Submit" button located by `cy.contains()`
+// 点击通过`cy.contains()`定位的"提交"按钮
 cy.contains('button', 'Submit').click()
 ```
 
-And using the Testing Library `ByRole` locator:
+使用Testing Library的`ByRole`定位器：
 
 ```js
-// click any element with role `button` and an accessible name of `Submit`
+// 点击任何具有`button`角色且可访问名称为`Submit`的元素
 cy.findByRole('button', { name: 'Submit' }).click()
 ```
 
-There are some important differences to consider between locating specific HTML elements themselves and locating those same elements only by their `role`, which is the main Testing Library recommendation. We'll discuss these in the next section.
+在定位特定HTML元素本身与仅通过`role`定位这些相同元素之间存在一些重要区别，这是Testing Library的主要建议。我们将在下一节讨论这些区别。
 
-### Test IDs, Testing Library, and Accessibility
+### 测试ID、Testing Library与无障碍
 
-The use of `data-cy`-style test ID attributes to help with test stability has been a longstanding [best practice recommendation](/app/core-concepts/best-practices#Selecting-Elements) by Cypress. Test IDs are resilient to non-functional UI changes because they don't specify anything about the nature of the code or content itself, only that some element with that data attribute is present. When code changes, as long as the `data-cy` attributes are preserved in the right places, all the tests using them should continue to pass.
+使用`data-cy`风格的测试ID属性来帮助提高测试稳定性一直是Cypress长期以来的[最佳实践建议](/app/core-concepts/best-practices#Selecting-Elements)。测试ID对非功能性UI更改具有弹性，因为它们不指定有关代码或内容本身性质的任何信息，仅表明存在具有该数据属性的元素。当代码更改时，只要`data-cy`属性保留在正确位置，使用它们的所有测试应继续通过。
 
-This approach explicitly avoids testing accessibility - which is all about the nature and structure of the content being tested, and how well the implementation in code matches that content, to provide a functional experience in a range of assistive technologies and browser setups.
+这种方法明确避免测试无障碍性——这完全关乎被测试内容的性质和结构，以及代码实现与该内容的匹配程度，以在各种辅助技术和浏览器设置中提供功能性体验。
 
-Testing Library (introduced in 2018 and now widely popular) is sometimes seen as a solution to the fact that explicit Test IDs do not provide any accessibility testing benefit. While Testing Library's helpers can be convenient and useful in their own right, and they keep accessibility top-of-mind for testers, it's important to note that Testing Library locators do **not** guarantee the accessibility of the elements being tested.
+Testing Library(2018年推出，现已广泛流行)有时被视为解决显式测试ID不提供任何无障碍测试好处这一问题的方案。虽然Testing Library的辅助工具可能方便且有用，并使测试人员始终关注无障碍性，但重要的是要注意Testing Library定位器**不**保证被测试元素的无障碍性。
 
 :::warning
-Whether you primarily use Testing Library element locators, test IDs, or a different approach, testing for accessibility requires making specific assertions about the **implementation and behavior** of your application.
+无论您主要使用Testing Library元素定位器、测试ID还是其他方法，测试无障碍性都需要对应用程序的**实现和行为**做出特定断言。
 :::
 
-There is much more to this topic than we can cover here, but we will provide a small example, and a recommendation for what to do.
+这一主题的内容远超我们在此能涵盖的范围，但我们将提供一个小示例和建议。
 
-### Asserting about roles vs elements - button example
+### 关于角色与元素的断言 - 按钮示例
 
-The native HTML `button` element has a complex accessibility contract implemented by the browser for keyboard and screen reader users. Here is a partial list of ways a button element is automatically managed by the browser:
+原生HTML`button`元素具有浏览器为键盘和屏幕阅读器用户实现的复杂无障碍契约。以下是浏览器自动管理的按钮元素的部分方式列表：
 
-- It has the implicit `role` of `button` so that users know what it is - a screen reader, for example, would announce it as a button
-- It has a default browser button style to visually distinguish it from surrounding content
-- It has default browser styles for hover and "pressed" states
-- It is placed in the tab order of the document and can be focused with the keyboard
-- When focused it receives a focus outline style
-- It can be activated with a mouse click, or the enter key, or the space bar
-- If placed inside a `form` element, activating the button by any of these methods will submit the form (because its default type is `submit`)
-- It will receive specific styling, customizable by the user, in Windows High Contrast Mode (used by people with certain visual disabilities)
+- 它具有隐式`button`角色，以便用户知道它是什么 - 例如，屏幕阅读器会将其宣布为按钮
+- 它具有默认浏览器按钮样式，以在视觉上与周围内容区分
+- 它具有默认浏览器悬停和"按下"状态样式
+- 它位于文档的tab顺序中，可以通过键盘聚焦
+- 聚焦时它会获得焦点轮廓样式
+- 它可以通过鼠标点击、回车键或空格键激活
+- 如果放置在`form`元素内，通过任何这些方法激活按钮都会提交表单(因为其默认类型为`submit`)
+- 在Windows高对比度模式(某些视觉障碍人士使用)下，它将接收特定的、用户可自定义的样式
 
-On the other hand, a `div` with `role` of `button` does not get any default browser accessibility behavior, and is **not accessible** without custom JavaScript and CSS replacing the browser contract.
+另一方面，具有`button`角色的`div`不会获得任何默认浏览器无障碍行为，在没有自定义JavaScript和CSS替换浏览器契约的情况下**不可访问**。
 
-This means that, without some assertions about either the `button` element itself, or a full test of the accessibility "contract" of that element, it is not safe for a developer to refactor from a `button` to a `<div role="button">`, even though Testing Library will treat each as the same if located using the `ByRole` locator. This is because, much like test IDs, the `ByRole` approach is intended to _avoid_ testing the implementation directly, to keep tests resilient when code is refactored.
+这意味着，如果没有对`button`元素本身或该元素的无障碍"契约"的完整测试进行一些断言，开发人员从`button`重构为`<div role="button">`是不安全的，即使Testing Library在使用`ByRole`定位器时会将两者视为相同。这是因为，与测试ID类似，`ByRole`方法旨在_避免_直接测试实现，以在代码重构时保持测试的弹性。
 
-Developers who are unfamiliar with accessibility may assume that if a Testing Library `ByRole` locator can be made to pass before and after a code change, there has been no functional or accessibility-related change in the underlying element. As we've seen, this is not actually the case, because of the extra behavior browsers only implement for native HTML elements. For more about this difference and why semantic HTML elements are preferred, see the [first rule of Accessible Rich Internet Applications (ARIA)](https://www.w3.org/TR/using-aria/#rule1).
+不熟悉无障碍性的开发人员可能会认为，如果Testing Library的`ByRole`定位器可以在代码更改前后通过，则底层元素的功能或无障碍相关没有变化。如我们所见，事实并非如此，因为浏览器仅对原生HTML元素实现的额外行为。有关此差异及为何首选语义HTML元素的更多信息，请参阅[可访问富互联网应用(ARIA)的第一条规则](https://www.w3.org/TR/using-aria/#rule1)。
 
-## Where to test accessibility
+## 在哪里测试无障碍性
 
-So what should you do in your test automation to help confirm the UI is accessible? First of all, for known critical areas like forms or checkout flows, ensure that the accessibility behavior is tested explicitly in at least one place. The means verifying that form fields and buttons have the correct labels and use the expected HTML elements, and other aspects of the DOM that communicate necessary information.
+那么，在测试自动化中应该做些什么来帮助确认UI的无障碍性？首先，对于已知关键区域(如表单或结账流程)，确保至少在一个地方明确测试无障碍行为。这意味着验证表单字段和按钮是否具有正确的标签并使用预期的HTML元素，以及传达必要信息的DOM的其他方面。
 
-Component tests are a fantastic place to do this centralized accessibility spec work, whether using [Cypress Component testing](/app/component-testing/get-started) or something else. Component tests are run locally during development, written by developers as they build the UI, and can easily specify the specific HTML that is intended to be rendered, without being a distraction in an end-to-end test of a specific user flow.
+组件测试是进行这种集中无障碍规范工作的绝佳场所，无论是使用[Cypress组件测试](/app/component-testing/get-started)还是其他工具。组件测试在开发期间本地运行，由开发人员在构建UI时编写，可以轻松指定预期呈现的特定HTML，而不会分散对特定用户流的端到端测试的注意力。
 
-Accessibility should be tested at least once for a given component, area of the application, or workflow. Once that is achieved, there is no additional accessibility benefit to repeatedly asserting subsets of the same things in other tests, unless those tests introduce new combinations of components that have not been tested for accessibility anywhere else.
+至少应对给定组件、应用区域或工作流进行一次无障碍测试。一旦实现这一点，除非这些测试引入未在其他地方进行无障碍测试的新组件组合，否则在其他测试中重复断言相同内容的子集不会带来额外的无障碍好处。
 
-### Choosing a locator approach
+### 选择定位器方法
 
-Test IDs are the most resilient locator option and are a good choice for maximizing the stability of your pipeline, especially if end-to-end tests are written by people who are not familiar with accessibility, and don't already know the correct roles, elements, and behavior that should be expected. You do not lose any accessibility "coverage", as long as accessibility is explicitly tested with assertions, and a library like Axe Core® is in place to catch mistakes.
+测试ID是最具弹性的定位器选项，是最大化管道稳定性的良好选择，特别是如果端到端测试由不熟悉无障碍性的人员编写，并且不知道应预期的正确角色、元素和行为。只要通过断言明确测试无障碍性，并使用像Axe Core®这样的库来捕获错误，您不会失去任何无障碍"覆盖"。
 
-Testing Library locators are convenient and familiar to many React developers (due to its origins as "React Testing Library"), and they don't require any code changes, but may cause _many_ tests to fail when a label is missing, instead of just your explicit accessibility assertions, because they are a step closer to the implementation details.
+Testing Library定位器方便且为许多React开发人员所熟悉(由于其起源为"React Testing Library")，且不需要任何代码更改，但当标签缺失时，可能会导致_许多_测试失败，而不仅仅是您的明确无障碍断言，因为它们更接近实现细节。
 
-Additionally, Testing Library locators can provide a false sense of confidence that something is accessible simply because it can be located by its role. Still, when understood correctly, teams can write effective tests using this approach, and some locators like [`findByLabelText`](https://testing-library.com/docs/queries/bylabeltext) stand out as being particularly useful.
+此外，Testing Library定位器可能会给人一种错误的信心，认为某物是可访问的，仅仅因为它可以通过角色定位。尽管如此，当正确理解时，团队可以使用这种方法编写有效的测试，并且像[`findByLabelText`](https://testing-library.com/docs/queries/bylabeltext)这样的定位器特别有用。
 
-What is most important in all accessibility automation discussions is an this: how can your testing strategy best support your users with disabilities to independently understand and use your application? Cypress enables you to place the user at the center of your testing process. With a mix of automated scans and some specific intentional assertions, you can reach high levels of confidence that your application is free of known accessibility errors and let your test pipeline warn you if things are going off track.
+在所有无障碍自动化讨论中，最重要的是：您的测试策略如何最好地支持残障用户独立理解和使用您的应用程序？Cypress使您能够将用户置于测试过程的中心。通过混合自动化扫描和一些特定的有意断言，您可以高度确信您的应用程序没有已知的无障碍错误，并让测试管道在出现偏差时警告您。
 
-## See also
+## 另请参阅
 
-- [Cypress Accessibility](/accessibility/get-started/introduction)
-- [Plugins](/app/plugins/plugins-list)
+- [Cypress无障碍功能](/accessibility/get-started/introduction)
+- [插件](/app/plugins/plugins-list)

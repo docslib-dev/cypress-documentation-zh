@@ -6,7 +6,7 @@ export default function TOCWrapper(props) {
   return (
     <>
       <h2 className="border-l border-gray-1000/[.07] dark:border-gray-900 my-0 pb-[12px] pl-[1.5rem] text-gray-700 font-medium uppercase text-[16px]">
-        Contents
+        目录
       </h2>
       <TOC
         {...props}

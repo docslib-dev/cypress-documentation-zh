@@ -1,362 +1,254 @@
 ---
-title: Open Mode
-description: The different sections of the Cypress app in open mode, the information surfaced in the app's Command Log, how to use the Selector Playground to find unique selectors, and debugging tools available in the app in open mode.
+title: 开放模式
+description: Cypress应用在开放模式下的不同部分，应用中命令日志显示的信息，如何使用选择器游乐场查找唯一选择器，以及开放模式下应用提供的调试工具。
 sidebar_position: 60
 ---
 
 <ProductHeading product="app" />
 
-# Open Mode
+# 开放模式
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- The different sections of the Cypress app in open mode
-- The information surfaced in the app's Command Log
-- How to use the Selector Playground to find unique selectors
-- Debugging tools available in the app in open mode
+- Cypress应用在开放模式下的不同部分
+- 应用中命令日志显示的信息
+- 如何使用选择器游乐场查找唯一选择器
+- 开放模式下应用提供的调试工具
 
 :::
 
-The Cypress App has powerful features for creating, configuring,
-browsing, and most importantly running your tests once you [open the app](/app/get-started/open-the-app).
-Open mode is the heart of the Cypress testing experience.
+Cypress应用拥有强大的功能，用于创建、配置、浏览以及最重要的——在[打开应用](/app/get-started/open-the-app)后运行测试。开放模式是Cypress测试体验的核心。
 
-### Launchpad
+### 启动台
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/the-launchpad.png"
-  alt="The Launchpad"
+  alt="启动台"
 />
 
-The Launchpad is your portal to Cypress, helping with onboarding, choosing a
-testing type and launching a browser.
+启动台是你进入Cypress的门户，帮助完成入门、选择测试类型和启动浏览器。
 
-Once you get comfortable with Cypress you might find you don't need the
-Launchpad any more. In this case
-[you can run `cypress open` with the `--browser` and `--component` or `--e2e` options](/app/references/command-line#cypress-open)
-to go straight to the Specs page.
+一旦你熟悉了Cypress，可能会发现不再需要启动台。在这种情况下，[你可以使用`--browser`和`--component`或`--e2e`选项运行`cypress open`](/app/references/command-line#cypress-open)直接进入规范页面。
 
-### Specs
+### 规范
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/spec-explorer.png"
-  alt="Specs"
+  alt="规范"
 />
 
-On choosing your browser in the Launchpad, you'll be presented with a list of
-your specs, their names, locations, and information about your latest recorded
-runs. Here you can launch specs by clicking them, create new blank or example
-specs, or search specs by name (handy for large test suites).
+在启动台中选择浏览器后，你将看到一个规范列表，包括它们的名称、位置以及最近记录运行的信息。在这里，你可以通过点击启动规范，创建新的空白或示例规范，或按名称搜索规范（对于大型测试套件非常有用）。
 
-We've made the following spec data available directly on the Specs page:
+我们在规范页面上直接提供了以下数据：
 
-#### Last updated
+#### 最后更新
 
-This column tells you when the code of this spec was last updated, using local
-file data from git or your own filesystem. It surfaces the change history of
-your tests, so you can quickly find the most relevant specs as you're browsing
-your project.
+此列告诉你此规范代码的最后更新时间，使用来自git或你自己文件系统的本地文件数据。它展示了测试的变更历史，让你在浏览项目时快速找到最相关的规范。
 
-This column will vary from machine to machine, as it reflects the state of the
-code as stored on that computer.
+此列在不同机器上会有所不同，因为它反映了该计算机上存储的代码状态。
 
-#### Latest runs
+#### 最近运行
 
-This column shows the last time the spec was run, and the last four returned
-statuses. Results are scoped to your current git branch if available, falling
-back to the default branch if not, then finally all branches.
+此列显示规范最后一次运行的时间，以及最近四次返回的状态。结果范围首先是你当前的git分支（如果可用），否则回退到默认分支，最后是所有分支。
 
-With this intelligence you can monitor, run, and fix tests locally within CI
-workflows, and then further dig into your results by clicking through to Cypress
-Cloud.
+通过这些信息，你可以在CI工作流中本地监控、运行和修复测试，然后通过点击进入Cypress Cloud进一步分析结果。
 
-The runs data is sourced from Cypress Cloud so it
-will be the same everywhere.
+运行数据来自Cypress Cloud，因此它在任何地方都是相同的。
 
-#### Average duration
+#### 平均持续时间
 
-This column indicates the time taken to run the entire spec file, averaged over
-the last four runs, so that you can quickly identify and take action to improve
-the performance of your long-running tests.
+此列显示运行整个规范文件所需的时间，基于最近四次运行的平均值，让你快速识别并采取措施改进长时间运行的测试性能。
 
-Again, this analysis comes from Cypress Cloud.
+同样，此分析来自Cypress Cloud。
 
-#### Flake annotation
+#### 不稳定标记
 
 :::info
 
-<strong>What is a flaky test?</strong>
+<strong>什么是不稳定测试？</strong>
 
-A test is considered to be [flaky](/cloud/features/flaky-test-management) when it
-can pass and fail across multiple retry attempts without any code changes.
+当测试在多次重试尝试中可以在没有代码更改的情况下通过和失败时，它被认为是[不稳定测试](/cloud/features/flaky-test-management)。
 
 :::
 
-Specs with flaky tests are flagged with an indicator beside the spec name. This
-means you can easily discern which areas of your application might result in an
-unreliable user experience.
+包含不稳定测试的规范会在规范名称旁边标记一个指示器。这意味着你可以轻松识别应用程序中哪些区域可能导致不可靠的用户体验。
 
-The flake indicator will display if any tests in the given spec have been flaky
-in your latest runs (limited to 4). Hovering over the indicator will show a
-tooltip with the following analytics, based off the last **50** runs:
+如果给定规范中的任何测试在最近运行（最多4次）中出现不稳定，不稳定指示器将显示。悬停在指示器上将显示一个工具提示，包含以下分析，基于最近**50**次运行：
 
-- Rate (flaky runs divided by total runs)
-- Severity (flaky rate at a glance)
-- Last flaky (how many runs ago)
+- 比率（不稳定运行次数除以总运行次数）
+- 严重程度（一目了然的不稳定率）
+- 上次不稳定（多少运行之前）
 
-Clicking on the flake indicator will take you to the spec's
-[Flaky Test Analytics in Cypress Cloud](https://cloud.cypress.io/projects/7s5okt/analytics/flaky-tests).
+点击不稳定指示器将带你进入该规范在[Cypress Cloud中的不稳定测试分析](https://cloud.cypress.io/projects/7s5okt/analytics/flaky-tests)。
 
-#### Running Specs
+#### 运行规范
 
-<DocsImage src="/img/app/core-concepts/open-mode/spec-page.png" alt="Specs" />
+<DocsImage src="/img/app/core-concepts/open-mode/spec-page.png" alt="规范" />
 
-To run a spec, simply click the row with the spec you would like to run. You
-will be taken to the [Test Runner](#Test-Runner) and the spec will execute. You
-can narrow down the list of specs by typing into the search bar (1).
+要运行规范，只需点击你想要运行的规范所在的行。你将进入[测试运行器](#Test-Runner)，规范将执行。你可以通过在搜索栏中输入内容来缩小规范列表范围（1）。
 
-It is also possible to run multiple specs sequentially using the
-[`experimentalRunAllSpecs`](/app/references/experiments#End-to-End-Testing)
-(2).
+也可以使用[`experimentalRunAllSpecs`](/app/references/experiments#End-to-End-Testing)（2）顺序运行多个规范。
 
 :::caution
 
-<strong>Experimental Run All Specs</strong>
+<strong>实验性运行所有规范</strong>
 
-`experimentalRunAllSpecs` currently works with End to End Testing.
+`experimentalRunAllSpecs`目前适用于端到端测试。
 
-Running multiple specs sequentially is currently an
-[experimental feature](/app/references/configuration#Experiments) and it may
-change in the future. There are some known limitations outlined in this
-[GitHub Discussion](https://github.com/cypress-io/cypress/discussions/21628).
+顺序运行多个规范目前是一个[实验性功能](/app/references/configuration#Experiments)，未来可能会发生变化。此[GitHub讨论](https://github.com/cypress-io/cypress/discussions/21628)中概述了一些已知限制。
 
-Running a large number of specs sequentially can consume more resources.
+顺序运行大量规范可能会消耗更多资源。
 
 :::
 
-### Runs
+### 运行
 
-When you configure the open source Cypress app to record tests to
-[Cypress Cloud](/cloud/get-started/introduction), you'll see data from your latest
-[recorded runs](/cloud/features/recorded-runs#Latest-Runs) directly in the Cypress app. This increased visibility into your
-test history allows you to debug your tests faster and more effectively, all
-within your local workflow.
+当你配置开源的Cypress应用将测试记录到[Cypress Cloud](/cloud/get-started/introduction)时，你将在Cypress应用中直接看到来自最新[记录运行](/cloud/features/recorded-runs#Latest-Runs)的数据。这种对测试历史可见性的提高，让你可以在本地工作流中更快、更有效地调试测试。
 
-If you're not sure whether you're logged in, you can always check using the
-profile control in the top right of the window.
+如果你不确定是否已登录，可以随时使用窗口右上角的个人资料控件进行检查。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/recorded-runs.jpg"
-  alt="Recorded Runs"
+  alt="记录运行"
 />
 
-Cypress uses Git to show runs for your branch. Ensure that version control is
-properly configured and that you are sending Git information to Cypress Cloud. Under some
-environment setups (e.g. `docker`/`docker-compose`), you may have to pass git
-information using
-[custom environment variables](/app/continuous-integration/overview#Git-information).
-If no runs are found for your current branch, all runs for your project are
-shown as a fallback.
+Cypress使用Git显示你分支的运行。确保版本控制已正确配置，并且你正在向Cypress Cloud发送Git信息。在某些环境设置（如`docker`/`docker-compose`）下，你可能需要使用[自定义环境变量](/app/continuous-integration/overview#Git-information)传递Git信息。如果未找到当前分支的运行，则会显示项目中所有运行作为回退。
 
-The title of each run is taken from the
-[git commit message](https://www.educative.io/edpresso/git-commit-message-simply-explained)
-for that change, and clicking on it will take you to the corresponding run page
-in Cypress Cloud.
+每次运行的标题取自该变更的[git提交消息](https://www.educative.io/edpresso/git-commit-message-simply-explained)，点击它将带你进入Cypress Cloud中相应的运行页面。
 
-### Debug
+### 调试
 
-The Debug page allows you to easily debug failed CI test runs from within the
-Cypress app. From this page, you can review, rerun, and debug failed CI test
-runs that are recorded to [Cypress Cloud](/cloud/get-started/introduction) - all
-without leaving the Cypress app.
+调试页面让你可以轻松在Cypress应用中调试失败的CI测试运行。从这个页面，你可以查看、重新运行和调试记录到[Cypress Cloud](/cloud/get-started/introduction)的失败CI测试运行——所有这些都无需离开Cypress应用。
 
-<DocsImage src="/img/app/core-concepts/open-mode/debug-page.png" alt="Debug" />
+<DocsImage src="/img/app/core-concepts/open-mode/debug-page.png" alt="调试" />
 
-This feature eliminates the tedious process of switching between Cypress, your
-local editor, and CI output, in order to fix failed tests. It does this by
-enabling you to use the app to run only the tests that
-failed in your last recorded test run, as well as review the
-[Test Replay](/cloud/features/test-replay) and other artifacts like screenshots,
-videos, and logs from your tests.
+此功能消除了在Cypress、本地编辑器和CI输出之间切换以修复失败测试的繁琐过程。它通过让你使用应用仅运行上次记录测试运行中失败的测试，以及查看[测试回放](/cloud/features/test-replay)和其他工件（如截图、视频和测试日志）来实现这一点。
 
-#### What does the Debug page show?
+#### 调试页面显示什么？
 
-The Debug page shows the latest completed
-[test run](/cloud/features/recorded-runs#Latest-Runs) that matches the `HEAD` commit
-(the commit currently checked out in the working directory) of your local
-project. Users can see and switch to relevant runs within the Debug page. If no
-run is found for your current commit, then Cypress shows the most recent run in
-your branch's history up until the current commit. The first **100** failed
-tests are listed, with a link to Cypress Cloud to review the full run.
+调试页面显示与本地项目`HEAD`提交（工作目录中当前检出的提交）匹配的最新完成[测试运行](/cloud/features/recorded-runs#Latest-Runs)。用户可以在调试页面中查看和切换到相关运行。如果未找到当前提交的运行，则Cypress会显示分支历史中直到当前提交的最新运行。前**100**个失败测试会列出，并有一个链接到Cypress Cloud以查看完整运行。
 
-To use this feature, you must ensure that git is properly configured for your
-project and that you are sending git information to Cypress Cloud. Under some
-environment setups (e.g. `docker`/`docker-compose`), you may have to pass git
-information using
-[custom environment variables](/app/continuous-integration/overview#Git-information).
+要使用此功能，你必须确保git已为项目正确配置，并且你正在向Cypress Cloud发送git信息。在某些环境设置（如`docker`/`docker-compose`）下，你可能需要使用[自定义环境变量](/app/continuous-integration/overview#Git-information)传递git信息。
 
-### Cloud Run Notifications
+### 云运行通知
 
-You can receive notifications in the Cypress app for recorded runs directly from
-Cypress Cloud. Learn more about [Cloud Run Notifications](/cloud/features/recorded-runs#Notifications).
+你可以直接从Cypress Cloud在Cypress应用中接收记录运行的通知。了解更多关于[云运行通知](/cloud/features/recorded-runs#Notifications)。
 
 <DocsImage
   src="/img/cloud/runs/app-notification.jpg"
-  alt="App notification on macOS"
+  alt="macOS上的应用通知"
 />
 
-## Test Runner
+## 测试运行器
 
-At the core of the app is the Test Runner itself. Cypress runs tests
-interactively, allowing you to see commands as they execute while also viewing
-the Application or Component Under Test, and exploring its DOM.
+应用的核心是测试运行器本身。Cypress以交互方式运行测试，让你在执行命令时查看命令，同时查看被测应用程序或组件，并探索其DOM。
 
 :::tip
 
-Like the experience of the Cypress app's open mode for debugging tests? You can get the same
-experience in [Test Replay](/cloud/features/test-replay) for runs recorded in CI in Cypress Cloud.
+喜欢Cypress应用的开放模式调试测试体验？你可以在Cypress Cloud中为CI中记录的运行获得相同的[测试回放](/cloud/features/test-replay)体验。
 
 :::
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/test-runner.png"
-  alt="The Test Runner"
+  alt="测试运行器"
 />
 
-## Command Log
+## 命令日志
 
-The left-hand side of the Test Runner is a visual representation of your test
-suite. Each test block is properly nested and each test, when clicked, displays
-every Cypress command executed within the test's block as well as any commands
-executed in relevant `before`, `beforeEach`, `afterEach`, and `after` hooks.
+测试运行器的左侧是你的测试套件的可视化表示。每个测试块都正确嵌套，当点击每个测试时，会显示在该测试块内执行的所有Cypress命令，以及在相关`before`、`beforeEach`、`afterEach`和`after`钩子中执行的命令。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/command-log.png"
-  alt="Cypress app"
+  alt="Cypress应用"
   width-600
 />
 
-### Open files in your IDE
+### 在IDE中打开文件
 
-There are some places in the Command Log that display a link to the relevant
-file where the code is located. Clicking on this link will open the file in your
-[preferred file opener](/app/tooling/IDE-integration#File-Opener-Preference).
+命令日志中有一些地方显示相关文件位置的链接，代码位于该文件中。点击此链接将在你[首选的文件打开器](/app/tooling/IDE-integration#File-Opener-Preference)中打开该文件。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/open-file-in-IDE.gif"
-  alt="Open file in your IDE"
+  alt="在IDE中打开文件"
 />
 
-### Time traveling
+### 时间旅行
 
-Each command, when hovered over, restores the Application or Component Under
-Test (right-hand side) to the state it was in when that command executed. This
-allows you to **time travel** back to previous states when testing.
+每个命令在悬停时，将被测应用程序或组件（右侧）恢复到该命令执行时的状态。这让你可以**时间旅行**回到测试时的先前状态。
 
 :::info
 
-By default, Cypress keeps **50** tests worth of snapshots and command data for
-time traveling. If you are seeing extremely high memory consumption in your
-browser, you may want to lower the `numTestsKeptInMemory` in your
-[Cypress configuration](/app/references/configuration#Global).
+默认情况下，Cypress保留**50**个测试的快照和命令数据用于时间旅行。如果你在浏览器中看到极高的内存消耗，你可能需要在[Cypress配置](/app/references/configuration#Global)中降低`numTestsKeptInMemory`。
 
 :::
 
-In the following example, hovering over the [`contains`](/api/commands/contains)
-command in the Command Log changes the state of the
-[AUT](#Application-Under-Test) preview:
+在以下示例中，悬停在命令日志中的[`contains`](/api/commands/contains)命令会改变[AUT](#Application-Under-Test)预览的状态：
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/first-test-hover-contains.png"
-  alt="Hovering over the contains tab highlights the dom element in the App in the Cypress app"
+  alt="悬停在contains标签上会高亮显示Cypress应用中应用程序的DOM元素"
 />
 
-Cypress automatically travels back in time to a snapshot of when a hovered-over
-command resolved. Additionally, since [`cy.contains()`](/api/commands/contains)
-finds DOM elements on the page, Cypress also highlights the element and scrolls
-it into view (to the top of the page).
+Cypress会自动回到悬停命令解析时的快照。此外，由于[`cy.contains()`](/api/commands/contains)在页面上查找DOM元素，Cypress还会高亮显示该元素并将其滚动到视图中（到页面顶部）。
 
-Also note that as we hover over the [`contains`](/api/commands/contains)
-command, Cypress reverts back to the URL that was present when the snapshot was
-taken.
+还要注意，当我们悬停在[`contains`](/api/commands/contains)命令上时，Cypress会恢复到拍摄快照时存在的URL。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/first-test-url-revert.png"
-  alt="The url address bar shows https://example.cypress.io/"
+  alt="URL地址栏显示https://example.cypress.io/"
 />
 
-### Pinning snapshots
+### 固定快照
 
-Each command, when clicked on, displays extra information in the dev tools
-console. Clicking also **pins** the Application or Component Under Test
-(right-hand side) to its previous state, or **snapshot**, when the command
-executed.
+每个命令在点击时，会在开发者工具控制台中显示额外信息。点击还会**固定**被测应用程序或组件（右侧）到其先前状态，或命令执行时的**快照**。
 
-In the following example, clicking on the `CLICK` command highlights it in
-purple, and does three other things worth noting:
+在以下示例中，点击`CLICK`命令会以紫色高亮显示它，并做了另外三件值得注意的事情：
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/first-test-click-revert.png"
-  alt="A click on the click command in the Command Log with Cypress app labeled as 1, 2, 3"
+  alt="点击命令日志中的click命令，Cypress应用标记为1、2、3"
 />
 
-#### 1. Pinned snapshots
+#### 1. 固定快照
 
-We have now **pinned** this snapshot. Hovering over other commands will not
-revert to them. This gives us a chance to manually inspect the DOM of our
-application under test at the time the snapshot was taken.
+我们现在已经**固定**了这个快照。悬停在其他命令上不会恢复到它们。这让我们有机会手动检查快照拍摄时被测应用程序的DOM。
 
-#### 2. Event hitbox
+#### 2. 事件命中框
 
-Since [`.click()`](/api/commands/click) is an action command, that means we also
-see a red hitbox at the coordinates the event took place.
+由于[`.click()`](/api/commands/click)是一个动作命令，这意味着我们还可以看到事件发生坐标处的红色命中框。
 
-#### 3. Snapshot menu panel
+#### 3. 快照菜单面板
 
-There is also a new menu panel. Some commands (like action commands) will take
-multiple snapshots: **before** and **after**. We can now cycle through these.
+还有一个新的菜单面板。一些命令（如动作命令）会拍摄多个快照：**之前**和**之后**。我们现在可以循环查看这些。
 
-The **before** snapshot is taken prior to the click event firing. The **after**
-snapshot is taken immediately after the click event. Although this click event
-caused our browser to load a new page, it's not an instantaneous transition.
-Depending on how fast your page loaded, you may still see the same page, or a
-blank screen as the page is unloading and in transition.
+**之前**快照是在点击事件触发前拍摄的。**之后**快照是在点击事件后立即拍摄的。尽管此点击事件导致我们的浏览器加载一个新页面，但这并不是瞬间的过渡。根据页面加载的速度，你可能仍然看到相同的页面，或者页面卸载和过渡时的空白屏幕。
 
-When a command causes an immediate visual change in our application, cycling
-between before and after will update our snapshot. We can see this in action by
-clicking the `TYPE` command in the Command Log. Now, clicking **before** will
-show us the input in a default state, showing the placeholder text. Click
-**after** will show us what the input looks like when the `TYPE` command has
-completed.
+当命令导致我们的应用程序立即发生视觉变化时，在**之前**和**之后**之间切换会更新我们的快照。我们可以通过点击命令日志中的`TYPE`命令看到这一点。现在，点击**之前**会向我们显示输入框的默认状态，显示占位文本。点击**之后**会向我们显示`TYPE`命令完成时输入框的样子。
 
-### Page events
+### 页面事件
 
-In addition to showing all the commands that were called, the command log also
-shows important events from your application or component when they occur.
-Notice these look different (they are gray and without a number).
+除了显示所有调用的命令外，命令日志还会在发生时显示来自你的应用程序或组件的重要事件。注意这些看起来不同（它们是灰色的，没有数字）。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/first-test-page-load.png"
-  alt="Command log shows 'Page load --page loaded--' and 'New url https://example.cypress.io/'"
+  alt="命令日志显示'Page load --page loaded--'和'New url https://example.cypress.io/'"
 />
 
-**Cypress logs out page events for:**
+**Cypress记录以下页面事件：**
 
-- Network XHR Requests
-- URL hash changes
-- Page Loads
-- Form Submissions
+- 网络XHR请求
+- URL哈希变化
+- 页面加载
+- 表单提交
 
-### Instrument panel
+### 仪表板
 
-For certain commands like [`cy.intercept()`](/api/commands/intercept),
-[`cy.stub()`](/api/commands/stub), and [`cy.spy()`](/api/commands/spy), an extra
-instrument panel is displayed above the test to give more information about the
-state of your tests.
+对于某些命令，如[`cy.intercept()`](/api/commands/intercept)、[`cy.stub()`](/api/commands/stub)和[`cy.spy()`](/api/commands/spy)，会在测试上方显示一个额外的仪表板，提供有关测试状态的更多信息。
 
-#### Routes
+#### 路由
 
 <!-- Code to reproduce screenshot:
 it('intercept command log', () => {
@@ -372,38 +264,32 @@ it('intercept command log', () => {
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/instrument-panel-routes.png"
-  alt="Routes Instrument Panel"
+  alt="路由仪表板"
 />
 
-#### Stubs
+#### 存根
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/instrument-panel-stubs.png"
-  alt="Stubs Instrument Panel"
+  alt="存根仪表板"
 />
 
-#### Spies
+#### 间谍
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/instrument-panel-spies.png"
-  alt="Spies Instrument Panel"
+  alt="间谍仪表板"
 />
 
-## Preview pane
+## 预览窗格
 
-The right-hand side of the Test Runner is where the Application or Component
-Under Test is rendered.
+测试运行器的右侧是被测应用程序或组件的渲染位置。
 
-### Application Under Test <E2EOnlyBadge />
+### 被测应用程序 <E2EOnlyBadge />
 
-In
-[E2E Testing](/app/core-concepts/testing-types#What-is-E2E-Testing),
-the right-hand side of the Test Runner is used to display the Application Under
-Test (AUT): the application that was navigated to using a
-[`cy.visit()`](/api/commands/visit) or any subsequent routing calls made from
-the visited application.
+在[端到端测试](/app/core-concepts/testing-types#What-is-E2E-Testing)中，测试运行器的右侧用于显示被测应用程序（AUT）：使用[`cy.visit()`](/api/commands/visit)导航到的应用程序，或从访问的应用程序进行的任何后续路由调用。
 
-In the example below, we wrote the following code in our test file:
+在下面的示例中，我们在测试文件中编写了以下代码：
 
 ```javascript
 cy.visit('https://example.cypress.io')
@@ -411,64 +297,46 @@ cy.visit('https://example.cypress.io')
 cy.title().should('include', 'Kitchen Sink')
 ```
 
-In the corresponding application preview below, you can see
-`https://example.cypress.io` is being displayed in the right-hand side. Not only
-is the application visible, but it is fully interactive. You can open your
-developer tools to inspect elements as you would in your normal application. The
-DOM is completely available for debugging.
+在相应的应用程序预览中，你可以看到`https://example.cypress.io`显示在右侧。不仅应用程序可见，而且完全交互。你可以像在普通应用程序中一样打开开发者工具检查元素。DOM完全可用于调试。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/application-under-test.png"
-  alt="Application Under Test"
+  alt="被测应用程序"
 />
 
-The AUT also displays in the size and orientation specified in your tests. You
-can change the size or orientation with the
-[`cy.viewport()`](/api/commands/viewport) command or in your
-[Cypress configuration](/app/references/configuration#Viewport). If the AUT
-does not fit within the current browser window, it is scaled appropriately to
-fit within the window.
+AUT还以测试中指定的大小和方向显示。你可以使用[`cy.viewport()`](/api/commands/viewport)命令或在[Cypress配置](/app/references/configuration#Viewport)中更改大小或方向。如果AUT不适合当前浏览器窗口，则会适当缩放以适应窗口。
 
-The current size and scale of the AUT is displayed in the top right corner of
-the window.
+AUT的当前大小和缩放比例显示在窗口的右上角。
 
-The image below shows that our application is displaying at `1000px` width,
-`660px` height and scaled to `100%`.
+下图显示我们的应用程序以`1000px`宽度、`660px`高度和`100%`缩放比例显示。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/viewport-scaling.png"
-  alt="Viewport Scaling"
+  alt="视口缩放"
 />
 
 :::info
 
-The right-hand side may also be used to display syntax errors in your spec file
-that prevent the tests from running.
+右侧也可用于显示规范文件中的语法错误，这些错误阻止测试运行。
 
 :::
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/aut-error-e2e.png"
-  alt="Errors"
+  alt="错误"
 />
 
 :::caution
 
-Internally, the AUT renders within an iframe. This can sometimes cause
-unexpected behaviors
-[explained here.](/api/commands/window#Cypress-uses-2-different-windows)
+在内部，AUT在iframe中渲染。这有时会导致[此处解释](/api/commands/window#Cypress-uses-2-different-windows)的意外行为。
 
 :::
 
-### Component Under Test <ComponentOnlyBadge />
+### 被测组件 <ComponentOnlyBadge />
 
-In
-[Component testing](/app/core-concepts/testing-types#What-is-Component-Testing),
-the right-hand side of the Test Runner is used to display the Component Under
-Test (CUT): the component that was mounted using the
-[`cy.mount()`](/api/commands/mount) command.
+在[组件测试](/app/core-concepts/testing-types#What-is-Component-Testing)中，测试运行器的右侧用于显示被测组件（CUT）：使用[`cy.mount()`](/api/commands/mount)命令挂载的组件。
 
-In the following example, we have the following test in our spec file:
+在以下示例中，我们的规范文件中有以下测试：
 
 <Tabs>
 <TabItem value='React'>
@@ -493,224 +361,184 @@ it('should have password input of type password', () => {
 </TabItem>
 </Tabs>
 
-In the corresponding Component Preview below, you can see the `LoginForm`
-component is being displayed in the right-hand side. Not only is the component
-visible, but it is fully interactable. You can open your developer tools to
-inspect elements as you would in your normal application. The DOM is completely
-available for debugging.
+在相应的组件预览中，你可以看到`LoginForm`组件显示在右侧。不仅组件可见，而且完全可交互。你可以像在普通应用程序中一样打开开发者工具检查元素。DOM完全可用于调试。
 
 <DocsImage
   src="/img/app/core-concepts/component-under-test.png"
-  alt="Cypress app showing mounted component and password assertion"
+  alt="Cypress应用显示挂载的组件和密码断言"
 />
 
-The CUT also displays in the size and orientation specified in your tests. You
-can change the size or orientation with the
-[`cy.viewport()`](/api/commands/viewport) command or in your
-[Cypress configuration](/app/references/configuration#Viewport). If the CUT
-does not fit within the current browser window, it is scaled appropriately to
-fit within the window.
+CUT还以测试中指定的大小和方向显示。你可以使用[`cy.viewport()`](/api/commands/viewport)命令或在[Cypress配置](/app/references/configuration#Viewport)中更改大小或方向。如果CUT不适合当前浏览器窗口，则会适当缩放以适应窗口。
 
-The current size and scale of the CUT is displayed in the top right corner of
-the window.
+CUT的当前大小和缩放比例显示在窗口的右上角。
 
-The image below shows that our application is displaying at `500px` width,
-`500px` height and scaled to `100%`.
+下图显示我们的应用程序以`500px`宽度、`500px`高度和`100%`缩放比例显示。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/viewport-scaling-ct.png"
-  alt="Cypress app showing mounted component test viewport scale"
+  alt="Cypress应用显示挂载的组件测试视口缩放"
 />
 
-The right-hand side may also be used to display syntax errors in your spec file
-that prevent the tests from running.
+右侧也可用于显示规范文件中的语法错误，这些错误阻止测试运行。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/aut-error-ct.png"
-  alt="Cypress app showing error as application under test"
+  alt="Cypress应用显示错误作为被测应用程序"
 />
 
 :::caution
 
-Internally, the AUT renders within an iframe. This can sometimes cause
-unexpected behaviors
-[explained here.](/api/commands/window#Cypress-uses-2-different-windows)
+在内部，AUT在iframe中渲染。这有时会导致[此处解释](/api/commands/window#Cypress-uses-2-different-windows)的意外行为。
 
 :::
 
-## Selector Playground
+## 选择器游乐场
 
-The Selector Playground is an interactive feature that helps you:
+选择器游乐场是一个交互式功能，帮助你：
 
-- Determine a unique selector for an element.
-- See what elements match a given selector.
-- See what element matches a string of text.
+- 确定元素的唯一选择器。
+- 查看给定选择器匹配的元素。
+- 查看匹配文本字符串的元素。
 
 :::tip
 
-Need a low code approach to create tests? Use
-[Cypress Studio](/app/guides/cypress-studio) to record your browser
-interactions.
+需要低代码方法来创建测试？使用[Cypress Studio](/app/guides/cypress-studio)记录你的浏览器交互。
 
 :::
 
 <DocsVideo
   src="/img/snippets/selector-playground.mp4"
-  title="Selector Playground demo"
+  title="选择器游乐场演示"
 />
 
-### Uniqueness
+### 唯一性
 
-Cypress will automatically calculate a **unique selector** to use targeted
-element by running through a series of selector strategies.
+Cypress会自动通过一系列选择器策略计算一个**唯一选择器**来定位目标元素。
 
 <DefaultSelectorPriority />
 
 :::info
 
-Cypress allows you to control how a selector is determined. Use the [Cypress.SelectorPlayground](/api/cypress-api/selector-playground-api)
-API to control the selectors you want returned.
+Cypress允许你控制如何确定选择器。使用[Cypress.SelectorPlayground](/api/cypress-api/selector-playground-api) API控制你想要返回的选择器。
 
 :::
 
-### Best practices
+### 最佳实践
 
-You may find yourself struggling to write good selectors because:
+你可能会发现自己在编写好的选择器时遇到困难，因为：
 
-- Your application or component uses dynamic ID's and class names
-- Your tests break whenever there are CSS or content changes
+- 你的应用程序或组件使用动态ID和类名
+- 每当CSS或内容发生变化时，你的测试就会中断
 
-To help with these common challenges, the Selector Playground automatically
-prefers certain `data-*` attributes when determining a unique selector.
+为了帮助解决这些常见挑战，选择器游乐场在确定唯一选择器时自动优先考虑某些`data-*`属性。
 
-Please read our
-[Best Practices guide](/app/core-concepts/best-practices#Selecting-Elements) on
-helping you target elements and prevent tests from breaking on CSS or JS
-changes.
+请阅读我们的[最佳实践指南](/app/core-concepts/best-practices#Selecting-Elements)，帮助你定位元素并防止测试因CSS或JS更改而中断。
 
-### Finding selectors
+### 查找选择器
 
-To open the Selector Playground, click the <Icon name="crosshairs" /> button
-next to the URL at the top of the Test Runner. Hover over elements in your app
-to preview a unique selector for that element in the tooltip.
+要打开选择器游乐场，点击测试运行器顶部URL旁边的<Icon name="crosshairs" />按钮。悬停在应用程序中的元素上，预览工具提示中该元素的唯一选择器。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/open-selector-playground.gif"
-  alt="Opening selector playground and hovering over elements"
+  alt="打开选择器游乐场并悬停在元素上"
 />
 
-Click on the element and its selector will appear at the top. From there, you
-can copy it to your clipboard ( <Icon name="copy" /> ) or print it to the
-console ( <Icon name="terminal" /> ).
+点击元素，其选择器将显示在顶部。从那里，你可以将其复制到剪贴板（<Icon name="copy" />）或打印到控制台（<Icon name="terminal" />）。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/copy-selector-in-selector-playground.gif"
-  alt="Clicking an element, copying its selector to clipboard, printing it to the console"
+  alt="点击元素，将其选择器复制到剪贴板，打印到控制台"
 />
 
-### Running experiments
+### 运行实验
 
-The box at the top that displays the selector is also a text input.
+顶部显示选择器的框也是一个文本输入框。
 
-#### Editing a selector
+#### 编辑选择器
 
-When you edit the selector, it will show you how many elements match and
-highlight those elements in your app.
+当你编辑选择器时，它会显示有多少元素匹配，并在应用程序中高亮显示这些元素。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/typing-a-selector-to-find-in-playground.gif"
-  alt="Type a selector to see what elements it matches"
+  alt="输入选择器以查看它匹配的元素"
 />
 
-#### Switching to contains
+#### 切换到contains
 
-You can also experiment with what [`cy.contains()`](/api/commands/contains)
-would yield given a string of text. Click on `cy.get` and switch to
-`cy.contains`.
+你也可以实验[`cy.contains()`](/api/commands/contains)在给定文本字符串时会返回什么。点击`cy.get`并切换到`cy.contains`。
 
-Type in text to see which element it matches. Note that
-[`cy.contains()`](/api/commands/contains) only yields the first element that
-matches the text, even if multiple elements on the page contain the text.
+输入文本以查看它匹配的元素。注意[`cy.contains()`](/api/commands/contains)只返回第一个匹配文本的元素，即使页面上有多个元素包含该文本。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/cy-contains-in-selector-playground.gif"
-  alt="Experiment with cy.contains"
+  alt="实验cy.contains"
 />
 
-#### Disabling highlights
+#### 禁用高亮
 
-If you would like to interact with your app while the Selector Playground is
-open, the element highlighting might get in the way. Toggling the highlighting
-off will allow you to interact with your app more easily.
+如果你想在选择器游乐场打开时与应用程序交互，元素高亮可能会妨碍操作。关闭高亮可以让你更轻松地与应用程序交互。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/turn-off-highlight-in-selector-playground.gif"
-  alt="Turn off highlighting"
+  alt="关闭高亮"
 />
 
-## Keyboard shortcuts
+## 键盘快捷键
 
-There are keyboard shortcuts to quickly perform common actions from within
-Cypress.
+有一些键盘快捷键可以快速在Cypress中执行常见操作。
 
-| Key | Action                        |
+| 键 | 操作                        |
 | --- | ----------------------------- |
-| `r` | Rerun tests                   |
-| `s` | Stop tests                    |
-| `f` | Bring focus to 'specs' window |
+| `r` | 重新运行测试                   |
+| `s` | 停止测试                    |
+| `f` | 将焦点移到'specs'窗口 |
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/keyboard-shortcuts.png"
-  alt="Tooltips show keyboard shortcuts"
+  alt="工具提示显示键盘快捷键"
 />
 
-## Debugging
+## 调试
 
-In addition to the features already mentioned, Cypress comes with a host of
-debugging tools to help you understand a test. You can:
+除了已经提到的功能外，Cypress还附带了一系列调试工具，帮助你理解测试。你可以：
 
-- See detailed information about [errors](#Errors) that occur.
-- Receive additional [console output](#Console-output) about each command.
-- [Pause commands](#Special-commands) and step through them iteratively.
-  {/* - Visualize when hidden or multiple elements are found. */}
+- 查看有关发生的[错误](#Errors)的详细信息。
+- 接收有关每个命令的额外[控制台输出](#Console-output)。
+- [暂停命令](#Special-commands)并逐步执行它们。
+  {/* - 可视化找到隐藏或多个元素的时间。 */}
 
-### Errors
+### 错误
 
 <AnatomyOfAnError />
 
-### Console output
+### 控制台输出
 
-Besides commands being interactive, they also output additional debugging
-information to your console.
+除了命令是交互式的外，它们还会向控制台输出额外的调试信息。
 
-Open up your Dev Tools and click on the `GET` for the `.action-email` class
-selector.
+打开开发者工具并点击`.action-email`类选择器的`GET`。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/first-test-console-output.png"
-  alt="Cypress app with get command pinned and console log open showing the yielded element"
+  alt="Cypress应用，get命令固定，控制台日志打开显示产生的元素"
 />
 
-**We can see Cypress output additional information in the console:**
+**我们可以看到Cypress在控制台中输出额外信息：**
 
-- Command (that was issued)
-- Yielded (what was returned by this command)
-- Elements (the number of elements found)
-- Selector (the argument we used)
+- 命令（发出的）
+- 产生（此命令返回的内容）
+- 元素（找到的元素数量）
+- 选择器（我们使用的参数）
 
-We can even expand what was returned and inspect each individual element or even
-right click and inspect them in the Elements panel!
+我们甚至可以展开返回的内容，并检查每个单独的元素，或者右键点击并在元素面板中检查它们！
 
-### Special commands
+### 特殊命令
 
-In addition to having a helpful UI, there are also special commands dedicated to
-the task of debugging, for example:
+除了有帮助的UI外，还有一些专门用于调试任务的特殊命令，例如：
 
 - [cy.pause()](/api/commands/pause)
 - [cy.debug()](/api/commands/debug)
 
-In the following example, we've added a [cy.pause()](/api/commands/pause)
-command to this test:
+在以下示例中，我们向此测试添加了一个[cy.pause()](/api/commands/pause)命令：
 
 ```js
 describe('My First Test', () => {
@@ -732,17 +560,16 @@ describe('My First Test', () => {
 })
 ```
 
-Now, when the test runs, Cypress provides us a UI (similar to debugger) to step
-forward through each command in the test.
+现在，当测试运行时，Cypress为我们提供了一个UI（类似于调试器），逐步执行测试中的每个命令。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/first-test-paused.png"
-  alt="Cypress app shows label saying 'Paused' with Command Log showing 'Pause'"
+  alt="Cypress应用显示'Paused'标签，命令日志显示'Pause'"
 />
 
-In action:
+实际操作：
 
 <DocsVideo
   src="/img/snippets/first-test-debugging-30fps.mp4"
-  title="Pause test runner demo"
+  title="暂停测试运行器演示"
 />

@@ -1,6 +1,6 @@
 ---
-title: 'Bitbucket Integration | Cypress Documentation'
-description: 'Configure Bitbucket status checks and pull request comments to show Cypress test results from Cypress Cloud.'
+title: 'Bitbucket 集成 | Cypress 文档'
+description: '配置 Bitbucket 状态检查和拉取请求评论，以显示来自 Cypress Cloud 的测试结果。'
 sidebar_position: 30
 sidebar_label: Bitbucket
 ---
@@ -11,84 +11,60 @@ sidebar_label: Bitbucket
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to install the Cypress Bitbucket integration
-- How to configure status checks and pull request comments
+- 如何安装 Cypress Bitbucket 集成
+- 如何配置状态检查和拉取请求评论
 
 :::
 
-[Cypress Cloud](https://on.cypress.io/cloud) can integrate your Cypress tests
-with your Bitbucket workflow via [status checks](#Status-checks) and
-[pull request comments](#Pull-Request-comments). A project first needs to be
-[set up to record](/cloud/account-management/projects) to Cypress Cloud
-to use Bitbucket integration.
+[Cypress Cloud](https://on.cypress.io/cloud) 可以通过[状态检查](#Status-checks)和[拉取请求评论](#Pull-Request-comments)将你的 Cypress 测试与 Bitbucket 工作流集成。项目首先需要[设置为记录](/cloud/account-management/projects)到 Cypress Cloud 才能使用 Bitbucket 集成。
 
 <DocsImage
   src="/img/cloud/integrations/bitbucket/bitbucket-merge-request-comment.jpg"
-  alt="Bitbucket merge request comment"
+  alt="Bitbucket 合并请求评论"
   width={800}
 />
 
 :::caution
 
-Bitbucket Integration depends on your CI environment reliably providing a commit
-SHA (typically via an environment variable). This is not a problem for most
-users, but if you are facing Bitbucket integration issues with your CI setup,
-please make sure the git information is being sent properly by following
-[these guidelines](/app/continuous-integration/overview#Git-information).
-If you still face issues after this, please
-[contact us](mailto:hello@cypress.io).
+Bitbucket 集成依赖于你的 CI 环境可靠地提供提交 SHA（通常通过环境变量）。这对大多数用户来说不是问题，但如果你在使用 CI 设置时遇到 Bitbucket 集成问题，请确保按照[这些指南](/app/continuous-integration/overview#Git-information)正确发送 git 信息。如果之后仍然遇到问题，请[联系我们](mailto:hello@cypress.io)。
 
 :::
 
-## Installing the Bitbucket integration
+## 安装 Bitbucket 集成
 
 :::caution
 
-Bitbucket OAuth2 applications will allow Cypress Cloud to authenticate as the
-user that registered the application. That means Cypress will have visibility to
-every Bitbucket repo you can access. If you want tighter control over the repos
-that Cypress will see, consider creating a service account with more limited
-access in Bitbucket.
+Bitbucket OAuth2 应用程序将允许 Cypress Cloud 以注册应用程序的用户身份进行认证。这意味着 Cypress 将能够访问你有权限的所有 Bitbucket 仓库。如果你想更严格地控制 Cypress 可见的仓库，可以考虑在 Bitbucket 中创建一个访问权限更有限的服务账户。
 
 :::
 
-1. Visit **Integrations** in Cypress Cloud.
-1. Click **Install Bitbucket Integration**.
-1. (For beta only) You need to enable Bitbucket's
-   [development mode](https://support.atlassian.com/bitbucket-cloud/docs/enable-bitbucket-cloud-development-mode/)
-   for your user account to continue.
-1. Continue through the Bitbucket OAuth installation flow in the popup window.
-1. Once installed, connect your projects to a Bitbucket repo.
-1. (Optional) Configure the behavior for each project.
+1. 在 Cypress Cloud 中访问 **Integrations**。
+1. 点击 **Install Bitbucket Integration**。
+1. （仅限测试版）你需要为你的用户账户启用 Bitbucket 的[开发模式](https://support.atlassian.com/bitbucket-cloud/docs/enable-bitbucket-cloud-development-mode/)才能继续。
+1. 在弹出窗口中继续完成 Bitbucket OAuth 安装流程。
+1. 安装完成后，将你的项目连接到 Bitbucket 仓库。
+1. （可选）为每个项目配置行为。
 
-## Configuring the Bitbucket integration
+## 配置 Bitbucket 集成
 
-### Status checks
+### 状态检查
 
-By default, Cypress will post a **cypress/run** commit status containing the
-results of the Cypress run. This will prevent your team from merging any PRs
-with failing Cypress tests.
+默认情况下，Cypress 会发布一个 **cypress/run** 提交状态，包含 Cypress 运行的结果。这将阻止你的团队合并任何有 Cypress 测试失败的 PR。
 
-Additionally, Cypress can post a **cypress/flake** commit status indicating
-whether the Cypress run contained any flaky tests. This will prevent your team
-from merging any PRs with flaky tests.
+此外，Cypress 可以发布一个 **cypress/flake** 提交状态，指示 Cypress 运行是否包含任何不稳定的测试。这将阻止你的团队合并任何有不稳定测试的 PR。
 
-You can manage this behavior on your project's **Project Settings** page.
+你可以在项目的 **Project Settings** 页面管理此行为。
 
-### Pull Request comments
+### 拉取请求评论
 
-By default, Cypress will post a PR comment summarizing the run when the run
-completes. It will include test results, run info, and a summary of tests that
-failed or were flaky.
+默认情况下，Cypress 会在运行完成时发布一个 PR 评论，总结运行情况。它将包括测试结果、运行信息和失败或不稳定测试的摘要。
 
-You can manage this behavior on your project's **Project Settings** page.
+你可以在项目的 **Project Settings** 页面管理此行为。
 
 <TestReplayInfo />
 
-## Uninstalling the Bitbucket integration
+## 卸载 Bitbucket 集成
 
-You can remove this integration by visiting the **Integrations → Bitbucket**
-page of your organization. This will stop all status checks and PR comments from
-Cypress.
+你可以通过访问组织的 **Integrations → Bitbucket** 页面来移除此集成。这将停止所有来自 Cypress 的状态检查和 PR 评论。

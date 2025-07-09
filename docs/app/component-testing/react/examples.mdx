@@ -1,63 +1,58 @@
 ---
-title: React Examples
-description: Learn how to mount a React component, pass data to a React component, test event handlers, and customize `cy.mount()` for React Router and Redux.
+title: React 示例
+description: 学习如何挂载React组件、向React组件传递数据、测试事件处理器，以及为React Router和Redux定制`cy.mount()`。
 sidebar_position: 30
-sidebar_label: Examples
+sidebar_label: 示例
 ---
 
 <ProductHeading product="app" />
 
-# React Examples
+# React 示例
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to mount a React component
-- How to pass data to a React component
-- How to test event handlers
-- How to customize `cy.mount()` for React Router and Redux
+- 如何挂载React组件
+- 如何向React组件传递数据
+- 如何测试事件处理器
+- 如何为React Router和Redux定制`cy.mount()`
 
 :::
 
-## Mounting Components
+## 挂载组件
 
-### Mounting a Component
+### 挂载组件
 
-The first step in testing a component is to mount it. This renders the component
-into a testbed and enable's the use of the Cypress API to select elements,
-interact with them, and run assertions.
+测试组件的第一步是挂载它。这会将组件渲染到测试环境中，并允许使用Cypress API来选择元素、与之交互以及运行断言。
 
-To mount a React component, import the component into your spec and pass the
-component to the `cy.mount` command:
+要挂载React组件，请将组件导入到你的测试文件中，并将组件传递给`cy.mount`命令：
 
 ```js
 import { Stepper } from './stepper'
 
 it('mounts', () => {
   cy.mount(<Stepper />)
-  //Stepper should have initial count of 0 (default)
+  //Stepper的初始计数应为0（默认值）
   cy.get('[data-cy=counter]').should('have.text', '0')
 })
 ```
 
-### Passing Data to a Component
+### 向组件传递数据
 
-You can pass props to a component by setting them on the JSX passed into
-`cy.mount()`:
+你可以通过在传递给`cy.mount()`的JSX上设置props来向组件传递数据：
 
 ```ts
 it('mounts', () => {
   cy.mount(<Stepper initial={100} />)
-  //Stepper should have initial count of 100
+  //Stepper的初始计数应为100
   cy.get('[data-cy=counter]').should('have.text', '100')
 })
 ```
 
-### Testing Event Handlers
+### 测试事件处理器
 
-Pass a Cypress [spy](/app/guides/stubs-spies-and-clocks#Spies) to an event
-prop and validate it was called:
+将Cypress的[spy](/app/guides/stubs-spies-and-clocks#Spies)传递给事件prop，并验证它是否被调用：
 
 ```ts
 it('clicking + fires a change event with the incremented value', () => {
@@ -68,24 +63,17 @@ it('clicking + fires a change event with the incremented value', () => {
 })
 ```
 
-## Custom Mount Commands
+## 自定义挂载命令
 
-### Customizing `cy.mount()`
+### 定制`cy.mount()`
 
-By default, `cy.mount()` is a simple passthrough to `mount()`, however, you can
-customize `cy.mount()` to fit your needs. For instance, if you are using
-providers or other global app-level setups in your React app, you can configure
-them here.
+默认情况下，`cy.mount()`是`mount()`的简单传递，但你可以根据需要定制`cy.mount()`。例如，如果你在React应用中使用提供者或其他全局应用级设置，可以在这里配置它们。
 
-Below are a few examples that demonstrate using a custom mount command. These
-examples can be adjusted for most other providers that you will need to support.
+以下是几个演示如何使用自定义挂载命令的示例。这些示例可以调整为支持大多数其他你需要的提供者。
 
 ### React Router
 
-If you have a component that consumes a hook or component from
-[React Router](https://reactrouter.com/), make sure the component has access to
-a React Router provider. Below is a sample mount command that uses
-`MemoryRouter` to wrap the component.
+如果你的组件使用了[React Router](https://reactrouter.com/)的钩子或组件，确保组件可以访问React Router提供者。下面是一个使用`MemoryRouter`包装组件的挂载命令示例。
 
 <Tabs>
 <TabItem value="cypress/support/component.jsx">
@@ -114,9 +102,9 @@ declare global {
   namespace Cypress {
     interface Chainable {
       /**
-       * Mounts a React node
-       * @param component React Node to mount
-       * @param options Additional options to pass into mount
+       * 挂载一个React节点
+       * @param component 要挂载的React节点
+       * @param options 传递给mount的额外选项
        */
       mount(
         component: React.ReactNode,
@@ -130,16 +118,13 @@ declare global {
 </TabItem>
 </Tabs>
 
-To set up certain scenarios, pass in props that will get passed to
-`MemoryRouter` in the options. Below is an example test that ensures an active
-link has the correct class applied to it by initializing the router with
-`initialEntries` pointed to a particular route:
+为了设置特定场景，可以在选项中传递将传递给`MemoryRouter`的props。以下是一个测试示例，确保活动链接应用了正确的类，通过将路由器初始化为指向特定路由的`initialEntries`：
 
 ```jsx
 import { Navigation } from './Navigation'
 
 it('home link should be active when url is "/"', () => {
-  // No need to pass in custom initialEntries as default url is '/'
+  // 无需传递自定义initialEntries，因为默认url是'/'
   cy.mount(<Navigation />)
 
   cy.get('a').contains('Home').should('have.class', 'active')
@@ -158,9 +143,7 @@ it('login link should be active when url is "/login"', () => {
 
 ### Redux
 
-To use a component that consumes state or actions from a
-[Redux](https://react-redux.js.org/) store, create a `mount` command that will
-wrap your component in a Redux Provider:
+要使用一个消费[Redux](https://react-redux.js.org/)存储状态或动作的组件，创建一个将你的组件包装在Redux提供者中的`mount`命令：
 
 <Tabs>
 <TabItem value="cypress/support/component.jsx">
@@ -171,7 +154,7 @@ import { Provider } from 'react-redux'
 import { getStore } from '../../src/store'
 
 Cypress.Commands.add('mount', (component, options = {}) => {
-  // Use the default store if one is not provided
+  // 如果没有提供store，则使用默认store
   const { reduxStore = getStore(), ...mountOptions } = options
 
   const wrapped = <Provider store={reduxStore}>{component}</Provider>
@@ -192,9 +175,9 @@ declare global {
   namespace Cypress {
     interface Chainable {
       /**
-       * Mounts a React node
-       * @param component React Node to mount
-       * @param options Additional options to pass into mount
+       * 挂载一个React节点
+       * @param component 要挂载的React节点
+       * @param options 传递给mount的额外选项
        */
       mount(
         component: React.ReactNode,
@@ -208,7 +191,7 @@ declare global {
 </TabItem>
 </Tabs>
 
-The options param can have a store that is already initialized with data:
+options参数可以包含一个已经初始化数据的store：
 
 ```jsx
 import { getStore } from '../redux/store'
@@ -218,10 +201,10 @@ import { UserProfile } from './UserProfile'
 it('User profile should display user name', () => {
   const user = { name: 'test person' }
 
-  // getStore is a factory method that creates a new store
+  // getStore是一个创建新store的工厂方法
   const store = getStore()
 
-  // setUser is an action exported from the user slice
+  // setUser是从user slice导出的一个动作
   store.dispatch(setUser(user))
 
   cy.mount(<UserProfile />, { reduxStore: store })
@@ -232,8 +215,6 @@ it('User profile should display user name', () => {
 
 :::info
 
-The `getStore` method is a factory method that initializes a new Redux store. It
-is important that the store be initialized with each new test to ensure changes
-to the store don't affect other tests.
+`getStore`方法是一个初始化新Redux存储的工厂方法。重要的是每个新测试都要初始化存储，以确保存储的更改不会影响其他测试。
 
 :::

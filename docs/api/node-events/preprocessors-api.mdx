@@ -1,72 +1,68 @@
 ---
-title: 'Preprocessors API in Node Events'
-description: 'Prepare support and spec files for the browser with preprocessors.'
-sidebar_label: 'Preprocessors API'
+title: 'Node Events中的预处理器API'
+description: '使用预处理器为浏览器准备支持文件和测试规范文件。'
+sidebar_label: '预处理器API'
 ---
 
 <ProductHeading product="app" />
 
-# Preprocessors API
+# 预处理器API
 
-A preprocessor is the plugin responsible for preparing a
-[support file](/app/core-concepts/writing-and-organizing-tests#Support-file)
-or a [spec file](/app/core-concepts/writing-and-organizing-tests#Spec-files)
-for the browser.
+预处理器是负责为浏览器准备
+[支持文件](/app/core-concepts/writing-and-organizing-tests#Support-file)
+或
+[测试规范文件](/app/core-concepts/writing-and-organizing-tests#Spec-files)
+的插件。
 
-A preprocessor could transpile your file from another language (CoffeeScript or
-ClojureScript) or from a newer version of JavaScript (ES2017).
+预处理器可以将文件从其他语言（如CoffeeScript或ClojureScript）或更新版本的JavaScript（如ES2017）转译。
 
-A preprocessor also typically watches the source files for changes, processes
-them again, and then notifies Cypress to re-run the tests.
+预处理器通常还会监视源文件的更改，重新处理它们，然后通知Cypress重新运行测试。
 
-## Examples
+## 示例
 
-We've created three preprocessors as examples for you to look at. These are
-fully functioning preprocessors.
+我们创建了三个预处理器作为示例供您参考。这些是完全可用的预处理器。
 
-The code contains comments that explain how it utilizes the preprocessor API.
+代码中包含了解释如何使用预处理器API的注释。
 
-- [webpack preprocessor](https://github.com/cypress-io/cypress/tree/develop/npm/webpack-preprocessor)
-- [Browserify preprocessor](https://github.com/cypress-io/cypress-browserify-preprocessor)
-- [Watch preprocessor](https://github.com/cypress-io/cypress-watch-preprocessor)
+- [webpack预处理器](https://github.com/cypress-io/cypress/tree/develop/npm/webpack-preprocessor)
+- [Browserify预处理器](https://github.com/cypress-io/cypress-browserify-preprocessor)
+- [Watch预处理器](https://github.com/cypress-io/cypress-watch-preprocessor)
 
-## Defaults
+## 默认设置
 
-By default, Cypress comes packaged with the **webpack preprocessor** already
-installed.
+默认情况下，Cypress已预装了**webpack预处理器**。
 
-The webpack preprocessor handles:
+webpack预处理器支持：
 
-- ES2015 and JSX via Babel
+- 通过Babel处理ES2015和JSX
 - TypeScript
 - CoffeeScript `1.x.x`
-- Watching and caching files
+- 文件监视和缓存
 
 :::info
 
-Are you looking to change the **default options** for webpack?
+您是否想要更改webpack的**默认选项**？
 
 :::
 
-If you already use webpack in your project, you can pass in your webpack config
-as
-[shown here](https://github.com/cypress-io/cypress/tree/develop/npm/webpack-preprocessor#options).
+如果您的项目中已经使用了webpack，可以传入您的webpack配置，
+[如这里所示](https://github.com/cypress-io/cypress/tree/develop/npm/webpack-preprocessor#options)。
 
-If you don't use webpack in your project or would like to keep the majority of
-the default options, you can
-[modify the default options](https://github.com/cypress-io/cypress/tree/develop/npm/webpack-preprocessor#modifying-default-options).
-Editing the options allows you to do things like:
+如果您的项目中没有使用webpack，或者希望保留大部分默认选项，您可以
+[修改默认选项](https://github.com/cypress-io/cypress/tree/develop/npm/webpack-preprocessor#modifying-default-options)。
+编辑选项允许您执行以下操作：
 
-- Add your own Babel plugins
-- Modify options for TypeScript compilation
-- Add support for CoffeeScript `2.x.x`
+- 添加自己的Babel插件
+- 修改TypeScript编译选项
+- 添加对CoffeeScript `2.x.x`的支持
 
-## Usage
+## 使用方法
 
 <WarningSetupNodeEvents />
 
-To use a preprocessor, you should bind to the `file:preprocessor` event in your
-[setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin) function:
+要使用预处理器，您应该在
+[setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin)
+函数中绑定到`file:preprocessor`事件：
 
 :::cypress-config-plugin-example
 
@@ -78,17 +74,14 @@ on('file:preprocessor', (file) => {
 
 :::
 
-### The callback function should return one of the following:
+### 回调函数应返回以下之一：
 
-- A promise\* that eventually resolves the path to the **built file**\*\*.
-- A promise\* that eventually rejects with an error that occurred during
-  processing.
+- 一个promise\*，最终解析为**构建文件**\*\*的路径。
+- 一个promise\*，最终拒绝并返回处理过程中发生的错误。
 
 :::note
 
-\* The promise should resolve only after the file has completed writing to disk.
-The promise resolving is a signal that the file is ready to be served to the
-browser.
+\* promise应仅在文件完成写入磁盘后解析。promise的解析是一个信号，表示文件已准备好提供给浏览器。
 
 :::
 
@@ -96,58 +89,51 @@ browser.
 
 :::note
 
-\*\* The built file is the file that is created by the preprocessor that will
-eventually be served to the browser.
+\*\* 构建文件是由预处理器创建的文件，最终将提供给浏览器。
 
 :::
 
 :::note
 
-If, for example, the source file is `spec.coffee`, the preprocessor should:
+例如，如果源文件是`spec.coffee`，预处理器应：
 
 :::
 
-1. Compile the CoffeeScript into JavaScript `spec.js`
-2. Write that JavaScript file to disk (example: `/Users/foo/tmp/spec.js`)
-3. Resolve with the absolute path to that file: `/Users/foo/tmp/spec.js`
+1. 将CoffeeScript编译为JavaScript `spec.js`
+2. 将该JavaScript文件写入磁盘（例如：`/Users/foo/tmp/spec.js`）
+3. 使用该文件的绝对路径解析：`/Users/foo/tmp/spec.js`
 
 :::caution
 
-This callback function can and _will_ be called multiple times with the same
-`filePath`.
+此回调函数可以并且_将会_被多次调用，传入相同的`filePath`。
 
-The callback function is called any time a file is requested by the browser.
-This happens on each run of the tests.
+每当浏览器请求文件时，都会调用此回调函数。这在每次运行测试时都会发生。
 
-Make sure not to start a new watcher each time it is called. Instead, cache the
-watcher and, on subsequent calls, return a promise that resolves when the latest
-version of the file has been processed.
+确保不要在每次调用时启动新的监视器。相反，应缓存监视器，并在后续调用时返回一个promise，该promise在文件的最新版本处理完成后解析。
 
 :::
 
-## File object
+## 文件对象
 
-The `file` object passed to the callback function has the following properties:
+传递给回调函数的`file`对象具有以下属性：
 
-| Property      | Description                                                                                                                                                                                                                       |
+| 属性          | 描述                                                                                                                                                                                                                       |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `filePath`    | The full path to the source file.                                                                                                                                                                                                 |
-| `outputPath`  | The suggested path for saving the preprocessed file to disk. This is unique to the source file. A preprocessor can choose to write the file elsewhere, but Cypress automatically provides you this value as a convenient default. |
-| `shouldWatch` | A boolean indicating whether the preprocessor should watch for file changes or not.                                                                                                                                               |
+| `filePath`    | 源文件的完整路径。                                                                                                                                                                                                         |
+| `outputPath`  | 建议的预处理文件保存到磁盘的路径。这是源文件的唯一路径。预处理器可以选择将文件写入其他位置，但Cypress自动提供此值作为方便的默认值。                                                                                         |
+| `shouldWatch` | 一个布尔值，指示预处理器是否应监视文件更改。                                                                                                                                                                               |
 
-## File events
+## 文件事件
 
-The `file` object passed to the callback function is an
-[Event Emitter](https://nodejs.org/api/events.html#events_class_eventemitter).
+传递给回调函数的`file`对象是一个
+[事件发射器](https://nodejs.org/api/events.html#events_class_eventemitter)。
 
-### Receiving 'close' event
+### 接收'close'事件
 
-When the running spec, the project, or the browser is closed while running
-tests, the `close` event will be emitted. The preprocessor should do any
-necessary cleanup in this function, like closing the watcher when watching.
+当运行的测试规范、项目或浏览器在运行测试时关闭时，将发出`close`事件。预处理器应在此函数中执行任何必要的清理，例如在监视时关闭监视器。
 
 ```javascript
-// example
+// 示例
 const watcher = fs.watch(filePath /* ... */)
 
 file.on('close', () => {
@@ -155,28 +141,26 @@ file.on('close', () => {
 })
 ```
 
-### Sending 'rerun' event
+### 发送'rerun'事件
 
-If watching for file changes, emit `rerun` after a file has finished being
-processed to let Cypress know to rerun the tests.
+如果监视文件更改，请在文件处理完成后发出`rerun`，以通知Cypress重新运行测试。
 
 ```javascript
-// example
+// 示例
 fs.watch(filePath, () => {
   file.emit('rerun')
 })
 ```
 
-## Source maps
+## 源映射
 
 <SourceMaps />
 
-## Publishing
+## 发布
 
-Publish preprocessors to [npm](https://www.npmjs.com/) with the naming
-convention `cypress-*-preprocessor` (e.g. cypress-clojurescript-preprocessor).
+将预处理器发布到[npm](https://www.npmjs.com/)，命名约定为`cypress-*-preprocessor`（例如cypress-clojurescript-preprocessor）。
 
-Use the following npm keywords:
+使用以下npm关键字：
 
 ```json
 "keywords": [
@@ -186,4 +170,4 @@ Use the following npm keywords:
 ]
 ```
 
-Feel free to submit your published plugins to our [list of plugins](/app/plugins/plugins-list).
+欢迎将您发布的插件提交到我们的[插件列表](/app/plugins/plugins-list)。

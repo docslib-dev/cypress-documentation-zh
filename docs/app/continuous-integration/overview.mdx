@@ -1,89 +1,76 @@
 ---
-title: 'Continuous Integration with Cypress'
-description: 'Learn how to set up Cypress in Continuous Integration (CI), record tests, run tests in parallel, and set up CI workflows to use Cypress Docker images.'
-sidebar_label: Overview
+title: '使用Cypress进行持续集成'
+description: '学习如何在持续集成(CI)中设置Cypress，录制测试，并行运行测试，以及配置使用Cypress Docker镜像的CI工作流。'
+sidebar_label: 概述
 sidebar_position: 10
 ---
 
 <ProductHeading product="app" />
 
-# Continuous Integration with Cypress
+# 使用Cypress进行持续集成
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学习到
 
-- How to set up Cypress in Continuous Integration (CI)
-- How to run Cypress in CI, record tests, and run tests in parallel
-- How to set up CI workflows to use Cypress Docker images
-- Advanced configuration for OS, dependencies, caching, and environment variables
+- 如何在持续集成(CI)中设置Cypress
+- 如何在CI中运行Cypress、录制测试并并行运行测试
+- 如何配置使用Cypress Docker镜像的CI工作流
+- 操作系统、依赖项、缓存和环境变量的高级配置
 
 :::
 
-## What is Continuous Integration?
+## 什么是持续集成？
 
 <DocsVideo
   src="https://youtube.com/embed/USX6AntcPyg"
-  title="GitHub Actions + Cypress: What is Continuous Integration?"
+  title="GitHub Actions + Cypress: 什么是持续集成？"
 />
 
-## Setting up CI
+## 设置CI
 
 <DocsVideo
   src="https://youtube.com/embed/saYovXS9Llk"
-  title="Continuous Integration with Cypress"
+  title="使用Cypress进行持续集成"
 />
 
-### Basics
+### 基础
 
-Running Cypress in Continuous Integration is almost the same as running it
-locally in your terminal. You generally only need to do two things:
+在持续集成中运行Cypress与在本地终端运行几乎相同。通常只需要做两件事：
 
-1. **Install Cypress**
+1. **安装Cypress**
 
 <CypressInstallCommands />
 
-2. **Run Cypress**
+2. **运行Cypress**
 
 <CypressRunCommands />
 
-Depending on which CI provider you use, you may need a config file. You'll want
-to refer to your CI provider's documentation to know where to add the commands
-to install and run Cypress. For more configuration examples check out our
-[examples](/app/continuous-integration/overview#CI-Examples).
+根据使用的CI提供商，可能需要配置文件。请参考CI提供商的文档了解在何处添加安装和运行Cypress的命令。更多配置示例请查看我们的[示例](/app/continuous-integration/overview#CI-Examples)。
 
-### Boot your server
+### 启动服务器
 
-#### Challenges
+#### 挑战
 
-Typically you will need to boot a local server prior to running Cypress. When
-you boot your web server, it runs as a **long running process** that will never
-exit. Because of this, you'll need it to run in the **background** - else your
-CI provider will never move onto the next command.
+通常需要在运行Cypress之前启动本地服务器。启动Web服务器时，它会作为一个**长时间运行的进程**持续运行。因此，需要让它在**后台**运行，否则CI提供商将无法执行后续命令。
 
-Backgrounding your server process means that your CI provider will continue to
-execute the next command after executing the signal to start your server.
+将服务器进程放在后台意味着CI提供商在发出启动服务器的信号后会继续执行下一条命令。
 
-Many people approach this situation by running a command like the following:
+许多人会使用类似以下的命令：
 
 ```shell
-npm start & cypress run // Do not do this
+npm start & cypress run // 不要这样做
 ```
 
-The problem is - what happens if your server takes time to boot? There is no
-guarantee that when the next command runs (`cypress run`) that your web server
-is up and available. So your Cypress test may start and try to visit your local
-server before it is ready to be visited.
+问题在于——如果服务器需要时间启动怎么办？无法保证下一条命令(`cypress run`)运行时Web服务器已经启动并可用。因此，Cypress测试可能在服务器准备就绪前就开始尝试访问本地服务器。
 
-#### Solutions
+#### 解决方案
 
-Luckily, there are some solutions for this. Instead of introducing arbitrary
-waits (like `sleep 20`) you can use a better option.
+幸运的是，有一些解决方案可以解决这个问题。与其引入任意等待(如`sleep 20`)，可以使用更好的选择。
 
-**`wait-on` module**
+**`wait-on`模块**
 
-Using the [wait-on](https://github.com/jeffbski/wait-on) module, you can block
-the `cypress run` command from executing until your server has booted.
+使用[wait-on](https://github.com/jeffbski/wait-on)模块，可以阻塞`cypress run`命令的执行，直到服务器启动完成。
 
 ```shell
 npm start & wait-on http://localhost:8080
@@ -95,19 +82,15 @@ cypress run
 
 :::info
 
-Most CI providers will automatically kill background processes so you don't have
-to worry about cleaning up your server process once Cypress finishes.
+大多数CI提供商会自动终止后台进程，因此无需担心在Cypress完成后清理服务器进程。
 
-However, if you're running this script locally you'll have to do a bit more work
-to collect the backgrounded PID and then kill it after `cypress run`.
+但如果要在本地运行此脚本，则需要更多工作来收集后台PID并在`cypress run`后终止它。
 
 :::
 
-**`start-server-and-test` module**
+**`start-server-and-test`模块**
 
-If the server takes a very long time to start, we recommend trying the
-[start-server-and-test](https://github.com/bahmutov/start-server-and-test)
-module.
+如果服务器启动时间非常长，我们建议尝试[start-server-and-test](https://github.com/bahmutov/start-server-and-test)模块。
 
 <Tabs>
   <TabItem value="npm">
@@ -133,8 +116,7 @@ module.
   </TabItem>
 </Tabs>
 
-In your `package.json` scripts, pass the command to boot your server, the url
-your server is hosted on and your Cypress test command.
+在`package.json`的scripts中，传递启动服务器的命令、服务器托管的URL和Cypress测试命令。
 
 ```json
 {
@@ -146,16 +128,11 @@ your server is hosted on and your Cypress test command.
 }
 ```
 
-In the example above, the `cy:run` command will only be executed when the URL
-`http://localhost:3030` responds with an HTTP status code of 200. The server
-will also shut down when the tests complete.
+在上面的示例中，`cy:run`命令只有在URL`http://localhost:3030`返回HTTP状态码200时才会执行。测试完成后服务器也会关闭。
 
-#### Gotchas
+#### 注意事项
 
-When
-[working with `webpack-dev-server`](https://github.com/bahmutov/start-server-and-test#note-for-webpack-dev-server-users)
-that does not respond to `HEAD` requests, use an explicit `GET` method to ping
-the server like this:
+当[使用`webpack-dev-server`](https://github.com/bahmutov/start-server-and-test#note-for-webpack-dev-server-users)且不响应`HEAD`请求时，使用显式的`GET`方法ping服务器：
 
 ```json
 {
@@ -165,8 +142,7 @@ the server like this:
 }
 ```
 
-When working with local `https` in webpack, set an environment variable to allow
-local certificate:
+当在webpack中使用本地`https`时，设置环境变量以允许本地证书：
 
 ```json
 {
@@ -178,203 +154,156 @@ local certificate:
 }
 ```
 
-### Record tests
+### 录制测试
 
-Cypress can record your tests and make the results available in
-[Cypress Cloud](/cloud/get-started/introduction). Cloud gives you access to recorded
-tests - typically when running Cypress tests from your
-[CI provider](/app/continuous-integration/overview) - and provides you
-insight into what happened when your tests ran.
+Cypress可以录制测试并将结果保存在[Cypress Cloud](/cloud/get-started/introduction)中。Cloud让你可以访问录制的测试——通常在[CI提供商](/app/continuous-integration/overview)中运行Cypress测试时——并提供测试运行时的详细信息。
 
-#### Recording tests allow you to:
+#### 录制测试可以让你：
 
-- See the number of failed, pending and passing tests.
-- Get the entire stack trace of failed tests.
-- View screenshots taken when tests fail and when using
-  [`cy.screenshot()`](/api/commands/screenshot).
-- Watch a video of your entire test run or a clip at the point of test failure
-  when the `video` configuration is enabled.
-- See which machines ran each test when
-  [parallelized](/cloud/features/smart-orchestration/parallelization).
+- 查看失败、挂起和通过的测试数量。
+- 获取失败测试的完整堆栈跟踪。
+- 查看测试失败时和使用[`cy.screenshot()`](/api/commands/screenshot)时截取的屏幕截图。
+- 当`video`配置启用时，观看整个测试运行的视频或测试失败时的片段。
+- 查看[并行化](/cloud/features/smart-orchestration/parallelization)时每台机器运行的测试。
 
-#### To record tests:
+#### 录制测试步骤：
 
-1. [Set up your project to record](/cloud/get-started/setup#Setup)
-2. [Pass the `--record` flag to `cypress run`](/app/references/command-line#cypress-run)
-   within CI.
+1. [设置项目以录制](/cloud/get-started/setup#Setup)
+2. [在CI中向`cypress run`传递`--record`标志](/app/references/command-line#cypress-run)。
 
 ```shell
 cypress run --record --key=abc123
 ```
 
-[Read the full guide on the Cypress Cloud.](/cloud/get-started/introduction)
+[阅读Cypress Cloud的完整指南。](/cloud/get-started/introduction)
 
-### Run tests in parallel
+### 并行运行测试
 
-Cypress can run tests in parallel across multiple machines.
+Cypress可以在多台机器上并行运行测试。
 
-You'll want to refer to your CI provider's documentation on how to set up
-multiple machines to run in your CI environment.
+需要参考CI提供商的文档了解如何在CI环境中设置多台机器。
 
-Once multiple machines are available within your CI environment, you can pass
-the [--parallel](/app/references/command-line#cypress-run-parallel) flag to have
-your tests run in parallel.
+一旦CI环境中有多台机器可用，可以传递[--parallel](/app/references/command-line#cypress-run-parallel)标志使测试并行运行。
 
 ```shell
 cypress run --record --key=abc123 --parallel
 ```
 
-[Read the full guide on parallelization.](/cloud/features/smart-orchestration/parallelization)
+[阅读并行化的完整指南。](/cloud/features/smart-orchestration/parallelization)
 
-## Cypress Docker Images
+## Cypress Docker镜像
 
-CI providers, such as [GitHub Actions](https://docs.github.com/en/actions/using-jobs/running-jobs-in-a-container) and
-[CircleCI](https://circleci.com/docs/executor-intro/#docker), allow workflows to run using
-[Docker container images](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/).
+CI提供商，如[GitHub Actions](https://docs.github.com/en/actions/using-jobs/running-jobs-in-a-container)和[CircleCI](https://circleci.com/docs/executor-intro/#docker)，允许使用[Docker容器镜像](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/)运行工作流。
 
-Cypress supports the use of [Docker](https://docs.docker.com/get-started/docker-overview/)
-through the provisioning of official [Cypress Docker images](https://github.com/cypress-io/cypress-docker-images).
-Images are Linux-based and support the following platforms:
+Cypress通过提供官方[Cypress Docker镜像](https://github.com/cypress-io/cypress-docker-images)支持Docker的使用。镜像是基于Linux的，支持以下平台：
 
 - Linux/amd64
 - Linux/arm64
 
-Cypress Docker images provide a consistent environment tailored for use with Cypress.
-By choosing an appropriate Cypress Docker image, you determine the exact environment that your Cypress tests run in.
-This allows you to shield your workflows from version updates made by your CI provider,
-for instance if they update Node.js or browser versions.
+Cypress Docker镜像提供了专为Cypress使用而定制的稳定环境。通过选择合适的Cypress Docker镜像，可以确定运行Cypress测试的确切环境。这样可以屏蔽CI提供商所做的版本更新，例如如果他们更新了Node.js或浏览器版本。
 
-Cypress Docker images are available from:
+Cypress Docker镜像可从以下位置获取：
 
 - [Docker Hub](https://hub.docker.com/u/cypress)
 - [Amazon ECR (Elastic Container Registry) Public Gallery](https://gallery.ecr.aws/cypress-io)
 
-### Cypress Docker variants
+### Cypress Docker变体
 
-- [cypress/base](https://github.com/cypress-io/cypress-docker-images/tree/master/base) is the entry-level Cypress Docker image, allowing you to test in the Electron browser, built in to Cypress.
-  It contains a complete Linux (Debian) operating system, together with the
-  [prerequisite operating system packages](/app/get-started/install-cypress#UbuntuDebian) for Cypress,
-  Node.js, npm and Yarn v1 Classic.
-  An image `<tag>` gives you the choice of Node.js version.
+- [cypress/base](https://github.com/cypress-io/cypress-docker-images/tree/master/base)是入门级的Cypress Docker镜像，允许在Cypress内置的Electron浏览器中进行测试。它包含完整的Linux (Debian)操作系统，以及Cypress的[必备操作系统包](/app/get-started/install-cypress#UbuntuDebian)、Node.js、npm和Yarn v1 Classic。镜像`<tag>`可以选择Node.js版本。
 
-- [cypress/browsers](https://github.com/cypress-io/cypress-docker-images/tree/master/browsers) builds on the
-  [cypress/base](https://github.com/cypress-io/cypress-docker-images/tree/master/base) image.
-  For `Linux/amd64` images it adds **Chrome**, **Firefox** and **Edge** browsers.
-  For `Linux/arm64` images it adds only **Firefox** browsers from version `136.0.2` and above.
-  Chrome and Edge browsers are currently not available for `Linux/arm64`.
-  A corresponding image `<tag>` allows selection of the combined Node.js and browser versions.
-  The version tags for the unavailable Chrome and Edge browsers on the `Linux/arm64` platform are empty place-holders only,
-  required for multi-platform support compatibility.
+- [cypress/browsers](https://github.com/cypress-io/cypress-docker-images/tree/master/browsers)基于[cypress/base](https://github.com/cypress-io/cypress-docker-images/tree/master/base)镜像构建。对于`Linux/amd64`镜像，它添加了**Chrome**、**Firefox**和**Edge**浏览器。对于`Linux/arm64`镜像，仅从版本`136.0.2`及以上添加了**Firefox**浏览器。Chrome和Edge浏览器目前不适用于`Linux/arm64`。相应的镜像`<tag>`可以选择Node.js和浏览器的组合版本。对于`Linux/arm64`平台上不可用的Chrome和Edge浏览器，版本标签仅为占位符，用于多平台支持兼容性。
 
-- [cypress/included](https://github.com/cypress-io/cypress-docker-images/tree/master/included) builds on the
-  [cypress/browsers](https://github.com/cypress-io/cypress-docker-images/tree/master/browsers) image.
-  It adds a fixed version of **Cypress**, globally installed by npm.
-  A short-form image `<tag>` selects the version of Cypress.
-  A corresponding long-form `<tag>` selects the version of Cypress and documents the combined Node.js and browser versions.
+- [cypress/included](https://github.com/cypress-io/cypress-docker-images/tree/master/included)基于[cypress/browsers](https://github.com/cypress-io/cypress-docker-images/tree/master/browsers)镜像构建。它添加了固定版本的**Cypress**，通过npm全局安装。短格式镜像`<tag>`选择Cypress版本。相应的长格式`<tag>`选择Cypress版本并记录Node.js和浏览器的组合版本。
 
-- [cypress/factory](https://github.com/cypress-io/cypress-docker-images/tree/master/factory)
-  provides the base operating system image and allows individual selection of other components
-  by version. It is used to generate customized Docker images.
+- [cypress/factory](https://github.com/cypress-io/cypress-docker-images/tree/master/factory)提供基础操作系统镜像，并允许按版本单独选择其他组件。用于生成自定义Docker镜像。
 
-### CI Docker examples
+### CI Docker示例
 
-You can find examples that use Cypress Docker images below
+可以在下面找到使用Cypress Docker镜像的示例
 
-- [cypress-docker-images examples](https://github.com/cypress-io/cypress-docker-images/blob/master/README.md#examples)
-- [cypress-example-kitchensink](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/README.md).
+- [cypress-docker-images示例](https://github.com/cypress-io/cypress-docker-images/blob/master/README.md#examples)
+- [cypress-example-kitchensink](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/README.md)。
 - [Real World App - CircleCI](https://github.com/cypress-io/cypress-realworld-app/blob/develop/.circleci/config.yml)
 - [Real World App - GitHub Actions](https://github.com/cypress-io/cypress-realworld-app/blob/develop/.github/workflows/main.yml)
 - [cypress-docker-images - GitHub Actions](https://github.com/cypress-io/cypress-docker-images/blob/master/.github/workflows/example-cypress-github-action.yml)
 
-## CI Examples
+## CI示例
 
 ### AppVeyor
 
-- [Basic Example (appveyor.yml)](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/appveyor.yml)
+- [基础示例 (appveyor.yml)](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/appveyor.yml)
 
 ### AWS Amplify Console
 
-- [Basic Example (amplify.yml)](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/amplify.yml)
+- [基础示例 (amplify.yml)](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/amplify.yml)
 
 ### AWS CodeBuild
 
-Read our extensive guide on how to set up Cypress in [AWS CodeBuild](/app/continuous-integration/aws-codebuild).
+阅读我们关于如何在[AWS CodeBuild](/app/continuous-integration/aws-codebuild)中设置Cypress的详细指南。
 
 ### Azure Pipelines
 
-- [Basic Example (azure-ci.yml)](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/basic/azure-ci.yml)
-- [Parallelized Example (azure-ci.yml)](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/azure-ci.yml)
+- [基础示例 (azure-ci.yml)](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/basic/azure-ci.yml)
+- [并行化示例 (azure-ci.yml)](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/azure-ci.yml)
 
 ### Bitbucket Pipelines
 
-Read our extensive guide on how to set up Cypress in [Bitbucket Pipelines](/app/continuous-integration/bitbucket-pipelines).
+阅读我们关于如何在[Bitbucket Pipelines](/app/continuous-integration/bitbucket-pipelines)中设置Cypress的详细指南。
 
 ### CircleCI
 
-Read our extensive guide on how to set up Cypress in [CircleCI](/app/continuous-integration/circleci).
+阅读我们关于如何在[CircleCI](/app/continuous-integration/circleci)中设置Cypress的详细指南。
 
 ### Buildkite
 
-- [Parallel Example](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/.buildkite/pipeline.yml)
+- [并行示例](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/.buildkite/pipeline.yml)
 
 ### CodeShip Pro
 
-- [Basic](https://github.com/cypress-io/cypress-example-kitchensink/tree/master/basic/codeship-pro)
-- [Parallel codeship-steps.yml](https://github.com/cypress-io/cypress-example-kitchensink/tree/master/codeship-steps.yml)
-- [Parallel codeship-services.yml](https://github.com/cypress-io/cypress-example-kitchensink/tree/master/codeship-services.yml)
+- [基础](https://github.com/cypress-io/cypress-example-kitchensink/tree/master/basic/codeship-pro)
+- [并行 codeship-steps.yml](https://github.com/cypress-io/cypress-example-kitchensink/tree/master/codeship-steps.yml)
+- [并行 codeship-services.yml](https://github.com/cypress-io/cypress-example-kitchensink/tree/master/codeship-services.yml)
 
 ### GitHub Actions
 
-Read our extensive guide on how to set up Cypress in [GitHub Actions](/app/continuous-integration/github-actions).
+阅读我们关于如何在[GitHub Actions](/app/continuous-integration/github-actions)中设置Cypress的详细指南。
 
 ### GitLab
 
-Read our extensive guide on how to set up Cypress in [GitLab](/app/continuous-integration/gitlab-ci).
+阅读我们关于如何在[GitLab](/app/continuous-integration/gitlab-ci)中设置Cypress的详细指南。
 
 ### Jenkins
 
-- [Basic Jenkinsfile](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/basic/Jenkinsfile)
-- [Parallel Jenkinsfile](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/Jenkinsfile)
+- [基础 Jenkinsfile](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/basic/Jenkinsfile)
+- [并行 Jenkinsfile](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/Jenkinsfile)
 
 ### Netlify
 
-We recommend using our official
-[netlify-plugin-cypress](https://github.com/cypress-io/netlify-plugin-cypress)
-to execute end-to-end tests before and after deployment to Netlify platform.
-Read our tutorial
-[Run Cypress Tests on Netlify Using a Single Line](https://cypress.io/blog/2020/03/30/run-cypress-tests-on-netlify-using-a-single-line/).
+我们推荐使用官方的[netlify-plugin-cypress](https://github.com/cypress-io/netlify-plugin-cypress)在部署到Netlify平台前后执行端到端测试。阅读我们的教程[使用一行代码在Netlify上运行Cypress测试](https://cypress.io/blog/2020/03/30/run-cypress-tests-on-netlify-using-a-single-line/)。
 
 ### Semaphore
 
-- [Basic .semaphore.yml](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/basic/.semaphore.yml)
-- [Parallel .semaphore.yml](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/.semaphore/semaphore.yml)
+- [基础 .semaphore.yml](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/basic/.semaphore.yml)
+- [并行 .semaphore.yml](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/.semaphore/semaphore.yml)
 
 ### TravisCI
 
-- [Basic .travis.yml](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/basic/.travis.yml)
-- [Parallel .travis.yml](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/.travis.yml)
+- [基础 .travis.yml](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/basic/.travis.yml)
+- [并行 .travis.yml](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/.travis.yml)
 
-## Advanced setup
+## 高级设置
 
-### Machine requirements
+### 机器要求
 
-Hardware requirements to run Cypress depend how much memory the browser, the
-application under test, and the server (if running it locally) need to run the
-tests without crashing. Visit our
-[System Requirements](/app/get-started/install-cypress#System-requirements)
-guide for minimum hardware recommendations.
+运行Cypress的硬件要求取决于浏览器、被测应用程序和服务器(如果在本地运行)运行测试所需的内存，以避免崩溃。访问我们的[系统要求](/app/get-started/install-cypress#System-requirements)指南获取最低硬件推荐。
 
-**Some signs that your machine may not have enough CPU or memory to run
-Cypress:**
+**一些迹象表明机器可能没有足够的CPU或内存运行Cypress：**
 
-- The recorded video artifacts have random pauses or dropped frames.
-- [Debug logs of the CPU and memory](/app/references/troubleshooting#Log-memory-and-CPU-usage)
-  frequently show CPU percent above 100%.
-- The browser crashes.
+- 录制的视频工件有随机暂停或丢帧。
+- [CPU和内存的调试日志](/app/references/troubleshooting#Log-memory-and-CPU-usage)频繁显示CPU百分比超过100%。
+- 浏览器崩溃。
 
-You can see the total available machine memory and the current free memory by
-running the [`cypress info`](/app/references/command-line#cypress-info)
-command.
+可以通过运行[`cypress info`](/app/references/command-line#cypress-info)命令查看机器的总可用内存和当前空闲内存。
 
 {/* hack: using css language label to respect decimals in syntax highlighting */}
 
@@ -386,8 +315,7 @@ System Platform: linux (Debian - 11.6)
 System Memory: 73.6 GB free 48.6 GB
 ```
 
-You can see the CPU parameters on the CI machines by executing the command
-below.
+可以通过以下命令查看CI机器上的CPU参数。
 
 ```shell
 node -p 'os.cpus()'
@@ -401,79 +329,50 @@ node -p 'os.cpus()'
 ]
 ```
 
-**Example projects and the machine configurations used to run them on CI:**
+**示例项目及其在CI上运行的机器配置：**
 
-- The [Real World App](https://github.com/cypress-io/cypress-realworld-app)
-  project runs tests on a CircleCI machine using the
-  [Docker executor](https://circleci.com/docs/executor-intro/#docker) with
-  [`resource_class: large`](https://circleci.com/docs/configuration-reference/#docker-execution-environment)
-  providing 4 vCPUs and 8 GB of RAM. `cypress info` reports
-  `System Memory: 73.6 GB free 48.6 GB`.
-- The [Real World App](https://github.com/cypress-io/cypress-realworld-app) project also
-  executes its tests on
-  [GitHub Actions](https://docs.github.com/en/actions) using the
-  [Cypress GitHub Action](https://github.com/cypress-io/github-action) with the
-  [standard Ubuntu GitHub-hosted runner for Public repositories](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners)
-  providing 4 vCPUs and 16 GB of RAM. `cypress info` reports
-  `System Memory: 16.8 GB free 15.5 GB` with CPUs reported as
-  `AMD EPYC 7763 64-Core Processor`.
+- [Real World App](https://github.com/cypress-io/cypress-realworld-app)项目在CircleCI机器上使用[Docker执行器](https://circleci.com/docs/executor-intro/#docker)和[`resource_class: large`](https://circleci.com/docs/configuration-reference/#docker-execution-environment)运行测试，提供4个vCPU和8GB RAM。`cypress info`报告`System Memory: 73.6 GB free 48.6 GB`。
+- [Real World App](https://github.com/cypress-io/cypress-realworld-app)项目也在[GitHub Actions](https://docs.github.com/en/actions)上使用[Cypress GitHub Action](https://github.com/cypress-io/github-action)和[公共仓库的标准Ubuntu GitHub托管运行器](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners)执行测试，提供4个vCPU和16GB RAM。`cypress info`报告`System Memory: 16.8 GB free 15.5 GB`，CPU报告为`AMD EPYC 7763 64-Core Processor`。
 
-**Tip:** if there are problems with longer specs, try splitting them into
-shorter ones.
+**提示：**如果较长规格的测试有问题，尝试将它们拆分为较短的规格。
 
-### Dependencies
+### 依赖项
 
-Cypress runs on many CI providers' virtual machine environments out-of-the-box without needing additional dependencies installed.
+Cypress可以在许多CI提供商的虚拟机环境中开箱即用，无需安装额外的依赖项。
 
 #### Linux
 
-If you see a message about a missing dependency when you run Cypress in a Linux CI environment, then refer to the [Linux Prerequisites](/app/get-started/install-cypress#Linux-Prerequisites) lists for guidance.
+如果在Linux CI环境中运行Cypress时看到缺少依赖项的消息，请参考[Linux先决条件](/app/get-started/install-cypress#Linux-Prerequisites)列表获取指导。
 
-### Caching
+### 缓存
 
-Cypress downloads its binary to the global system cache - on Linux that is
-`~/.cache/Cypress`. By ensuring this cache persists across builds you can save
-minutes off install time by preventing a large binary download.
+Cypress将其二进制文件下载到全局系统缓存——在Linux上是`~/.cache/Cypress`。通过确保此缓存在构建之间持久化，可以避免大型二进制文件下载，从而节省安装时间。
 
-#### We recommend users:
+#### 我们建议用户：
 
-- Cache the `~/.cache` folder after running `npm install`, `yarn`,
-  [`npm ci`](https://docs.npmjs.com/cli/ci) or equivalents as demonstrated in
-  the configs below.
+- 在运行`npm install`、`yarn`、[`npm ci`](https://docs.npmjs.com/cli/ci)或等效命令后缓存`~/.cache`文件夹，如下面的配置所示。
 
-- **Do not** cache `node_modules` across builds. This bypasses more intelligent
-  caching packaged with `npm` or `yarn`, and can cause issues with Cypress not
-  downloading the Cypress binary on `npm install`.
+- **不要**在构建之间缓存`node_modules`。这会绕过`npm`或`yarn`提供的更智能的缓存，并可能导致Cypress在`npm install`时不下载Cypress二进制文件的问题。
 
-- If you are using `npm install` in your build process, consider
-  [switching to `npm ci`](https://blog.npmjs.org/post/171556855892/introducing-npm-ci-for-faster-more-reliable)
-  and caching the `~/.npm` directory for a faster and more reliable build.
+- 如果在构建过程中使用`npm install`，考虑[切换到`npm ci`](https://blog.npmjs.org/post/171556855892/introducing-npm-ci-for-faster-more-reliable)并缓存`~/.npm`目录以获得更快更可靠的构建。
 
-- If you are using `yarn`, caching `~/.cache` will include both the `yarn` and
-  Cypress caches. Consider using `yarn install --frozen-lockfile` as an
-  [`npm ci`](https://docs.npmjs.com/cli/ci) equivalent.
+- 如果使用`yarn`，缓存`~/.cache`将包括`yarn`和Cypress缓存。考虑使用`yarn install --frozen-lockfile`作为[`npm ci`](https://docs.npmjs.com/cli/ci)的等效命令。
 
-- If you need to override the binary location for some reason, use
-  [CYPRESS_CACHE_FOLDER](/app/references/advanced-installation#Binary-cache)
-  environment variable.
+- 如果出于某种原因需要覆盖二进制文件位置，使用[CYPRESS_CACHE_FOLDER](/app/references/advanced-installation#Binary-cache)环境变量。
 
-- Make sure you are not restoring the previous cache using lax keys; then the
-  Cypress binaries can "snowball".
+- 确保没有使用宽松的键恢复先前的缓存；否则Cypress二进制文件可能会"滚雪球"。
 
-**Tip:** you can find lots of CI examples with configured caching in our
-[cypress-example-kitchensink](https://github.com/cypress-io/cypress-example-kitchensink#ci-status)
-repository.
+**提示：**可以在我们的[cypress-example-kitchensink](https://github.com/cypress-io/cypress-example-kitchensink#ci-status)仓库中找到许多配置了缓存的CI示例。
 
-### Environment variables
+### 环境变量
 
-You can set various environment variables to modify how Cypress runs.
+可以设置各种环境变量来修改Cypress的运行方式。
 
-#### Configuration Values
+#### 配置值
 
-You can set any configuration value as an environment variable. This overrides
-values in the Cypress configuration.
+可以将任何配置值设置为环境变量。这会覆盖Cypress配置中的值。
 
-**_Typical use cases would be modifying things like:_**
+**_典型用例是修改以下内容：_**
 
 - `CYPRESS_BASE_URL`
 - `CYPRESS_VIDEO`
@@ -481,101 +380,80 @@ values in the Cypress configuration.
 - `CYPRESS_REPORTER`
 - `CYPRESS_INSTALL_BINARY`
 
-Refer to the
-[Environment Variables recipe](/app/references/configuration#Environment-Variables)
-for more examples.
+参考[环境变量配方](/app/references/configuration#Environment-Variables)获取更多示例。
 
-**_Record Key_**
+**_录制密钥_**
 
-If you are [recording your runs](#Record-tests) on a public project, you'll want
-to protect your Record Key.
-[Learn why.](/cloud/account-management/projects#Identification)
+如果在公共项目上[录制运行](#Record-tests)，需要保护录制密钥。[了解原因。](/cloud/account-management/projects#Identification)
 
-Instead of hard coding it into your run command like this:
+与其像这样硬编码到运行命令中：
 
 ```shell
 cypress run --record --key abc-key-123
 ```
 
-You can set the record key as the environment variable, `CYPRESS_RECORD_KEY`,
-and we'll automatically use that value. You can now omit the `--key` flag when
-recording.
+可以将录制密钥设置为环境变量`CYPRESS_RECORD_KEY`，我们会自动使用该值。现在录制时可以省略`--key`标志。
 
 ```shell
 cypress run --record
 ```
 
-Typically you'd set this inside of your CI provider.
+通常在CI提供商中设置此值。
 
-**_CircleCI Environment Variable_**
+**_CircleCI环境变量_**
 
 <DocsImage
   src="/img/app/continuous-integration/cypress-record-key-as-environment-variable.png"
-  alt="Record key environment variable"
+  alt="录制密钥环境变量"
 />
 
-**_TravisCI Environment Variable_**
+**_TravisCI环境变量_**
 
 <DocsImage
   src="/img/app/continuous-integration/cypress-record-key-as-env-var-travis.png"
-  alt="Travis key environment variable"
+  alt="Travis密钥环境变量"
 />
 
-#### Git information
+#### Git信息
 
-Cypress uses the
-[@cypress/commit-info](https://github.com/cypress-io/commit-info) package to
-extract git information to associate with the run (e.g. branch, commit message,
-author).
+Cypress使用[@cypress/commit-info](https://github.com/cypress-io/commit-info)包提取与运行关联的git信息(例如分支、提交消息、作者)。
 
-It assumes there is a `.git` folder and uses Git commands to get each property,
-like `git show -s --pretty=%B` to get commit message, see
-[src/git-api.js](https://github.com/cypress-io/commit-info/blob/master/src/git-api.js).
+它假设存在`.git`文件夹并使用Git命令获取每个属性，如`git show -s --pretty=%B`获取提交消息，参见[src/git-api.js](https://github.com/cypress-io/commit-info/blob/master/src/git-api.js)。
 
-Under some environment setups (e.g. `docker`/`docker-compose`) if the `.git`
-directory is not available or mounted, you can pass all git related information
-under custom environment variables.
+在某些环境设置下(例如`docker`/`docker-compose`)，如果`.git`目录不可用或未挂载，可以通过自定义环境变量传递所有git相关信息。
 
-- Branch: `COMMIT_INFO_BRANCH`
-- Message: `COMMIT_INFO_MESSAGE`
-- Author email: `COMMIT_INFO_EMAIL`
-- Author: `COMMIT_INFO_AUTHOR`
-- SHA: `COMMIT_INFO_SHA`
-- Remote: `COMMIT_INFO_REMOTE`
+- 分支：`COMMIT_INFO_BRANCH`
+- 消息：`COMMIT_INFO_MESSAGE`
+- 作者邮箱：`COMMIT_INFO_EMAIL`
+- 作者：`COMMIT_INFO_AUTHOR`
+- SHA：`COMMIT_INFO_SHA`
+- 远程：`COMMIT_INFO_REMOTE`
 
-If the commit information is missing in the Cypress Cloud run then
-[GitHub Integration](/cloud/integrations/source-control/github) or other
-tasks might not work correctly. To see the relevant Cypress debug logs, set the
-environment variable `DEBUG` on your CI machine and inspect the terminal output
-to see why the commit information is unavailable.
+如果Cypress Cloud运行中缺少提交信息，[GitHub集成](/cloud/integrations/source-control/github)或其他任务可能无法正常工作。要查看相关的Cypress调试日志，在CI机器上设置环境变量`DEBUG`并检查终端输出以了解为什么提交信息不可用。
 
 ```shell
 DEBUG=commit-info,cypress:server:record
 ```
 
-#### CI Build Information
+#### CI构建信息
 
-In some newer CI providers, Cypress can't map the environment variables required
-to link back to builds or pull requests. In this case we provided users some
-environment variables to help pass that information along.
+在一些较新的CI提供商中，Cypress无法映射链接回构建或拉取请求所需的环境变量。在这种情况下，我们为用户提供了一些环境变量来帮助传递这些信息。
 
-- Pull Request Id: `CYPRESS_PULL_REQUEST_ID`
-- Pull Request URL: `CYPRESS_PULL_REQUEST_URL`
-- Build URL: `CYPRESS_CI_BUILD_URL`
+- 拉取请求ID：`CYPRESS_PULL_REQUEST_ID`
+- 拉取请求URL：`CYPRESS_PULL_REQUEST_URL`
+- 构建URL：`CYPRESS_CI_BUILD_URL`
 
-Setting these will allow links within the Cloud run to take you to the
-appropriate place.
+设置这些将允许Cloud运行中的链接带你到适当的位置。
 
-#### Custom Environment Variables
+#### 自定义环境变量
 
-You can also set custom environment variables for use in your tests. These
-enable your code to reference dynamic values.
+还可以为测试中使用的自定义环境变量设置动态值。
 
 ```shell
 export "EXTERNAL_API_SERVER=https://corp.acme.co"
 ```
 
-And then in your tests:
+然后在测试中：
 
 ```javascript
 cy.request({
@@ -588,18 +466,13 @@ cy.request({
 })
 ```
 
-Refer to the dedicated
-[Environment Variables Guide](/app/references/environment-variables) for more
-examples.
+参考专门的[环境变量指南](/app/references/environment-variables)获取更多示例。
 
-### Module API
+### 模块API
 
-Oftentimes it can be less complex to programmatically control and boot your
-servers with a Node script.
+通常，使用Node脚本以编程方式控制和启动服务器可能更简单。
 
-If you're using our [Module API](/app/references/module-api) then you can write a
-script that boots and then shuts down the server later. As a bonus, you can work
-with the results and do other things.
+如果使用我们的[模块API](/app/references/module-api)，可以编写一个启动服务器并在稍后关闭的脚本。作为奖励，可以处理结果并做其他事情。
 
 ```js
 // scripts/run-cypress-tests.js
@@ -607,11 +480,11 @@ with the results and do other things.
 const cypress = require('cypress')
 const server = require('./lib/my-server')
 
-// start your server
+// 启动服务器
 return server.start().then(() => {
-  // kick off a cypress run
+  // 启动Cypress运行
   return cypress.run().then((results) => {
-    // stop your server when it's complete
+    // 完成后停止服务器
     return server.stop()
   })
 })
@@ -621,63 +494,45 @@ return server.start().then(() => {
 node scripts/run-cypress-tests.js
 ```
 
-## Common problems and solutions
+## 常见问题及解决方案
 
-### Missing binary
+### 缺少二进制文件
 
-When npm or yarn install the `cypress` package, a `postinstall` hook is executed
-that downloads the platform-specific Cypress binary. If the hook is skipped for
-any reason the Cypress binary will be missing (unless it was already cached).
+当npm或yarn安装`cypress`包时，会执行一个`postinstall`钩子，下载平台特定的Cypress二进制文件。如果钩子因任何原因被跳过，Cypress二进制文件将缺失(除非已经缓存)。
 
-To better diagnose the error, add
-[commands to get information about the Cypress cache](/app/references/command-line#cypress-cache-command)
-to your CI setup. This will print where the binary is located and what versions
-are already present.
+为了更好地诊断错误，在CI设置中添加[获取Cypress缓存信息的命令](/app/references/command-line#cypress-cache-command)。这将打印二进制文件的位置以及已经存在的版本。
 
 ```shell
 npx cypress cache path
 npx cypress cache list
 ```
 
-If the required binary version is not found in the cache, you can try the
-following:
+如果缓存中找不到所需的二进制文件版本，可以尝试以下方法：
 
-1. Clean your CI's cache using your CI's settings to force a clean `npm install`
-   on the next build.
-2. Run the binary install yourself by adding the command `npx cypress install`
-   to your CI script. If there is a binary already present, it should finish
-   quickly.
+1. 使用CI的设置清理缓存，强制在下一次构建时进行干净的`npm install`。
+2. 通过将命令`npx cypress install`添加到CI脚本中自行安装二进制文件。如果已经存在二进制文件，应该会很快完成。
 
 ### Xvfb
 
-When running on Linux, Cypress needs an X11 server; otherwise it spawns its own
-X11 server during the test run. When running several Cypress instances in
-parallel, the spawning of multiple X11 servers at once can cause problems for
-some of them. In this case, you can separately start a single X11 server and
-pass the server's address to each Cypress instance using `DISPLAY` variable.
+在Linux上运行时，Cypress需要一个X11服务器；否则它会在测试运行时生成自己的X11服务器。当并行运行多个Cypress实例时，同时生成多个X11服务器可能会导致其中一些出现问题。在这种情况下，可以单独启动一个X11服务器并使用`DISPLAY`变量将服务器地址传递给每个Cypress实例。
 
-First, spawn the X11 server in the background at some port, for example `:99`.
-If you have installed `xvfb` on Linux or if you are using one of our Docker
-images from
-[cypress-docker-images](https://github.com/cypress-io/cypress-docker-images),
-the tools below should be available.
+首先，在某个端口(例如`:99`)后台生成X11服务器。如果在Linux上安装了`xvfb`或使用[cypress-docker-images](https://github.com/cypress-io/cypress-docker-images)中的Docker镜像之一，以下工具应该可用。
 
 ```shell
 Xvfb :99 &
 ```
 
-Second, set the X11 address in an environment variable
+其次，在环境变量中设置X11地址
 
 ```shell
 export DISPLAY=:99
 ```
 
-Start Cypress as usual
+照常启动Cypress
 
 <CypressRunCommands />
 
-After all tests across all Cypress instances finish, kill the Xvfb background
-process using `pkill`
+在所有Cypress实例的所有测试完成后，使用`pkill`终止Xvfb后台进程
 
 ```shell
 pkill Xvfb
@@ -685,40 +540,30 @@ pkill Xvfb
 
 :::caution
 
-In certain Linux environments, you may experience connection errors with your
-X11 server. In this case, you may need to start Xvfb with the following command:
+在某些Linux环境中，可能会遇到X11服务器的连接错误。在这种情况下，可能需要使用以下命令启动Xvfb：
 
 ```shell
 Xvfb -screen 0 1024x768x24 :99 &
 ```
 
-Cypress internally passes these Xvfb arguments, but if you are spawning your own
-Xvfb, you would need to pass these arguments. This is necessary to avoid using
-8-bit color depth with Xvfb, which will prevent Chrome or Electron from
-crashing.
+Cypress内部传递这些Xvfb参数，但如果自己生成Xvfb，则需要传递这些参数。这对于避免使用Xvfb的8位色深是必要的，这将防止Chrome或Electron崩溃。
 
 :::
 
-### Colors
+### 颜色
 
-If you want colors to be disabled, you can pass the `NO_COLOR` environment
-variable to disable colors. You may want to do this if ASCII characters or
-colors are not properly formatted in your CI.
+如果想禁用颜色，可以传递`NO_COLOR`环境变量。如果ASCII字符或颜色在CI中未正确格式化，可能需要这样做。
 
 ```shell
 NO_COLOR=1 cypress run
 ```
 
-## See also
+## 另请参阅
 
-- [Cypress Real World App](https://github.com/cypress-io/cypress-realworld-app)
-  runs parallelized CI jobs across multiple operating systems, browsers, and
-  viewport sizes.
-- [cypress-example-kitchensink](https://github.com/cypress-io/cypress-example-kitchensink#ci-status)
-  is set up to run on multiple CI providers.
-- [Test Replay](/cloud/features/test-replay)
-- [Cross Browser Testing Guide](/app/guides/cross-browser-testing)
-- [Blog: Setting up Bitbucket Pipelines with proper caching of npm and Cypress](https://www.cypress.io/blog/2018/08/30/setting-up-bitbucket-pipelines-with-proper-caching-of-npm-and-cypress/)
-- [Blog: Record Test Artifacts from any Docker CI](https://www.cypress.io/blog/2018/08/28/record-test-artifacts-from-any-ci/)
-- [Continuous Integration with Cypress](https://www.cypress.io/blog/2019/10/04/webcast-recording-continuous-integration-with-cypress/)
-  webinar covering TeamCity, Travis and CircleCI setups.
+- [Cypress Real World App](https://github.com/cypress-io/cypress-realworld-app)在多个操作系统、浏览器和视口大小上并行运行CI作业。
+- [cypress-example-kitchensink](https://github.com/cypress-io/cypress-example-kitchensink#ci-status)设置为在多个CI提供商上运行。
+- [测试回放](/cloud/features/test-replay)
+- [跨浏览器测试指南](/app/guides/cross-browser-testing)
+- [博客：使用适当的npm和Cypress缓存设置Bitbucket Pipelines](https://www.cypress.io/blog/2018/08/30/setting-up-bitbucket-pipelines-with-proper-caching-of-npm-and-cypress/)
+- [博客：从任何Docker CI录制测试工件](https://www.cypress.io/blog/2018/08/28/record-test-artifacts-from-any-ci/)
+- [使用Cypress进行持续集成](https://www.cypress.io/blog/2019/10/04/webcast-recording-continuous-integration-with-cypress/)网络研讨会，涵盖TeamCity、Travis和CircleCI设置。

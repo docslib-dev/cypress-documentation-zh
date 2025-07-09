@@ -1,6 +1,6 @@
 ---
-title: 'rightclick | Cypress Documentation'
-description: Right click a DOM element in Cypress.
+title: 'rightclick | Cypress 文档'
+description: 在Cypress中右键点击一个DOM元素。
 sidebar_label: rightclick
 slug: /api/commands/rightclick
 ---
@@ -9,20 +9,17 @@ slug: /api/commands/rightclick
 
 # rightclick
 
-Right click a DOM element.
+右键点击一个DOM元素。
 
-It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried) to
-chain further commands that rely on the subject after `.rightclick()`.
+在`.rightclick()`之后继续链式调用依赖该主题的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
 :::caution
 
-`.rightclick()` will not open context menus native to the browser.
-`.rightclick()` should be used to test your app's handling of right click
-related events such as `contextmenu`.
+`.rightclick()`不会打开浏览器原生的上下文菜单。`.rightclick()`应用于测试应用对右键点击相关事件（如`contextmenu`）的处理。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .rightclick()
@@ -33,30 +30,28 @@ related events such as `contextmenu`.
 .rightclick(x, y, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('.menu').rightclick() // Right click on .menu
-cy.focused().rightclick() // Right click on el with focus
-cy.contains('Today').rightclick() // Right click on first el containing 'Today'
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.rightclick('button') // Errors, cannot be chained off 'cy'
-cy.window().rightclick() // Errors, 'window' does not yield DOM element
+cy.get('.menu').rightclick() // 右键点击.menu
+cy.focused().rightclick() // 右键点击获得焦点的元素
+cy.contains('Today').rightclick() // 右键点击第一个包含'Today'的元素
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
+
+```javascript
+cy.rightclick('button') // 错误，不能链式调用'cy'
+cy.window().rightclick() // 错误，'window'不返回DOM元素
+```
+
+### 参数
 
 <Icon name="angle-right" /> **position _(String)_**
 
-The position where the right click should be issued. The `center` position is
-the default position. Valid positions are `topLeft`, `top`, `topRight`, `left`,
-`center`, `right`, `bottomLeft`, `bottom`, and `bottomRight`.
+右键点击的位置。默认位置是`center`。有效位置包括`topLeft`、`top`、`topRight`、`left`、`center`、`right`、`bottomLeft`、`bottom`和`bottomRight`。
 
 <DocsImage
   src="/img/api/coordinates-diagram.jpg"
@@ -65,195 +60,177 @@ the default position. Valid positions are `topLeft`, `top`, `topRight`, `left`,
 
 <Icon name="angle-right" /> **x _(Number)_**
 
-The distance in pixels from the element's left to issue the right click.
+距离元素左侧的像素数，用于指定右键点击的位置。
 
 <Icon name="angle-right" /> **y _(Number)_**
 
-The distance in pixels from the element's top to issue the right click.
+距离元素顶部的像素数，用于指定右键点击的位置。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `.rightclick()`.
+传入一个选项对象以改变`.rightclick()`的默认行为。
 
-| Option                       | Default                                                                     | Description                                                                                                                                     |
+| 选项                       | 默认值                                                                     | 描述                                                                                                                                     |
 | ---------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `altKey`                     | `false`                                                                     | Activates the alt key (option key for Mac). Aliases: `optionKey`.                                                                               |
-| `animationDistanceThreshold` | [`animationDistanceThreshold`](/app/references/configuration#Actionability) | The distance in pixels an element must exceed over time to be [considered animating](/app/core-concepts/interacting-with-elements#Animations).  |
-| `ctrlKey`                    | `false`                                                                     | Activates the control key. Aliases: `controlKey`.                                                                                               |
-| `force`                      | `false`                                                                     | Forces the action, disables [waiting for actionability](#Assertions)                                                                            |
-| `log`                        | `true`                                                                      | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log)                                                             |
-| `metaKey`                    | `false`                                                                     | Activates the meta key (Windows key or command key for Mac). Aliases: `commandKey`, `cmdKey`.                                                   |
-| `multiple`                   | `false`                                                                     | Serially click multiple elements                                                                                                                |
-| `scrollBehavior`             | [`scrollBehavior`](/app/references/configuration#Actionability)             | Viewport position to where an element [should be scrolled](/app/core-concepts/interacting-with-elements#Scrolling) before executing the command |
-| `shiftKey`                   | `false`                                                                     | Activates the shift key.                                                                                                                        |
-| `timeout`                    | [`defaultCommandTimeout`](/app/references/configuration#Timeouts)           | Time to wait for `.rightclick()` to resolve before [timing out](#Timeouts)                                                                      |
-| `waitForAnimations`          | [`waitForAnimations`](/app/references/configuration#Actionability)          | Whether to wait for elements to [finish animating](/app/core-concepts/interacting-with-elements#Animations) before executing the command.       |
+| `altKey`                     | `false`                                                                     | 激活alt键（Mac上是option键）。别名：`optionKey`。                                                                               |
+| `animationDistanceThreshold` | [`animationDistanceThreshold`](/app/references/configuration#Actionability) | 元素随时间必须超过的像素距离，以[被视为动画](/app/core-concepts/interacting-with-elements#Animations)。  |
+| `ctrlKey`                    | `false`                                                                     | 激活control键。别名：`controlKey`。                                                                                               |
+| `force`                      | `false`                                                                     | 强制执行操作，禁用[等待可操作性](#Assertions)                                                                            |
+| `log`                        | `true`                                                                      | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示命令                                                             |
+| `metaKey`                    | `false`                                                                     | 激活meta键（Windows键或Mac上的command键）。别名：`commandKey`、`cmdKey`。                                                   |
+| `multiple`                   | `false`                                                                     | 依次点击多个元素                                                                                                                |
+| `scrollBehavior`             | [`scrollBehavior`](/app/references/configuration#Actionability)             | 在执行命令前，元素[应滚动到的视口位置](/app/core-concepts/interacting-with-elements#Scrolling) |
+| `shiftKey`                   | `false`                                                                     | 激活shift键。                                                                                                                        |
+| `timeout`                    | [`defaultCommandTimeout`](/app/references/configuration#Timeouts)           | 等待`.rightclick()`解析的[超时时间](#Timeouts)                                                                      |
+| `waitForAnimations`          | [`waitForAnimations`](/app/references/configuration#Actionability)          | 是否在执行命令前等待元素[完成动画](/app/core-concepts/interacting-with-elements#Animations)。       |
 
 <HeaderYields />
 
-- `.rightclick()` yields the same subject it was given.
-- It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried)
-  to chain further commands that rely on the subject after `.rightclick()`.
+- `.rightclick()`返回与给定主题相同的主题。
+- 在`.rightclick()`之后继续链式调用依赖该主题的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Right click the menu
+#### 右键点击菜单
 
 ```javascript
 cy.get('#open-menu').rightclick()
 ```
 
-### Position
+### 位置
 
-#### Specify a corner of the element to right click
+#### 指定元素的角落进行右键点击
 
-Right click the top right corner of the DOM element.
+右键点击DOM元素的右上角。
 
 ```javascript
 cy.get('#open-menu').rightclick('topRight')
 ```
 
-### Coordinates
+### 坐标
 
-#### Specify explicit coordinates relative to the top left corner
+#### 指定相对于左上角的明确坐标
 
-The right click below will be issued inside of the element (15px from the left
-and 40px from the top).
+下面的右键点击将在元素内部执行（距离左侧15px，距离顶部40px）。
 
 ```javascript
 cy.get('#open-menu').rightclick(15, 40)
 ```
 
-### Options
+### 选项
 
-#### Force a right click regardless of its actionable state
+#### 强制右键点击，无论其可操作性状态如何
 
-Forcing a right click overrides the
-[actionable checks](/app/core-concepts/interacting-with-elements#Forcing)
-Cypress applies and will automatically fire the events.
+强制右键点击会覆盖Cypress应用的[可操作性检查](/app/core-concepts/interacting-with-elements#Forcing)，并自动触发事件。
 
 ```javascript
 cy.get('#open-menu').rightclick({ force: true })
 ```
 
-#### Force a right click with position argument
+#### 使用位置参数强制右键点击
 
 ```javascript
 cy.get('#open-menu').rightclick('bottomLeft', { force: true })
 ```
 
-#### Force a right click with relative coordinates
+#### 使用相对坐标强制右键点击
 
 ```javascript
 cy.get('#open-menu').rightclick(5, 60, { force: true })
 ```
 
-#### Right click all buttons found on the page
+#### 右键点击页面上找到的所有按钮
 
-By default, Cypress will error if you're trying to right click multiple
-elements. By passing `{ multiple: true }` Cypress will iteratively apply the
-right click to each element and will also log to the
-[Command Log](/app/core-concepts/open-mode#Command-Log) multiple times.
+默认情况下，Cypress会在尝试右键点击多个元素时报错。通过传递`{ multiple: true }`，Cypress会依次对每个元素应用右键点击，并会在[命令日志](/app/core-concepts/open-mode#Command-Log)中多次记录。
 
 ```javascript
 cy.get('.open-menu').rightclick({ multiple: true })
 ```
 
-#### Right click with key combinations
+#### 使用组合键进行右键点击
 
-The `.rightclick()` command may also be fired with key modifiers in order to
-simulate holding key combinations while right clicking, such as
-`ALT + rightclick`.
+`.rightclick()`命令也可以与键修饰符一起触发，以模拟在右键点击时按住组合键，例如`ALT + 右键点击`。
 
 :::info
 
-You can also use key combinations during [.type()](/api/commands/type). This
-offers options to hold down keys across multiple commands. See
-[Key Combinations](/api/commands/type#Key-Combinations) for more information.
+你也可以在[.type()](/api/commands/type)中使用组合键。这提供了在多个命令中按住键的选项。更多信息请参见[键组合](/api/commands/type#Key-Combinations)。
 
 :::
 
-The following key can be combined with `.rightclick()` through the `options`..
+以下键可以通过`options`与`.rightclick()`组合使用。
 
-| Option     | Notes                                                                                         |
+| 选项     | 说明                                                                                         |
 | ---------- | --------------------------------------------------------------------------------------------- |
-| `altKey`   | Activates the alt key (option key for Mac). Aliases: `optionKey`.                             |
-| `ctrlKey`  | Activates the control key. Aliases: `controlKey`.                                             |
-| `metaKey`  | Activates the meta key (Windows key or command key for Mac). Aliases: `commandKey`, `cmdKey`. |
-| `shiftKey` | Activates the shift key.                                                                      |
+| `altKey`   | 激活alt键（Mac上是option键）。别名：`optionKey`。                             |
+| `ctrlKey`  | 激活control键。别名：`controlKey`。                                             |
+| `metaKey`  | 激活meta键（Windows键或Mac上的command键）。别名：`commandKey`、`cmdKey`。 |
+| `shiftKey` | 激活shift键。                                                                      |
 
-##### Command right click
+##### 命令右键点击
 
 ```js
-// execute a CMD + right click on the .menu-item
+// 在.menu-item上执行CMD + 右键点击
 cy.get('.menu-item').rightclick({
   metaKey: true,
 })
 ```
 
-## Notes
+## 注意事项
 
-### Actionability
+### 可操作性
 
-#### The element must first reach actionability
+#### 元素必须首先达到可操作性
 
-`.rightclick()` is an "action command" that follows all the rules of
-[Actionability](/app/core-concepts/interacting-with-elements).
+`.rightclick()`是一个“动作命令”，遵循[可操作性](/app/core-concepts/interacting-with-elements)的所有规则。
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.rightclick()` requires being chained off a command that yields DOM
-  element(s).
+- `.rightclick()`需要链式调用一个返回DOM元素(s)的命令。
 
 <HeaderAssertions />
 
-- `.rightclick()` will automatically wait for the element to reach an
-  [actionable state](/app/core-concepts/interacting-with-elements).
-- `.rightclick()` will automatically
-  [retry](/app/core-concepts/retry-ability) until all chained assertions have
-  passed.
+- `.rightclick()`会自动等待元素达到[可操作状态](/app/core-concepts/interacting-with-elements)。
+- `.rightclick()`会自动[重试](/app/core-concepts/retry-ability)，直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `.rightclick()` can time out waiting for the element to reach an
-  [actionable state](/app/core-concepts/interacting-with-elements).
-- `.rightclick()` can time out waiting for assertions you've added to pass.
+- `.rightclick()`可能会因等待元素达到[可操作状态](/app/core-concepts/interacting-with-elements)而超时。
+- `.rightclick()`可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Right click the DOM element_**
+**_右键点击DOM元素_**
 
 ```javascript
 cy.get('.rightclick-action-div').rightclick()
 ```
 
-The commands above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/rightclick/rightclick-dom-element-in-command-log.png"
-  alt="Command log for right click"
+  alt="右键点击的命令日志"
 />
 
-When clicking on `rightclick` within the command log, the console outputs the
-following:
+当点击命令日志中的`rightclick`时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/rightclick/rightclick-console-log-with-mouse-events.png"
-  alt="console.log for right click"
+  alt="右键点击的console.log"
 />
 
-## History
+## 历史
 
-| Version                                  | Changes                       |
+| 版本                                  | 变更                       |
 | ---------------------------------------- | ----------------------------- |
-| [6.1.0](/app/references/changelog#6-1-0) | Added option `scrollBehavior` |
-| [3.5.0](/app/references/changelog#3-5-0) | `.rightclick()` command added |
+| [6.1.0](/app/references/changelog#6-1-0) | 添加选项`scrollBehavior` |
+| [3.5.0](/app/references/changelog#3-5-0) | 添加`.rightclick()`命令 |
 
-## See also
+## 另请参阅
 
 - [`.click()`](/api/commands/click)
 - [`.dblclick()`](/api/commands/dblclick)

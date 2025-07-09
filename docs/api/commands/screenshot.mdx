@@ -1,6 +1,6 @@
 ---
-title: 'screenshot | Cypress Documentation'
-description: Take a screenshot of the application under test and, optionally, the Cypress Command Log.
+title: 'screenshot | Cypress 文档'
+description: 对被测应用进行截图，并可选择包含Cypress命令日志。
 sidebar_label: screenshot
 ---
 
@@ -8,10 +8,10 @@ sidebar_label: screenshot
 
 # screenshot
 
-Take a screenshot of the application under test and, optionally, the
-[Cypress Command Log](/app/core-concepts/open-mode#Command-Log).
+对被测应用进行截图，并可选择包含
+[Cypress命令日志](/app/core-concepts/open-mode#Command-Log)。
 
-## Syntax
+## 语法
 
 ```javascript
 .screenshot()
@@ -19,7 +19,7 @@ Take a screenshot of the application under test and, optionally, the
 .screenshot(options)
 .screenshot(fileName, options)
 
-// ---or---
+// ---或---
 
 cy.screenshot()
 cy.screenshot(fileName)
@@ -27,130 +27,127 @@ cy.screenshot(options)
 cy.screenshot(fileName, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 cy.screenshot()
 cy.get('.post').screenshot()
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **fileName _(String)_**
 
-A name for the image file. Will be relative to the
-[screenshots folder](/app/references/configuration#Folders--Files) and the
-path to the spec file. When passed a path, the folder structure will be created.
-See the [Naming conventions](/api/commands/screenshot#Naming-conventions) below
-for more.
+图像文件的名称。将相对于
+[截图文件夹](/app/references/configuration#Folders--Files)和
+测试文件路径。当传入路径时，将创建对应的文件夹结构。
+更多信息请参见下面的
+[命名规则](/api/commands/screenshot#Naming-conventions)。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `.screenshot()`.
+传入一个选项对象以改变`.screenshot()`的默认行为。
 
-| Option                       | Default                                                     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| 选项                       | 默认值                                                     | 描述                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | ---------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `log`                        | `true`                                                      | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `blackout`                   | `[]`                                                        | Array of string selectors used to match elements that should be blacked out when the screenshot is taken. Does not apply to `runner` captures.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `capture`                    | `'fullPage'`                                                | Which parts of the Cypress Test Runner to capture. This value is ignored for element screenshot captures. Valid values are `viewport`, `fullPage`, or `runner`. When `viewport`, the application under test is captured in the current viewport. When `fullPage`, the application under test is captured in its entirety from top to bottom. When `runner`, the entire browser viewport, including the Cypress Command Log, is captured. For screenshots automatically taken on test failure, capture is always coerced to `runner`. When [Test Replay](/cloud/features/test-replay) is enabled and the Runner UI is hidden, a `runner` screenshot will not include the Runner UI and will instead capture the application under test only in the current viewport. |
-| `clip`                       | `null`                                                      | Position and dimensions (in pixels) used to crop the final screenshot image. Should have the following shape: `{ x: 0, y: 0, width: 100, height: 100 }`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `disableTimersAndAnimations` | `true`                                                      | When true, prevents JavaScript timers (`setTimeout`, `setInterval`, etc) and CSS animations from running while the screenshot is taken.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `padding`                    | `null`                                                      | Padding used to alter the dimensions of a screenshot of an element. It can either be a number, or an array of up to four numbers [using CSS shorthand notation](https://developer.mozilla.org/en-US/docs/Web/CSS/Shorthand_properties). This property is only applied for element screenshots and is ignored for all other types.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `scale`                      | `false`                                                     | Whether to scale the app to fit into the browser viewport. This is always coerced to `true` when `capture` is `runner`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `timeout`                    | [`responseTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.screenshot()` to resolve before [timing out](#Timeouts)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `overwrite`                  | `false`                                                     | Whether to overwrite duplicate screenshot files with the same file name when saving.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `onBeforeScreenshot`         | `null`                                                      | A callback before a non-failure screenshot is taken. When capturing screenshots of an element, the argument is the element being captured. For other screenshots, the argument is the `document`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `onAfterScreenshot`          | `null`                                                      | A callback after a non-failure screenshot is taken. When capturing screenshots of an element, the first argument is the element being captured. For other screenshots, the first argument is the `document`. The second argument is properties concerning the screenshot, including the `path` it was saved to and the `dimensions` of the saved screenshot.                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `log`                        | `true`                                                      | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `blackout`                   | `[]`                                                        | 字符串选择器数组，用于匹配截图时应被涂黑的元素。不适用于`runner`模式的截图。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `capture`                    | `'fullPage'`                                                | 指定要截取Cypress测试运行器的哪些部分。此值对元素截图无效。有效值为`viewport`、`fullPage`或`runner`。当为`viewport`时，截取被测应用在当前视口中的部分。当为`fullPage`时，截取被测应用从顶部到底部的全部内容。当为`runner`时，截取整个浏览器视口，包括Cypress命令日志。对于测试失败时自动截取的截图，此选项始终强制为`runner`。当启用[Test Replay](/cloud/features/test-replay)且Runner UI被隐藏时，`runner`模式的截图将不包含Runner UI，而是仅截取被测应用在当前视口中的部分。 |
+| `clip`                       | `null`                                                      | 用于裁剪最终截图图像的位置和尺寸（以像素为单位）。应为以下形状：`{ x: 0, y: 0, width: 100, height: 100 }`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `disableTimersAndAnimations` | `true`                                                      | 为true时，在截图期间阻止JavaScript定时器（`setTimeout`、`setInterval`等）和CSS动画运行。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `padding`                    | `null`                                                      | 用于调整元素截图尺寸的内边距。可以是一个数字，或最多四个数字的数组[使用CSS简写表示法](https://developer.mozilla.org/en-US/docs/Web/CSS/Shorthand_properties)。此属性仅适用于元素截图，其他类型的截图将被忽略。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `scale`                      | `false`                                                     | 是否缩放应用以适应浏览器视口。当`capture`为`runner`时，此选项始终强制为`true`。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `timeout`                    | [`responseTimeout`](/app/references/configuration#Timeouts) | 等待`.screenshot()`解析的时长，超过则[超时](#Timeouts)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `overwrite`                  | `false`                                                     | 保存时是否覆盖同名的重复截图文件。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `onBeforeScreenshot`         | `null`                                                      | 在非失败截图前调用的回调函数。当截取元素截图时，参数为被截取的元素。对于其他截图，参数为`document`。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `onAfterScreenshot`          | `null`                                                      | 在非失败截图后调用的回调函数。当截取元素截图时，第一个参数为被截取的元素。对于其他截图，第一个参数为`document`。第二个参数为关于截图的信息，包括保存的`path`和截图的`dimensions`。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 
-For more details on these options and to set some as defaults across all uses of
-`.screenshot()`, see the
-[Cypress.Screenshot API doc](/api/cypress-api/screenshot-api).
+有关这些选项的更多详情以及如何为所有`.screenshot()`调用设置默认值，
+请参阅[Cypress.Screenshot API文档](/api/cypress-api/screenshot-api)。
 
 <HeaderYields />
 
-- `.screenshot()` yields the same subject it was given.
-- It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried)
-  to chain further commands that rely on the subject after `.screenshot()`.
+- `.screenshot()`返回与传入时相同的主题。
+- 在`.screenshot()`之后继续链式调用依赖于主题的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Examples
+## 示例
 
-The screenshot will be stored in the `cypress/screenshots` folder by default.
-You can change the directory where screenshots are saved in the
-[Cypress configuration](/app/references/configuration#Folders--Files).
+截图默认保存在`cypress/screenshots`文件夹中。
+您可以在[Cypress配置](/app/references/configuration#Folders--Files)中更改截图保存的目录。
 
-### No Args
+### 无参数
 
-#### Take a screenshot
+#### 截取截图
 
 ```javascript
 // cypress/e2e/users.cy.js
 
-describe('my tests', () => {
-  it('takes a screenshot', () => {
-    // screenshot will be saved as
-    // cypress/screenshots/users.cy.js/my tests -- takes a screenshot.png
+describe('我的测试', () => {
+  it('截取截图', () => {
+    // 截图将保存为
+    // cypress/screenshots/users.cy.js/我的测试 -- 截取截图.png
     cy.screenshot()
   })
 })
 ```
 
-### Filename
+### 文件名
 
-#### Take a screenshot and save as a specific filename
+#### 截取截图并保存为指定文件名
 
 ```javascript
-// screenshot will be saved as
+// 截图将保存为
 // cypress/screenshots/spec.cy.js/clicking-on-nav.png
 cy.screenshot('clicking-on-nav')
 ```
 
-#### Take a screenshot and save in a specific directory
+#### 截取截图并保存到指定目录
 
 ```javascript
-// screenshot will be saved as
+// 截图将保存为
 // cypress/screenshots/spec.cy.js/actions/login/clicking-login.png
 cy.screenshot('actions/login/clicking-login')
 ```
 
-### Clip
+### 裁剪
 
-#### Crop a screenshot to a specific position and size
+#### 将截图裁剪到指定位置和尺寸
 
 ```javascript
-// screenshot will be clipped 20px from the top and left
-// to the dimensions 400px x 300px
+// 截图将从顶部和左侧各裁剪20px
+// 尺寸为400px x 300px
 cy.screenshot({ clip: { x: 20, y: 20, width: 400, height: 300 } })
 ```
 
-### Screenshot an element
+### 截取元素
 
-#### Take a screenshot of the first `.post` element
+#### 截取第一个`.post`元素的截图
 
 ```javascript
 cy.get('.post').first().screenshot()
 ```
 
-#### Take a screenshot of the first `.post` element with 10px of padding around it
+#### 截取第一个`.post`元素的截图，并添加10px内边距
 
 ```javascript
 cy.get('.post').first().screenshot({ padding: 10 })
 ```
 
-#### Chain off the screenshot to click the element captured
+#### 链式调用截图后点击被截取的元素
 
 ```javascript
 cy.get('button').first().screenshot().click()
 ```
 
-### Get screenshot info from the `onAfterScreenshot` callback
+### 通过`onAfterScreenshot`回调获取截图信息
 
 ```javascript
 cy.screenshot('my-screenshot', {
   onAfterScreenshot($el, props) {
-    // props has information about the screenshot,
-    // including but not limited to the following:
+    // props包含关于截图的信息，
+    // 包括但不限于以下内容：
     // {
     //   name: 'my-screenshot',
     //   path: '/Users/janelane/project/screenshots/spec.cy.js/my-screenshot.png',
@@ -167,50 +164,44 @@ cy.screenshot('my-screenshot', {
 })
 ```
 
-## Notes
+## 注意事项
 
-### Naming conventions
+### 命名规则
 
-Screenshot naming follows these rules:
+截图命名遵循以下规则：
 
-- Screenshots are saved inside the
-  [screenshots folder](/app/core-concepts/writing-and-organizing-tests#Asset-File-Paths).
-  Inside that folder, the screenshot is saved inside a folder structure relative
-  to the path of the spec file, which is adjusted to remove any common ancestor
-  paths shared with all other spec files. Inside this folder, the screenshot
-  will be saved with the test name:
+- 截图保存在[截图文件夹](/app/core-concepts/writing-and-organizing-tests#Asset-File-Paths)内。
+  在该文件夹内，截图保存在相对于测试文件路径的文件夹结构中，此路径会移除与其他测试文件共享的公共祖先路径。在此文件夹内，截图将以测试名称保存：
   `{screenshotsFolder}/{adjustedSpecPath}/{testName}.png`
-- For a named screenshot, the name is used instead of the suites and test name:
+- 对于命名的截图，使用名称代替套件和测试名称：
   `{screenshotsFolder}/{adjustedSpecPath}/{name}.png`
-- For any duplicate screenshots (named or not), they will be appended with a
-  number: `{screenshotsFolder}/{adjustedSpecPath}/{testName} (1).png`.
+- 对于任何重复的截图（无论是否命名），将在名称后附加数字：
+  `{screenshotsFolder}/{adjustedSpecPath}/{testName} (1).png`。
 
 :::info
 
-This behavior can be changed by passing the `{overwrite: true}` option to
-`cy.screenshot()` to explicitly overwrite duplicate screenshots.
+可以通过向`cy.screenshot()`传递`{overwrite: true}`选项来显式覆盖重复的截图。
 
 :::
 
-- For a failure screenshot, the default naming scheme is used and the name is
-  appended with ` (failed)`:
+- 对于失败的截图，使用默认命名方案并在名称后附加` (failed)`：
   ```javascript
   {screenshotsFolder}/{adjustedSpecPath}/{testName} (failed).png
   ```
 
-For example, given a spec file located at `cypress/e2e/users/login.cy.js`:
+例如，给定位于`cypress/e2e/users/login.cy.js`的测试文件：
 
 ```javascript
-describe('my tests', () => {
-  it('takes a screenshot', () => {
-    // NOTE: This file has multiple screenshots
-    // each screenshot has a common ancestor path of `/users/`.
-    // In this scenario `/users/` is stripped from the path.
-    // cypress/screenshots/login.cy.js/my tests -- takes a screenshot.png
+describe('我的测试', () => {
+  it('截取截图', () => {
+    // 注意：此文件包含多个截图
+    // 每个截图都有一个公共祖先路径`/users/`。
+    // 在此场景中，`/users/`将从路径中移除。
+    // cypress/screenshots/login.cy.js/我的测试 -- 截取截图.png
     cy.screenshot()
-    // cypress/screenshots/login.cy.js/my tests -- takes a screenshot (1).png
+    // cypress/screenshots/login.cy.js/我的测试 -- 截取截图 (1).png
     cy.screenshot()
-    // cypress/screenshots/login.cy.js/my tests -- takes a screenshot (2).png
+    // cypress/screenshots/login.cy.js/我的测试 -- 截取截图 (2).png
     cy.screenshot()
 
     // cypress/screenshots/login.cy.js/my-screenshot.png
@@ -220,85 +211,67 @@ describe('my tests', () => {
     // cypress/screenshots/login.cy.js/my/nested/screenshot.png
     cy.screenshot('my/nested/screenshot')
 
-    // if this test fails, the screenshot will be saved to
-    // cypress/screenshots/login.cy.js/my tests -- takes a screenshot (failed).png
+    // 如果此测试失败，截图将保存为
+    // cypress/screenshots/login.cy.js/我的测试 -- 截取截图 (failed).png
   })
 })
 ```
 
 :::info
 
-To learn more about how to write and organize tests and how assets are saved,
-see
-[Writing And Organizing Tests](/app/core-concepts/writing-and-organizing-tests#Asset-Files)
+有关如何编写和组织测试以及如何保存资产的更多信息，
+请参阅[编写和组织测试](/app/core-concepts/writing-and-organizing-tests#Asset-Files)
 
 :::
 
-### `after:screenshot` plugin event
+### `after:screenshot`插件事件
 
-You can get details about any given screenshot and manipulate it after it has
-been written to disk with the
-[`after:screenshot` plugin event](/api/node-events/after-screenshot-api).
+您可以通过[`after:screenshot`插件事件](/api/node-events/after-screenshot-api)
+获取任何给定截图的详细信息并在其写入磁盘后进行操作。
 
-### Test Failures
+### 测试失败
 
-#### Automatic screenshots on test failure
+#### 测试失败时自动截图
 
-When running through `cypress run` or in
-[Continuous Integration](/app/continuous-integration/overview), Cypress
-automatically takes a screenshot when a test fails. You can optionally turn this
-off by setting `screenshotOnRunFailure` to `false` within your
-[`screenshotOnRunFailure`](/app/references/configuration#Screenshots) or
-[Cypress.Screenshot.defaults()](/api/cypress-api/screenshot-api).
+在通过`cypress run`运行或在[持续集成](/app/continuous-integration/overview)中运行时，
+Cypress会在测试失败时自动截图。您可以通过在[`screenshotOnRunFailure`](/app/references/configuration#Screenshots)或
+[Cypress.Screenshot.defaults()](/api/cypress-api/screenshot-api)中
+将`screenshotOnRunFailure`设置为`false`来关闭此功能。
 
-### Viewing Screenshots
+### 查看截图
 
-#### Screenshots in CI
+#### CI中的截图
 
-You can see screenshots taken during a CI run in
-[Cypress Cloud](https://on.cypress.io/cloud) without any extra work.
+您可以在[Cypress Cloud](https://on.cypress.io/cloud)中查看CI运行期间截取的截图，无需额外工作。
 
-Alternatively, to see screenshots in your Continuous Integration UI, most CI
-providers document a way to export the screenshots as artifacts and to make them
-available. Please see their appropriate documentation.
+或者，要在持续集成UI中查看截图，大多数CI提供商都提供了将截图导出为工件并使其可用的方法。请参阅其相应文档。
 
-### Asynchronous
+### 异步性
 
-#### Understanding when the screenshot is taken
+#### 理解截图何时被截取
 
-Taking a screenshot is an asynchronous action that takes around `100ms` to
-complete. By the time the screenshot is taken, _it is possible something in your
-application may have changed_. It is important to realize that the screenshot
-may not reflect what your application looked like 100% when the command was
-issued.
+截图是一个异步操作，大约需要`100ms`完成。在截图完成时，
+_您的应用中可能已发生变化_。重要的是要意识到截图可能不完全反映命令发出时应用的状态。
 
-For example - say a command we wrote timed out:
-[`cy.get('#element')`](/api/commands/get). This causes your test to fail.
-Cypress then automatically takes a screenshot when the test fails, but it is
-possible something in your application changed within this `100ms` timeframe.
-Hypothetically, your app could render the element you were originally expecting
-to be present. When this happens, the screenshot may provide confusing results.
-It is unlikely, but theoretically possible.
+例如 - 假设我们编写的命令超时：
+[`cy.get('#element')`](/api/commands/get)。这会导致测试失败。
+Cypress随后会自动在测试失败时截图，但在这`100ms`的时间范围内，
+您的应用中可能已发生变化。理论上，您的应用可能渲染了最初期望存在的元素。
+当这种情况发生时，截图可能会提供令人困惑的结果。虽然不太可能，但理论上存在这种可能性。
 
-Another potential problem to be aware of is that our own Command Log is using
-React under the hood and only rendering asynchronously during an animation
-frame. It is possible you will see screenshots taken before our Command Log is
-done rendering. This means you may not see the **error displayed** in the
-screenshot. But this is also why we allow taking a video - to show you the
-complete failure.
+另一个需要注意的问题是，我们自己的命令日志在底层使用React，并且仅在动画帧期间异步渲染。
+您可能会看到在命令日志完成渲染之前截取的截图。这意味着您可能**看不到错误显示**在截图中。
+但这也是为什么我们允许录制视频 - 以显示完整的失败过程。
 
-We make our best effort to synchronize taking a screenshot with our renderer,
-but the current state of your application under test could have changed in the
-meantime and not be an accurate representation of what you want to capture.
+我们尽最大努力将截图与渲染器同步，但在此期间被测应用的当前状态可能已发生变化，
+无法准确反映您想要捕获的内容。
 
-### Full page captures and fixed/sticky elements
+### 全页截图和固定/粘性元素
 
-When passing `fullPage` to the `capture` option, Cypress scrolls the application
-under test from top to bottom, takes screenshots at each point and stitches them
-together. Due to this, elements that are `position: fixed` or `position: sticky`
-will appear multiple times in the final screenshot. To prevent this, in most
-cases you can programmatically change the element to be `position: absolute`
-before the screenshot and change it back afterwards like shown below:
+当向`capture`选项传递`fullPage`时，Cypress会从顶部到底部滚动被测应用，
+在每个点截取截图并将它们拼接在一起。因此，`position: fixed`或`position: sticky`的元素
+将在最终截图中多次出现。为防止这种情况，在大多数情况下，您可以在截图前以编程方式将元素更改为`position: absolute`，
+然后在截图后更改回来，如下所示：
 
 ```javascript
 cy.get('.sticky-header').invoke('css', 'position', 'absolute')
@@ -306,71 +279,66 @@ cy.screenshot()
 cy.get('.sticky-header').invoke('css', 'position', null)
 ```
 
-### Chromium-specific behavior with regard to tabs
+### Chromium特定行为与标签页相关
 
-Chromium will not capture screenshots when the renderer process for the Cypress
-tab is paused. This most often happens if a new tab was opened by clicking on
-an anchor with `target="_blank"`. To accommodate capturing screenshots in this
-situation, Cypress will attempt to activate the Cypress tab when a screenshot is
-captured. We make our best effort to activate the tab via our Chromium extension.
-If the extension is disabled, Cypress will force the main tab to the front. This
-will cause the browser to steal focus in open mode. To prevent Cypress from
-stealing focus, [ensure that the extension is enabled](/app/references/troubleshooting#Allow-the-Cypress-Chrome-extension).
+当Cypress标签页的渲染器进程暂停时，Chromium不会截取截图。
+这种情况最常见于通过点击带有`target="_blank"`的锚点打开新标签页时。
+为了适应在此情况下截取截图，Cypress会在截图时尝试激活Cypress标签页。
+我们通过Chromium扩展尽最大努力激活标签页。如果扩展被禁用，
+Cypress会将主标签页强制置前。这会导致浏览器在开放模式下窃取焦点。
+为防止Cypress窃取焦点，[请确保扩展已启用](/app/references/troubleshooting#Allow-the-Cypress-Chrome-extension)。
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.screenshot()` can be chained off of `cy` or off a command that yields a
-  single DOM element.
+- `cy.screenshot()`可以链式调用自`cy`或返回单个DOM元素的命令。
 
 <HeaderAssertions />
 
-- `cy.screenshot()` will only run assertions you have chained once, and will not
-  [retry](/app/core-concepts/retry-ability).
+- `cy.screenshot()`仅会运行您链式调用的一次断言，并且不会
+  [重试](/app/core-concepts/retry-ability)。
 
 <HeaderTimeouts />
 
-- `cy.screenshot()` should never time out.
+- `cy.screenshot()`不应超时。
 
 :::caution
 
-Because `cy.screenshot()` is asynchronous it is technically possible for there
-to be a timeout while talking to the internal Cypress automation APIs. But for
-practical purposes it should never happen.
+由于`cy.screenshot()`是异步的，技术上在与内部Cypress自动化API通信时可能存在超时。
+但出于实际目的，这不应发生。
 
 :::
 
-## Command Log
+## 命令日志
 
-**_Take a screenshot with a specific filename_**
+**_使用特定文件名截取截图_**
 
 ```javascript
 cy.screenshot('my-image')
 ```
 
-The commands above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/screenshot/command-log-shows-name-of-screenshot-taken.png"
-  alt="Command Log screenshot"
+  alt="命令日志截图"
 />
 
-When clicking on `screenshot` within the command log, the console outputs the
-following:
+当点击命令日志中的`screenshot`时，控制台输出以下内容：
 
 <DocsImage
   src="/img/api/screenshot/console-logs-exactly-where-screenshot-was-saved-in-file-system.png"
-  alt="Console Log screenshot"
+  alt="控制台日志截图"
 />
 
-## History
+## 历史
 
-| Version                                  | Changes                             |
+| 版本                                  | 变更                             |
 | ---------------------------------------- | ----------------------------------- |
-| [3.5.0](/app/references/changelog#3-5-0) | Added support for option `padding`. |
+| [3.5.0](/app/references/changelog#3-5-0) | 添加了对`padding`选项的支持。 |
 
-## See also
+## 另请参阅
 
 - [After Screenshot API](/api/node-events/after-screenshot-api)
 - [`Cypress.Screenshot`](/api/cypress-api/screenshot-api)
@@ -378,5 +346,5 @@ following:
 - [`.pause()`](/api/commands/pause)
 - [Cypress Cloud](/cloud/get-started/introduction)
 - [Test Replay](/cloud/features/test-replay)
-- [Screenshots and Videos](/app/guides/screenshots-and-videos)
-- [Visual Testing](/app/tooling/visual-testing)
+- [截图和视频](/app/guides/screenshots-and-videos)
+- [视觉测试](/app/tooling/visual-testing)

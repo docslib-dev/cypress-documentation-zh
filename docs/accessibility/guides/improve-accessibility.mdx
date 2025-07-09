@@ -1,80 +1,80 @@
 ---
-sidebar_label: Improve accessibility
-title: 'Improve Accessibility | Cypress Accessibility Documentation'
-description: 'Discover how to break down accessibility reports, prioritize fixes, and make impactful progress toward accessible software with Cypress Accessibility.'
+sidebar_label: 提升可访问性
+title: '提升可访问性 | Cypress 可访问性文档'
+description: '了解如何使用 Cypress Accessibility 分解可访问性报告、确定修复优先级，并为实现可访问软件取得实质性进展。'
 sidebar_position: 20
 ---
 
 <ProductHeading product="accessibility" />
 
-# Improve accessibility
+# 提升可访问性
 
-This guide explains how to break down accessibility reports and create a focused plan for remediation using Cypress Accessibility.
+本指南介绍如何分解可访问性报告，并使用 Cypress Accessibility 制定有针对性的修复计划。
 
 <DocsImage
   src="/img/accessibility/guides/a11y-standards.png"
-  alt="A list of accessibility rules where some are passing and failing. Two major sections are identified - the passing rules as 'Your current standard', and the failing rules as 'Your issues to address'. Within the failing rules list, 2 rules are called out as 'Your next tasks' because they have the smallest count of elements failing the rule."
+  alt="一份包含通过和未通过规则的可访问性规则列表。其中标出两个主要部分——通过规则为'当前标准'，未通过规则为'待解决问题'。在未通过规则列表中，有2条规则因失败元素数量最少被特别标注为'下一步任务'"
   noBorder={true}
 />
 
-## Starting from Scratch
+## 从零开始
 
-If you're beginning with a legacy application that has many accessibility issues, Cypress Accessibility provides actionable insights to help you prioritize fixes. Use the [Accessibility tab for a run](/accessibility/core-concepts/run-level-reports) to identify violations across pages and components. Although the volume of issues might seem overwhelming, focusing on key factors can guide your approach:
+如果您正在处理一个存在大量可访问性问题的遗留应用程序，Cypress Accessibility 提供的可操作见解能帮助您确定修复优先级。使用[运行的可访问性选项卡](/accessibility/core-concepts/run-level-reports)来识别跨页面和组件的违规情况。尽管问题数量可能令人望而生畏，但关注以下关键因素能指导您的改进方向：
 
-- **Goals**: Define your accessibility objectives.
-- **Timeline**: Establish a realistic timeline for improvements.
-- **Resources**: Assess the resources available for remediation.
-- **Future Code Changes**: Focus on areas of the codebase likely to evolve.
-- **Risk Assessment**: Consider the risks and costs of remaining inaccessible.
+- **目标**：明确您的可访问性目标
+- **时间表**：制定切实可行的改进时间表
+- **资源**：评估可用于修复的资源
+- **未来代码变更**：重点关注可能发生变化的代码区域
+- **风险评估**：考虑保持不可访问状态的风险和成本
 
-Effective remediation often requires collaboration across departments, emphasizing the importance of an organization-wide commitment to accessibility, so understanding your organization's stance on accessibility and who needs to be in the conversation is also helpful.
+有效的修复通常需要跨部门协作，这突显了全组织对可访问性承诺的重要性，因此了解组织对可访问性的立场以及需要参与讨论的人员也很有帮助。
 
-If your organization or team is newer to accessibility, you're likely to find plenty of issues reported by Axe Core® in Cypress Accessibility. Many of the issues in your first report may relate to concepts that are new, such as [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) or [invalid nesting of interactive controls](https://dequeuniversity.com/rules/axe/4.2/nested-interactive). Since it will be impossible to fix all issues overnight, we recommend finding some low-hanging fruit as a starting point. This can help your team build confidence by getting some wins on the board, and teach them the overall idea of how accessibility problems get fixed.
+如果您的组织或团队刚接触可访问性，很可能会发现 Cypress Accessibility 中 Axe Core® 报告的大量问题。首次报告中的许多问题可能涉及新概念，如[ARIA属性](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA)或[交互控件的无效嵌套](https://dequeuniversity.com/rules/axe/4.2/nested-interactive)。由于无法一夜之间解决所有问题，我们建议从一些容易解决的问题入手。这能帮助团队通过取得初步成果建立信心，并了解修复可访问性问题的整体思路。
 
-## Good low-hanging fruit
+## 理想的低垂果实
 
-Some accessibility issues are easier to address but have a significant impact. Consider issues related to [WCAG SC 4.2.1 \- Name, role, value](https://www.w3.org/WAI/WCAG21/Understanding/name-role-value.html), which ensures interactive controls are appropriately labeled. Violations in this category often:
+某些可访问性问题更容易解决但影响重大。考虑与[WCAG SC 4.2.1 - 名称、角色、值](https://www.w3.org/WAI/WCAG21/Understanding/name-role-value.html)相关的问题，该标准确保交互控件被正确标记。此类违规通常具有以下特点：
 
-- Appear frequently in applications.
-- Are flagged as Critical or Serious by Axe Core®.
-- Directly impact usability for screen reader users.
+- 在应用程序中频繁出现
+- 被Axe Core®标记为严重或重要
+- 直接影响屏幕阅读器用户的使用体验
 
-### Example: "Buttons Must Have Discernible Text"
+### 示例："按钮必须具有可识别文本"
 
-A common issue in modern interfaces is unlabeled icons used as buttons. The [button-name rule](https://dequeuniversity.com/rules/axe/4.7/button-name), which ensures buttons have descriptive text, is an ideal starting point because:
+现代界面中常见的问题是未标记的图标按钮。[button-name规则](https://dequeuniversity.com/rules/axe/4.7/button-name)确保按钮具有描述性文本，是理想的起点，因为：
 
-- Adding a label is a simple code update.
-- Proper labels improve usability for all users.
-- Fixes typically don't require cross-team involvement.
-- Straightforward to validate with a screen reader.
+- 添加标签是简单的代码更新
+- 正确的标签能提升所有用户的可用性
+- 修复通常不需要跨团队协作
+- 易于通过屏幕阅读器验证
 
-Existing code failing the button-name rule can usually be remediated pretty quickly, as long as it is clear what the correct text label is for a given control. And when it comes to new code, this text label content is also easy to add to discussions in the design and requirements stages of the development cycle, shifting the accessibility conversation left.
+违反button-name规则的现有代码通常可以快速修复，只要明确控件的正确文本标签。对于新代码，这些文本标签内容也容易加入设计和需求阶段的讨论，从而将可访问性讨论左移。
 
-Since every violation in Cypress is linked to a Deque University page with details about the nature of the problem and how to fix it, all the needed context is available, even to engineers who may be new to the topic of accessibility.
+由于Cypress中的每个违规都链接到Deque University页面，其中包含问题性质和修复方法的详细信息，即使对可访问性主题不熟悉的工程师也能获得所需背景。
 
-Even if your first rule is not "Buttons must have discernible text", we suggest finding one with a similarly small amount of coordination or understanding needed to fix, so the team can experience success as quickly as possible.
+即使您的首个目标规则不是"按钮必须具有可识别文本"，我们建议选择类似需要较少协调或理解即可修复的规则，让团队能尽快获得成功体验。
 
-## Check your changes in Branch Review
+## 在分支评审中检查变更
 
-One of the most frustrating experiences in accessibility is fixing one issue, only to discover you introduced some other issue in the process. Especially if the feedback cycles are long, it can reduce everybody's confidence in the remediation process. Wen making changes to improve accessibility, you can use [Branch Review](/cloud/features/branch-review#Getting-Started) to see the effect of your solutions - including seeing any increase in issues that might be related to your code changes.
+可访问性工作中最令人沮丧的体验之一是修复一个问题后，却发现引入了其他问题。特别是当反馈周期较长时，这会降低每个人对修复过程的信心。在进行可访问性改进时，您可以使用[分支评审](/cloud/features/branch-review#Getting-Started)查看解决方案的效果——包括发现可能与代码变更相关的问题增加。
 
-## Setting achievable goals
+## 设定可实现的目标
 
-Define a clear objective for each effort, such as fixing all violations of a specific rule within a defined scope. For example:
+为每项工作设定明确目标，例如在特定范围内修复某规则的所有违规。例如：
 
-- **View Focused**: Address all rule violations on a single page or component.
-- **Rule Focused**: Resolve a single rule violation across multiple pages or the entire application.
+- **视图聚焦**：解决单个页面或组件上的所有规则违规
+- **规则聚焦**：修复跨多个页面或整个应用程序的单个规则违规
 
-Achieving these milestones provides a clear finish line for you and your team. It also provides time to assess the impact of the changes. Often, fixing one issue can cascade changes across your application, especially in componentized architectures: it's fine for these first goals to be small at first. In fact, it's preferable.
+实现这些里程碑能为您和团队提供明确的完成标准，同时也留出时间评估变更影响。通常，修复一个问题可能会在整个应用程序中产生连锁反应，特别是在组件化架构中：最初设定小目标完全可行，事实上也更可取。
 
-## Iterating towards success {#iterating-towards-success}
+## 迭代走向成功 {#iterating-towards-success}
 
-Incremental progress is key to long-term accessibility improvements. By focusing on manageable goals, your team can:
+渐进式改进是实现长期可访问性提升的关键。通过专注于可管理的目标，您的团队能够：
 
-- Gain expertise in specific accessibility rules.
-- Build workflows for preventing future regressions.
-- Gradually raise the accessibility standard across your projects.
+- 获得特定可访问性规则的专业知识
+- 建立预防未来回归的工作流程
+- 逐步提高项目中的可访问性标准
 
-With support from Deque University's "Learn More" links in the reports, even teams new to accessibility can learn the related context and confidently address violations.
+借助Deque University报告中"了解更多"链接的支持，即使是刚接触可访问性的团队也能学习相关背景知识，并自信地解决问题。
 
-For guidance on preventing regressions and enforcing accessibility policies, explore our [Blocking Pull Requests Section](/accessibility/guides/block-pull-requests).
+有关预防回归和执行可访问性策略的指导，请参阅我们的[阻止拉取请求章节](/accessibility/guides/block-pull-requests)。

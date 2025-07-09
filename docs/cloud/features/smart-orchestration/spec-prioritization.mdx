@@ -1,75 +1,55 @@
 ---
-title: Spec Prioritization
-description: Run failed specs first to save time and reduce CI costs with Cypress Cloud's Spec Prioritization feature.
+title: 测试规范优先级排序
+description: 通过Cypress Cloud的测试规范优先级排序功能，优先运行失败的测试规范，节省时间并降低CI成本。
 sidebar_position: 40
 ---
 
 <ProductHeading product="cloud" plan="business" />
 
-# Spec Prioritization
+# 测试规范优先级排序
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to enable Spec Prioritization in Cypress Cloud
-- How to save time by running failed specs first
-- How to reduce CI costs by using Spec Prioritization with Auto Cancellation
+- 如何在Cypress Cloud中启用测试规范优先级排序
+- 如何通过优先运行失败的测试规范来节省时间
+- 如何结合自动取消功能使用测试规范优先级排序来降低CI成本
 
 :::
 
-It is often helpful to be **aware of test failures earlier within a CI test run
-so that debugging and iterations can resume and progress much faster**. Being
-able to catch issues sooner within the CI process can save valuable time in
-troubleshooting failures and deploying fixes.
+**在CI测试运行中更早发现测试失败**通常很有帮助，这样调试和迭代可以更快地恢复和推进。能够在CI流程中更早发现问题，可以为故障排查和部署修复节省宝贵时间。
 
-For example, consider you have a test suite consisting of several spec files that take **30
-minutes** to execute, but failures start to occur within one spec at the **20 minute**
-marker. A subsequent code change aimed at resolving the issue will have to be
-validated after running the CI build and waiting **20 minutes**. This process and
-waiting continues until the issue is fixed.
+例如，假设你有一个由多个测试规范文件组成的测试套件，执行需要**30分钟**，但在**20分钟**时某个测试规范开始出现失败。随后为解决该问题所做的代码变更，必须等待CI构建运行并等待**20分钟**后才能验证。这个过程和等待会持续到问题修复为止。
 
-By running failed specs first, the issues can be surfaced earlier and reduce
-that 20 minute wait to potentially a few minutes. **Considering that a test
-suite has multiple spec files, this orchestration strategy will always save
-time.**
+通过优先运行失败的测试规范，可以更早地发现问题，将20分钟的等待时间可能缩短到几分钟。**考虑到测试套件包含多个测试规范文件，这种编排策略总能节省时间。**
 
-### Activate Spec Prioritization in Cypress Cloud
+### 在Cypress Cloud中激活测试规范优先级排序
 
 :::tip
 
-**Spec Prioritization** is a _Smart Orchestration_ feature available to users
-with a
-[Business or Enterprise tier Cypress Cloud plan](https://cypress.io/pricing).
-Wondering if upgrading your Team tier subscription is worth it? Check out the
-[recommendations](/cloud/features/recorded-runs#Recommendations) on the run
-overview page to see how much time we predict these features would save you.
+**测试规范优先级排序**是面向[Business或Enterprise层级Cypress Cloud计划](https://cypress.io/pricing)用户的_智能编排_功能。不确定是否值得升级你的Team层级订阅？查看运行概览页面的[推荐](/cloud/features/recorded-runs#Recommendations)，了解我们预测这些功能能为你节省多少时间。
 
 :::
 
-Spec Prioritization is a _Smart Orchestration_ feature that is managed within a
-project's settings.
+测试规范优先级排序是一项_智能编排_功能，在项目设置中进行管理。
 
-**To enable or disable this feature at the Project level (must be an admin user):**
+**要在项目级别启用或禁用此功能（必须是管理员用户）：**
 
-1. Select the desired project within Projects view to visit Cypress Cloud.
-2. Click "Project Settings" with the right-hand sidebar.
-3. Scroll to the Smart Orchestration section within Project Settings page.
-4. Toggle "Spec Prioritization".
+1. 在项目视图中选择目标项目以访问Cypress Cloud。
+2. 点击右侧边栏中的"Project Settings"。
+3. 在项目设置页面滚动到智能编排部分。
+4. 切换"Spec Prioritization"。
 
 <DocsImage
   src="/img/cloud/features/smart-orchestration/spec-prioritization-active.png"
-  alt="Enable Spec Prioritization"
+  alt="启用测试规范优先级排序"
 />
 
 :::info
 
-<strong>CI Tip: Reduce Costs</strong>
+<strong>CI小贴士：降低成本</strong>
 
-Note that Spec Prioritization **alone** will not save time as it purely alters
-the order in which specs are run. However, when used in tandem with
-[Auto Cancellation](/cloud/features/smart-orchestration/run-cancellation) it can
-result in shorter test runs due to cancellation being triggered earlier, leading
-to significantly reduced CI costs.
+请注意，单独使用测试规范优先级排序**不会**节省时间，因为它仅改变测试规范的运行顺序。然而，当与[自动取消](/cloud/features/smart-orchestration/run-cancellation)功能结合使用时，由于取消触发得更早，可以缩短测试运行时间，从而显著降低CI成本。
 
 :::

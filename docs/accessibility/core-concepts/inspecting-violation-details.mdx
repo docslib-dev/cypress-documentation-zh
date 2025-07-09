@@ -1,56 +1,56 @@
 ---
-title: 'Inspecting accessibility violation details | Cypress Documentation'
-description: 'Learn how to inspect the details of an accessibility violation and its severity in Cypress.'
-sidebar_label: Inspect violation details
+title: '检查无障碍违规详情 | Cypress 文档'
+description: '了解如何在Cypress中检查无障碍违规详情及其严重程度。'
+sidebar_label: 检查违规详情
 sidebar_position: 20
 ---
 
 <ProductHeading product="accessibility" />
 
-# Inspecting violation details
+# 检查违规详情
 
-After navigating to a specific Rule of View from a [Run-level report](/accessibility/core-concepts/run-level-reports), you'll land on the Violation Detail view.
+从[运行级别报告](/accessibility/core-concepts/run-level-reports)导航到特定视图规则后，您将进入违规详情视图。
 
 <DocsImage
   src="/img/accessibility/core-concepts/cypress-accessibility-issue-detail-view.png"
-  alt="The detail view of an accessibility issue, containing a Rules area and s Snapshot area for a Buttons must have discernible text violation in the Cypress Realworld App project. Each section is described in detail later in the page."
+  alt="无障碍问题详情视图，包含规则区域和快照区域，展示Cypress Realworld App项目中'按钮必须具有可识别文本'违规。页面后续部分将详细描述每个区域。"
 />
 
-This page is divided into two main sections: **Rules** and **Snapshots**.
+该页面分为两个主要部分：**规则**和**快照**。
 
-## Rules
+## 规则
 
-The left-hand side of the detail view lists all Rules that match the current filters for the selected View. If no specific View is selected, the list applies to all Views in the run.
+详情视图左侧列出了符合当前视图筛选条件的所有规则。如果未选择特定视图，则该列表适用于运行中的所有视图。
 
-### Rule details
+### 规则详情
 
-Each Rule can be expanded to reveal related elements and additional information:
+每个规则可展开显示相关元素和附加信息：
 
-- **Description**: Text explaining the rule, its origin, the affected user experiences, and how to fix the issue.
-- **Learn More**: A link to Deque University for in-depth guidance.
+- **描述**：解释规则的文本，包括其来源、影响的用户体验以及如何修复问题。
+- **了解更多**：指向Deque University的链接，提供深入指导。
 
-### Element details
+### 元素详情
 
-Clicking on an element in the expanded Rule section provides:
+点击展开规则部分中的元素可提供：
 
-- **Pinned Element**: Highlights the element in the UI for easier identification.
-- **Copy Selector**: A button to copy the CSS selector uniquely identifying the element.
-- **Print to Console**: Logs the element reference to the browser's console for debugging. In Chrome-based browsers, you can right-click the logged element and select "Reveal in elements panel" to navigate directly to the live DOM.
-- **Share issue**: A button to copy markdown or plain text snippet to share the issue with your team or collaborators.
-- **Solutions**: A list of potential solutions to address the issue.
+- **固定元素**：在UI中高亮显示该元素以便识别。
+- **复制选择器**：复制唯一标识元素的CSS选择器的按钮。
+- **打印到控制台**：将元素引用记录到浏览器控制台进行调试。在基于Chrome的浏览器中，可右键点击记录的元素并选择"在元素面板中显示"直接导航到实时DOM。
+- **分享问题**：复制markdown或纯文本片段以与团队或协作者分享问题的按钮。
+- **解决方案**：解决问题的潜在方案列表。
 
 <DocsImage
   src="/img/accessibility/core-concepts/cypress-accessibility-element-details-on-click.png"
-  alt="Details displayed after clicking on an element in the Rules section of the Cypress Accessibility issue detail view. Options to copy the selector, print to console, share the issue, and solutions are available."
+  alt="点击Cypress无障碍问题详情视图规则部分的元素后显示的详情。提供复制选择器、打印到控制台、分享问题和解决方案等选项。"
 />
 
-## Snapshots
+## 快照
 
-Snapshots are fully hydrated HTML and CSS representations of your application's state during the test. Unlike screenshots or video, these snapshots allow you to:
+快照是测试期间应用程序状态的完整HTML和CSS表示。与截图或视频不同，这些快照允许您：
 
-- Inspect the DOM and accessibility tree without running the application locally.
-- Understand the context of each violation and debug directly from the snapshot.
+- 无需本地运行应用程序即可检查DOM和无障碍树。
+- 理解每个违规的上下文并直接从快照调试。
 
-This area also has the Test Replay button to provide access to any tests where this snapshot appeared, as well as the specific URL of the snapshot displayed at the bottom of the screen.
+该区域还提供"测试回放"按钮，可访问出现此快照的任何测试，以及屏幕底部显示的特定快照URL。
 
-It's also possible to cycle through the available snapshots to see all the states of the application that were captured, but this is usually not necessary. Think of snapshots more as examples and evidence relate to elements that are listed on the left hand side of the screen. The most useful way to go through the report is this way.
+您还可以循环查看所有可用快照以了解应用程序捕获的所有状态，但这通常不是必需的。应将快照视为与屏幕左侧列出的元素相关的示例和证据。浏览报告最有用的方式就是如此。

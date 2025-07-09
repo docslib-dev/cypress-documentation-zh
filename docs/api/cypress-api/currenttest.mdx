@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.currentTest | Cypress Documentation'
-description: Cypress.currentTest is an object representing the currently executing test instance, with properties to access the title of the test.
+title: 'Cypress.currentTest | Cypress 文档'
+description: Cypress.currentTest 是一个表示当前执行测试实例的对象，具有访问测试标题的属性。
 sidebar_label: currentTest
 sidebar_position: 90
 ---
@@ -9,57 +9,54 @@ sidebar_position: 90
 
 # Cypress.currentTest
 
-`Cypress.currentTest` is an object representing the currently executing test
-instance, with properties to access the title of the test.
+`Cypress.currentTest` 是一个表示当前执行测试实例的对象，具有访问测试标题的属性。
 
 :::caution
 
-Note that `Cypress.currentTest` may only be used inside tests and
-[test hooks](/app/core-concepts/writing-and-organizing-tests#Hooks), and will
-be `null` outside of tests and test hooks.
+注意 `Cypress.currentTest` 只能在测试和[测试钩子](/app/core-concepts/writing-and-organizing-tests#Hooks)内部使用，在测试和测试钩子外部将为 `null`。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
-// an object with title and titlePath properties
+// 包含 title 和 titlePath 属性的对象
 Cypress.currentTest
 
-// the title of the current test
+// 当前测试的标题
 Cypress.currentTest.title
 
-// an array with the current test's title path
+// 包含当前测试标题路径的数组
 Cypress.currentTest.titlePath
 ```
 
-## Examples
+## 示例
 
-### Get current test title
+### 获取当前测试标题
 
 ```javascript
-describe('app layout and responsiveness', () => {
-  it('toggles the nav', () => {
-    expect(Cypress.currentTest.title).to.eq('toggles the nav')
+describe('应用布局与响应性', () => {
+  it('切换导航栏', () => {
+    expect(Cypress.currentTest.title).to.eq('切换导航栏')
   })
 })
 ```
 
-### Get full path of current test title
+### 获取当前测试标题的完整路径
 
 ```javascript
-describe('app layout and responsiveness', () => {
-  it('toggles the nav', () => {
+describe('应用布局与响应性', () => {
+  it('切换导航栏', () => {
     expect(Cypress.currentTest.titlePath).to.deep.eq([
-      'app layout and responsiveness',
-      'toggles the nav',
+      '应用布局与响应性',
+      '切换导航栏',
     ])
   })
 })
 ```
 
-## History
+## 历史版本
 
-| Version                                  | Changes                     |
-| ---------------------------------------- | --------------------------- |
-| [8.2.0](/app/references/changelog#8-2-0) | `Cypress.currentTest` added |
+| 版本                                   | 变更                      |
+| -------------------------------------- | ------------------------- |
+| [8.2.0](/app/references/changelog#8-2-0) | 新增 `Cypress.currentTest` |

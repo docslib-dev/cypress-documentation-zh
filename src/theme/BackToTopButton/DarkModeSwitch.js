@@ -24,7 +24,7 @@ export default function DarkModeSwitch() {
             isDark,
         }
       )}
-      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      aria-label={isDark ? '切换至亮色模式' : '切换至暗色模式'}
       onClick={() => setColorMode(isDark ? 'light' : 'dark')}
     >
       <span

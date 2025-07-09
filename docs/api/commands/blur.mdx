@@ -1,6 +1,6 @@
 ---
-title: 'blur | Cypress Documentation'
-description: Blur a focused element in Cypress.
+title: 'blur | Cypress 文档'
+description: 在 Cypress 中使聚焦的元素失去焦点。
 sidebar_label: blur
 ---
 
@@ -8,16 +8,13 @@ sidebar_label: blur
 
 # blur
 
-Blur a focused element.
+使聚焦的元素失去焦点。
 
-It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried) to
-chain further commands that rely on the subject after `.blur()`.
+在 `.blur()` 之后继续链式调用依赖于目标元素的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
 :::caution
 
-This element must currently be in focus. If you want to ensure an element is
-focused before blurring, try using [`.focus()`](/api/commands/focus) before
-`.blur()`.
+当前元素必须处于聚焦状态。如果要在失去焦点前确保元素已聚焦，可以尝试先使用 [`.focus()`](/api/commands/focus) 再调用 `.blur()`。
 
 ```javascript
 cy.get('button').as('btn').focus()
@@ -26,119 +23,106 @@ cy.get('@btn').blur()
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .blur()
 .blur(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('[type="email"]').blur() // Blur email input
-cy.get('[tabindex="1"]').blur() // Blur el with tabindex
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.blur('input') // Errors, cannot be chained off 'cy'
-cy.window().blur() // Errors, 'window' does not yield DOM element
+cy.get('[type="email"]').blur() // 使邮箱输入框失去焦点
+cy.get('[tabindex="1"]').blur() // 使具有 tabindex 的元素失去焦点
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
+
+```javascript
+cy.blur('input') // 错误，不能从 'cy' 开始链式调用
+cy.window().blur() // 错误，'window' 不返回 DOM 元素
+```
+
+### 参数
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `.blur`.
+传入选项对象以改变 `.blur` 的默认行为。
 
-| Option    | Default                                                           | Description                                                                         |
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `force`   | `false`                                                           | Forces the action, disables checking if [element is focused](#Requirements)         |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.blur()` to resolve before [timing out](#Timeouts)                |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令 |
+| `force`   | `false`                                                           | 强制执行操作，禁用检查[元素是否聚焦](#Requirements)         |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 等待 `.blur()` 解析的超时时间，超过则[超时](#Timeouts)                |
 
 <HeaderYields />
 
-- `.blur()` yields the same subject it was given.
-- It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried)
-  to chain further commands that rely on the subject after `.blur()`.
+- `.blur()` 返回与传入时相同的目标元素。
+- 在 `.blur()` 之后继续链式调用依赖于目标元素的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Blur the comment input
+#### 使评论输入框失去焦点
 
 ```javascript
 cy.get('[name="comment"]').type('Nice Product!')
 cy.get('[name="comment"]').blur()
 ```
 
-### Options
+### 选项
 
-#### Blur the first input
+#### 使第一个输入框失去焦点
 
-Setting `force` to `true` in the options disables checking whether the input is
-focusable or currently has focus.
+在选项中设置 `force` 为 `true` 可以禁用检查输入框是否可聚焦或当前是否聚焦。
 
 ```javascript
 cy.get('input:first').blur({ force: true })
 ```
 
-## Notes
+## 注意事项
 
-### Actionability
+### 可操作性
 
-#### Blur is not an action command
+#### blur 不是一个操作命令
 
-`.blur()` is not implemented like other action commands, and does not follow the
-same rules of
-[waiting for actionability](/app/core-concepts/interacting-with-elements).
+`.blur()` 的实现与其他操作命令不同，不遵循相同的[等待可操作性](/app/core-concepts/interacting-with-elements)规则。
 
-`.blur()` is a helpful command used as a shortcut. Normally there's no way for a
-user to "blur" an element. Typically the user would have to perform **another**
-action like clicking or tabbing to a different element. Needing to perform a
-separate action like this is very indirect.
+`.blur()` 是一个有用的快捷命令。通常用户无法直接"使元素失去焦点"，而是需要通过**其他**操作（如点击或切换到另一个元素）来实现。这种间接操作在测试中效率较低。
 
-Therefore it's often much more efficient to test the blur behavior directly with
-`.blur()`.
+因此，直接使用 `.blur()` 测试失去焦点的行为通常更加高效。
 
-### Timeouts {#Notes-Timeouts}
+### 超时 {#Notes-Timeouts}
 
-#### `.blur()` can time out because your browser did not receive any blur events
+#### `.blur()` 可能因浏览器未接收到任何 blur 事件而超时
 
-If you see this error, you may want to ensure that the main browser window is
-currently focused. This means not being focused in debugger or any other window
-when the command is run.
+如果遇到此错误，可能需要确保主浏览器窗口当前处于聚焦状态。这意味着在命令运行时，不要将焦点放在调试器或其他窗口上。
 
-Internally Cypress does account for this, and will polyfill the blur events when
-necessary to replicate what the browser does. Unfortunately the browser will
-still behave differently when not in focus - for instance it may throttle async
-events. Your best bet here is to keep Cypress focused when working on a test.
+Cypress 内部会处理这种情况，并在必要时模拟浏览器行为填充 blur 事件。但不幸的是，当窗口不处于焦点时，浏览器的行为仍会有所不同——例如可能会限制异步事件。最佳做法是在运行测试时保持 Cypress 窗口处于焦点状态。
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.blur()` requires being chained off a command that yields DOMelement(s).
-- `.blur()` requires the element to currently have focus.
-- `.blur()` requires the element to be able to receive focus.
+- `.blur()` 需要链式调用返回 DOM 元素的命令。
+- `.blur()` 要求元素当前处于聚焦状态。
+- `.blur()` 要求元素能够接收焦点。
 
 <HeaderAssertions />
 
-- `.blur()` will automatically wait for assertions you have chained to pass.
+- `.blur()` 会自动等待链式断言通过。
 
 <HeaderTimeouts />
 
-- `.blur()` can time out waiting for assertions you've added to pass.
+- `.blur()` 可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Blur a textarea after typing._**
+**_在输入后使文本域失去焦点。_**
 
 ```javascript
 cy.get('[name="comment"]').focus()
@@ -146,22 +130,21 @@ cy.get('[name="comment"]').type('Nice Product!')
 cy.get('[name="comment"]').blur()
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/blur/blur-input-command-log.png"
-  alt="command log for blur"
+  alt="blur 命令日志"
 />
 
-When clicking on the `blur` command within the command log, the console outputs
-the following:
+在命令日志中点击 `blur` 命令时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/blur/console-showing-blur-command.png"
-  alt="console.log for blur"
+  alt="blur 的 console.log"
 />
 
-## See also
+## 另请参阅
 
 - [`.focus()`](/api/commands/focus)
 - [`cy.focused()`](/api/commands/focused)

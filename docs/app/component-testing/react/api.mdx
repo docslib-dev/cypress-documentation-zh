@@ -1,6 +1,6 @@
 ---
 title: React API
-description: 'API for mounting React components in Cypress tests.'
+description: '在Cypress测试中挂载React组件的API。'
 sidebar_position: 40
 sidebar_label: API
 ---
@@ -9,7 +9,7 @@ sidebar_label: API
 
 # React API
 
-## Methods
+## 方法
 
 ### mount
 
@@ -19,53 +19,53 @@ import { mount } from 'cypress/react'
 
 <table class="api-table table-list">
   <tr>
-    <td>Description</td>
-    <td>Mounts a React component into the DOM.</td>
+    <td>描述</td>
+    <td>将React组件挂载到DOM中。</td>
   </tr>
   <tr>
-    <td>Signature</td>
+    <td>签名</td>
     <td>
       mount(jsx: React.ReactNode, options?: MountOptions, rerenderKey?: string):
       Cypress.Chainable&lt;MountReturn&gt;
     </td>
   </tr>
   <tr>
-    <td>Returns</td>
+    <td>返回值</td>
     <td>Cypress.Chainable&lt;MountReturn&gt;</td>
   </tr>
 </table>
 
 <table class="api-table">
-  <caption>mount Parameters</caption>
+  <caption>mount 参数</caption>
   <thead>
-    <td>Name</td>
-    <td>Type</td>
-    <td>Description</td>
+    <td>名称</td>
+    <td>类型</td>
+    <td>描述</td>
   </thead>
   <tr>
     <td>jsx</td>
     <td>React.JSX.Element</td>
-    <td>The React component to mount.</td>
+    <td>要挂载的React组件。</td>
   </tr>
   <tr>
     <td>options</td>
-    <td>MountOptions (optional)</td>
-    <td>The options for mounting the component</td>
+    <td>MountOptions (可选)</td>
+    <td>挂载组件的选项</td>
   </tr>
   <tr>
     <td>rerenderKey</td>
-    <td>string (optional)</td>
-    <td>A key to use to force a rerender.</td>
+    <td>string (可选)</td>
+    <td>用于强制重新渲染的键。</td>
   </tr>
 </table>
 
-#### Example
+#### 示例
 
 ```jsx
 import { mount } from '@cypress/react'
 import { Stepper } from './Stepper'
 
-it('mounts', () => {
+it('挂载测试', () => {
   mount(<StepperComponent />)
   cy.get('[data-cy=increment]').click()
   cy.get('[data-cy=counter]').should('have.text', '1')
@@ -76,74 +76,74 @@ it('mounts', () => {
 
 <table class="api-table">
   <tr>
-    <td>Description</td>
-    <td>Gets the root element used to mount the component.</td>
+    <td>描述</td>
+    <td>获取用于挂载组件的根元素。</td>
   </tr>
   <tr>
-    <td>Signature</td>
+    <td>签名</td>
     <td>() => HTMLElement</td>
   </tr>
   <tr>
-    <td>Returns</td>
+    <td>返回值</td>
     <td>HTMLElement</td>
   </tr>
 </table>
 
-## Interfaces
+## 接口
 
 ### MountOptions
 
 <table class="api-table">
-  <caption>members</caption>
+  <caption>成员</caption>
   <thead>
-    <td>Name</td>
-    <td>Type</td>
-    <td>Description</td>
+    <td>名称</td>
+    <td>类型</td>
+    <td>描述</td>
   </thead>
   <tr>
     <td>alias</td>
-    <td>string (optional)</td>
+    <td>string (可选)</td>
     <td></td>
   </tr>
   <tr>
     <td>ReactDom</td>
-    <td>MountReactComponentOptions.ReactDom (optional)</td>
+    <td>MountReactComponentOptions.ReactDom (可选)</td>
     <td></td>
   </tr>
   <tr>
     <td>log</td>
-    <td>boolean (optional)</td>
-    <td>Log the mounting command into Cypress Command Log, true by default</td>
+    <td>boolean (可选)</td>
+    <td>将挂载命令记录到Cypress命令日志中，默认为true</td>
   </tr>
   <tr>
     <td>strict</td>
-    <td>boolean (optional)</td>
+    <td>boolean (可选)</td>
     <td>
-      Render component in React
-      <a href="https://reactjs.org/docs/strict-mode.html">strict mode</a>
-      It activates additional checks and warnings for child components.
+      在React
+      <a href="https://reactjs.org/docs/strict-mode.html">严格模式</a>
+      下渲染组件，这会激活对子组件的额外检查和警告。
     </td>
   </tr>
 </table>
 
 ### MountReturn
 
-Type that the `mount` function yields
+`mount`函数返回的类型
 
 <table class="api-table">
-  <caption>members</caption>
+  <caption>成员</caption>
   <thead>
-    <td>Name</td>
-    <td>Type</td>
-    <td>Description</td>
+    <td>名称</td>
+    <td>类型</td>
+    <td>描述</td>
   </thead>
   <tr>
     <td>component</td>
     <td>React.ReactNode</td>
     <td>
-      Render component in React
-      <a href="https://reactjs.org/docs/strict-mode.html">strict mode</a>
-      It activates additional checks and warnings for child components.
+      在React
+      <a href="https://reactjs.org/docs/strict-mode.html">严格模式</a>
+      下渲染组件，这会激活对子组件的额外检查和警告。
     </td>
   </tr>
   <tr>
@@ -152,6 +152,6 @@ Type that the `mount` function yields
       (component: React.ReactNode) =>
       globalThis.Cypress.Chainable&lt;MountReturn&gt;
     </td>
-    <td>The component that was rendered.</td>
+    <td>已渲染的组件。</td>
   </tr>
 </table>

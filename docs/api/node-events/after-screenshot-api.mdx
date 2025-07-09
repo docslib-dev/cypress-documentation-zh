@@ -1,22 +1,18 @@
 ---
-title: 'After Screenshot Event | Cypress Node Events'
-description: 'The after:screenshot event fires after a screenshot is taken in Cypress.'
+title: 'After Screenshot 事件 | Cypress 节点事件'
+description: '在 Cypress 中截图完成后会触发 after:screenshot 事件。'
 sidebar_label: 'after:screenshot'
 ---
 
 <ProductHeading product="app" />
 
-# After Screenshot Event
+# After Screenshot 事件
 
-After a screenshot is taken, you can get details about the screenshot via the
-`after:screenshot` node event. This event is called when a screenshot is taken
-with [`cy.screenshot()`](/api/commands/screenshot) or as a result of a test
-failure. The event is called after the screenshot image is written to disk.
+截图完成后，你可以通过 `after:screenshot` 节点事件获取截图的相关信息。该事件在使用 [`cy.screenshot()`](/api/commands/screenshot) 或测试失败时触发。事件会在截图图像写入磁盘后调用。
 
-This allows you to record those details, manipulate the image as needed, and
-return the updated details about the image.
+这允许你记录这些信息，根据需要处理图像，并返回更新后的图像信息。
 
-## Syntax
+## 语法
 
 <WarningSetupNodeEvents />
 
@@ -32,53 +28,41 @@ on('after:screenshot', (details) => {
 
 <Icon name="angle-right" /> **details _(object)_**
 
-An object describing the screenshot that was taken, with the following
-properties:
+描述所截取截图的对象，包含以下属性：
 
-| Property     | Type      | Description                                                                                                                                                                 |
-| ------------ | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `size`       | `number`  | The size of the image file (in bytes).                                                                                                                                      |
-| `takenAt`    | `string`  | The date and time the screenshot was taken. ISO 8601 format in UTC (example: `'2020-03-09T07:30:37.686Z'`)                                                                  |
-| `duration`   | `number`  | Duration taking and saving the screenshot (in milliseconds).                                                                                                                |
-| `dimensions` | `object`  | The width and height of the image in pixels (example: `{ width: 100, height: 50 }`)                                                                                         |
-| `multipart`  | `boolean` | Whether the screenshot was stitched together from multiple screenshot images.                                                                                               |
-| `pixelRatio` | `number`  | _(Optional)_ The ratio of screenshot pixels to the browser's displayed pixels.                                                                                              |
-| `name`       | `string`  | _(Optional)_ The `fileName` argument passed in via [cy.screenshot()](/api/commands/screenshot#Arguments)                                                                    |
-| `specName`   | `string`  | The name of the specfile where the screenshot was taken.                                                                                                                    |
-| `path`       | `string`  | The absolute path to the image.                                                                                                                                             |
-| `scaled`     | `boolean` | Whether the application under test was scaled to fit into the browser viewport. May be `scale` argument passed in via [cy.screenshot()](/api/commands/screenshot#Arguments) |
-| `blackout`   | `array`   | The `blackout` argument passed in via [cy.screenshot()](/api/commands/screenshot#Arguments)                                                                                 |
+| 属性          | 类型       | 描述                                                                                                                                                                 |
+| ------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `size`        | `number`   | 图像文件的大小（字节）。                                                                                                                                              |
+| `takenAt`     | `string`   | 截图拍摄的日期和时间。UTC 格式的 ISO 8601（例如：`'2020-03-09T07:30:37.686Z'`）。                                                                                    |
+| `duration`    | `number`   | 截图和保存的耗时（毫秒）。                                                                                                                                            |
+| `dimensions`  | `object`   | 图像的宽度和高度（像素）（例如：`{ width: 100, height: 50 }`）。                                                                                                     |
+| `multipart`   | `boolean`  | 截图是否由多个截图图像拼接而成。                                                                                                                                        |
+| `pixelRatio`  | `number`   | _(可选)_ 截图像素与浏览器显示像素的比例。                                                                                                                              |
+| `name`        | `string`   | _(可选)_ 通过 [cy.screenshot()](/api/commands/screenshot#Arguments) 传入的 `fileName` 参数。                                                                         |
+| `specName`    | `string`   | 截图所在规范文件的名称。                                                                                                                                              |
+| `path`        | `string`   | 图像的绝对路径。                                                                                                                                                      |
+| `scaled`      | `boolean`  | 被测应用是否被缩放以适应浏览器视口。可能是通过 [cy.screenshot()](/api/commands/screenshot#Arguments) 传入的 `scale` 参数。                                             |
+| `blackout`    | `array`    | 通过 [cy.screenshot()](/api/commands/screenshot#Arguments) 传入的 `blackout` 参数。                                                                                  |
 
-## Usage
+## 用法
 
-### Modify screenshot details
+### 修改截图信息
 
-Using [setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin) you can
-tap into the `after:screenshot` event.
+使用 [setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin) 可以接入 `after:screenshot` 事件。
 
-If you change the `path`, `size` or `dimensions` of the image, you'll want to
-update the new values so that the details are correctly reported in the test
-results. _Any other properties besides `path`, `size`, and `dimensions` will be
-ignored._
+如果你更改了图像的 `path`、`size` 或 `dimensions`，你需要更新这些新值，以便在测试结果中正确报告。_除了 `path`、`size` 和 `dimensions` 之外的任何其他属性将被忽略。_
 
-You can return an object or a promise that resolves to an object from the
-callback function. _Any type of returned value other than an object will be
-ignored._ The object can contain the following properties:
+你可以从回调函数返回一个对象或解析为对象的 Promise。_任何非对象类型的返回值将被忽略。_ 该对象可以包含以下属性：
 
-- **path**: The absolute path to the current location of the image
-- **size**: The size of the current image file (in bytes)
-- **dimensions**: The width and height of the current image in pixels (as an
-  object with the shape `{ width: 100, height: 50 }`)
+- **path**: 图像当前所在位置的绝对路径
+- **size**: 当前图像文件的大小（字节）
+- **dimensions**: 当前图像的宽度和高度（像素）（格式为 `{ width: 100, height: 50 }`）
 
-The properties will be merged into the screenshot details and passed to the
-`onAfterScreenshot` callback (if defined with
-[Cypress.Screenshot.defaults()](/api/cypress-api/screenshot-api) and/or
-[cy.screenshot()](/api/commands/screenshot)).
+这些属性将被合并到截图信息中，并传递给 `onAfterScreenshot` 回调（如果通过 [Cypress.Screenshot.defaults()](/api/cypress-api/screenshot-api) 和/或 [cy.screenshot()](/api/commands/screenshot) 定义）。
 
-#### Modify screenshot path
+#### 修改截图路径
 
-If you move the location of the screenshot image, you'll want to specify the new
-`path` of the image.
+如果你移动了截图图像的位置，你需要指定图像的新 `path`。
 
 :::cypress-config-plugin-example
 
@@ -88,18 +72,18 @@ import fs from 'fs'
 
 ```ts
 on('after:screenshot', (details) => {
-  console.log(details) // print all details to terminal
+  console.log(details) // 将所有信息打印到终端
 
   const newPath = '/new/path/to/screenshot.png'
 
   return new Promise((resolve, reject) => {
-    // fs.rename moves the file to the existing directory 'new/path/to'
-    // and renames the image to 'screenshot.png'
+    // fs.rename 将文件移动到现有目录 'new/path/to'
+    // 并将图像重命名为 'screenshot.png'
     fs.rename(details.path, newPath, (err) => {
       if (err) return reject(err)
 
-      // because we renamed and moved the image, resolve with the new path
-      // so it is accurate in the test results
+      // 因为我们重命名并移动了图像，所以返回新路径
+      // 以便测试结果中的信息准确
       resolve({ path: newPath })
     })
   })
@@ -108,11 +92,11 @@ on('after:screenshot', (details) => {
 
 :::
 
-## See also
+## 另请参阅
 
 - [cy.screenshot()](/api/commands/screenshot)
 - [Cypress Cloud](/cloud/get-started/introduction)
-- [Screenshots and Videos](/app/guides/screenshots-and-videos)
-- [Visual Testing](/app/tooling/visual-testing)
-- [How to use Plugins](/app/plugins/plugins-guide)
-- [Node Events Overview](/api/node-events/overview)
+- [截图和视频](/app/guides/screenshots-and-videos)
+- [视觉测试](/app/tooling/visual-testing)
+- [如何使用插件](/app/plugins/plugins-guide)
+- [节点事件概览](/api/node-events/overview)

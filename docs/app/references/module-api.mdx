@@ -1,36 +1,30 @@
 ---
-title: 'Module API: How to run Cypress via Node.js'
-description: 'Require Cypress as a node module from your application under test and run Cypress via Node.js.'
-sidebar_label: Module API
+title: '模块API：如何通过Node.js运行Cypress'
+description: '从被测应用程序中将Cypress作为Node模块引入，并通过Node.js运行Cypress。'
+sidebar_label: 模块API
 ---
 
 <ProductHeading product="app" />
 
-# Module API
+# 模块API
 
-You can require Cypress as a node module from your application under test and
-run Cypress via Node.js. This can be useful when you want access to the test
-results directly after the run. With this workflow, for example, you can:
+您可以从被测应用程序中将Cypress作为Node模块引入，并通过Node.js运行Cypress。这在您希望运行后直接访问测试结果时非常有用。例如，通过此工作流您可以：
 
-- Send a notification about failing tests with included screenshot images
-- Rerun a single failing spec file
-- Kick off other builds or scripts
+- 发送包含截图图像的失败测试通知
+- 重新运行单个失败的测试文件
+- 触发其他构建或脚本
 
 :::info
 
 <strong>Yarn Plug'n'Play</strong>
 
-To run Cypress via Node.js in a
-[Yarn Plug'n'Play](https://yarnpkg.com/features/pnp) environment, use
-[yarn node](https://yarnpkg.com/cli/node) instead of
-[node](https://nodejs.org/en/learn/command-line/run-nodejs-scripts-from-the-command-line).
+在[Yarn Plug'n'Play](https://yarnpkg.com/features/pnp)环境中通过Node.js运行Cypress时，请使用[yarn node](https://yarnpkg.com/cli/node)代替[node](https://nodejs.org/en/learn/command-line/run-nodejs-scripts-from-the-command-line)。
 
 :::
 
 ## `cypress.run()`
 
-Runs Cypress tests via Node.js and resolve with all test results. See the
-[Cypress Module API recipe](https://github.com/cypress-io/cypress-example-recipes#fundamentals).
+通过Node.js运行Cypress测试并解析所有测试结果。参见[Cypress模块API示例](https://github.com/cypress-io/cypress-example-recipes#fundamentals)。
 
 ```javascript
 // e2e-run-tests.js
@@ -50,50 +44,47 @@ cypress.run({
 })
 ```
 
-You can then run Cypress by running the following in your terminal or an npm
-script:
+然后您可以通过在终端或npm脚本中运行以下命令来执行Cypress：
 
 ```shell
 node e2e-run-tests.js
 ```
 
-### Options
+### 选项
 
-Just like the [Command Line options](/app/references/command-line) for
-`cypress run`, you can pass options that modify how Cypress runs.
+与`cypress run`的[命令行选项](/app/references/command-line)类似，您可以传递修改Cypress运行方式的选项。
 
-| Option                    | Type                | Description                                                                                                                                                                                                  |
+| 选项                    | 类型                | 描述                                                                                                                                                                                                  |
 | ------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `autoCancelAfterFailures` | _number_ \| _false_ | Specify the number of failures to cancel a run being recorded to the Cloud or `false` to disable auto-cancellation.                                                                                          |
-| `browser`                 | _string_            | Specify different browser to run tests in, either by name or by filesystem path                                                                                                                              |
-| `ciBuildId`               | _string_            | Specify a unique identifier for a run to enable [grouping](/cloud/features/smart-orchestration/parallelization#Grouping-test-runs) or [parallelization](/cloud/features/smart-orchestration/parallelization) |
-| `config`                  | _object_            | Specify [configuration](/app/references/configuration)                                                                                                                                                       |
-| `configFile`              | _string_            | Path to the [configuration file](/app/references/configuration#Configuration-File) to be used.                                                                                                               |
-| `env`                     | _object_            | Specify [environment variables](/app/references/environment-variables)                                                                                                                                       |
-| `group`                   | _string_            | [Group](/cloud/features/smart-orchestration/parallelization#Grouping-test-runs) recorded tests together under a single run                                                                                   |
-| `headed`                  | _boolean_           | Displays the browser instead of running headlessly                                                                                                                                                           |
-| `headless`                | _boolean_           | Hide the browser instead of running headed (default during `cypress run`)                                                                                                                                    |
-| `key`                     | _string_            | Specify your secret record key                                                                                                                                                                               |
-| `exit`                    | _boolean_           | Whether to close Cypress after all tests run                                                                                                                                                                 |
-| `parallel`                | _boolean_           | Run recorded specs in [parallel](/cloud/features/smart-orchestration/parallelization) across multiple machines                                                                                               |
-| `port`                    | _number_            | Override default port                                                                                                                                                                                        |
-| `project`                 | _string_            | Path to a specific project                                                                                                                                                                                   |
-| `quiet`                   | _boolean_           | If passed, Cypress output will not be printed to `stdout`. Only output from the configured [Mocha reporter](/app/tooling/reporters) will print.                                                              |
-| `record`                  | _boolean_           | Whether to record the test run                                                                                                                                                                               |
-| `reporter`                | _string_            | Specify a [Mocha reporter](/app/tooling/reporters)                                                                                                                                                           |
-| `reporterOptions`         | _object_            | Specify [Mocha reporter](/app/tooling/reporters) options                                                                                                                                                     |
-| `runnerUi`                | _boolean_           | Whether to display the Cypress Runner UI. Defaults to `false` when [Test Replay](/cloud/features/test-replay) is enabled. Otherwise defaults to `true`.                                                      |
-| `slowTestThreshold`       | _number_            | Time, in milliseconds, to consider a test "slow" during `cypress run`. A slow test will display in orange text in the default reporter.                                                                      |
-| `spec`                    | _string_            | Specify the specs to run, see examples below                                                                                                                                                                 |
-| `tag`                     | _string_            | Identify a run with a tag or tags                                                                                                                                                                            |
-| `testingType`             | _string_            | Specify the type of tests to execute; either `e2e` or `component`. Defaults to `e2e`                                                                                                                         |
+| `autoCancelAfterFailures` | _number_ \| _false_ | 指定记录到云端的运行在失败次数达到该值时自动取消，或`false`禁用自动取消。                                                                                          |
+| `browser`                 | _string_            | 指定运行测试的不同浏览器，可以是名称或文件系统路径                                                                                                                              |
+| `ciBuildId`               | _string_            | 为运行指定唯一标识符以启用[分组](/cloud/features/smart-orchestration/parallelization#Grouping-test-runs)或[并行化](/cloud/features/smart-orchestration/parallelization) |
+| `config`                  | _object_            | 指定[配置](/app/references/configuration)                                                                                                                                                       |
+| `configFile`              | _string_            | 要使用的[配置文件](/app/references/configuration#Configuration-File)路径。                                                                                                               |
+| `env`                     | _object_            | 指定[环境变量](/app/references/environment-variables)                                                                                                                                       |
+| `group`                   | _string_            | 将记录的测试[分组](/cloud/features/smart-orchestration/parallelization#Grouping-test-runs)到单个运行下                                                                                   |
+| `headed`                  | _boolean_           | 显示浏览器而不是无头运行                                                                                                                                                           |
+| `headless`                | _boolean_           | 隐藏浏览器而不是有头运行（`cypress run`期间默认）                                                                                                                                    |
+| `key`                     | _string_            | 指定您的秘密记录密钥                                                                                                                                                                               |
+| `exit`                    | _boolean_           | 是否在所有测试运行后关闭Cypress                                                                                                                                                                 |
+| `parallel`                | _boolean_           | 在多台机器上[并行](/cloud/features/smart-orchestration/parallelization)运行记录的测试                                                                                               |
+| `port`                    | _number_            | 覆盖默认端口                                                                                                                                                                                        |
+| `project`                 | _string_            | 特定项目的路径                                                                                                                                                                                     |
+| `quiet`                   | _boolean_           | 如果传递，Cypress输出将不会打印到`stdout`。仅打印配置的[Mocha报告器](/app/tooling/reporters)的输出。                                                              |
+| `record`                  | _boolean_           | 是否记录测试运行                                                                                                                                                                                   |
+| `reporter`                | _string_            | 指定[Mocha报告器](/app/tooling/reporters)                                                                                                                                                           |
+| `reporterOptions`         | _object_            | 指定[Mocha报告器](/app/tooling/reporters)选项                                                                                                                                                     |
+| `runnerUi`                | _boolean_           | 是否显示Cypress Runner UI。当[Test Replay](/cloud/features/test-replay)启用时默认为`false`。否则默认为`true`。                                                      |
+| `slowTestThreshold`       | _number_            | 在`cypress run`期间认为测试"慢"的时间（毫秒）。慢测试将在默认报告器中显示为橙色文本。                                                                      |
+| `spec`                    | _string_            | 指定要运行的测试，参见下面的示例                                                                                                                                                                 |
+| `tag`                     | _string_            | 使用一个或多个标签标识运行                                                                                                                                                                           |
+| `testingType`             | _string_            | 指定要执行的测试类型；`e2e`或`component`。默认为`e2e`                                                                                                                         |
 
-### Examples
+### 示例
 
-#### Run a single spec file
+#### 运行单个测试文件
 
-Here is an example of programmatically running a spec file. Note that the file
-path is relative to the current working directory.
+这是一个以编程方式运行测试文件的示例。注意文件路径是相对于当前工作目录的。
 
 ```js
 // e2e-run-tests.js
@@ -101,7 +92,7 @@ const cypress = require('cypress')
 
 cypress
   .run({
-    // the path is relative to the current working directory
+    // 路径相对于当前工作目录
     spec: './cypress/e2e/examples/actions.cy.js',
   })
   .then((results) => {
@@ -112,33 +103,31 @@ cypress
   })
 ```
 
-You can then run Cypress by running the following in your terminal or an npm
-script:
+然后您可以通过在终端或npm脚本中运行以下命令来执行Cypress：
 
 ```shell
 node e2e-run-tests.js
 ```
 
-#### Run specs using wildcard
+#### 使用通配符运行测试
 
-You can pass a wildcard pattern to run all matching spec files
+您可以传递通配符模式来运行所有匹配的测试文件
 
 ```js
 const cypress = require('cypress')
 
 cypress.run({
-  // the wildcard path is relative to the current working directory
+  // 通配符路径相对于当前工作目录
   spec: './cypress/e2e/**/api*.js',
 })
 ```
 
-#### Programmatically control which browser to run
+#### 以编程方式控制运行的浏览器
 
-You can pass a browser option to specify which browser to run tests in so that
-you can programmatically control which specs to run in each browser.
+您可以传递浏览器选项来指定在哪个浏览器中运行测试，从而以编程方式控制每个浏览器中运行哪些测试。
 
 ```js
-// run 'node cypress-chrome.js'
+// 运行 'node cypress-chrome.js'
 const cypress = require('cypress')
 
 cypress.run({
@@ -148,7 +137,7 @@ cypress.run({
 ```
 
 ```js
-// run 'node cypress-firefox.js'
+// 运行 'node cypress-firefox.js'
 const cypress = require('cypress')
 
 cypress.run({
@@ -157,24 +146,22 @@ cypress.run({
 })
 ```
 
-#### Use modern syntax
+#### 使用现代语法
 
-If your Node version allows you can use the modern `async / await` syntax to
-wait for the Promise returned by the `cypress.run` method.
+如果您的Node版本允许，您可以使用现代的`async / await`语法来等待`cypress.run`方法返回的Promise。
 
 ```js
 const cypress = require('cypress')
 
 ;(async () => {
   const results = await cypress.run()
-  // use the results object
+  // 使用结果对象
 })()
 ```
 
-### Results
+### 结果
 
-`cypress.run()` returns a `Promise` that resolves with an object containing the
-tests results. A typical run could return something like this:
+`cypress.run()`返回一个`Promise`，解析为包含测试结果的对象。典型的运行可能返回如下内容：
 
 ```json
 {
@@ -232,29 +219,22 @@ tests results. A typical run could return something like this:
 }
 ```
 
-You can find the TypeScript definition for the results object in the
-[`cypress/cli/types` folder](https://github.com/cypress-io/cypress/tree/develop/cli/types).
+您可以在[`cypress/cli/types`文件夹](https://github.com/cypress-io/cypress/tree/develop/cli/types)中找到结果对象的TypeScript定义。
 
-### Handling errors
+### 错误处理
 
-Even when tests fail or a spec errors, the `Promise` resolves with the test results.
-If a spec errors, the error message will be in the `runs` array under the `error` field.
-The `Promise` is only rejected if Cypress cannot run for some reason (for example if
-a binary has not been installed or it cannot find a module dependency). In that
-case, the `Promise` will be rejected with a detailed error.
+即使测试失败或测试出错，`Promise`也会解析为测试结果。如果测试出错，错误消息将位于`runs`数组中的`error`字段下。只有当Cypress由于某种原因无法运行时（例如未安装二进制文件或找不到模块依赖项），`Promise`才会被拒绝。在这种情况下，`Promise`将被拒绝并附带详细错误。
 
-There is a third option - Cypress could run, but the tests could not start for
-some reason. In that case the resolved value is an object with two fields
+还有第三种情况 - Cypress可以运行，但由于某种原因测试无法启动。在这种情况下，解析值是一个包含两个字段的对象
 
 ```js
 {
-  "failures": 1,    // non-zero number
-  "message": "..."  // error message
+  "failures": 1,    // 非零数字
+  "message": "..."  // 错误消息
 }
 ```
 
-In order to handle these possible errors, you can add a `catch` to
-`cypress.run()`:
+为了处理这些可能的错误，您可以向`cypress.run()`添加`catch`：
 
 ```js
 // e2e-run-tests.js
@@ -263,12 +243,12 @@ const cypress = require('cypress')
 cypress.run({...})
 .then(result => {
   if (result.failures) {
-    console.error('Could not execute tests')
+    console.error('无法执行测试')
     console.error(result.message)
     process.exit(result.failures)
   }
 
-  // exit with the number of failed tests as exit code
+  // 以失败测试数量作为退出码
   process.exit(result.totalFailed)
 })
 .catch(err => {
@@ -279,7 +259,7 @@ cypress.run({...})
 
 ## `cypress.open()`
 
-Open Cypress tests via Node.js.
+通过Node.js打开Cypress测试。
 
 ```javascript
 // e2e-open-tests.js
@@ -296,31 +276,29 @@ cypress.open({
 })
 ```
 
-You can then open Cypress by running the following in your terminal or an npm
-script:
+然后您可以通过在终端或npm脚本中运行以下命令来打开Cypress：
 
 ```shell
 node e2e-open-tests.js
 ```
 
-### Options
+### 选项
 
-Just like the [Command Line options](/app/references/command-line), you can pass
-options that modify how Cypress runs.
+与[命令行选项](/app/references/command-line)类似，您可以传递修改Cypress运行方式的选项。
 
-| Option        | Type      | Description                                                                                    |
+| 选项        | 类型      | 描述                                                                                    |
 | ------------- | --------- | ---------------------------------------------------------------------------------------------- |
-| `browser`     | _string_  | Specify a filesystem path to a custom browser                                                  |
-| `config`      | _object_  | Specify [configuration](/app/references/configuration)                                         |
-| `configFile`  | _string_  | Path to the [configuration file](/app/references/configuration#Configuration-File) to be used. |
-| `detached`    | _boolean_ | Open Cypress in detached mode                                                                  |
-| `env`         | _object_  | Specify [environment variables](/app/references/environment-variables)                         |
-| `global`      | _boolean_ | Run in global mode                                                                             |
-| `port`        | _number_  | Override default port                                                                          |
-| `project`     | _string_  | Path to a specific project                                                                     |
-| `testingType` | _string_  | Specify the type of tests to execute; either `e2e` or `component`. Defaults to `e2e`           |
+| `browser`     | _string_  | 指定自定义浏览器的文件系统路径                                                  |
+| `config`      | _object_  | 指定[配置](/app/references/configuration)                                         |
+| `configFile`  | _string_  | 要使用的[配置文件](/app/references/configuration#Configuration-File)路径。 |
+| `detached`    | _boolean_ | 以分离模式打开Cypress                                                                  |
+| `env`         | _object_  | 指定[环境变量](/app/references/environment-variables)                         |
+| `global`      | _boolean_ | 以全局模式运行                                                                             |
+| `port`        | _number_  | 覆盖默认端口                                                                          |
+| `project`     | _string_  | 特定项目的路径                                                                     |
+| `testingType` | _string_  | 指定要执行的测试类型；`e2e`或`component`。默认为`e2e`           |
 
-### Example
+### 示例
 
 ```javascript
 // e2e-open-tests.js
@@ -329,8 +307,7 @@ const cypress = require('cypress')
 cypress.open({})
 ```
 
-You can then open Cypress by running the following in your terminal or an npm
-script:
+然后您可以通过在终端或npm脚本中运行以下命令来打开Cypress：
 
 ```shell
 node e2e-open-tests.js
@@ -340,10 +317,7 @@ node e2e-open-tests.js
 
 ### `parseRunArguments()`
 
-If you are writing a tool that wraps around the `cypress.run()` command, you
-might want to parse user-supplied command line arguments using the same logic as
-`cypress run` uses. In that case, you can use the included `parseRunArguments`
-function.
+如果您正在编写一个围绕`cypress.run()`命令的工具，您可能希望使用与`cypress run`相同的逻辑来解析用户提供的命令行参数。在这种情况下，您可以使用内置的`parseRunArguments`函数。
 
 ```javascript
 // wrapper.js
@@ -351,26 +325,25 @@ const cypress = require('cypress')
 
 const runOptions = await cypress.cli.parseRunArguments(process.argv.slice(2))
 const results = await cypress.run(runOptions)
-// process the "cypress.run()" results
+// 处理"cypress.run()"结果
 ```
 
-An example use running from your terminal could be:
+从终端运行的示例用法可能是：
 
 ```shell
 node ./wrapper cypress run --browser chrome --config ...
 ```
 
-**Note:** the arguments passed to `parseRunArguments` should start with
-`cypress run`.
+**注意：**传递给`parseRunArguments`的参数应以`cypress run`开头。
 
-## History
+## 历史
 
-| Version                                    | Changes                                                 |
+| 版本                                    | 变更                                                 |
 | ------------------------------------------ | ------------------------------------------------------- |
-| [12.6.0](/app/references/changelog#12-6-0) | Added `autoCancelAfterFailures` to run options.         |
-| [10.0.0](/app/references/changelog#10-0-0) | `slowTestThreshold` is now scoped to each testing type. |
-| [8.7.0](/app/references/changelog#8-7-0)   | Added `slowTestThreshold` configuration option.         |
-| [7.3.0](/app/references/changelog#7-3-0)   | Added `testingType` configuration option.               |
-| [5.0.0](/app/references/changelog#5-0-0)   | Test results returned from `cypress.run()` changed.     |
-| [4.11.0](/app/references/changelog#4-11-0) | Added `cypress.cli` with `parseRunArguments` function.  |
-| [4.9.0](/app/references/changelog#4-9-0)   | Added `quiet` option to `cypress.run()`                 |
+| [12.6.0](/app/references/changelog#12-6-0) | 向运行选项添加了`autoCancelAfterFailures`。         |
+| [10.0.0](/app/references/changelog#10-0-0) | `slowTestThreshold`现在限定于每种测试类型。 |
+| [8.7.0](/app/references/changelog#8-7-0)   | 添加了`slowTestThreshold`配置选项。         |
+| [7.3.0](/app/references/changelog#7-3-0)   | 添加了`testingType`配置选项。               |
+| [5.0.0](/app/references/changelog#5-0-0)   | `cypress.run()`返回的测试结果变更。     |
+| [4.11.0](/app/references/changelog#4-11-0) | 添加了带有`parseRunArguments`函数的`cypress.cli`。  |
+| [4.9.0](/app/references/changelog#4-9-0)   | 向`cypress.run()`添加了`quiet`选项                 |

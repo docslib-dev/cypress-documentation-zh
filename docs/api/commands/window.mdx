@@ -1,6 +1,6 @@
 ---
-title: 'window | Cypress Documentation'
-description: Get the window object of the page that is currently active in Cypress.
+title: 'window | Cypress 文档'
+description: 获取当前 Cypress 活动页面的 window 对象。
 sidebar_label: window
 slug: /api/commands/window
 ---
@@ -9,59 +9,59 @@ slug: /api/commands/window
 
 # window
 
-Get the `window` object of the page that is currently active.
+获取当前活动页面的 `window` 对象。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.window()
 cy.window(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 cy.window()
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `cy.window()`.
+传入一个选项对象来改变 `cy.window()` 的默认行为。
 
-| Option    | Default                                                           | Description                                                                         |
-| --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.window()` to resolve before [timing out](#Timeouts)            |
+| 选项      | 默认值                                                           | 描述                                                                         |
+| --------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令           |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 在[超时](#Timeouts)前等待 `cy.window()` 解析的时间                          |
 
 <HeaderYields />
 
-- `cy.window()` yields the `window` object.
-- `cy.window()` is a query, and it is _safe_ to chain further commands.
+- `cy.window()` 返回 `window` 对象。
+- `cy.window()` 是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Yield the remote window object
+#### 返回远程 window 对象
 
 :::visit-mount-example
 
 ```js
 -{cy.visit('http://localhost:8080/app')::cy.mount(<MyComponent />)}-
 cy.window().then((win) => {
-  // win is the remote window
+  // win 是远程 window 对象
 })
 ```
 
 :::
 
-#### Check a custom property
+#### 检查自定义属性
 
-If the application sets a custom property, like:
+如果应用设置了一个自定义属性，例如：
 
 ```javascript
 window.tags = {
@@ -69,14 +69,13 @@ window.tags = {
 }
 ```
 
-Our test can confirm the property was properly set.
+我们的测试可以确认该属性是否正确设置。
 
 ```javascript
 cy.window().its('tags.foo').should('equal', 'bar')
 ```
 
-**Note:** Cypress commands are asynchronous, so you cannot check a property
-value before the Cypress commands ran.
+**注意：** Cypress 命令是异步的，因此不能在 Cypress 命令运行前检查属性值。
 
 ```javascript
 it('equals bar', () => {
@@ -86,14 +85,14 @@ it('equals bar', () => {
     foo = win.tags.foo
   })
 
-  // variable "foo" is still undefined
-  // because the above "then" callback
-  // has not been executed yet
-  expect(foo).to.equal('bar') // test fails
+  // 变量 "foo" 仍然是 undefined
+  // 因为上面的 "then" 回调
+  // 还未执行
+  expect(foo).to.equal('bar') // 测试失败
 })
 ```
 
-Instead, use [`cy.then()`](/api/commands/then) callback to check the value.
+应使用 [`cy.then()`](/api/commands/then) 回调来检查值。
 
 ```javascript
 it('equals bar', () => {
@@ -104,27 +103,25 @@ it('equals bar', () => {
       foo = win.tags.foo
     })
     .then(() => {
-      // variable "foo" has been set
-      expect(foo).to.equal('bar') // test passes
+      // 变量 "foo" 已被设置
+      expect(foo).to.equal('bar') // 测试通过
     })
 })
 ```
 
-### Start tests when app is ready
+### 应用就绪时开始测试
 
-If an application takes a while to start, it might "signal" its readiness by
-setting a property that Cypress can wait for.
+如果应用启动需要时间，可以通过设置一个属性来"通知"Cypress 它已就绪。
 
 ```javascript
 // app.js
-// only set property "appReady" if Cypress is running tests
+// 仅在 Cypress 运行测试时设置属性 "appReady"
 if (window.Cypress) {
   window.appReady = true
 }
 ```
 
-Cypress can wait for the property `window.appReady` to be `true` before every
-test
+Cypress 可以在每次测试前等待 `window.appReady` 变为 `true`
 
 ```js
 // spec.cy.js
@@ -136,30 +133,26 @@ beforeEach(() => {
 
 :::info
 
-<strong>When Can The Test Start?</strong>
+<strong>测试何时可以开始？</strong>
 
-[This blog post](https://www.cypress.io/blog/2018/02/05/when-can-the-test-start/)
-explains how to use `cy.window()` to spy on the DOM `prototype` to detect when
-the application starts adding event listeners to the DOM elements. When this
-happens for the first time, Cypress knows that the application under test has
-started and the tests can begin.
+[这篇博客文章](https://www.cypress.io/blog/2018/02/05/when-can-the-test-start/)
+解释了如何使用 `cy.window()` 监听 DOM `prototype` 来检测应用何时开始向 DOM 元素添加事件监听器。当第一次发生这种情况时，Cypress 知道被测应用已启动，测试可以开始。
 
 :::
 
-### Options
+### 选项
 
-#### Passes timeout through to [`.should()`](/api/commands/should) assertion
+#### 将超时传递给 [`.should()`](/api/commands/should) 断言
 
 ```javascript
 cy.window({ timeout: 10000 }).should('have.property', 'foo')
 ```
 
-## Notes
+## 注意事项
 
-### Cypress uses 2 different windows.
+### Cypress 使用 2 个不同的 window。
 
-Let's say you want to check the type of the events. You might write code like
-below:
+假设你想检查事件的类型，可能会编写如下代码：
 
 ```js
 it('test', (done) => {
@@ -176,15 +169,11 @@ it('test', (done) => {
 })
 ```
 
-It fails. But the interesting thing is that the type of `event` is
-`KeyboardEvent` when you `console.log(event)`.
+这会失败。但有趣的是，当你 `console.log(event)` 时，`event` 的类型是 `KeyboardEvent`。
 
-It's because Cypress uses an `iframe` to load the application under test. In
-other words, the `KeyboardEvent` used in the code above and the
-`KeyboardEvent` class from which the `event` variable is constructed are
-different `KeyboardEvent`s.
+这是因为 Cypress 使用 `iframe` 来加载被测应用。换句话说，上面代码中使用的 `KeyboardEvent` 和构造 `event` 变量的 `KeyboardEvent` 类是不同的 `KeyboardEvent`。
 
-That's why the test should be written like this.
+因此，测试应这样编写：
 
 ```js
 it('should trigger KeyboardEvent with .type inside Cypress event listener', (done) => {
@@ -203,52 +192,50 @@ it('should trigger KeyboardEvent with .type inside Cypress event listener', (don
 })
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.window()` requires being chained off of `cy`.
+- `cy.window()` 需要链式调用 `cy`。
 
 <HeaderAssertions />
 
-- `cy.window()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed
+- `cy.window()` 会自动[重试](/app/core-concepts/retry-ability)，直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `cy.window()` can time out waiting for assertions you've added to pass.
+- `cy.window()` 可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Get the window_**
+**_获取 window_**
 
 ```javascript
 cy.window()
 ```
 
-The commands above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/window/window-command-log-for-cypress-tests.png"
-  alt="Command Log window"
+  alt="命令日志窗口"
 />
 
-When clicking on `window` within the command log, the console outputs the
-following:
+点击命令日志中的 `window` 时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/window/console-shows-the-applications-window-object-being-tested.png"
-  alt="Console Log window"
+  alt="控制台日志窗口"
 />
 
-## History
+## 历史
 
-| Version                                    | Changes                                                                                     |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------- |
-| [0.20.0](/app/references/changelog#0-20-0) | Can call [.focus()](/api/commands/focus) and [.blur()](/api/commands/blur) on `cy.window()` |
-| [0.11.6](/app/references/changelog#0-11-6) | `cy.window()` logs to Command Log                                                           |
+| 版本                                       | 变更                                                                                     |
+| ------------------------------------------ | --------------------------------------------------------------------------------------- |
+| [0.20.0](/app/references/changelog#0-20-0) | 可以在 `cy.window()` 上调用 [.focus()](/api/commands/focus) 和 [.blur()](/api/commands/blur) |
+| [0.11.6](/app/references/changelog#0-11-6) | `cy.window()` 会记录到命令日志                                                           |
 
-## See also
+## 另请参阅
 
 - [`cy.visit()`](/api/commands/visit)
 - [`cy.document()`](/api/commands/document)

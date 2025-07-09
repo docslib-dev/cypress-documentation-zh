@@ -1,6 +1,6 @@
 ---
-title: 'Elements | Cypress UI Coverage'
-description: 'The `elements` configuration allows you to uniquely identify elements in UI Coverage using custom logic.'
+title: '元素配置 | Cypress UI 覆盖率'
+description: '`elements` 配置允许您使用自定义逻辑在 UI 覆盖率中唯一标识元素。'
 sidebar_label: elements
 sidebar_position: 70
 ---
@@ -9,17 +9,17 @@ sidebar_position: 70
 
 # elements
 
-UI Coverage provides automatic logic to [identify](/ui-coverage/core-concepts/element-identification) elements based on their DOM structure. However, in complex applications, elements may lack stable identifiers or have dynamic attributes that vary across snapshots, leading to incorrect identification. The `elements` configuration allows you to specify selectors to uniquely identify elements, ensuring consistency across snapshots and simplifying your coverage reports.
+UI 覆盖率提供了基于 DOM 结构[自动识别](/ui-coverage/core-concepts/element-identification)元素的逻辑。但在复杂应用中，元素可能缺乏稳定标识符或具有动态变化的属性，导致识别错误。`elements` 配置允许您指定选择器来唯一标识元素，确保跨快照的一致性并简化覆盖率报告。
 
-The `elements` configuration is used as the element's identity if **only one element** per snapshot matches. If there are multiple matches in the same snapshot, this configuration is ignored and the default [identify](/ui-coverage/core-concepts/element-identification) strategy is used.
+当**每个快照中只有一个元素**匹配时，`elements` 配置将作为该元素的标识。如果同一快照中有多个匹配项，则忽略此配置并使用默认的[识别](/ui-coverage/core-concepts/element-identification)策略。
 
-## Why use elements configuration?
+## 为何使用 elements 配置？
 
-- **Handle Dynamic Attributes**: Ensure elements are consistently identified across snapshots, even when attributes change.
-- **Ensure Unique Identification**: Use custom selectors to uniquely identify elements across snapshots that lack unique attributes or have dynamic values, avoiding misclassification.
-- **Simplify Debugging**: Assign human-readable names to elements to make reports more interpretable and debugging easier.
+- **处理动态属性**：确保即使属性变化，元素也能在快照间被一致识别
+- **确保唯一标识**：对缺乏唯一属性或具有动态值的元素使用自定义选择器，避免错误分类
+- **简化调试**：为元素分配人类可读的名称，使报告更易理解且便于调试
 
-## Syntax
+## 语法
 
 ```json
 {
@@ -34,22 +34,22 @@ The `elements` configuration is used as the element's identity if **only one ele
 }
 ```
 
-### Options
+### 选项
 
-For every element considered by UI Coverage, the first applicable rule, determined by a match with the `selector` property, is used for identification. Elements that do not match any rules are identified by the default UI Coverage [element identification rules](/ui-coverage/core-concepts/element-identification).
+对于 UI 覆盖率考虑的每个元素，将使用第一个适用的规则（由与 `selector` 属性的匹配确定）进行识别。不匹配任何规则的元素将由默认的 UI 覆盖率[元素识别规则](/ui-coverage/core-concepts/element-identification)进行识别。
 
-If multiple elements within the same snapshot satisfy the same rule, the rule cannot uniquely identify these elements. In such cases, the rule is bypassed, and either subsequent rules or the default element identification logic are applied.
+如果同一快照中的多个元素满足相同规则，则该规则无法唯一标识这些元素。此时将绕过该规则，应用后续规则或默认的元素识别逻辑。
 
-| Option     | Required | Default    | Description                                                                                                                      |
-| ---------- | -------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `selector` | Required |            | A CSS selector to identify elements. Supports standard CSS selector syntax, including IDs, classes, attributes, and combinators. |
-| `name`     | Optional | `selector` | A human-readable name for the element, displayed in UI Coverage reports.                                                         |
+| 选项        | 必填     | 默认值     | 描述                                                                                                                      |
+| ----------- | -------- | ---------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `selector`  | 必填     |            | 用于识别元素的 CSS 选择器。支持标准 CSS 选择器语法，包括 ID、类、属性和组合器。                                           |
+| `name`      | 可选     | `selector` | 元素的人类可读名称，显示在 UI 覆盖率报告中。                                                                             |
 
-## Examples
+## 示例
 
-### Identify elements by dynamic selector across snapshots
+### 跨快照通过动态选择器识别元素
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -66,14 +66,14 @@ If multiple elements within the same snapshot satisfy the same rule, the rule ca
 #### HTML
 
 ```xml
-<!-- Snapshot 1 -->
+<!-- 快照 1 -->
 <body>
   <form id="my-form">
     <input id="dropdown-142"></input>
   </form>
 </body>
 
-<!-- Snapshot 2 -->
+<!-- 快照 2 -->
 <body>
   <form id="my-form">
     <input id="dropdown-980"></input>
@@ -81,7 +81,7 @@ If multiple elements within the same snapshot satisfy the same rule, the rule ca
 </body>
 ```
 
-#### Elements shown in UI Coverage
+#### UI 覆盖率中显示的元素
 
 ```
 #my-form [id^="dropdown"]
@@ -89,9 +89,9 @@ If multiple elements within the same snapshot satisfy the same rule, the rule ca
 
 ---
 
-### Identify elements with human-readable names
+### 使用人类可读名称识别元素
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -99,7 +99,7 @@ If multiple elements within the same snapshot satisfy the same rule, the rule ca
     "elements": [
       {
         "selector": "#ui-popover-button",
-        "name": "Help Popover"
+        "name": "帮助弹窗按钮"
       }
     ]
   }
@@ -110,12 +110,12 @@ If multiple elements within the same snapshot satisfy the same rule, the rule ca
 
 ```xml
 <body>
-  <button id="ui-popover-button">Help</button>
+  <button id="ui-popover-button">帮助</button>
 </body>
 ```
 
-#### Elements shown in UI Coverage
+#### UI 覆盖率中显示的元素
 
 ```
-Help Popover
+帮助弹窗按钮
 ```

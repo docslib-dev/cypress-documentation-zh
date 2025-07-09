@@ -6,7 +6,7 @@ import Icon from '@cypress-design/react-icon'
 
 import React from 'react';
 
-// Define the types for the props
+// 定义props的类型
 interface BtnProps {
     size?: 20 | 24 | 32 | 40 | 48
     variant?: keyof typeof VariantClassesTable
@@ -19,16 +19,16 @@ interface BtnProps {
     icon?: string;
 }
 
-// Build the Button component with the specified props
+// 使用指定的props构建Button组件
 const Btn: React.FC<BtnProps> = ({ 
-    size = 32, // The size of the button
-    variant = 'outline-indigo', // The variant of the button
-    disabled = false, // Whether the button should be disabled
-    target = '_self', // The target of the button link
-    className, // Custom classes for the button
-    href, // The URL the button should link to
-    label, // The text of the button
-    icon, // The icon in the button
+    size = 32, // 按钮尺寸
+    variant = 'outline-indigo', // 按钮变体
+    disabled = false, // 是否禁用按钮
+    target = '_self', // 按钮链接的打开目标
+    className, // 按钮的自定义类名
+    href, // 按钮跳转的URL
+    label, // 按钮文本
+    icon, // 按钮图标
 }) => {
     return (
     <Button

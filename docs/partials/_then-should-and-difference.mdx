@@ -1,9 +1,5 @@
-### What's the difference between `.then()` and `.should()`/`.and()`?
+### `.then()` 与 `.should()`/`.and()` 有什么区别？
 
-Using `.then()` allows you to use the yielded subject in a callback function and
-should be used when you need to manipulate some values or do some actions.
+使用 `.then()` 允许你在回调函数中使用生成的主题（yielded subject），当你需要操作某些值或执行某些操作时应该使用它。
 
-When using a callback function with `.should()` or `.and()`, on the other hand,
-there is special logic to rerun the callback function until no assertions throw
-within it. You should be careful of side affects in a `.should()` or `.and()`
-callback function that you would not want performed multiple times.
+另一方面，当在 `.should()` 或 `.and()` 中使用回调函数时，会有特殊的逻辑来重新运行回调函数，直到其中没有断言抛出为止。你应当注意 `.should()` 或 `.and()` 回调函数中的副作用，避免你不希望被多次执行的操作。

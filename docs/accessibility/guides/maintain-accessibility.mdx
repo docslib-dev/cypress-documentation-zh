@@ -1,70 +1,70 @@
 ---
-sidebar_label: Maintain accessibility
-title: 'Maintain Accessibility | Cypress Accessibility Documentation'
-description: 'Learn how to maintain long-term accessibility with Cypress, using continuous feedback and monitoring to prevent regressions and keep your application accessible.'
+sidebar_label: 维护无障碍性
+title: '维护无障碍性 | Cypress无障碍文档'
+description: '学习如何使用Cypress持续维护无障碍性，通过持续反馈和监控防止功能退化，保持应用程序的无障碍访问。'
 sidebar_position: 30
 ---
 
 <ProductHeading product="accessibility" />
 
-# Maintain accessibility
+# 维护无障碍性
 
-Accessibility isn't a one-time project—it's a continuous process. This guide explains how to transition from addressing known issues to maintaining long-term accessibility in your projects.
+无障碍性不是一次性项目——而是一个持续的过程。本指南将介绍如何从解决已知问题过渡到长期维护项目的无障碍性。
 
-## Switching from "improving" to "maintaining"
+## 从"改进"转向"维护"
 
-When a specific accessibility rule reaches zero violations for a page, component, or application, you enter _maintenance mode_ for that rule. From this point a few areas are important to focus on:
+当特定无障碍规则在页面、组件或应用中达到零违规时，您就进入了该规则的_维护模式_。此时需要重点关注以下几个方面：
 
-- **Pre-Merge Insights**: Any new violations detected on a feature branch are clear indicators that changes on that branch introduced the issue. This could stem from updates in application code that impact accessibility or expanded test coverage revealing new issues.
-- **Post-Merge Monitoring**: If violations resurface on the main branch, tracing their introduction to specific pull requests helps pinpoint code or test changes causing the problem and facilitate follow-ups and training for developers.
+- **合并前洞察**：在特性分支上检测到的新违规项，明确表明该分支的变更引入了问题。这可能源于影响无障碍性的应用代码更新，或是扩大的测试覆盖率暴露的新问题。
+- **合并后监控**：如果主分支再次出现违规，通过追踪引入问题的特定拉取请求，可以定位导致问题的代码或测试变更，便于后续跟进和开发人员培训。
 
-Your ultimate goal is to achieve a fully passing state across all rules. Cypress provides you a lot of flexibility to manage large amounts of accessibility violations and make incremental progress towards well-defined targets. Through a combination of fixing accessibility problems, and configuring Cypress to focus on a tight scope of rules, standards, and application areas that matter most to you, you might be closer than you think to a "clean" main branch, from which you can expand your standards over time.
+您的最终目标是实现所有规则完全通过的状态。Cypress为您提供了极大的灵活性来管理大量无障碍违规问题，并逐步实现明确定义的目标。通过修复无障碍问题与配置Cypress聚焦于最重要的规则、标准和应用领域的组合方案，您可能比想象中更接近"干净"的主分支状态，之后可以逐步扩展您的标准。
 
-## Maintaining accessibility standards
+## 维护无障碍标准
 
-A clean report marks a pivotal change in your workflow. Instead of working through backlogs, the focus shifts to preventing accessibility issues from merging into the main branch.
+干净的测试报告标志着工作流程的关键转变。重点从处理积压问题转向防止无障碍问题合并到主分支。
 
-When those violations are all fixed, what exactly is Cypress Accessibility "doing" in your pipeline? And how should you measure success?
+当所有违规都被修复后，Cypress无障碍性在您的流水线中实际"做"了什么？又该如何衡量成功？
 
-### What Cypress Accessibility is doing when a project is in maintenance mode
+### 项目处于维护模式时Cypress无障碍性的作用
 
-In maintenance mode, Cypress Accessibility provides two critical functions:
+在维护模式下，Cypress无障碍性提供两大关键功能：
 
-- **Pre-Merge Detection**: Early feedback ensures that developers address issues before they reach production.
-- **Post-Merge Monitoring**: Alerts highlight regressions, preventing accessibility debt from accumulating unnoticed.
+- **合并前检测**：早期反馈确保开发人员在问题进入生产环境前解决它们
+- **合并后监控**：告警机制突出显示功能退化，防止无障碍债务在未被察觉的情况下累积
 
-Accessibility debt tends to accumulate silently over time, leading to large, problematic backlogs that are difficult to work through, and land on your desk all at once after an audit. As you will have learned by going through the remediation process to get to a clean report in the first place: it's not always easy to fix an already-inaccessible experience. Sometimes you have to start a whole feature or component over, because you've built multiple structures on top of an inaccessible foundation.
+无障碍债务往往会随时间悄然累积，最终形成难以处理的大量积压问题，并在审计时一次性爆发。正如您通过修复过程首次获得干净报告时所体会到的：修复已存在的无障碍问题并不总是容易的。有时您不得不完全重做某个功能或组件，因为您在不牢固的无障碍基础上构建了多层结构。
 
-Early feedback about accessibility on feature branches will allow developers to review small, precise reports, and get all the context they need to either fix issues immediately, or raise problematic patterns for wider discussion. This is especially helpful when a new team member joins, who isn't as familiar with accessibility practices, or when a well-meaning full-stack developer - somebody who can "get by" in the front-end - unintentionally makes a minor change with major accessibility implications.
+特性分支上的早期无障碍反馈能让开发者审查小型精确的报告，获取修复问题或提请讨论问题模式所需的全部上下文。这对新加入团队、不熟悉无障碍实践的成员特别有帮助，或者当一位全栈开发人员（能"应付"前端工作）无意中做出对无障碍性有重大影响的小改动时。
 
-Detecting problems before code merges allows the training, awareness-building, discussion, and remediation to all happen in the same cycle as regular code review, when everybody has all the context they need, not weeks or months later when it will be difficult to inject a ticket into the backlog to untangle what might have become a "load-bearing" accessibility problem.
+在代码合并前发现问题，使得培训、意识培养、讨论和修复都能与常规代码审查同步进行，此时所有相关人员都掌握完整上下文，而不是几周或几个月后，当需要艰难地在积压任务中插入工单来解决可能已成为"承重"的无障碍问题时。
 
-### How to measure success in maintenance mode
+### 如何衡量维护模式的成功
 
-The issues surfaced in Cypress Accessibility should follow certain patterns, allowing you to get a good "pulse" on your team's effectiveness with accessibility and time spent dealing with issues. Key metrics for evaluating success include:
+Cypress无障碍性暴露的问题应遵循特定模式，让您能准确掌握团队的无障碍实践效果和处理问题的时间消耗。评估成功的关键指标包括：
 
-- **Trend Analysis**: Track violations on both the main branch and feature branches. A stable or downward trend indicates improved team awareness and fewer recurring issues.
-- **Shifting Left**: Developers begin considering accessibility earlier, during ticket creation or design handoffs, reducing errors before they occur. At that point, mistakes are avoided, instead of corrected.
+- **趋势分析**：跟踪主分支和特性分支的违规情况。稳定或下降的趋势表明团队意识提升和问题重现减少
+- **左移实践**：开发者开始在工单创建或设计交接阶段就考虑无障碍性，从源头减少错误。此时错误是被避免而非被修正
 
-While perfection isn't the goal, mature teams will notice fewer violations in reports over time, enabling them to focus on delivering value without compromising quality.
+虽然完美不是目标，但成熟团队会注意到报告中违规项随时间减少，使他们能专注于交付价值而不牺牲质量。
 
-Using Cypress Accessibility, you can treat accessibility failures as quality issues. Just like functional bugs and UI problems, they are important and need to be addressed. This is why optimizing and minimizing the effort related to accessibility is so valuable in a literal sense - your team is going to spend time on accessibility anyway, every cycle saved on dealing with accessibility is freed up for feature work, quality improvements, and other important activities.
+使用Cypress无障碍性，您可以将无障碍失败视为质量问题。就像功能缺陷和UI问题一样，它们很重要且需要解决。这就是为什么在字面意义上优化和最小化无障碍相关工作如此有价值——您的团队无论如何都会在每个周期投入无障碍工作，节省的每个处理无障碍问题的时间都能用于功能开发、质量改进和其他重要活动。
 
-### Preparing for change
+### 为变化做准备
 
-Even with a strong maintenance strategy, disruptions can arise:
+即使有强大的维护策略，仍可能出现干扰：
 
-- **Teams Change**: New hires or role shifts can impact an accessibility program.
-- **Priorities Evolve**: Shifting focus within the organization might deprioritize accessibility.
+- **团队变动**：新成员加入或角色调整可能影响无障碍计划
+- **优先级演变**：组织内焦点转移可能导致无障碍性降级
 
-One of the biggest pain points that has been described to us by customers is unexpectedly having a large backlog of high-priority accessibility issues surfaced in an annual audit, even when they had fixed everything from the previous audit.
+客户向我们描述的最大痛点之一，是在年度审计中意外发现大量高优先级无障碍问题积压，即使他们已经修复了上次审计的所有问题。
 
-Cypress Accessibility serves as an early warning system. Spikes in violations signal when action is needed, whether through training, process adjustments, or renewed focus on accessibility.
+Cypress无障碍性充当早期预警系统。违规激增标志着需要通过培训、流程调整或重新聚焦无障碍性来采取行动。
 
-## Summary
+## 总结
 
-Maintaining accessibility is an ongoing effort requiring organization-wide commitment. The automation layer of accessibility tests offered by Cypress Accessibility maximizes the amount of information you can have at your fingertips to improve your accessibility status and maintain an accessible application over the long term, in a software development environment where both expected and unexpected changes create constant challenges for quality.
+维护无障碍性是需要组织全员参与的持续工作。Cypress无障碍性提供的自动化测试层，最大化您可掌握的信息量，帮助在软件开发环境中长期改善无障碍状态并维护可访问应用——在这个环境中，预期和非预期的变化不断对质量提出挑战。
 
-Cypress Accessibility provides a consolidated report with page- and component-level breakdowns and interactive, visual DOM snapshots to understand exactly what every violation relates to in your application. With filtering and configuration you can create a manageable series of goals to solve every accessibility issue that Axe Core® can detect. Once your accessibility report is fully passing for the rules and pages that make sense for your business and project, Cypress Accessibility supports continuous feedback on new code changes before they merge, and gives you an early warning system if things are getting off track.
+Cypress无障碍性提供整合报告，包含页面和组件级细分及交互式可视化DOM快照，准确展示应用中每个违规对应的位置。通过过滤和配置，您可以创建可管理的一系列目标来解决Axe Core®能检测到的所有无障碍问题。当您的无障碍报告在业务和项目相关的规则及页面上完全通过后，Cypress无障碍性将持续提供新代码变更的合并前反馈，并在偏离轨道时发出早期预警。
 
-The clarity and efficiency from using Cypress Accessibility will optimize your team's time spent managing and fixing accessibility issues that are detectable by automation, helping them focus more on building great things that create value for your organization, without sacrificing this critical aspect of quality software development and building up debt over time to do so.
+使用Cypress无障碍性带来的清晰度和效率，将优化团队处理自动化可检测无障碍问题的时间，帮助他们更专注于为组织创造价值的开发工作，同时不牺牲软件质量这一关键方面，也不会随时间累积技术债务。

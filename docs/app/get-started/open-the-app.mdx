@@ -1,37 +1,34 @@
 ---
-title: 'Open the Cypress app: Step-by-Step Guide'
-description: 'Open the app in Cypress to visually see, review, and debug end-to-end and component tests.'
-sidebar_label: Open the App
+title: '打开Cypress应用：分步指南'
+description: '在Cypress中打开应用，可视化查看、审查和调试端到端测试及组件测试。'
+sidebar_label: 打开应用
 sidebar_position: 40
 ---
 
 <ProductHeading product="app" />
 
-# Open the App
+# 打开应用
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学习到
 
-- How to open the Cypress app
-- How to add npm scripts for opening Cypress
-- How to choose a testing type, set up configuration, and launch a browser in Cypress
+- 如何打开Cypress应用
+- 如何添加打开Cypress的npm脚本
+- 如何在Cypress中选择测试类型、设置配置并启动浏览器
   :::
 
 ## `cypress open`
 
-You can open Cypress from your **project root** using one of the following commands,
-depending on the package manager (npm, Yarn or pnpm) you are using:
+根据你使用的包管理器（npm、Yarn或pnpm），可以从**项目根目录**使用以下命令之一打开Cypress：
 
 <CypressOpenCommands />
 
-After a moment, the Cypress Launchpad will open.
+稍等片刻后，Cypress启动器将会打开。
 
-### Adding npm Scripts
+### 添加npm脚本
 
-While there's nothing wrong with writing out the full path to the Cypress
-executable each time, it's much easier and clearer to add Cypress commands to
-the `scripts` field in your `package.json` file.
+虽然每次输入完整的Cypress可执行文件路径没有错，但将Cypress命令添加到`package.json`文件的`scripts`字段中会更加方便和清晰。
 
 ```javascript
 {
@@ -41,95 +38,69 @@ the `scripts` field in your `package.json` file.
 }
 ```
 
-Now you can invoke the command from your project root like so:
+现在你可以从项目根目录这样调用命令：
 
 ```shell
 npm run cy:open
 ```
 
-...and Cypress will open right up for you.
+...Cypress就会为你打开。
 
 :::caution
 
-<strong>Best Practice</strong>
+<strong>最佳实践</strong>
 
-Don't use `cypress` as the exact name of a script, especially if you use Yarn as package manager.
-When running commands on the Cypress binary (e.g. `yarn cypress verify`), Yarn will reference the
-script of the same name instead and [Cypress CLI commands](/app/references/command-line) may not work as expected.
-Use instead a descriptive and non-ambiguous script name such as `cy:open` or `cy:run`.
+不要使用`cypress`作为脚本的确切名称，尤其是当你使用Yarn作为包管理器时。在运行Cypress二进制文件的命令时（例如`yarn cypress verify`），Yarn会引用同名的脚本，[Cypress CLI命令](/app/references/command-line)可能无法按预期工作。应使用描述性且无歧义的脚本名称，如`cy:open`或`cy:run`。
 
 :::
 
-### CLI tools
+### CLI工具
 
-By installing Cypress through `npm` you also get access to many other CLI
-commands. On top of that, Cypress is also a fully baked JavaScript library you
-can import into your Node scripts.
+通过`npm`安装Cypress后，你还可以访问许多其他CLI命令。除此之外，Cypress还是一个完整的JavaScript库，可以导入到你的Node脚本中。
 
-You can [read more about the CLI here](/app/references/command-line).
+你可以[在此处阅读更多关于CLI的信息](/app/references/command-line)。
 
-## The Launchpad
+## 启动器
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/the-launchpad.png"
-  alt="The Launchpad window"
+  alt="启动器窗口"
 />
 
-On opening Cypress, your testing journey begins with the Launchpad. Its job is
-to guide you through the decisions and configuration tasks you need to complete
-before you start writing your first test.
+打开Cypress时，你的测试之旅将从启动器开始。它的任务是引导你完成在编写第一个测试之前需要做出的决策和配置任务。
 
-If this is your first time using Cypress it will take you through the following
-steps in order.
+如果你是第一次使用Cypress，它将按顺序引导你完成以下步骤。
 
-### Choosing a Testing Type
+### 选择测试类型
 
 <DocsImage
   src="/img/app/get-started/open-the-app/choose-testing-type.png"
-  alt="The Launchpad test type selector"
+  alt="启动器测试类型选择器"
 />
 
-The Launchpad presents you with your biggest decision first: What type of
-testing shall I do?
-[E2E Testing](/app/core-concepts/testing-types#What-is-E2E-Testing), where I
-run my whole application and visit pages to test them? Or
-[Component Testing](/app/core-concepts/testing-types#What-is-Component-Testing),
-where I mount individual components of my app and test them in isolation?
+启动器首先会呈现给你最重要的决策：我应该进行哪种类型的测试？
+[端到端测试](/app/core-concepts/testing-types#What-is-E2E-Testing)，即运行整个应用程序并访问页面进行测试？还是[组件测试](/app/core-concepts/testing-types#What-is-Component-Testing)，即挂载应用程序的单个组件并隔离测试它们？
 
-For more background on this critical decision, read
-[Testing Types](/app/core-concepts/testing-types). Alternatively, if you're
-not sure which type you want and just want to get on with your testing journey,
-just choose **E2E** for now - you can always change this later!
+关于这个关键决策的更多背景信息，请阅读[测试类型](/app/core-concepts/testing-types)。或者，如果你不确定选择哪种类型，只想继续测试之旅，现在只需选择**端到端测试**——以后随时可以更改！
 
-### Quick Configuration
+### 快速配置
 
 <DocsImage
   src="/img/app/get-started/open-the-app/scaffolded-files.png"
-  alt="The Launchpad scaffolded files list"
+  alt="启动器生成的文件列表"
 />
 
-On the next step, the Launchpad will scaffold out a set of configuration files
-appropriate to your chosen testing type, and the changes will be listed for you
-to review. For more information about the generated config check out the
-[Cypress configuration reference](/app/references/configuration), or you can
-just scroll down and hit "Continue".
+在下一步中，启动器将根据你选择的测试类型生成一组配置文件，并列出更改供你审查。有关生成配置的更多信息，请查看[Cypress配置参考](/app/references/configuration)，或者你可以直接向下滚动并点击“继续”。
 
-### Launching a Browser
+### 启动浏览器
 
 <DocsImage
   src="/img/app/get-started/open-the-app/select-browser.png"
-  alt="The Launchpad browser selector"
+  alt="启动器浏览器选择器"
 />
 
-Lastly, you're presented with the list of compatible browsers Cypress found on
-your system. To understand more about your options here, see
-[our guide on launching browsers](/app/references/launching-browsers). Again,
-don't sweat it, you can switch browsers whenever you want. Now **MASH THAT
-START BUTTON!**
+最后，你将看到Cypress在你系统上找到的兼容浏览器列表。要了解更多关于此处的选项，请参阅[我们的浏览器启动指南](/app/references/launching-browsers)。同样，不用担心，你可以随时切换浏览器。现在**点击那个开始按钮！**
 
-## Next Steps
+## 下一步
 
-Time to get testing! If you chose
-[to start with E2E Testing, go here](/app/end-to-end-testing/writing-your-first-end-to-end-test).
-Alternatively, if you decided
-[to try Component Testing, go here](/app/component-testing/get-started).
+是时候开始测试了！如果你选择[从端到端测试开始，请点击这里](/app/end-to-end-testing/writing-your-first-end-to-end-test)。或者，如果你决定[尝试组件测试，请点击这里](/app/component-testing/get-started)。

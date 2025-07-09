@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.isCy | Cypress Documentation'
-description: Cypress.isCy checks if a variable is a valid instance of cy or a cy chainable in Cypress.
+title: 'Cypress.isCy | Cypress 文档'
+description: Cypress.isCy 用于检查变量是否为 cy 的有效实例或 Cypress 中的可链式对象。
 sidebar_label: isCy
 sidebar_position: 140
 ---
@@ -9,25 +9,23 @@ sidebar_position: 140
 
 # Cypress.isCy
 
-`Cypress.isCy()` checks if a variable is a valid instance of `cy` or a `cy`
-chainable.
+`Cypress.isCy()` 用于检查变量是否为 `cy` 的有效实例或可链式对象。
 
-This utility may be useful when writing a plugin using [Node Events](/api/node-events/overview)
-for Cypress and you want to determine if a value is a valid Cypress chainable.
+当使用 [Node Events](/api/node-events/overview) 为 Cypress 编写插件时，若需要判断某个值是否为有效的 Cypress 可链式对象，此工具函数会非常有用。
 
-## Syntax
+## 语法
 
 ```javascript
 Cypress.isCy(obj)
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **obj _(Object)_**
 
-The object to test.
+待测试的对象。
 
-## Examples
+## 示例
 
 ```javascript
 Cypress.isCy(cy) // true

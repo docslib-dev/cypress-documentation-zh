@@ -1,6 +1,6 @@
 ---
-title: 'debug | Cypress Documentation'
-description: Set a `debugger` in Cypress and log what the previous command yields.
+title: 'debug | Cypress 文档'
+description: 在Cypress中设置`debugger`并记录前一个命令的返回结果。
 sidebar_label: debug
 slug: /api/commands/debug
 ---
@@ -9,100 +9,98 @@ slug: /api/commands/debug
 
 # debug
 
-Set a `debugger` and log what the previous command yields.
+设置`debugger`并记录前一个命令的返回结果。
 
 :::caution
 
-You need to have your Developer Tools open for `.debug()` to hit the breakpoint.
+使用`.debug()`触发断点时，需要保持开发者工具处于打开状态。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .debug()
 .debug(options)
 
-// ---or---
+// ---或---
 
 cy.debug()
 cy.debug(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.debug().getCookie('app') // Pause to debug at beginning of commands
-cy.get('nav').debug() // Debug the `get` command's yield
+cy.debug().getCookie('app') // 在命令开始时暂停调试
+cy.get('nav').debug() // 调试`get`命令的返回结果
 ```
 
-### Arguments
+### 参数
 
-<Icon name="angle-right" /> **options _(Object)_**
+<Icon name="angle-right" /> **options _(对象)_**
 
-Pass in an options object to change the default behavior of `.debug()`.
+传入选项对象以改变`.debug()`的默认行为。
 
-| Option | Default | Description                                                                         |
-| ------ | ------- | ----------------------------------------------------------------------------------- |
-| `log`  | `true`  | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
+| 选项    | 默认值  | 描述                                                                         |
+| ------- | ------- | --------------------------------------------------------------------------- |
+| `log`   | `true`  | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令          |
 
 <HeaderYields />
 
-- `.debug()` yields the same subject it was given from the previous command.
-- `.debug()` is a query, and it is _safe_ to chain further commands.
+- `.debug()`返回与前一个命令相同的主题对象。
+- `.debug()`是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### Debug
+### 调试
 
-#### Pause with debugger after `.get()`
+#### 在`.get()`后使用debugger暂停
 
 ```javascript
 cy.get('a').debug().should('have.attr', 'href')
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.debug()` can be chained off of `cy` or off another command.
+- `.debug()`可以链式调用在`cy`或其他命令之后。
 
 <HeaderAssertions />
 
-- `.debug()` is a utility command.
-- `.debug()` will not run assertions. Assertions will pass through as if this
-  command did not exist.
+- `.debug()`是一个实用命令。
+- `.debug()`不会运行断言。断言会直接通过，就像该命令不存在一样。
 
 <HeaderTimeouts />
 
-- `.debug()` cannot time out.
+- `.debug()`不会超时。
 
-## Command Log
+## 命令日志
 
-**_Log out the current subject for debugging_**
+**_记录当前主题对象用于调试_**
 
 ```javascript
 cy.get('.ls-btn').click({ force: true }).debug()
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/debug/how-debug-displays-in-command-log.png"
-  alt="Command Log debug"
+  alt="命令日志中的debug"
 />
 
-When clicking on the `debug` command within the command log, the console outputs
-the following:
+当点击命令日志中的`debug`命令时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/debug/console-gives-all-debug-info-for-command.png"
-  alt="console.log debug"
+  alt="console.log调试信息"
 />
 
-## See also
+## 另请参阅
 
 - [Cypress Cloud](https://on.cypress.io/cloud)
 - [`.pause()`](/api/commands/pause)

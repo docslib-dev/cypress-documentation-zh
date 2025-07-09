@@ -1,6 +1,6 @@
 ---
-title: 'getCookies | Cypress Documentation'
-description: Get browser cookies for the current domain or the specified domain in Cypress.
+title: 'getCookies | Cypress 文档'
+description: 获取当前域名或指定域名的浏览器 Cookie。
 sidebar_label: getCookies
 ---
 
@@ -8,63 +8,61 @@ sidebar_label: getCookies
 
 # getCookies
 
-Get browser cookies for the current domain or the specified domain.
+获取当前域名或指定域名的浏览器 Cookie。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.getCookies()
 cy.getCookies(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.getCookies() // Get cookies for the currrent domain
+cy.getCookies() // 获取当前域名的 Cookie
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `cy.getCookies()`.
+传入一个选项对象来改变 `cy.getCookies()` 的默认行为。
 
-| Option    | Default                                                     | Description                                                                         |
-| --------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `domain`  | Hostname of the current URL                                 | Retrieves the cookies from the specified domain                                     |
-| `log`     | `true`                                                      | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`responseTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.getCookies()` to resolve before [timing out](#Timeouts)        |
+| 选项      | 默认值                                                   | 描述                                                                         |
+| --------- | ------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `domain`  | 当前 URL 的主机名                                        | 从指定域名获取 Cookie                                                       |
+| `log`     | `true`                                                  | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令           |
+| `timeout` | [`responseTimeout`](/app/references/configuration#Timeouts) | 等待 `cy.getCookies()` 解析的超时时间，超过则[超时](#Timeouts)               |
 
 <HeaderYields />
 
-`cy.getCookies()` yields an array of cookie objects. Each cookie object has the
-following properties:
+`cy.getCookies()` 返回一个包含 Cookie 对象的数组。每个 Cookie 对象具有以下属性：
 
 - `domain`: _(String)_
-- `expiry`: _(Number)_ _(if specified)_
-- `hostOnly`: _(Boolean)_ _(if specified)_
+- `expiry`: _(Number)_ _(如果指定)_
+- `hostOnly`: _(Boolean)_ _(如果指定)_
 - `httpOnly`: _(Boolean)_
 - `name`: _(String)_
 - `path`: _(String)_
-- `sameSite`: _(String)_ _(if specified)_
+- `sameSite`: _(String)_ _(如果指定)_
 - `secure`: _(Boolean)_
 - `value`: _(String)_
 
-`cy.getCookies()` is not a query. It will not update the returned list if
-further cookies are added after it initially executes.
+`cy.getCookies()` 不是查询操作。如果在初始执行后添加了更多 Cookie，它不会更新返回的列表。
 
-## Examples
+## 示例
 
-### Get Cookies
+### 获取 Cookie
 
-#### Get cookies after logging in
+#### 登录后获取 Cookie
 
-In this example, on first login our server sends us back a session cookie.
+在此示例中，首次登录时服务器会返回一个会话 Cookie。
 
 ```javascript
-// assume we just logged in
+// 假设我们刚刚登录
 cy.contains('Login').click()
 cy.url().should('include', 'profile')
 cy.getCookies()
@@ -74,32 +72,29 @@ cy.getCookies()
   })
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.getCookies()` requires being chained off of `cy`.
+- `cy.getCookies()` 需要链式调用 `cy`。
 
 <HeaderAssertions />
 
-- `cy.getCookies()` will only run assertions you have chained once, and will not
-  [retry](/app/core-concepts/retry-ability).
+- `cy.getCookies()` 只会运行一次链式断言，不会[重试](/app/core-concepts/retry-ability)。
 
 <HeaderTimeouts />
 
-- `cy.getCookies()` should never time out.
+- `cy.getCookies()` 不应该超时。
 
 :::caution
 
-Because `cy.getCookies()` is asynchronous it is technically possible for there
-to be a timeout while talking to the internal Cypress automation APIs. But for
-practical purposes it should never happen.
+由于 `cy.getCookies()` 是异步操作，理论上在与 Cypress 内部自动化 API 通信时可能会超时。但实际上几乎不会发生。
 
 :::
 
-## Command Log
+## 命令日志
 
-**_Get browser cookies and inspect all properties_**
+**_获取浏览器 Cookie 并检查所有属性_**
 
 ```javascript
 cy.getCookies()
@@ -114,29 +109,28 @@ cy.getCookies()
   })
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/getcookies/get-browser-cookies-and-inspect-all-properties.png"
-  alt="Command Log getcookies"
+  alt="命令日志 getcookies"
 />
 
-When clicking on `getCookies` within the command log, the console outputs the
-following:
+当点击命令日志中的 `getCookies` 时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/getcookies/test-application-cookies.png"
-  alt="Console Log getcookies"
+  alt="控制台日志 getcookies"
 />
 
-## History
+## 历史版本
 
-| Version                                  | Changes                                                                                                                                       |
-| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| [5.0.0](/app/references/changelog#5-0-0) | Removed `experimentalGetCookiesSameSite` and made `sameSite` property always available.                                                       |
-| [4.3.0](/app/references/changelog#4-3-0) | Added `sameSite` property when the [experimentalGetCookiesSameSite](/app/references/configuration#Experiments) configuration value is `true`. |
+| 版本                                  | 变更                                                                                                                                       |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| [5.0.0](/app/references/changelog#5-0-0) | 移除了 `experimentalGetCookiesSameSite` 并使 `sameSite` 属性始终可用。                                                                     |
+| [4.3.0](/app/references/changelog#4-3-0) | 当配置项 [experimentalGetCookiesSameSite](/app/references/configuration#Experiments) 为 `true` 时，添加了 `sameSite` 属性。                |
 
-## See also
+## 另请参阅
 
 - [`cy.clearCookie()`](/api/commands/clearcookie)
 - [`cy.clearCookies()`](/api/commands/clearcookies)

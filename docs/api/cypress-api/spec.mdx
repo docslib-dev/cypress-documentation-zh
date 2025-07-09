@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.spec | Cypress Documentation'
-description: 'Get the properties of the spec under test in Cypress'
+title: 'Cypress.spec | Cypress 文档'
+description: '获取 Cypress 中当前测试规范的属性'
 sidebar_label: spec
 ---
 
@@ -8,22 +8,22 @@ sidebar_label: spec
 
 # Cypress.spec
 
-`Cypress.spec` returns you the properties of the spec under test.
+`Cypress.spec` 返回当前测试规范的属性。
 
-## Syntax
+## 语法
 
 ```javascript
-Cypress.spec // returns spec object
+Cypress.spec // 返回规范对象
 ```
 
-## Examples
+## 示例
 
-### Log spec information
+### 输出规范信息
 
-#### `Cypress.spec` returns an object
+#### `Cypress.spec` 返回一个对象
 
 ```js
-it('log spec info', () => {
+it('输出规范信息', () => {
   console.log(Cypress.spec)
   // {
   //   name: 'filter.cy.js',

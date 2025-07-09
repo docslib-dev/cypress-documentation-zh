@@ -1,6 +1,6 @@
 ---
-title: 'Cypress._ | Cypress Documentation'
-description: Cypress automatically includes lodash and exposes it as Cypress._.
+title: 'Cypress._ | Cypress 文档'
+description: Cypress 自动包含 lodash 并将其暴露为 Cypress._。
 sidebar_label: Cypress._
 slug: _
 sidebar_position: 0
@@ -8,44 +8,42 @@ sidebar_position: 0
 
 <ProductHeading product="app" />
 
-# Cypress.\_
+# Cypress._
 
-Cypress automatically includes [lodash](https://lodash.com/) and exposes it as
-`Cypress._`. Call any valid Lodash method on `Cypress._`
+Cypress 自动包含 [lodash](https://lodash.com/) 并将其暴露为 `Cypress._`。可以在 `Cypress._` 上调用任何有效的 Lodash 方法。
 
-## Syntax
+## 语法
 
 ```javascript
 Cypress._.method()
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 Cypress._.keys(obj)
 ```
 
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
 ```javascript
-cy._.keys(obj) // Errors, cannot be chained off 'cy'
+cy._.keys(obj) // 错误，不能链式调用 'cy'
 ```
 
-## Examples
+## 示例
 
 ### `_.each`
 
 ```javascript
-// set local reference to lodash and jquery
+// 设置对 lodash 和 jquery 的本地引用
 const { _, $ } = Cypress
 
 cy.get('li').then(($li) => {
-  // use the _.each function
+  // 使用 _.each 函数
   _.each($li.get(), (el, i) => {
-    // use $(...) to wrap the DOM element
-    // into a jQuery object
+    // 使用 $(...) 将 DOM 元素包装成 jQuery 对象
     expect($(el).parent()).to.match('ul')
   })
 })
@@ -55,7 +53,7 @@ cy.get('li').then(($li) => {
 
 ```javascript
 cy
-  // use the _.chain, _.map, _.take, and _.value functions
+  // 使用 _.chain, _.map, _.take 和 _.value 函数
   .request('http://jsonplaceholder.typicode.com/users')
   .then((response) => {
     const ids = Cypress._.chain(response.body).map('id').take(3).value()
@@ -64,6 +62,6 @@ cy
   })
 ```
 
-## See also
+## 另请参阅
 
-- [Bundled Libraries](/app/references/bundled-libraries)
+- [捆绑库](/app/references/bundled-libraries)

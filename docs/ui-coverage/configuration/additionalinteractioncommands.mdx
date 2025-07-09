@@ -1,6 +1,6 @@
 ---
-title: 'Additional Interaction Commands | Cypress UI Coverage'
-description: 'The `additionalInteractionCommands` configuration property allows users to extend the default set of interaction command types recognized by UI Coverage.'
+title: '附加交互命令 | Cypress UI 覆盖率'
+description: '`additionalInteractionCommands` 配置属性允许用户扩展 UI Coverage 默认识别的交互命令类型集。'
 sidebar_label: additionalInteractionCommands
 sidebar_position: 90
 ---
@@ -9,17 +9,17 @@ sidebar_position: 90
 
 # additionalInteractionCommands
 
-UI Coverage automatically tracks how elements are used in tests using a predefined set of [Cypress interaction commands](/ui-coverage/core-concepts/interactivity#Interaction-Commands) such as `click`, `type`, `dblclick`, and more.
+UI Coverage 会自动使用预定义的 [Cypress 交互命令集](/ui-coverage/core-concepts/interactivity#Interaction-Commands)（如 `click`、`type`、`dblclick` 等）跟踪测试中元素的使用情况。
 
-The `additionalInteractionCommands` configuration allows you to extend this default set. You can specify custom command types that should also be recognized as interactions, which can increase the range of actions that are counted towards UI Coverage
+`additionalInteractionCommands` 配置允许您扩展这个默认集。您可以指定也应被视为交互的自定义命令类型，这可以增加计入 UI 覆盖率的操作范围。
 
-## Why use additionalInteractionCommands?
+## 为何使用 additionalInteractionCommands？
 
-- **Custom command support**: Track interactions from custom Cypress commands that aren't included in the default set.
-- **Third-party library support**: Ensure interactions from third-party testing libraries (such as [`cypress-real-events`](#Adding-third-party-library-commands)) are properly recognized and tracked.
-- **Enhanced reporting**: Improve the accuracy of your UI Coverage reports by including all relevant interaction types.
+- **自定义命令支持**：跟踪默认集中未包含的自定义 Cypress 命令的交互。
+- **第三方库支持**：确保正确识别和跟踪来自第三方测试库（如 [`cypress-real-events`](#添加第三方库命令)）的交互。
+- **增强报告**：通过包含所有相关交互类型，提高 UI 覆盖率报告的准确性。
 
-## Syntax
+## 语法
 
 ```json
 {
@@ -31,19 +31,19 @@ The `additionalInteractionCommands` configuration allows you to extend this defa
 }
 ```
 
-### Options
+### 选项
 
-The `additionalInteractionCommands` property accepts an array of strings, where each string represents a command name that should be treated as an interaction command by UI Coverage.
+`additionalInteractionCommands` 属性接受一个字符串数组，其中每个字符串表示 UI Coverage 应视为交互命令的命令名称。
 
-| Option                          | Required | Default | Description                                                                                                        |
-| ------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
-| `additionalInteractionCommands` | Optional | `[]`    | An array of command names (strings) that should be recognized as interaction commands in addition to the defaults. |
+| 选项                          | 必填     | 默认值  | 描述                                                                                                         |
+| ------------------------------- | -------- | ------- | ----------------------------------------------------------------------------------------------------------- |
+| `additionalInteractionCommands` | 可选     | `[]`    | 一个命令名称（字符串）数组，这些命令名称应被视为默认命令之外的交互命令。                                     |
 
-## Examples
+## 示例
 
-### Adding custom interaction commands
+### 添加自定义交互命令
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -53,18 +53,18 @@ The `additionalInteractionCommands` property accepts an array of strings, where 
 }
 ```
 
-#### Usage in tests
+#### 测试中的使用
 
 ```javascript
-// These custom commands will now be tracked as interactions
+// 这些自定义命令现在将被跟踪为交互
 cy.get('[data-testid="submit-button"]').customClick()
 cy.get('[data-testid="draggable"]').dragAndDrop()
 cy.get('[data-testid="carousel"]').swipeLeft()
 ```
 
-### Adding third-party library commands
+### 添加第三方库命令
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -74,18 +74,18 @@ cy.get('[data-testid="carousel"]').swipeLeft()
 }
 ```
 
-#### Usage in tests
+#### 测试中的使用
 
 ```javascript
-// Commands from cypress-real-events plugin will be tracked
+// 来自 cypress-real-events 插件的命令将被跟踪
 cy.get('[data-cy="button"]').realClick()
 cy.get('[data-cy="input"]).realType('Hello World')
 cy.get('[data-cy="tooltip-trigger"]').realHover()
 ```
 
-## Notes
+## 注意事项
 
-- Command names are case-sensitive and must match exactly as they appear in your test code.
-- The additional commands are merged with the default interaction commands, the default commands are not replaced.
-- Only commands that actually interact with DOM elements should be included in this configuration.
-- Custom commands must log a snapshot that references the subject element. This ensures that the command renders element highlights in Cypress open mode/Test Replay, and also ensures that UI Coverage can properly attribute the interaction to the expected element. More information regarding Custom Commands can be found [here](/api/cypress-api/custom-commands).
+- 命令名称区分大小写，必须与测试代码中显示的名称完全匹配。
+- 附加命令会与默认交互命令合并，不会替换默认命令。
+- 此配置中应仅包含实际与 DOM 元素交互的命令。
+- 自定义命令必须记录引用主题元素的快照。这确保命令在 Cypress 开放模式/测试重放中呈现元素高亮，并确保 UI Coverage 可以正确将交互归因于预期元素。有关自定义命令的更多信息，请参见[此处](/api/cypress-api/custom-commands)。

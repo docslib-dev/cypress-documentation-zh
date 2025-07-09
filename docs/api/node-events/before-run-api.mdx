@@ -1,29 +1,24 @@
 ---
-title: 'Before Run Event | Cypress Node Events'
-description: 'The before:run event fires before a run starts in Cypress.'
+title: 'Before Run 事件 | Cypress 节点事件'
+description: 'before:run 事件在 Cypress 运行开始前触发。'
 sidebar_label: 'before:run'
 ---
 
 <ProductHeading product="app" />
 
-# Before Run Event
+# Before Run 事件
 
-The `before:run` event fires before a run starts. When running cypress via
-`cypress open`, the event will fire when opening a project.
+`before:run` 事件在运行开始前触发。当通过 `cypress open` 运行 Cypress 时，该事件会在打开项目时触发。
 
-The event will fire each time `cypress run` executes. As a result, if running
-your specs in [parallel](/cloud/features/smart-orchestration/parallelization), the
-event will fire once for each machine on which the tests are run.
+每次执行 `cypress run` 时都会触发该事件。因此，如果在[并行模式](/cloud/features/smart-orchestration/parallelization)下运行测试，该事件会在运行测试的每台机器上各触发一次。
 
-## Syntax
+## 语法
 
 <WarningSetupNodeEvents />
 
 :::caution
 
-⚠️ When running via `cypress open`, the `before:run` event only fires if the
-[experimentalInteractiveRunEvents flag](/app/references/experiments#Configuration)
-is enabled.
+⚠️ 当通过 `cypress open` 运行时，`before:run` 事件仅在启用 [experimentalInteractiveRunEvents 标志](/app/references/experiments#Configuration)时触发。
 
 :::
 
@@ -39,33 +34,31 @@ on('before:run', (details) => {
 
 <Icon name="angle-right" /> **details _(Object)_**
 
-Details of the run, including the project config, system information, and the
-version of Cypress. More details are included when running via `cypress run`.
+运行的详细信息，包括项目配置、系统信息和 Cypress 版本。通过 `cypress run` 运行时包含更多细节。
 
-## Usage
+## 用法
 
-You can return a promise from the `before:run` event handler and it will be
-awaited before Cypress proceeds running your specs.
+你可以从 `before:run` 事件处理函数中返回一个 Promise，Cypress 会等待该 Promise 完成后再继续运行测试。
 
-### Log the browser and the number of specs that will be run
+### 记录浏览器信息和将要运行的测试数量
 
 :::cypress-config-plugin-example
 
 ```ts
 on('before:run', (details) => {
-  // details will look something like this when run via `cypress run`:
+  // 通过 `cypress run` 运行时，details 对象类似这样：
   // {
   //   config: {
   //     projectId: '12345',
   //     baseUrl: 'http://example.com/',
   //     viewportWidth: 1000,
   //     viewportHeight: 660,
-  //     // ...more properties...
+  //     // ...更多属性...
   //   },
   //   browser: {
   //     name: 'electron',
   //     version: '59.0.3071.115',
-  //     // ...more properties...
+  //     // ...更多属性...
   //   },
   //   system: {
   //     osName: 'darwin',
@@ -78,7 +71,7 @@ on('before:run', (details) => {
   //       relative: 'cypress/e2e/login_cy.js',
   //       absolute: '/Users/janelane/app/cypress/e2e/login_cy.js',
   //     },
-  //     // ... more specs
+  //     // ...更多测试文件
   //   ],
   //   specPattern: [
   //     '**/*.cy.{js,jsx,ts,tsx}'
@@ -87,14 +80,14 @@ on('before:run', (details) => {
   //   group: 'group-1',
   //   tag: 'tag-1'
   // }
-  // details will look something like this when run via `cypress open`:
+  // 通过 `cypress open` 运行时，details 对象类似这样：
   // {
   //   config: {
   //     projectId: '12345',
   //     baseUrl: 'http://example.com/',
   //     viewportWidth: 1000,
   //     viewportHeight: 660,
-  //     // ...more properties...
+  //     // ...更多属性...
   //   },
   //   system: {
   //     osName: 'darwin',
@@ -103,12 +96,13 @@ on('before:run', (details) => {
   //   cypressVersion: '7.0.0'
   // }
   if (details.specs && details.browser) {
-    // details.specs and details.browser will be undefined in interactive mode
+    // 在交互模式下，details.specs 和 details.browser 会是 undefined
     console.log(
-      'Running',
+      '在',
+      details.browser.name,
+      '中运行',
       details.specs.length,
-      'specs in',
-      details.browser.name
+      '个测试'
     )
   }
 })
@@ -116,10 +110,10 @@ on('before:run', (details) => {
 
 :::
 
-## See also
+## 另请参阅
 
 - [After Run API](/api/node-events/after-run-api)
 - [Before Spec API](/api/node-events/before-spec-api)
 - [After Spec API](/api/node-events/after-spec-api)
-- [How to use Plugins](/app/plugins/plugins-guide)
-- [Node Events Overview](/api/node-events/overview)
+- [如何使用插件](/app/plugins/plugins-guide)
+- [节点事件概览](/api/node-events/overview)

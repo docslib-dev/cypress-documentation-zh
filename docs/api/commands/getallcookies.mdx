@@ -1,6 +1,6 @@
 ---
-title: 'getAllCookies | Cypress Documentation'
-description: Get all browser cookies in Cypress.
+title: 'getAllCookies | Cypress 文档'
+description: 在Cypress中获取所有浏览器cookie。
 sidebar_label: getAllCookies
 ---
 
@@ -8,61 +8,57 @@ sidebar_label: getAllCookies
 
 # getAllCookies
 
-Get all browser cookies.
+获取所有浏览器cookie。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.getAllCookies()
 cy.getAllCookies(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.getAllCookies() // Get all cookies
+cy.getAllCookies() // 获取所有cookie
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of
-`cy.getAllCookies()`.
+传入一个选项对象来改变`cy.getAllCookies()`的默认行为。
 
-| Option    | Default                                                     | Description                                                                         |
+| 选项      | 默认值                                                     | 描述                                                                         |
 | --------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                      | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`responseTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.getAllCookies()` to resolve before [timing out](#Timeouts)     |
+| `log`     | `true`                                                      | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令 |
+| `timeout` | [`responseTimeout`](/app/references/configuration#Timeouts) | 等待`cy.getAllCookies()`解析的超时时间，超过则[超时](#Timeouts)     |
 
 <HeaderYields />
 
-`cy.getAllCookies()` yields an array of cookie objects. Each cookie object has
-the following properties:
+`cy.getAllCookies()`返回一个cookie对象数组。每个cookie对象具有以下属性：
 
 - `domain`: _(String)_
-- `expiry`: _(Number)_ _(if specified)_
-- `hostOnly`: _(Boolean)_ _(if specified)_
+- `expiry`: _(Number)_ _(如果指定)_
+- `hostOnly`: _(Boolean)_ _(如果指定)_
 - `httpOnly`: _(Boolean)_
 - `name`: _(String)_
 - `path`: _(String)_
-- `sameSite`: _(String)_ _(if specified)_
+- `sameSite`: _(String)_ _(如果指定)_
 - `secure`: _(Boolean)_
 - `value`: _(String)_
 
-`cy.getAllCookies()` is not a query. It will not update the returned list if
-further cookies are added after it initially executes.
+`cy.getAllCookies()`不是查询命令。如果在初始执行后添加了更多cookie，它不会更新返回的列表。
 
-## Examples
+## 示例
 
-### Get Cookies
+### 获取Cookie
 
-#### Get cookies after logging in
+#### 登录后获取cookie
 
-In this example, we log in through an identity provider which sets a cookie and
-redirects back to our site, which sets a session cookie.
+在此示例中，我们通过身份提供程序登录，该程序设置一个cookie并重定向回我们的站点，站点再设置一个会话cookie。
 
 ```javascript
 cy.contains('Log in').click()
@@ -79,30 +75,27 @@ cy.getAllCookies()
   })
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.getAllCookies()` requires being chained off of `cy`.
+- `cy.getAllCookies()`需要链式调用`cy`。
 
 <HeaderAssertions />
 
-- `cy.getAllCookies()` will only run assertions you have chained once, and will
-  not [retry](/app/core-concepts/retry-ability).
+- `cy.getAllCookies()`只会运行一次链式断言，不会[重试](/app/core-concepts/retry-ability)。
 
 <HeaderTimeouts />
 
-- `cy.getAllCookies()` should never time out.
+- `cy.getAllCookies()`不应该超时。
 
 :::caution
 
-Because `cy.getAllCookies()` is asynchronous it is technically possible for
-there to be a timeout while talking to the internal Cypress automation APIs. But
-for practical purposes it should never happen.
+由于`cy.getAllCookies()`是异步的，理论上在与Cypress内部自动化API通信时可能会超时。但实际上这种情况几乎不会发生。
 
 :::
 
-## See also
+## 另请参阅
 
 - [`cy.clearAllCookies()`](/api/commands/clearallcookies)
 - [`cy.clearCookie()`](/api/commands/clearcookie)

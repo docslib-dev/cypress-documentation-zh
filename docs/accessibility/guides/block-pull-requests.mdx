@@ -1,65 +1,65 @@
 ---
-sidebar_label: Block pull requests and set policies
-title: 'Block pull requests and set policies | Cypress Accessibility Documentation'
-description: "Set policies and block pull requests automatically with Cypress Accessibility's Results API, enabling custom CI workflows to enforce accessibility standards and prevent regressions."
+sidebar_label: 拦截拉取请求与设置策略
+title: '拦截拉取请求与设置策略 | Cypress无障碍测试文档'
+description: "通过Cypress无障碍测试的Results API设置策略并自动拦截拉取请求，实现自定义CI工作流以强制执行无障碍标准并防止功能退化。"
 sidebar_position: 40
 ---
 
 <ProductHeading product="accessibility" />
 
-# Block pull requests and set policies
+# 拦截拉取请求与设置策略
 
-Cypress Accessibility reports are generated server-side in Cypress Cloud, based on test artifacts uploaded during execution. This ensures there is no performance impact on your Cypress test runs.
+Cypress无障碍测试报告基于测试执行期间上传的测试工件，在Cypress Cloud服务器端生成。这确保不会对您的Cypress测试运行产生性能影响。
 
-## Using the Results API
+## 使用Results API
 
-The [Cypress Accessibility Results API](/accessibility/results-api) allows you to access accessibility results post-test run, enabling workflows like blocking pull requests or triggering alerts based on specific accessibility criteria. This involves adding a dedicated accessibility verification step to your CI pipeline. With a Cypress helper function, you can automatically fetch the report for the relevant test run within the CI build context. Below is an example of how to block a pull request in GitHub Actions if accessibility violations occur:
+[Cypress无障碍测试Results API](/accessibility/results-api)允许您在测试运行后获取无障碍测试结果，支持基于特定无障碍标准拦截拉取请求或触发警报等工作流。这需要在CI流水线中添加专门的无障碍验证步骤。通过Cypress辅助函数，您可以在CI构建上下文中自动获取相关测试运行的报告。以下是在GitHub Actions中检测到无障碍违规时拦截拉取请求的示例：
 
 <DocsImage
   src="/img/accessibility/guides/github-actions-a11y-block.png"
   width="75%"
-  alt="On the left hand side, a list of Github Actions jobs is presented related to building, testing and deploying a website. Everything has a green checkmark except the `verify-accessibility-results` job, and the 'test' job that is its parents. On the right hand side we see the terminal output for that job which warns us that the 'button-name' rule has been broken, and that it was previously passing."
+  alt="左侧显示与构建、测试和部署网站相关的GitHub Actions任务列表。除'verify-accessibility-results'任务及其父级'test'任务外，其他均显示绿色对勾。右侧显示该任务的终端输出，警告'button-name'规则被违反，而该规则之前是通过状态。"
   noBorder={true}
 />
 
-## Implementing a status check
+## 实现状态检查
 
-The Results API offers full flexibility to analyze results and take tailored actions. It can also integrate with status checks on pull requests. Below is an example of a passing accessibility verification step:
+Results API提供完全灵活性来分析结果并采取定制操作。它还可以与拉取请求上的状态检查集成。以下是通过无障碍验证步骤的示例：
 
 <DocsImage
   src="/img/accessibility/guides/status-check.png"
   width="75%"
-  alt="An example list of GitHub Status Checks including a passing `verify-accessibility-results` check"
+  alt="GitHub状态检查列表示例，包含通过的'verify-accessibility-results'检查"
   noBorder={true}
 />
 
-## Defining policies in the verification step
+## 在验证步骤中定义策略
 
-The [Results API Documentation](/accessibility/results-api) provides detailed guidance on the API's capabilities. Here's a simplified example demonstrating how to enforce a "no new failing accessibility rules" policy:
+[Results API文档](/accessibility/results-api)详细介绍了API功能。以下是一个简化示例，展示如何强制执行"无新增失败无障碍规则"策略：
 
 ```js
 const { getAccessibilityResults } = require('@cypress/extract-cloud-results')
 
-// List of known failing rules
+// 已知失败规则列表
 const rulesWithExistingViolations = [
   'button-name',
-  // Add more rules as needed
+  // 按需添加更多规则
 ]
 
-// Fetch accessibility results
+// 获取无障碍测试结果
 getAccessibilityResults().then((results) => {
-  // Identify new rule violations
+  // 识别新增规则违规
   const newRuleViolations = results.rules.filter((rule) => {
     return !rulesWithExistingViolations.includes(rule.name)
   })
 
   if (newRuleViolations.length > 0) {
-    // Trigger appropriate action if new violations are detected
+    // 检测到新违规时触发相应操作
     throw new Error(
-      `${newRuleViolations.length} new rule violations detected. These must be resolved.`
+      `检测到${newRuleViolations.length}条新增规则违规，必须解决这些问题。`
     )
   }
 })
 ```
 
-By examining the results and customizing your response, you gain maximum control over how to handle accessibility violations. Leverage CI environment context, such as tags, to fine-tune responses to specific accessibility outcomes.
+通过检查结果并定制响应，您可以最大程度控制如何处理无障碍违规问题。利用CI环境上下文（如标签）来微调对特定无障碍测试结果的响应。

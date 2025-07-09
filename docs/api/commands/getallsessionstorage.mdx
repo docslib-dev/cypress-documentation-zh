@@ -1,6 +1,6 @@
 ---
-title: 'getAllSessionStorage | Cypress Documentation'
-description: Get sessionStorage data for all origins with which the test has interacted in Cypress.
+title: 'getAllSessionStorage | Cypress 文档'
+description: 获取测试在Cypress中交互过的所有源的sessionStorage数据。
 sidebar_label: getAllSessionStorage
 ---
 
@@ -8,44 +8,41 @@ sidebar_label: getAllSessionStorage
 
 # getAllSessionStorage
 
-Get
+获取测试交互过的所有源的
 [`sessionStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
-data for all origins with which the test has interacted.
+数据。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.getAllSessionStorage()
 cy.getAllSessionStorage(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 cy.getAllSessionStorage()
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of
-`cy.getAllSessionStorage()`.
+传入一个选项对象来改变`cy.getAllSessionStorage()`的默认行为。
 
-| Option | Default | Description                                                                         |
-| ------ | ------- | ----------------------------------------------------------------------------------- |
-| `log`  | `true`  | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
+| 选项  | 默认值 | 描述                                                                         |
+| ----- | ------ | --------------------------------------------------------------------------- |
+| `log` | `true` | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令 |
 
 <HeaderYields />
 
-`cy.getAllSessionStorage()` yields an object where the keys are origins and the
-values are key-value pairs of `sessionStorage` data.
+`cy.getAllSessionStorage()`返回一个对象，其键是源，值是`sessionStorage`数据的键值对。
 
-For example, if `key1` is set to `value1` on `https://example.cypress.io` and
-`key2` is set to `value2` on `https://www.cypress-dx.com`,
-`cy.getAllSessionStorage()` will yield:
+例如，如果在`https://example.cypress.io`上设置了`key1`为`value1`，在`https://www.cypress-dx.com`上设置了`key2`为`value2`，
+`cy.getAllSessionStorage()`将返回：
 
 ```js
 {
@@ -58,9 +55,9 @@ For example, if `key1` is set to `value1` on `https://example.cypress.io` and
 }
 ```
 
-## Examples
+## 示例
 
-### Get all sessionStorage
+### 获取所有sessionStorage
 
 ```javascript
 cy.visit('/users', {
@@ -78,22 +75,21 @@ cy.getAllSessionStorage().then((result) => {
 })
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.getAllSessionStorage()` requires being chained off of `cy`.
+- `cy.getAllSessionStorage()`需要链式调用`cy`。
 
 <HeaderAssertions />
 
-- `cy.getAllSessionStorage()` will only run assertions you have chained once,
-  and will not [retry](/app/core-concepts/retry-ability).
+- `cy.getAllSessionStorage()`只会运行你链式调用的断言一次，并且不会[重试](/app/core-concepts/retry-ability)。
 
 <HeaderTimeouts />
 
-- `cy.getAllSessionStorage()` cannot time out.
+- `cy.getAllSessionStorage()`不会超时。
 
-## See also
+## 另请参阅
 
 - [`cy.clearAllLocalStorage()`](/api/commands/clearalllocalstorage)
 - [`cy.clearAllSessionStorage()`](/api/commands/clearallsessionstorage)

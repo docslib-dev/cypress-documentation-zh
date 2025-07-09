@@ -16,23 +16,22 @@ function SecondaryMenuBackButton(
         <IconChevronLeftSmall />
         <Translate
           id="theme.navbar.mobileSidebarSecondaryMenu.backButtonLabel"
-          description="The label of the back button to return to main menu, inside the mobile navbar sidebar secondary menu (notably used to display the docs sidebar)"
+          description="移动导航栏侧边栏二级菜单中返回主菜单的按钮标签（主要用于显示文档侧边栏）"
         >
-          Back to main menu
+          返回主菜单
         </Translate>
       </button>
       <hr className="h-[1px] bg-gray-100 dark:bg-gray-800 mr-[16px]" />
     </>
   )
 }
-// The secondary menu slides from the right and shows contextual information
-// such as the docs sidebar
+// 二级菜单从右侧滑出，显示上下文信息（如文档侧边栏）
 export default function NavbarMobileSidebarSecondaryMenu() {
   const isPrimaryMenuEmpty = useThemeConfig().navbar.items.length === 0
   const secondaryMenu = useNavbarSecondaryMenu()
   return (
     <>
-      {/* edge-case: prevent returning to the primaryMenu when it's empty */}
+      {/* 边界情况：当主菜单为空时防止返回 */}
       {!isPrimaryMenuEmpty && (
         <SecondaryMenuBackButton onClick={() => secondaryMenu.hide()} />
       )}

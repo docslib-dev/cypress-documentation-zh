@@ -1,33 +1,32 @@
 ---
-title: 'Built-in and Custom Reporters in Cypress: Setup Guide'
-description: Learn how to use custom reporters in Cypress to output test results in different formats.
-sidebar_label: Reporters
+title: 'Cypress 内置与自定义报告器：设置指南'
+description: 学习如何在 Cypress 中使用自定义报告器以不同格式输出测试结果。
+sidebar_label: 报告器
 ---
 
 <ProductHeading product="app" />
 
-# Reporters in Cypress
+# Cypress 中的报告器
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to use custom reporters in Cypress
-- How to use multiple reporters
-- How to merge reports across spec files
+- 如何在 Cypress 中使用自定义报告器
+- 如何使用多个报告器
+- 如何跨测试文件合并报告
 
 :::
 
-## Introduction
+## 简介
 
-After writing and running tests in Cypress, reviewing the results of those tests is crucial.
-Cypress provides several options to review results of a test run.
+在 Cypress 中编写并运行测试后，查看测试结果至关重要。
+Cypress 提供了多种方式来查看测试运行结果。
 
-- [Cypress Cloud](/cloud/get-started/introduction) - See test results, spec data, errors,
-  screenshots, videos, and Test Replay in Cypress Cloud.
-- Cypress App's open source built in and custom reporters.
+- [Cypress Cloud](/cloud/get-started/introduction) - 在 Cypress Cloud 中查看测试结果、测试数据、错误、截图、视频和测试回放。
+- Cypress App 的开源内置及自定义报告器。
 
-This document covers how to use [built in](#Built-in-reporters) and [custom](#Custom-reporters) reporters in Cypress App.
+本文档介绍如何在 Cypress App 中使用[内置报告器](#内置报告器)和[自定义报告器](#自定义报告器)。
 
 :::tip
 
@@ -35,34 +34,28 @@ This document covers how to use [built in](#Built-in-reporters) and [custom](#Cu
 
 :::
 
-## Built in reporters
+## 内置报告器
 
-Because Cypress is built on top of Mocha, that means any reporter built for
-Mocha can be used with Cypress. Here is a list of built in Mocha reporters.
+由于 Cypress 基于 Mocha 构建，因此任何为 Mocha 构建的报告器都可以与 Cypress 一起使用。以下是 Mocha 的内置报告器列表。
 
-- [Mocha's built-in reporters](https://mochajs.org/#reporters)
+- [Mocha 内置报告器](https://mochajs.org/#reporters)
 
-By default, Cypress uses the `spec` reporter to output information to `STDOUT`.
+默认情况下，Cypress 使用 `spec` 报告器将信息输出到 `STDOUT`。
 
-We've also added the two most common 3rd party reporters for Mocha. These are
-built into Cypress and you can use them without installing anything.
+我们还添加了两个最常用的 Mocha 第三方报告器。这些报告器已内置到 Cypress 中，无需安装即可使用。
 
 - [`teamcity`](https://github.com/travisjeffery/mocha-teamcity-reporter)
 - [`junit`](https://github.com/michaelleeallen/mocha-junit-reporter)
 
-## Custom reporters
+## 自定义报告器
 
-Cypress supports creating your own custom reporters or using any kind of 3rd
-party reporter.
+Cypress 支持创建自定义报告器或使用任何类型的第三方报告器。
 
-### Installed locally
+### 本地安装
 
-You can load
-[custom Mocha reporters](https://mochajs.org/api/tutorial-custom-reporter.html)
-through a relative or absolute path. These can be specified in your Cypress
-configuration file or via the [command line](/app/references/command-line).
+你可以通过相对或绝对路径加载[自定义 Mocha 报告器](https://mochajs.org/api/tutorial-custom-reporter.html)。这些可以在 Cypress 配置文件或通过[命令行](/app/references/command-line)指定。
 
-For example, if you have the following directory structure:
+例如，如果你有以下目录结构：
 
 ```txt
 > my-project
@@ -72,9 +65,9 @@ For example, if you have the following directory structure:
     - custom.js
 ```
 
-You would specify the path to your custom reporter in either of the ways below.
+你可以通过以下任一方式指定自定义报告器的路径。
 
-#### Cypress configuration
+#### Cypress 配置
 
 :::cypress-config-example
 
@@ -86,17 +79,17 @@ You would specify the path to your custom reporter in either of the ways below.
 
 :::
 
-#### Command Line
+#### 命令行
 
 ```shell
 npx cypress run --reporter reporters/custom.js
 ```
 
-### Installed via npm
+### 通过 npm 安装
 
-When using custom reporters via npm, specify the package name.
+当通过 npm 使用自定义报告器时，请指定包名。
 
-#### Cypress configuration
+#### Cypress 配置
 
 :::cypress-config-example
 
@@ -108,26 +101,21 @@ When using custom reporters via npm, specify the package name.
 
 :::
 
-#### Command line
+#### 命令行
 
 ```shell
 npx cypress run --reporter mochawesome
 ```
 
-## Reporter Options
+## 报告器选项
 
-Some reporters accept options that customize their behavior. These can be
-specified in your Cypress configuration or via
-[command line](/app/references/command-line) options.
+某些报告器接受自定义行为的选项。这些可以在 Cypress 配置或通过[命令行](/app/references/command-line)选项指定。
 
-Reporter options differ depending on the reporter (and may not be supported at
-all). Refer to the documentation for the reporter you are using for details on
-which options are supported.
+报告器选项因报告器而异（可能根本不支持）。请参阅你使用的报告器文档以了解支持的选项。
 
-The below configuration will output the JUnit report to `STDOUT` and save it
-into an XML file.
+以下配置将 JUnit 报告输出到 `STDOUT` 并保存为 XML 文件。
 
-### Cypress configuration
+### Cypress 配置
 
 :::cypress-config-example
 
@@ -143,26 +131,20 @@ into an XML file.
 
 :::
 
-### Command line
+### 命令行
 
 ```shell
 npx cypress run --reporter junit \
   --reporter-options "mochaFile=results/my-test-output.xml,toConsole=true"
 ```
 
-## Merging reports across spec files
+## 跨测试文件合并报告
 
-Each spec file is processed completely separately during each `cypress run`
-execution. Thus each spec run _overwrites_ the previous report file. To preserve
-unique reports for each specfile, use the `[hash]` in the `mochaFile` filename.
+每个测试文件在每次 `cypress run` 执行期间都是完全独立处理的。因此，每个测试运行都会_覆盖_之前的报告文件。要为每个测试文件保留唯一的报告，请在 `mochaFile` 文件名中使用 `[hash]`。
 
-The following configuration will create separate XML files in the `results`
-folder. You can then merge the reported output in a separate step using a 3rd
-party tool. For example, for the
-[Mochawesome](https://github.com/adamgruber/mochawesome) reporter, you can use
-the [mochawesome-merge](https://github.com/antontelesh/mochawesome-merge) tool.
+以下配置将在 `results` 文件夹中创建单独的 XML 文件。然后，你可以使用第三方工具合并报告输出。例如，对于 [Mochawesome](https://github.com/adamgruber/mochawesome) 报告器，可以使用 [mochawesome-merge](https://github.com/antontelesh/mochawesome-merge) 工具。
 
-#### Cypress configuration
+#### Cypress 配置
 
 :::cypress-config-example
 
@@ -177,48 +159,41 @@ the [mochawesome-merge](https://github.com/antontelesh/mochawesome-merge) tool.
 
 :::
 
-#### Command line
+#### 命令行
 
 ```shell
 npx cypress run --reporter junit \
   --reporter-options "mochaFile=results/my-test-output-[hash].xml"
 ```
 
-## Multiple reporters
+## 多个报告器
 
-Oftentimes we see users wanting the ability to use multiple reporters. When
-running in CI, you might want to generate a report for `junit` and perhaps a
-`json` report. This is great, but by setting this reporter you won't receive any
-additional feedback while the tests are running!
+我们经常看到用户希望使用多个报告器。在 CI 中运行时，你可能希望生成 `junit` 报告和 `json` 报告。这很好，但设置此报告器后，你将无法在测试运行时获得任何额外反馈！
 
-The solution here is to use multiple reporters. You will have the benefit of
-both worlds.
+解决方案是使用多个报告器。你将同时获得两者的好处。
 
-We suggest using the npm module [cypress-multi-reporters](https://www.npmjs.com/package/cypress-multi-reporters).
+我们建议使用 npm 模块 [cypress-multi-reporters](https://www.npmjs.com/package/cypress-multi-reporters)。
 
-### Examples
+### 示例
 
-#### Spec to `STDOUT`, save JUnit XML files
+#### 将 `spec` 输出到 `STDOUT`，保存 JUnit XML 文件
 
-We want to output a `spec` report to `STDOUT`, while saving a JUnit XML file for
-each spec file.
+我们希望将 `spec` 报告输出到 `STDOUT`，同时为每个测试文件保存一个 JUnit XML 文件。
 
-We need to install additional dependencies:
+我们需要安装额外的依赖项：
 
 - [`cypress-multi-reporters`](https://github.com/YOU54F/cypress-plugins/tree/master/cypress-multi-reporters):
-  enables multiple reporters
+  启用多个报告器
 - [`mocha-junit-reporter`](https://github.com/michaelleeallen/mocha-junit-reporter)
-  the actual junit reporter, as we cannot use the `junit` reporter that comes
-  with Cypress
+  实际的 junit 报告器，因为我们无法使用 Cypress 自带的 `junit` 报告器
 
 ```shell
 npm install cypress-multi-reporters mocha-junit-reporter --save-dev
 ```
 
-Specify your reporter and reporterOptions in your Cypress configuration or via
-the [command line](/app/references/command-line).
+在 Cypress 配置或通过[命令行](/app/references/command-line)中指定你的报告器和报告器选项。
 
-#### Cypress configuration
+#### Cypress 配置
 
 :::cypress-config-example
 
@@ -233,16 +208,14 @@ the [command line](/app/references/command-line).
 
 :::
 
-#### Command line
+#### 命令行
 
 ```shell
 npx cypress run --reporter cypress-multi-reporters \
   --reporter-options configFile=reporter-config.json
 ```
 
-Then add the separate `reporter-config.json` file (defined in your
-configuration) to enable `spec` and `junit` reporters and direct the `junit`
-reporter to save separate XML files.
+然后添加单独的 `reporter-config.json` 文件（在配置中定义）以启用 `spec` 和 `junit` 报告器，并指示 `junit` 报告器保存单独的 XML 文件。
 
 ```json title="reporter-config.json"
 {
@@ -253,9 +226,7 @@ reporter to save separate XML files.
 }
 ```
 
-We recommend deleting all files from the `cypress/results` folder before running
-this command, since each run will output new XML files. For example, you can add
-the npm script commands below to your `package.json` then call `npm run report`.
+我们建议在运行此命令之前删除 `cypress/results` 文件夹中的所有文件，因为每次运行都会输出新的 XML 文件。例如，你可以将以下 npm 脚本命令添加到 `package.json` 中，然后调用 `npm run report`。
 
 ```json title="package.json"
 {
@@ -267,10 +238,7 @@ the npm script commands below to your `package.json` then call `npm run report`.
 }
 ```
 
-In case you want to combine generated XML files into a single one,
-[junit-report-merger](https://www.npmjs.com/package/junit-report-merger) can be
-added. For example, to combine all files into
-`cypress/results/combined-report.xml` the `combine:reports` script can be added.
+如果你想将生成的 XML 文件合并为一个文件，可以添加 [junit-report-merger](https://www.npmjs.com/package/junit-report-merger)。例如，要将所有文件合并为 `cypress/results/combined-report.xml`，可以添加 `combine:reports` 脚本。
 
 ```json title="package.json"
 {
@@ -284,25 +252,19 @@ added. For example, to combine all files into
 }
 ```
 
-#### Spec to `STDOUT`, produce a combined Mochawesome JSON file
+#### 将 `spec` 输出到 `STDOUT`，生成合并的 Mochawesome JSON 文件
 
-This example is shown in the branch `spec-and-single-mochawesome-json` in
-[https://github.com/cypress-io/cypress-example-circleci-orb](https://github.com/cypress-io/cypress-example-circleci-orb).
-We want to output a "spec" report to `STDOUT`, save an individual Mochawesome
-JSON file per test file, and then combine all JSON reports into a single report.
+此示例显示在 [https://github.com/cypress-io/cypress-example-circleci-orb](https://github.com/cypress-io/cypress-example-circleci-orb) 的 `spec-and-single-mochawesome-json` 分支中。我们希望将 "spec" 报告输出到 `STDOUT`，为每个测试文件保存一个单独的 Mochawesome JSON 文件，然后将所有 JSON 报告合并为一个报告。
 
-We need to install some additional dependencies.
+我们需要安装一些额外的依赖项。
 
 ```shell
 npm install mochawesome mochawesome-merge mochawesome-report-generator --save-dev
 ```
 
-We need to configure the reporter in your
-[Cypress configuration](/app/references/configuration) to skip the HTML
-report generation and save each individual JSON file in the `cypress/results`
-folder.
+我们需要在 [Cypress 配置](/app/references/configuration) 中配置报告器，以跳过 HTML 报告生成，并将每个单独的 JSON 文件保存在 `cypress/results` 文件夹中。
 
-#### Cypress configuration
+#### Cypress 配置
 
 :::cypress-config-example
 
@@ -320,44 +282,36 @@ folder.
 
 :::
 
-#### Command line
+#### 命令行
 
 ```shell
 npx cypress run --reporter mochawesome \
   --reporter-options reportDir="cypress/results",overwrite=false,html=false,json=true
 ```
 
-Our run will generate files
-`cypress/results/mochawesome.json, cypress/results/mochawesome_001.json, ...`.
-Then we can combine them using the
-[mochawesome-merge](https://github.com/antontelesh/mochawesome-merge) utility.
+我们的运行将生成文件 `cypress/results/mochawesome.json, cypress/results/mochawesome_001.json, ...`。然后我们可以使用 [mochawesome-merge](https://github.com/antontelesh/mochawesome-merge) 工具合并它们。
 
 ```shell
 npx mochawesome-merge "cypress/results/*.json" > mochawesome.json
 ```
 
-We can now generate a combined HTML report from the `mochawesome.json` file
-using the
-[https://github.com/adamgruber/mochawesome-report-generator](https://github.com/adamgruber/mochawesome-report-generator):
+现在，我们可以使用 [https://github.com/adamgruber/mochawesome-report-generator](https://github.com/adamgruber/mochawesome-report-generator) 从 `mochawesome.json` 文件生成一个合并的 HTML 报告：
 
 ```shell
 npx marge mochawesome.json
 ```
 
-It generates the beautiful standalone HTML report file
-`mochawesome-report/mochawesome.html` shown below. As you can see all test
-results, timing information, and even test bodies are included.
+它会生成如下所示的漂亮独立 HTML 报告文件 `mochawesome-report/mochawesome.html`。如你所见，所有测试结果、时间信息甚至测试体都包含在内。
 
 <DocsImage
   src="/img/app/reporters/mochawesome-report.png"
-  alt="Mochawesome HTML report"
+  alt="Mochawesome HTML 报告"
 />
 
-For more information, see
-[Integrating Mochawesome reporter with Cypress's](http://antontelesh.github.io/testing/2019/02/04/mochawesome-merge.html)
+更多信息，请参阅 [将 Mochawesome 报告器与 Cypress 集成](http://antontelesh.github.io/testing/2019/02/04/mochawesome-merge.html)
 
-## History
+## 历史
 
-| Version                            | Changes                                                                                                                                         |
-| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| [4.4.2](/app/references/changelog) | Custom Mocha reporters updated to use the version of Mocha bundled with Cypress. No need to install `mocha` separately to use custom reporters. |
+| 版本                             | 变更                                                                                                                                         |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| [4.4.2](/app/references/changelog) | 自定义 Mocha 报告器更新为使用 Cypress 捆绑的 Mocha 版本。无需单独安装 `mocha` 即可使用自定义报告器。 |

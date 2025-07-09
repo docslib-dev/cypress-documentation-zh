@@ -1,336 +1,303 @@
 ---
-title: Project Analytics & Insights
-description: Cypress Cloud provides Analytics to offer insight into metrics like runs over time, run duration and visibility into tests suite size over time.
+title: 项目分析与洞察
+description: Cypress Cloud 提供分析功能，可洞察随时间变化的运行次数、运行时长以及测试套件规模的可视化数据。
 sidebar_position: 20
 ---
 
 <ProductHeading product="cloud" />
 
-# Project Analytics & Insights
+# 项目分析与洞察
 
-Cypress Cloud provides Analytics to offer insight into metrics like runs over
-time, run duration and visibility into tests suite size over time.
+Cypress Cloud 提供分析功能，可洞察随时间变化的运行次数、运行时长以及测试套件规模的可视化数据。
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-overview.png"
   alt="Cloud Analytics Screenshot"
 />
 
-## Run status
+## 运行状态
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-runs-over-time.png"
   alt="Cloud Analytics Runs Over Time Screenshot"
 />
 
-This report shows the number of runs your organization has recorded to Cypress
-Cloud, broken down by the final status of the run. Each run represents a single
-invocation of `cypress run --record` for this project, whether in CI or on a
-local machine.
+该报告显示您的组织记录到 Cypress Cloud 的运行次数，按运行的最终状态分类。每次运行代表对该项目执行的一次 `cypress run --record` 调用，无论是在 CI 还是本地机器上。
 
-### Filters
+### 筛选条件
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-runs-over-time-filters.png"
   alt="Cloud Analytics Runs Over Time Filters Screenshot"
 />
 
-Results may be filtered by:
+可按以下条件筛选结果：
 
-- Branch
-- Time Range
-- Time Interval (Hourly, Daily, Weekly, Monthly, Quarterly)
+- 分支
+- 时间范围
+- 时间间隔（每小时、每日、每周、每月、每季度）
 
-### Results
+### 结果
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-runs-over-time-graph.png"
   alt="Cloud Analytics Runs Over Time Graph Screenshot"
 />
 
-The total runs over time are displayed for passed, failed, running, timed out
-and errored tests, respective of the filters selected.
+随时间变化的总运行次数会显示通过、失败、运行中、超时和错误的测试数量，根据所选筛选条件而定。
 
-The results may be downloaded as a comma-separated values (CSV) file for further
-analysis.
+结果可下载为逗号分隔值（CSV）文件以供进一步分析。可通过筛选条件右侧的下载图标完成此操作。
 
-This can be done via the download icon to the right of the filters.
-
-### Key Performance Indicators
+### 关键绩效指标
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-runs-over-time-kpi.png"
   alt="Cloud Analytics Runs Over Time KPI Screenshot"
 />
 
-Total runs, average per day, passed runs and failed runs are the computed
-respective of the filters selected.
+总运行次数、日均运行次数、通过运行次数和失败运行次数是根据所选筛选条件计算得出的。
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-runs-over-time-table.png"
   alt="Cloud Analytics Runs Over Time Table Screenshot"
 />
 
-A table of results grouped by date for the time range filter is displayed with
-passed, failed, running, timed out and errored columns.
+显示按时间范围筛选条件分组的日期结果表格，包含通过、失败、运行中、超时和错误的列。
 
-## Run duration
+## 运行时长
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-run-duration.png"
   alt="Cloud Analytics Run Duration Screenshot"
 />
 
-This report shows the average duration of a Cypress run for your project,
-including how test parallelization is impacting your total run time. Note that
-we only include passing runs here — failing or errored runs can sway the average
-away from its typical duration.
+该报告显示您项目的 Cypress 运行平均时长，包括测试并行化对总运行时间的影响。请注意，此处仅包含通过的运行——失败或错误的运行可能会使平均时长偏离典型值。
 
-### Filters
+### 筛选条件
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-run-duration-filters.png"
   alt="Cloud Analytics Run Duration Filters Screenshot"
 />
 
-Results may be filtered by:
+可按以下条件筛选结果：
 
-- Branch
-- Tag
-- Time Range
-- Time Interval (Hourly, Daily, Weekly, Monthly, Quarterly)
+- 分支
+- 标签
+- 时间范围
+- 时间间隔（每小时、每日、每周、每月、每季度）
 
-### Results
+### 结果
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-run-duration-graph.png"
   alt="Cloud Analytics Run Duration Graph Screenshot"
 />
 
-The average run duration over time is displayed respective of the filters
-selected.
+随时间变化的平均运行时长根据所选筛选条件显示。
 
-The results may be downloaded as a comma-separated values (CSV) file for further
-analysis. This can be done via the download icon to the right of the filters.
+结果可下载为逗号分隔值（CSV）文件以供进一步分析。可通过筛选条件右侧的下载图标完成此操作。
 
-### Key Performance Indicators
+### 关键绩效指标
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-run-duration-kpi.png"
   alt="Cloud Analytics Run Duration KPI Screenshot"
 />
 
-Average parallelization, average run duration and time saved from
-parallelization are computed respective of the filters selected.
+平均并行化程度、平均运行时长和并行化节省的时间是根据所选筛选条件计算得出的。
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-run-duration-table.png"
   alt="Cloud Analytics Run Duration Table Screenshot"
 />
 
-A table of results grouped by date for the time range filter is displayed with
-average runtime, concurrency and time saved from parallelization columns.
+显示按时间范围筛选条件分组的日期结果表格，包含平均运行时间、并发数和并行化节省时间的列。
 
-## Test suite size
+## 测试套件规模
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-test-suite-size.png"
   alt="Cloud Analytics Test Suite Size Screenshot"
 />
 
-This report shows how your test suite is growing over time. It calculates the
-average number of test cases executed per run for each day in the given time
-period. It excludes runs that errored or timed out since they don't accurately
-represent the size of your test suite.
+该报告显示您的测试套件随时间增长的情况。它计算给定时间段内每天每次运行执行的平均测试用例数。不包括错误或超时的运行，因为它们不能准确反映测试套件的规模。
 
-### Filters
+### 筛选条件
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-test-suite-size-filters.png"
   alt="Cloud Analytics Test Suite Size Filters Screenshot"
 />
 
-Results may be filtered by:
+可按以下条件筛选结果：
 
-- Branch
-- Tag
-- Time Range
-- Time Interval (Hourly, Daily, Weekly, Monthly, Quarterly)
+- 分支
+- 标签
+- 时间范围
+- 时间间隔（每小时、每日、每周、每月、每季度）
 
-### Results
+### 结果
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-test-suite-size-graph.png"
   alt="Cloud Analytics Test Suite Size Graph Screenshot"
 />
 
-The average test suite size over time is displayed respective of the filters
-selected.
+随时间变化的平均测试套件规模根据所选筛选条件显示。
 
-The results may be downloaded as a comma-separated values (CSV) file for further
-analysis. This can be done via the download icon to the right of the filters.
+结果可下载为逗号分隔值（CSV）文件以供进一步分析。可通过筛选条件右侧的下载图标完成此操作。
 
-### Key Performance Indicators
+### 关键绩效指标
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-test-suite-size-kpi.png"
   alt="Cloud Analytics Test Suite Size KPI Screenshot"
 />
 
-Unique tests and number of spec files are computed respective of the filters
-selected.
+唯一测试数和规范文件数是根据所选筛选条件计算得出的。
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-test-suite-size-table.png"
   alt="Cloud Analytics Test Suite Size Table Screenshot"
 />
 
-A table of results grouped by date for the time range filter is displayed with
-unique tests and spec files.
+显示按时间范围筛选条件分组的日期结果表格，包含唯一测试和规范文件。
 
-## Top failures
+## 高频失败
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-top-failures.png"
   alt="Cloud Analytics Top Failures Screenshot"
 />
 
-This report shows the top failures in your test suite.
+该报告显示测试套件中的高频失败。
 
-### Filters and Views
+### 筛选条件和视图
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-top-failures-filters.png"
   alt="Cloud Analytics Top Failures Filters Screenshot"
 />
 
-Results can be seen through custom grouping by using the "View By" dropdown. It
-can be grouped by:
+可通过"按视图"下拉菜单使用自定义分组查看结果。可按以下方式分组：
 
-- Test Case
-- Spec File
-- Tag
-- Branch
+- 测试用例
+- 规范文件
+- 标签
+- 分支
 
-Results may also be filtered by:
+还可按以下条件筛选结果：
 
-- Branch
-- Tag
-- Time Range
-- Run Group
-- Committer
-- Spec File
-- Browser
-- Cypress Version
-- Operating System
+- 分支
+- 标签
+- 时间范围
+- 运行组
+- 提交者
+- 规范文件
+- 浏览器
+- Cypress 版本
+- 操作系统
 
-### Results
+### 结果
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-top-failures-graph.png"
   alt="Cloud Analytics Top Failures Graph Screenshot"
 />
 
-The number of tests by failure rate is displayed respective of the filters
-selected.
+按失败率显示的测试数量根据所选筛选条件而定。
 
-The results may be downloaded as a comma-separated values (CSV) file for further
-analysis.
+结果可下载为逗号分隔值（CSV）文件以供进一步分析。可通过筛选条件右侧的下载图标完成此操作。
 
-This can be done via the download icon to the right of the filters.
-
-### Key Performance Indicators
+### 关键绩效指标
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-top-failures-kpi.png"
   alt="Cloud Analytics Top Failures KPI Screenshot"
 />
 
-The main key performance indicators tracked are:
+跟踪的主要关键绩效指标包括：
 
-- Median failure rate
-- Number of failures (measured by test cases)
+- 中位失败率
+- 失败次数（按测试用例衡量）
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-top-failures-table.png"
   alt="Cloud Analytics Top Failures Table Screenshot"
 />
 
-A table of results grouped by failure rate is displayed with spec files and
-total runs.
+显示按失败率分组的结果表格，包含规范文件和总运行次数。
 
-## Slowest tests
+## 最慢测试
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-slowest-tests.png"
   alt="Cloud Analytics Slowest Tests Screenshot"
 />
 
-This report shows the slowest tests in a test suite.
+该报告显示测试套件中最慢的测试。
 
-### Filters and Views
+### 筛选条件和视图
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-slowest-tests-filters.png"
   alt="Cloud Analytics Slowest Tests Filters Screenshot"
 />
 
-Results can be seen through custom grouping by using the "View By" dropdown. It
-can be grouped by:
+可通过"按视图"下拉菜单使用自定义分组查看结果。可按以下方式分组：
 
-- Test Case
-- Spec File
-- Tag
-- Branch
+- 测试用例
+- 规范文件
+- 标签
+- 分支
 
-Results may also be filtered by:
+还可按以下条件筛选结果：
 
-- Branch
-- Tag
-- Time Range
-- Status
-- Run Group
-- Committer
-- Spec File
-- Browser
-- Cypress Version
-- Operating System
+- 分支
+- 标签
+- 时间范围
+- 状态
+- 运行组
+- 提交者
+- 规范文件
+- 浏览器
+- Cypress 版本
+- 操作系统
 
-### Results
+### 结果
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-slowest-tests-graph.png"
   alt="Cloud Analytics Slowest Tests Graph Screenshot"
 />
 
-The slowest tests are displayed by duration of time.
+最慢的测试按持续时间显示。
 
-The results may be downloaded as a comma-separated values (CSV) file for further
-analysis. This can be done via the download icon to the right of the filters.
+结果可下载为逗号分隔值（CSV）文件以供进一步分析。可通过筛选条件右侧的下载图标完成此操作。
 
-### Key Performance Indicators
+### 关键绩效指标
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-slowest-tests-kpi.png"
   alt="Cloud Analytics Slowest Tests KPI Screenshot"
 />
 
-The main key performance indicators tracked are:
+跟踪的主要关键绩效指标包括：
 
-- Median duration
-- Total number of test cases
+- 中位持续时间
+- 测试用例总数
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-slowest-tests-table.png"
   alt="Cloud Analytics Slowest Tests Table Screenshot"
 />
 
-A table of results grouped by median duration and total runs.
+显示按中位持续时间和总运行次数分组的结果表格。
 
-## Most common errors
+## 常见错误
 
-This report shows the impact of the most common types of errors across the test
-suite.
+该报告显示测试套件中最常见错误类型的影响。
 
 <DocsImage
   src="/img/cloud/features/analytics/dashboard-analytics-common-errors.png"

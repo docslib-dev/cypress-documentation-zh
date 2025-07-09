@@ -18,8 +18,7 @@ export default function Badge({ type, path, children }: BadgeProps) {
       )}
 
       {!path && (
-        // simple inline badge (no anchor link) is a span to avoid "<div> cannot 
-        // appear as a descendant of <p>" console error
+        // 简单的行内徽章（无链接）使用 span 标签，避免控制台报错"<div>不能作为<p>的子元素"
         <span className={classNames(`${s.badge}`, `${s[type]}`)}>{children}</span>
       )}
     </>

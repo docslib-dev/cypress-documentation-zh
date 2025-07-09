@@ -1,45 +1,38 @@
 ---
-title: 'Configure Component Tests | Cypress Documentation'
-description: 'Configure Cypress for component testing with custom index files, dev servers, and spec patterns.'
+title: '配置组件测试 | Cypress 文档'
+description: '通过自定义索引文件、开发服务器和测试文件匹配模式来配置Cypress进行组件测试。'
 sidebar_position: 30
-sidebar_label: Configuration
+sidebar_label: 配置
 ---
 
 <ProductHeading product="app" />
 
-# Component Testing Configuration
+# 组件测试配置
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to configure Cypress for component testing
-- How to use a custom index file
-- How to use a custom dev server
-- How to set a custom spec pattern for component tests
+- 如何为组件测试配置Cypress
+- 如何使用自定义索引文件
+- 如何使用自定义开发服务器
+- 如何为组件测试设置自定义测试文件匹配模式
 
 :::
 
-When you launch Cypress for the first time in a project, the app will
-automatically guide you through setup and configuration. You don't need to do
-anything additional to get started.
+当你在项目中首次启动Cypress时，应用会自动引导你完成设置和配置。你无需额外操作即可开始。
 
-Refer to the "Framework Configuration" guide in each UI framework's overview
-guide for a list of supported development servers and how they are configured.
+关于支持的开发服务器列表及其配置方式，请参考各UI框架概述指南中的"框架配置"部分。
 
-Below are more advanced configuration options you can customize to fit your
-project.
+以下是你可以根据项目需求自定义的更高级配置选项。
 
-## Custom Index File
+## 自定义索引文件
 
-By default, Cypress renders your components into an HTML file located at
-`cypress/support/component-index.html`.
+默认情况下，Cypress会将你的组件渲染到位于`cypress/support/component-index.html`的HTML文件中。
 
-The index file allows you to add in global assets, such as styles, fonts, and
-external scripts.
+索引文件允许你添加全局资源，如样式、字体和外部脚本。
 
-You can provide an alternative path to the file using the `indexHtmlFile` option
-in the [component config](/app/references/configuration#component) options:
+你可以通过[组件配置](/app/references/configuration#component)选项中的`indexHtmlFile`参数指定自定义路径：
 
 ```js
 {
@@ -50,16 +43,11 @@ in the [component config](/app/references/configuration#component) options:
 }
 ```
 
-## Custom Dev Server
+## 自定义开发服务器
 
-A custom function can be passed into the `devServer` option, which allows the
-use of build systems not provided by Cypress out of the box. These can be from
-the Cypress community, preview builds not included with the app, or a custom one
-you create.
+可以向`devServer`选项传递自定义函数，从而使用Cypress未内置支持的构建系统。这些可以来自Cypress社区、应用未包含的预览版本，或是你自行创建的方案。
 
-The function's signature takes in an object with the following properties as its
-only parameter and needs to resolve an object containing the port of your dev
-server and a callback to shut it down.
+该函数签名接收一个包含以下属性的对象作为唯一参数，并需要返回一个包含开发服务器端口和关闭回调的对象。
 
 ```ts
 interface DevServerOptions {
@@ -88,18 +76,13 @@ interface DevServerOptions {
 
 :::
 
-Any requests triggered during a test using the `devServerPublicPathRoute` as
-defined in the `cypressConfig` will be forwarded to your server. Cypress will
-trigger a request for `[devServerPublicPathRoute]/index.html` when a test is
-started. Your server needs to reply with the html-file referenced in
-`cypressConfig.indexHtmlFile` and inject a script to load the support files and
-the actual test.
+在测试期间使用`cypressConfig`中定义的`devServerPublicPathRoute`触发的任何请求都将转发到你的服务器。当测试启动时，Cypress会触发对`[devServerPublicPathRoute]/index.html`的请求。你的服务器需要响应`cypressConfig.indexHtmlFile`引用的HTML文件，并注入一个脚本来加载支持文件和实际测试。
 
 ```ts
 function createServer(cypressConfig, bundleDir, port = 1234) {
   const app = express()
 
-  // read kickstart script - see below for an example
+  // 读取启动脚本 - 示例见下文
   const clientScript = readFileSync(
     path.join(__dirname, './client-script.js'),
     'utf8'
@@ -108,13 +91,13 @@ function createServer(cypressConfig, bundleDir, port = 1234) {
   app.get(
     cypressConfig.devServerPublicPathRoute + '/index.html',
     async (_req, res) => {
-      // read custom index.html file
+      // 读取自定义index.html文件
       const html = await fs.readFile(
         path.join(cypressConfig.repoRoot, cypressConfig.indexHtmlFile),
         { encoding: 'utf8' }
       )
 
-      // inject kickstart-script
+      // 注入启动脚本
       const output = html.replace(
         '</head>',
         `<script type="module">${clientScript}</script></head>`
@@ -123,22 +106,16 @@ function createServer(cypressConfig, bundleDir, port = 1234) {
     }
   )
 
-  // you need to establish some url-to-path-mapping, if your bundler outputs
-  // the full directory structure you can map this one to one
+  // 需要建立URL到路径的映射，如果打包器输出完整目录结构可以一一对应
   app.use(cypressConfig.devServerPublicPathRoute, express.static(bundleDir))
 
   app.listen(port)
 }
 ```
 
-For a real-world example, you can refer to
-[this loader](https://github.com/cypress-io/cypress/blob/466155c2125476374d9f9549530f67d0c6354a41/npm/vite-dev-server/src/plugins/cypress.ts#L82-L92)
-used by the Vite Dev Server.
+实际示例可参考Vite开发服务器使用的[这个加载器](https://github.com/cypress-io/cypress/blob/466155c2125476374d9f9549530f67d0c6354a41/npm/vite-dev-server/src/plugins/cypress.ts#L82-L92)。
 
-The client script must retrieve information on the currently active test from
-the Cypress instance of the parent frame and load the corresponding bundle. If a
-support file is defined, it should be injected at the top of your test bundle or
-loaded before the test script.
+客户端脚本必须从父框架的Cypress实例获取当前活动测试的信息，并加载相应的打包文件。如果定义了支持文件，应将其注入到测试打包文件的顶部或在测试脚本之前加载。
 
 ```ts
 const CypressInstance = (window.Cypress = parent.Cypress)
@@ -148,8 +125,7 @@ const devServerPublicPathRoute = CypressInstance.config(
 
 let importPromise = Promise.resolve()
 
-// If you do not bundle your support file along with the tests,
-// you need to add a separate import statement for the support file.
+// 如果不将支持文件与测试一起打包，需要单独导入支持文件
 const supportFilePath = CypressInstance.config('supportFile')
 if (supportFilePath) {
   const relative = supportFilePath.replace(
@@ -161,35 +137,26 @@ if (supportFilePath) {
   )
 }
 
-// load the spec - you can extend the load function to also load css
+// 加载测试文件 - 可以扩展加载函数以同时加载CSS
 const { relative } = CypressInstance.spec
 importPromise = importPromise.then(
   () => import(`${devServerPublicPathRoute}/${relative}`)
 )
 
-// trigger loading the imports
+// 触发导入加载
 CypressInstance.onSpecWindow(window, importPromise)
 
-// then start the test process
+// 然后启动测试流程
 CypressInstance.action('app:window:before:load', window)
 ```
 
-For a more complete example you can check out the
-[kickstart script used in the vite-devserver.](https://github.com/cypress-io/cypress/blob/develop/npm/vite-dev-server/client/initCypressTests.js)
+更完整的示例可查看[vite-devserver使用的启动脚本](https://github.com/cypress-io/cypress/blob/develop/npm/vite-dev-server/client/initCypressTests.js)。
 
-The `devServerEvents` event emitter should be used to notify cypress about
-finished builds by emitting a `dev-server:compile:success` event and to listen
-for the `dev-server:specs:changed` event that will notify you about changed
-entry points.
+`devServerEvents`事件发射器应通过发出`dev-server:compile:success`事件通知Cypress构建完成，并监听`dev-server:specs:changed`事件来获取变更的入口点信息。
 
-## Spec Pattern for Component Tests
+## 组件测试的文件匹配模式
 
-By default, Cypress looks for spec files anywhere in your project with an
-extension of `.cy.js`, `.cy.jsx`, `.cy.ts`, or `.cy.tsx`. However, you can
-change this behavior for component tests with a custom `specPattern` value. In
-the following example, we've configured Cypress to look for spec files with
-those same extensions, but only in the `src` folder or any of its
-subdirectories.
+默认情况下，Cypress会查找项目中任何位置扩展名为`.cy.js`、`.cy.jsx`、`.cy.ts`或`.cy.tsx`的测试文件。但你可以通过自定义`specPattern`值来改变组件测试的这一行为。在以下示例中，我们配置Cypress查找具有相同扩展名的测试文件，但仅在`src`文件夹或其子目录中。
 
 ```js
 {
@@ -199,7 +166,6 @@ subdirectories.
 }
 ```
 
-## Additional Config
+## 其他配置
 
-For more information on all the available configuration options, see the
-[configuration reference](/app/references/configuration).
+有关所有可用配置选项的更多信息，请参阅[配置参考](/app/references/configuration)。

@@ -1,48 +1,48 @@
 ---
-sidebar_label: Ignore views and links
-title: 'Ignore views and links | Cypress UI Coverage Documentation'
-description: 'Learn how to exclude irrelevant views and links from your UI Coverage reports to focus on meaningful insights.'
+sidebar_label: 忽略视图和链接
+title: '忽略视图和链接 | Cypress UI覆盖率文档'
+description: '了解如何从UI覆盖率报告中排除无关视图和链接，聚焦关键洞察'
 sidebar_position: 40
 ---
 
 <ProductHeading product="ui-coverage" />
 
-# Ignore views and links
+# 忽略视图和链接
 
-Cypress UI Coverage provides detailed insights into test coverage, but not all views or links in your application are relevant to your test suite. By ignoring certain URLs, you can focus on meaningful coverage and streamline your reports. This guide explains why and how to ignore views and links in your UI Coverage reports.
+Cypress UI Coverage提供详细的测试覆盖率洞察，但并非应用中所有视图或链接都与测试套件相关。通过忽略特定URL，您可以聚焦有意义的覆盖率并简化报告。本指南说明为何及如何在UI覆盖率报告中忽略视图和链接。
 
-## Why Ignore Views and Links?
+## 为何要忽略视图和链接？
 
-Ignoring views and links can help in the following scenarios:
+在以下场景中忽略视图和链接很有帮助：
 
-- **Third-Party Pages**: Exclude external URLs like OAuth login pages or embedded content that you don't control or need to test.
-- **Non-Critical Pages**: Remove irrelevant views, such as informational pages (e.g., FAQs) or admin-only sections.
-- **Test Links**: Avoid testing URLs only generated for testing purposes or dynamically generated URLs that don't impact application functionality.
-- **Focus on Key Areas**: Streamline coverage reports to prioritize high-impact areas and avoid clutter.
+- **第三方页面**：排除外部URL，如OAuth登录页面或您无需测试的嵌入内容
+- **非关键页面**：移除无关视图，例如信息页（如FAQ）或仅管理员可见的板块
+- **测试链接**：避免测试仅为测试目的生成的URL或不影响应用功能的动态生成URL
+- **聚焦关键区域**：精简覆盖率报告，优先处理高影响区域并避免杂乱
 
-By ignoring unnecessary views or links, you can maintain clear and actionable coverage metrics.
+通过忽略不必要的视图或链接，您可以保持清晰且可操作的覆盖率指标。
 
-## Identify Views and Links to Ignore
+## 识别要忽略的视图和链接
 
-After recording your tests to Cypress Cloud, review the UI Coverage reports:
+在将测试记录到Cypress Cloud后，请查看UI覆盖率报告：
 
-1. Navigate to the **UI Coverage** tab in your test run.
-1. Look for views or links that consistently appear but don't require testing.
-1. Note down the URLs, paths, or patterns for these views and links.
+1. 导航至测试运行的**UI Coverage**选项卡
+1. 查找持续出现但无需测试的视图或链接
+1. 记录这些视图和链接的URL、路径或模式
 
-### Common Candidates for Exclusion
+### 常见排除对象
 
-- Third-party authentication pages (e.g., https://auth.example.com).
-- Redirects or intermediate URLs (e.g., /redirect).
-- Informational pages (e.g., /terms).
+- 第三方认证页面（如https://auth.example.com）
+- 重定向或中间URL（如/redirect）
+- 信息页面（如/terms）
 
-## Configure Ignored Views and Links
+## 配置忽略的视图和链接
 
-[View Filters](/ui-coverage/configuration/viewfilters) in the **App Quality** configuration are used to exclude views and links based on their URLs or patterns. To add or modify the configuration for your project, navigate to the **App Quality** tab in your project settings and add a **viewFilters** configuration.
+[视图过滤器](/ui-coverage/configuration/viewfilters)用于根据URL或模式排除视图和链接。要添加或修改项目配置，请导航至项目设置的**App Quality**选项卡并添加**viewFilters**配置。
 
-Some examples of common view filter configurations are shown below:
+以下是常见视图过滤器配置示例：
 
-### Exclude a single URL
+### 排除单个URL
 
 ```json
 {
@@ -55,7 +55,7 @@ Some examples of common view filter configurations are shown below:
 }
 ```
 
-### Exclude all third party URLs
+### 排除所有第三方URL
 
 ```json
 {
@@ -72,10 +72,10 @@ Some examples of common view filter configurations are shown below:
 }
 ```
 
-To learn more about the configuration options, refer to the [View Filters](/ui-coverage/configuration/viewfilters) documentation.
+有关配置选项的更多信息，请参阅[视图过滤器](/ui-coverage/configuration/viewfilters)文档。
 
-## Validate Ignored Views and Links
+## 验证忽略的视图和链接
 
-After updating the configuration, record your tests again and review the UI Coverage report. The ignored views and links should no longer appear in the coverage reports, streamlining the data and focusing on the critical areas of your application.
+更新配置后，重新记录测试并查看UI覆盖率报告。被忽略的视图和链接应不再出现在覆盖率报告中，从而精简数据并聚焦应用关键区域。
 
-If new unnecessary views or links appear in future reports, update your filters accordingly to keep reports clean and actionable.
+如果未来报告中出现新的无关视图或链接，请相应更新过滤器以保持报告简洁且可操作。

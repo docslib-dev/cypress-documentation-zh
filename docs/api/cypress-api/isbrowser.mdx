@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.isBrowser | Cypress Documentation'
-description: Check if the current browser matches the given name or filter.
+title: 'Cypress.isBrowser | Cypress 文档'
+description: '检查当前浏览器是否匹配给定的名称或过滤器。'
 sidebar_label: isBrowser
 sidebar_position: 130
 ---
@@ -9,10 +9,9 @@ sidebar_position: 130
 
 # Cypress.isBrowser
 
-`Cypress.isBrowser` checks if the current browser matches the given name or
-filter.
+`Cypress.isBrowser` 用于检查当前浏览器是否匹配给定的名称或过滤器。
 
-## Syntax
+## 语法
 
 ```javascript
 Cypress.isBrowser(matcher)
@@ -20,61 +19,57 @@ Cypress.isBrowser(matchers)
 Cypress.isBrowser(filter)
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **matcher _(String)_**
 
-The name of the browser (case-insensitive) you want to check against. Name can
-be prepended with a `!` character to inverse the check.
+要检查的浏览器名称（不区分大小写）。名称前可以添加 `!` 字符进行反向检查。
 
 <Icon name="angle-right" /> **matchers _(Array)_**
 
-An array of the names of the browsers (case-insensitive) you want to check
-against. Name can be prepended with a `!` character to inverse the check.
+要检查的浏览器名称数组（不区分大小写）。名称前可以添加 `!` 字符进行反向检查。
 
 <Icon name="angle-right" /> **filter _(Object or Array)_**
 
-Filter one or multiple browsers by the browser properties. You can inspect the
-current browser's properties by using the
-[Cypress.browser](/api/cypress-api/browser). Supported properties are:
+通过浏览器属性过滤一个或多个浏览器。可以使用 [Cypress.browser](/api/cypress-api/browser) 查看当前浏览器的属性。支持的属性包括：
 
-| Property       | Type                 | Description                                                           |
-| -------------- | -------------------- | --------------------------------------------------------------------- |
-| `name`         | `string`             | Machine-friendly name, like `chrome`, `electron`, or `firefox`.       |
-| `family`       | `string`             | Rendering engine being used. `chromium` or `firefox`.                 |
-| `channel`      | `string`             | Release channel of the browser, such as `stable`, `dev`, or `canary`. |
-| `displayName`  | `string`             | Human-readable display name for the browser.                          |
-| `version`      | `string`             | Full version.                                                         |
-| `path`         | `string`             | Path to the browser on disk. Blank for Electron.                      |
-| `majorVersion` | `number` \| `string` | The major version number of the browser.                              |
-| `isHeadless`   | `boolean`            | Whether the browser is running headlessly.                            |
-| `isHeaded`     | `boolean`            | Whether the browser displays headed.                                  |
+| 属性           | 类型                 | 描述                                                                 |
+| -------------- | -------------------- | ------------------------------------------------------------------- |
+| `name`         | `string`             | 机器友好的名称，如 `chrome`、`electron` 或 `firefox`。               |
+| `family`       | `string`             | 使用的渲染引擎。`chromium` 或 `firefox`。                            |
+| `channel`      | `string`             | 浏览器的发布渠道，如 `stable`、`dev` 或 `canary`。                    |
+| `displayName`  | `string`             | 浏览器的人类可读显示名称。                                           |
+| `version`      | `string`             | 完整版本号。                                                         |
+| `path`         | `string`             | 浏览器在磁盘上的路径。Electron 浏览器为空。                          |
+| `majorVersion` | `number` \| `string` | 浏览器的主版本号。                                                   |
+| `isHeadless`   | `boolean`            | 浏览器是否以无头模式运行。                                           |
+| `isHeaded`     | `boolean`            | 浏览器是否以有头模式显示。                                           |
 
-## Examples
+## 示例
 
-### Matcher
+### 匹配器
 
-#### Only run command in Chrome
+#### 仅在 Chrome 中运行命令
 
 ```javascript
 it('download extension link', () => {
-  // true when running in Firefox
+  // 在 Firefox 中运行时为 true
   if (Cypress.isBrowser('firefox')) {
     cy.get('#dl-extension').should('contain', 'Download Firefox Extension')
   }
 
-  // true when running in Chrome
+  // 在 Chrome 中运行时为 true
   if (Cypress.isBrowser('chrome')) {
     cy.get('#dl-extension').should('contain', 'Download Chrome Extension')
   }
 })
 ```
 
-#### Run command in all browsers except Chrome
+#### 在所有浏览器中运行命令，除了 Chrome
 
 ```javascript
 it('warns to view page in Chrome browser', () => {
-  // true when running in Firefox, etc...
+  // 在 Firefox 等浏览器中运行时为 true
   if (Cypress.isBrowser('!chrome')) {
     cy.get('.browser-warning').should(
       'contain',
@@ -84,13 +79,13 @@ it('warns to view page in Chrome browser', () => {
 })
 ```
 
-### Matchers
+### 匹配器数组
 
-#### Run commands in all specified browsers
+#### 在指定的所有浏览器中运行命令
 
 ```javascript
 it('colors rainbow', () => {
-  // true when running in Electron or Chrome
+  // 在 Electron 或 Chrome 中运行时为 true
   if (Cypress.isBrowser(['electron', 'chrome'])) {
     cy.get('.rainbox').should(
       'have.css',
@@ -100,10 +95,10 @@ it('colors rainbow', () => {
 })
 ```
 
-#### Run commands in all browsers except specified
+#### 在所有浏览器中运行命令，除了指定的浏览器
 
 ```javascript
-// true when running in browser other than chrome and electron
+// 在非 Chrome 和 Electron 浏览器中运行时为 true
 it('does not run in Firefox and Chrome', () => {
   if (Cypress.isBrowser(['!electron', '!chrome'])) {
     cy.get('#h4').should('have.css', 'font-size-adjust', '0.5')
@@ -111,57 +106,52 @@ it('does not run in Firefox and Chrome', () => {
 })
 ```
 
-### Filter
+### 过滤器
 
-#### Only run commands in Chromium-based browser
+#### 仅在基于 Chromium 的浏览器中运行命令
 
 ```javascript
 it('has CSS reflections', () => {
-  // if in Chromium-based browser (Chrome, Electron, etc...)
-  // check css property was properly applied
+  // 如果在基于 Chromium 的浏览器中（Chrome、Electron 等）
+  // 检查 CSS 属性是否正确应用
   if (Cypress.isBrowser({ family: 'chromium' })) {
     cy.get('.header').should('have.css', '-webkit-box-reflect', 'left')
   }
 })
 ```
 
-#### Only run on stable release in Chromium-based browser
+#### 仅在基于 Chromium 的浏览器的稳定版中运行
 
 ```javascript
 it('test', () => {
-  // true when in any stable release of a Chromium-based browser
+  // 在任何基于 Chromium 的浏览器的稳定版中运行时为 true
   if (Cypress.isBrowser({ family: 'chromium', channel: 'stable' })) {
-    // test some (hypothetical) scenario in chrome stable
+    // 测试一些（假设的）Chrome 稳定版场景
   }
 })
 ```
 
-#### Only run on specific release channels of browsers
+#### 仅在特定发布渠道的浏览器中运行
 
 ```javascript
 it('test', () => {
-  // true when running in Chrome Canary
-  // and dev releases of Firefox browser
+  // 在 Chrome Canary 和 Firefox 开发版中运行时为 true
   if (
     Cypress.isBrowser([
       { family: 'chromium', channel: 'canary' },
       { family: 'firefox', channel: 'dev' },
     ])
   ) {
-    // test some (hypothetical) scenario
+    // 测试一些（假设的）场景
   }
 })
 ```
 
-### Notes
+### 注意事项
 
-#### Test configuration: `browser`
+#### 测试配置：`browser`
 
-If you want to target a test or suite to run or be excluded when run in a
-specific browser, we suggest passing the `browser` within the
-[test configuration](/app/references/configuration#Test-Configuration). The
-`browser` option accepts the same [arguments](#Arguments) as
-`Cypress.isBrowser()`.
+如果希望针对特定浏览器运行或排除测试或测试套件，建议在[测试配置](/app/references/configuration#Test-Configuration)中传递 `browser` 选项。`browser` 选项接受与 `Cypress.isBrowser()` 相同的[参数](#Arguments)。
 
 ```js
 it('Download extension in Firefox', { browser: 'firefox' }, () => {
@@ -178,17 +168,17 @@ it('Show warning outside Chrome', { browser: '!chrome' }, () => {
 })
 ```
 
-## History
+## 历史
 
-| Version                                  | Changes                                                                      |
-| ---------------------------------------- | ---------------------------------------------------------------------------- |
-| [4.8.0](/app/references/changelog#4-8-0) | Expanded `matcher` and `matchers` arguments to assist in filtering browsers. |
-| [4.0.0](/app/references/changelog#4-0-0) | Added `isBrowser` command.                                                   |
+| 版本                                   | 变更                                                                         |
+| -------------------------------------- | ---------------------------------------------------------------------------- |
+| [4.8.0](/app/references/changelog#4-8-0) | 扩展了 `matcher` 和 `matchers` 参数以支持浏览器过滤。                        |
+| [4.0.0](/app/references/changelog#4-0-0) | 添加了 `isBrowser` 命令。                                                    |
 
-## See also
+## 另请参阅
 
-- [Browser Launch API](/api/node-events/browser-launch-api)
-- [Cross Browser Testing](/app/guides/cross-browser-testing)
+- [浏览器启动 API](/api/node-events/browser-launch-api)
+- [跨浏览器测试](/app/guides/cross-browser-testing)
 - [Cypress.browser](/api/cypress-api/browser)
-- [Launching Browsers](/app/references/launching-browsers)
-- [Test Configuration](/app/references/configuration#Test-Configuration)
+- [启动浏览器](/app/references/launching-browsers)
+- [测试配置](/app/references/configuration#Test-Configuration)

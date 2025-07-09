@@ -1,20 +1,18 @@
-The `significantAttributes` property allows you to specify which attributes should be considered significant for UI Coverage analysis.
+`significantAttributes` 属性允许您指定哪些属性应被视为UI覆盖率分析的重要属性。
 
-## Why use significant attributes?
+## 为什么要使用significantAttributes?
 
-- **Focus on Important Changes**: Track attributes that are most relevant to user interaction and functionality
-- **Reduce False Positives**: Avoid flagging changes in non-essential attributes as coverage issues
-- **Improve Report Clarity**: Make coverage reports more meaningful by focusing on attributes that matter
+- **聚焦重要变更**: 跟踪与用户交互和功能最相关的属性
+- **减少误报**: 避免将非必要属性的变更标记为覆盖率问题
+- **提升报告清晰度**: 通过关注关键属性使覆盖率报告更有意义
 
-## Scope
+## 作用范围
 
 :::info
-**Note:** setting `significantAttributes` impacts both Cypress Accessibility and UI Coverage
-reports if set at the root of the configuration. Nesting this property under an `accessibility` or `uiCoverage` key is
-supported, if you need to split them up.
+**注意:** 如果在配置根节点设置`significantAttributes`，将同时影响Cypress无障碍访问和UI覆盖率报告。如需分别配置，可将此属性嵌套在`accessibility`或`uiCoverage`键下。
 :::
 
-## Syntax
+## 语法
 
 ```json
 {
@@ -27,20 +25,20 @@ supported, if you need to split them up.
 }
 ```
 
-### Options
+### 选项
 
-The first `significantAttributes` rule for which the selector property matches the element is used to determine which attributes should be considered significant. Attributes that do not match any rules are not considered significant by default.
+系统会使用第一个匹配元素选择器规则的`significantAttributes`来确定哪些属性应被视为重要。默认情况下，不匹配任何规则的属性不被视为重要。
 
-| Option       | Required | Default | Description                                                                                                                      |
-| ------------ | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `selector`   | Required |         | A CSS selector to identify elements. Supports standard CSS selector syntax, including IDs, classes, attributes, and combinators. |
-| `attributes` | Required |         | An array of attribute names that should be considered significant for coverage analysis.                                         |
+| 选项          | 必填     | 默认值  | 描述                                                                                                                       |
+| ------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `selector`    | 必填     |         | 用于识别元素的CSS选择器。支持标准CSS选择器语法，包括ID、类、属性和组合器。                                                 |
+| `attributes`  | 必填     |         | 应被视为覆盖率分析重要属性的属性名称数组。                                                                                |
 
-## Examples
+## 示例
 
-### Marking specific attributes as significant for all elements
+### 为所有元素标记特定重要属性
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -58,12 +56,12 @@ The first `significantAttributes` rule for which the selector property matches t
 ```xml
 <body>
   <button class="primary" id="submit" role="button" data-testid="submit">
-    Submit
+    提交
   </button>
 </body>
 ```
 
-#### Significant attributes tracked
+#### 跟踪的重要属性
 
 ```
 class="primary", id="submit", role="button"
@@ -71,9 +69,9 @@ class="primary", id="submit", role="button"
 
 ---
 
-### Marking different attributes as significant for different elements
+### 为不同元素标记不同重要属性
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -95,20 +93,20 @@ class="primary", id="submit", role="button"
 ```xml
 <body>
   <input type="text" name="username" required class="form-control" />
-  <button type="submit" disabled class="btn">Submit</button>
+  <button type="submit" disabled class="btn">提交</button>
 </body>
 ```
 
-#### Significant attributes tracked
+#### 跟踪的重要属性
 
 ```
 input: type="text", name="username", required="required"
 button: type="submit", disabled="disabled"
 ```
 
-### Using attribute patterns
+### 使用属性通配符
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -125,14 +123,14 @@ button: type="submit", disabled="disabled"
 
 ```xml
 <body>
-  <div aria-label="Main content" aria-hidden="false" class="container">
-    Content
+  <div aria-label="主要内容" aria-hidden="false" class="container">
+    内容
   </div>
 </body>
 ```
 
-#### Significant attributes tracked
+#### 跟踪的重要属性
 
 ```
-aria-label="Main content", aria-hidden="false"
+aria-label="主要内容", aria-hidden="false"
 ```

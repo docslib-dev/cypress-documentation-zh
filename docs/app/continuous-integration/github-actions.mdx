@@ -1,39 +1,38 @@
 ---
-title: 'Run Cypress tests in GitHub Actions: A Step-by-Step Guide'
-description: 'Set up GitHub Actions to run Cypress tests, cache dependencies and build artifacts, and parallelize Cypress tests.'
+title: '在GitHub Actions中运行Cypress测试：分步指南'
+description: '设置GitHub Actions运行Cypress测试，缓存依赖项和构建产物，并并行化Cypress测试。'
 sidebar_label: GitHub Actions
 ---
 
 <ProductHeading product="app" />
 
-# Run Cypress in GitHub Actions
+# 在GitHub Actions中运行Cypress
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学习到
 
-- How to set up Cypress tests in GitHub Actions
-- How to cache dependencies and build artifacts
-- How to parallelize Cypress tests in GitHub Actions
-- How to use Cypress Cloud with GitHub Actions
+- 如何在GitHub Actions中设置Cypress测试
+- 如何缓存依赖项和构建产物
+- 如何在GitHub Actions中并行化Cypress测试
+- 如何在GitHub Actions中使用Cypress Cloud
 
 :::
 
-GitHub offers developers [Actions](https://github.com/features/actions) that
-provide a way to **automate, customize, and execute your software development
-workflows** within your GitHub repository. Detailed documentation is available
-in the [GitHub Action Documentation](https://docs.github.com/en/actions).
+GitHub为开发者提供了[Actions](https://github.com/features/actions)功能，
+可以在你的GitHub仓库中**自动化、定制和执行软件开发工作流程**。详细文档请参阅
+[GitHub Action文档](https://docs.github.com/en/actions)。
 
 :::tip
 
-## GitHub Actions + Cypress Screencasts
+## GitHub Actions + Cypress 视频教程
 
-1. [What is Continuous Integration?](https://youtu.be/USX6AntcPyg)
+1. [什么是持续集成？](https://youtu.be/USX6AntcPyg)
 1. [Actions & Workflows](https://youtu.be/N0TOFWy1Xvg)
-1. [Understanding how to configure a workflow](https://youtu.be/vVr7DXDdUks)
-1. [Running Tests in GitHub Actions CI/CD Workflow](https://youtu.be/23ZGSrmbV_4)
-1. [Debugging Test Failures in CI](https://youtu.be/Oqq-_QZWzhg)
-1. [Running Tests in Parallel](https://youtu.be/96Yn_IiQUJI)
+1. [理解如何配置工作流程](https://youtu.be/vVr7DXDdUks)
+1. [在GitHub Actions CI/CD工作流中运行测试](https://youtu.be/23ZGSrmbV_4)
+1. [调试CI中的测试失败](https://youtu.be/Oqq-_QZWzhg)
+1. [并行运行测试](https://youtu.be/96Yn_IiQUJI)
 
 :::
 
@@ -44,31 +43,25 @@ in the [GitHub Action Documentation](https://docs.github.com/en/actions).
   title="GitHub Actions + Cypress: Actions & Workflows"
 />
 
-Workflows can be packaged and shared as
-[GitHub Actions](https://github.com/features/actions). GitHub maintains many,
-such as the [checkout](https://github.com/marketplace/actions/checkout) and
-[Upload/Download Artifact Actions](https://docs.github.com/en/actions/guides/storing-workflow-data-as-artifacts)
-actions used below.
+工作流程可以打包并作为[GitHub Actions](https://github.com/features/actions)共享。
+GitHub维护了许多这样的Action，如下文使用的[checkout](https://github.com/marketplace/actions/checkout)和
+[Upload/Download Artifact Actions](https://docs.github.com/en/actions/guides/storing-workflow-data-as-artifacts)。
 
-The official
-[Cypress GitHub Action](https://github.com/marketplace/actions/cypress-io) is
-maintained by Cypress and our community to help ease the setup of Cypress in a
-GitHub Action. The action provides dependency installation (via npm, yarn, or
-pnpm), built-in caching of Node dependencies, and additional configuration
-options for advanced workflows.
+官方[Cypress GitHub Action](https://github.com/marketplace/actions/cypress-io)由
+Cypress和我们的社区维护，旨在简化GitHub Action中Cypress的设置。该Action提供了依赖安装（通过npm、yarn或pnpm）、
+内置的Node依赖缓存以及高级工作流程的额外配置选项。
 
-### Version Number Selection
+### 版本号选择
 
 :::tip
 
-<strong>GitHub Action Version Number</strong>
+<strong>GitHub Action版本号</strong>
 
-We recommend binding to the action's latest major version by specifying `v6`
-when using the action.
+我们建议在使用该Action时，通过指定`v6`绑定到Action的最新主版本。
 
 :::
 
-For Example:
+例如：
 
 ```yaml
 jobs:
@@ -77,24 +70,19 @@ jobs:
       - uses: cypress-io/github-action@v6
 ```
 
-Alternatively, as a mitigation strategy for unforeseen breaks, bind to a
-specific
-[release version tag](https://github.com/cypress-io/github-action/releases), for
-example `cypress-io/github-action@v6.1.0`. Read the
-[Cypress GitHub Action documentation](https://github.com/cypress-io/github-action#action-version)
-for more information.
+或者，作为对意外中断的缓解策略，可以绑定到特定的[发布版本标签](https://github.com/cypress-io/github-action/releases)，
+例如`cypress-io/github-action@v6.1.0`。更多信息请参阅
+[Cypress GitHub Action文档](https://github.com/cypress-io/github-action#action-version)。
 
-## Basic Setup
+## 基本设置
 
 <DocsVideo
   src="https://youtube.com/embed/vVr7DXDdUks"
   title="GitHub Actions + Cypress: Workflow Configuration"
 />
 
-The example below is a basic CI setup and job using the
-[Cypress GitHub Action](https://github.com/marketplace/actions/cypress-io) to
-run Cypress tests within the Electron browser. This GitHub Action configuration
-is placed within `.github/workflows/main.yml`.
+以下示例是一个基本的CI设置和作业，使用[Cypress GitHub Action](https://github.com/marketplace/actions/cypress-io)
+在Electron浏览器中运行Cypress测试。此GitHub Action配置位于`.github/workflows/main.yml`中。
 
 ```yaml
 name: Cypress Tests
@@ -107,8 +95,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      # Install npm dependencies, cache them correctly
-      # and run all Cypress tests
+      # 安装npm依赖项，正确缓存它们
+      # 并运行所有Cypress测试
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
@@ -116,31 +104,26 @@ jobs:
           start: npm start
 ```
 
-**How this action works:**
+**此Action的工作原理：**
 
-- On _push_ to this repository, this job will provision and start a
-  GitHub-hosted Ubuntu Linux instance to run the outlined `steps` for the
-  declared `cypress-run` job within the `jobs` section of the configuration.
-- The [GitHub checkout Action](https://github.com/marketplace/actions/checkout)
-  is used to check out our code from our GitHub repository.
-- Finally, our Cypress GitHub Action will:
-  - Install npm dependencies
-  - Build the project (`npm run build`)
-  - Start the project web server (`npm start`)
-  - Run the Cypress tests within our GitHub repository within Electron.
+- 当代码_推送_到此仓库时，此作业将配置并启动一个GitHub托管的Ubuntu Linux实例，
+  以运行配置中`jobs`部分声明的`cypress-run`作业的`steps`。
+- [GitHub checkout Action](https://github.com/marketplace/actions/checkout)用于从GitHub仓库检出代码。
+- 最后，我们的Cypress GitHub Action将：
+  - 安装npm依赖项
+  - 构建项目（`npm run build`）
+  - 启动项目Web服务器（`npm start`）
+  - 在Electron中运行GitHub仓库中的Cypress测试。
 
-## Testing on GitHub with Installed Browsers
+## 在GitHub上使用已安装的浏览器进行测试
 
-[GitHub-hosted runners](https://github.com/actions/runner-images) offer images
-with pre-installed browsers to use for testing. The `ubuntu` and `windows`
-runners each include Google Chrome, Mozilla Firefox, and Microsoft Edge
-pre-installed. The `macos` runners additionally include Apple Safari. Refer to
-[GitHub Actions Runner Images](https://github.com/actions/runner-images/blob/main/README.md)
-for current details.
+[GitHub托管的运行器](https://github.com/actions/runner-images)提供了预装浏览器的镜像用于测试。
+`ubuntu`和`windows`运行器均预装了Google Chrome、Mozilla Firefox和Microsoft Edge。
+`macos`运行器还额外预装了Apple Safari。详情请参阅
+[GitHub Actions Runner Images](https://github.com/actions/runner-images/blob/main/README.md)。
 
-Use the action's `browser` parameter to select the desired browser. To change
-the above example to select Chrome instead of the default browser Electron, add
-`browser: chrome` as follows.
+使用Action的`browser`参数选择所需的浏览器。要将上述示例更改为选择Chrome而非默认的Electron浏览器，
+添加`browser: chrome`如下所示。
 
 ```yaml
 - name: Cypress run
@@ -151,39 +134,31 @@ the above example to select Chrome instead of the default browser Electron, add
     browser: chrome
 ```
 
-For more examples, see the action's
-[Browser](https://github.com/cypress-io/github-action#browser) section.
+更多示例请参阅Action的[浏览器](https://github.com/cypress-io/github-action#browser)部分。
 
 :::caution
 
-If you are specifying a browser in a parallel job, see
-[Specifying Browsers in Parallel Builds](#Specifying-Browsers-in-Parallel-Builds)
-for more info on how to avoid errors during runs due to GitHub runner images
-being updated with the latest browsers.
+如果在并行作业中指定浏览器，请参阅[在并行构建中指定浏览器](#Specifying-Browsers-in-Parallel-Builds)，
+了解如何避免由于GitHub运行器镜像更新最新浏览器而导致运行期间出现错误。
 
 :::
 
-## Testing with Cypress Docker Images
+## 使用Cypress Docker镜像进行测试
 
-GitHub Actions provides the option to specify a container image for the job.
-Cypress offers various
-[Docker Images](https://github.com/cypress-io/cypress-docker-images) for running
-Cypress locally and in CI.
+GitHub Actions提供了为作业指定容器镜像的选项。Cypress提供了多种
+[Docker镜像](https://github.com/cypress-io/cypress-docker-images)用于在本地和CI中运行Cypress。
 
-Note that GitHub Actions
-[requires using a Linux runner](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idcontainer) when specifying a container image.
-It does not support running Docker images on Windows or macOS runners.
+请注意，GitHub Actions[要求使用Linux运行器](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idcontainer)来指定容器镜像。
+不支持在Windows或macOS运行器上运行Docker镜像。
 
-Below, we extend the previous example by adding the `container` attribute using a
+在下面的示例中，我们通过添加`container`属性扩展了之前的示例，使用了
 [cypress/browsers](https://github.com/cypress-io/cypress-docker-images/tree/master/browsers)
-Docker image which also includes Google Chrome.
-We are using the Node.js short-form tag to select a `cypress/browsers` image
-built with the corresponding Node.js version.
-To specify instead an exact set of browser versions, visit the
-[Docker Hub cypress/browsers](https://hub.docker.com/r/cypress/browsers) page and view the available long-form tags,
-for example `cypress/browsers:node-22.15.0-chrome-136.0.7103.92-1-ff-138.0.1-edge-136.0.3240.50-1`.
-Using a Cypress Docker image allows our tests to execute without any influence from
-browser version changes in the GitHub runner image.
+Docker镜像，该镜像还包括Google Chrome。
+我们使用Node.js短标签选择构建了相应Node.js版本的`cypress/browsers`镜像。
+要指定确切的浏览器版本集，请访问
+[Docker Hub cypress/browsers](https://hub.docker.com/r/cypress/browsers)页面并查看可用的长标签，
+例如`cypress/browsers:node-22.15.0-chrome-136.0.7103.92-1-ff-138.0.1-edge-136.0.3240.50-1`。
+使用Cypress Docker镜像可以让我们的测试执行不受GitHub运行器镜像中浏览器版本变化的影响。
 
 ```yaml
 name: Cypress Tests using Cypress Docker Image
@@ -209,30 +184,25 @@ jobs:
 
 :::caution
 
-If you are testing with Firefox, you must specify the non-root user `1001` as above. Refer to [Firefox not found](https://github.com/cypress-io/cypress-docker-images#firefox-not-found) for more information.
+如果使用Firefox进行测试，必须如上所述指定非root用户`1001`。更多信息请参阅[Firefox not found](https://github.com/cypress-io/cypress-docker-images#firefox-not-found)。
 
 :::
 
-## Caching Dependencies and Build Artifacts
+## 缓存依赖项和构建产物
 
-When working with actions that have multiple jobs, it is recommended to have an
-initial "install" job that will download any dependencies and build your app,
-and then cache these assets for use later by subsequent jobs.
+当处理具有多个作业的Action时，建议有一个初始的“install”作业，
+用于下载所有依赖项并构建你的应用，然后缓存这些资产以供后续作业使用。
 
-The Cypress GitHub Action will automatically cache and restore your Node
-dependencies for you.
+Cypress GitHub Action会自动为你缓存和恢复Node依赖项。
 
-For build assets, you will need to cache and restore them manually.
+对于构建产物，你需要手动缓存和恢复它们。
 
-The `install` job below uses the
+下面的`install`作业使用
 [upload-artifact](https://github.com/marketplace/actions/upload-a-build-artifact)
-action and saves the state of the `build` directory for the `cypress-run` worker
-job.
+Action，并保存`build`目录的状态供`cypress-run`工作作业使用。
 
-The
 [download-artifact](https://github.com/marketplace/actions/download-a-build-artifact)
-action retrieves the `build` directory saved in the `install` job, as seen below
-in the `cypress-run` worker job.
+Action检索`install`作业中保存的`build`目录，如下面的`cypress-run`工作作业所示。
 
 ```yaml
 name: Cypress Tests with Dependency and Artifact Caching
@@ -249,7 +219,7 @@ jobs:
       - name: Cypress install
         uses: cypress-io/github-action@v6
         with:
-          # Disable running of tests within install job
+          # 在install作业中禁用测试运行
           runTests: false
           build: npm run build
 
@@ -280,55 +250,43 @@ jobs:
           browser: chrome
 ```
 
-View GitHub's guide on
-[Storing workflow data as artifacts](https://docs.github.com/en/actions/guides/storing-workflow-data-as-artifacts)
-for more info.
+更多信息请参阅GitHub的[将工作流程数据存储为产物](https://docs.github.com/en/actions/guides/storing-workflow-data-as-artifacts)指南。
 
-## Parallelization
+## 并行化
 
 <DocsVideo
   src="https://youtube.com/embed/96Yn_IiQUJI"
   title="GitHub Actions + Cypress: Running Tests in Parallel"
 />
 
-[Cypress Cloud](/cloud/get-started/introduction) offers the ability to
-[parallelize and group test runs](/cloud/features/smart-orchestration/parallelization)
-along with additional insights and [analytics](/cloud/features/analytics/overview) for
-Cypress tests.
+[Cypress Cloud](/cloud/get-started/introduction)提供了
+[并行化和分组测试运行](/cloud/features/smart-orchestration/parallelization)的能力，
+以及Cypress测试的额外洞察和[分析](/cloud/features/analytics/overview)。
 
-Using parallelization with the Cypress GitHub Action requires setting up
-recording to [Cypress Cloud](https://on.cypress.io/cloud).
+在Cypress GitHub Action中使用并行化需要设置录制到
+[Cypress Cloud](https://on.cypress.io/cloud)。
 
-GitHub Actions offers a
-[matrix strategy](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix)
-for declaring different job configurations for a single job definition. Jobs
-declared within a matrix strategy can run in parallel, which enables us to run
-multiples instances of Cypress at the same time, as we will see later in this
-section.
+GitHub Actions提供了
+[矩阵策略](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix)
+用于为单个作业定义声明不同的作业配置。矩阵策略中声明的作业可以并行运行，
+这使我们能够同时运行多个Cypress实例，如本节后面所示。
 
-Before diving into an example of a parallelization setup, it is important to
-understand the two different types of GitHub Action jobs that we will declare:
+在深入并行化设置示例之前，重要的是理解我们将声明的两种不同类型的GitHub Action作业：
 
-- **Install Job**: A job that installs and caches dependencies that will be used
-  by subsequent jobs later in the GitHub Action workflow.
-- **Worker Job**: A job that handles the execution of Cypress tests and depends
-  on the _install job_.
+- **安装作业**：安装并缓存后续作业将使用的依赖项的作业。
+- **工作作业**：处理Cypress测试执行的作业，并依赖于_安装作业_。
 
-### Install Job
+### 安装作业
 
-The separation of installation from test running is necessary when running
-parallel jobs. It allows for the reuse of various build steps aided by caching.
+将安装与测试运行分离在运行并行作业时是必要的。它允许通过缓存重用各种构建步骤。
 
-First, we'll define the `install` step that will be used by the worker jobs
-defined in the matrix strategy.
+首先，我们将定义`install`步骤，该步骤将由矩阵策略中定义的工作作业使用。
 
-For the `steps`, notice that we pass `runTests: false` to the Cypress GitHub
-Action to instruct it only to install and cache Cypress and npm dependencies
-_without running the tests_.
+对于`steps`，请注意我们向Cypress GitHub Action传递`runTests: false`，
+以指示它仅安装和缓存Cypress及npm依赖项，_而不运行测试_。
 
-The
 [upload-artifact](https://github.com/marketplace/actions/upload-a-build-artifact)
-action will save the state of the `build` directory for the worker jobs.
+Action将保存`build`目录的状态供工作作业使用。
 
 ```yaml
 name: Cypress Tests
@@ -345,7 +303,7 @@ jobs:
       - name: Cypress install
         uses: cypress-io/github-action@v6
         with:
-          # Disable running of tests within install job
+          # 在install作业中禁用测试运行
           runTests: false
           build: npm run build
 
@@ -357,13 +315,11 @@ jobs:
           path: dist
 ```
 
-### Worker Jobs
+### 工作作业
 
-Next, we define the worker job named "cypress-run" that will run Cypress tests
-as part of a parallelized matrix strategy.
+接下来，我们定义名为“cypress-run”的工作作业，该作业将作为并行化矩阵策略的一部分运行Cypress测试。
 
-The `download-artifact` action will retrieve the **dist** directory saved in the
-install job.
+`download-artifact` Action将检索安装作业中保存的**dist**目录。
 
 ```yaml
 name: Cypress Tests
@@ -372,16 +328,16 @@ on: push
 
 jobs:
   install:
-  # ... omitted install job from above
+  # ... 省略上面的install作业
 
   cypress-run:
     runs-on: ubuntu-24.04
     needs: install
     strategy:
-      # don't fail the entire matrix on failure
+      # 失败时不使整个矩阵失败
       fail-fast: false
       matrix:
-        # run copies of the current job in parallel
+        # 并行运行当前作业的副本
         containers: [1, 2, 3, 4, 5]
     steps:
       - name: Checkout
@@ -403,87 +359,71 @@ jobs:
 
 :::caution
 
-<strong>Ensure Correct Container</strong>
+<strong>确保使用正确的容器</strong>
 
-If a Docker container was used in the install job, the same Docker container
-must also be used in the worker jobs.
+如果在安装作业中使用了Docker容器，工作作业中必须使用相同的Docker容器。
 
 :::
 
-#### Setting up Parallelization
+#### 设置并行化
 
-To set up multiple containers to run in parallel, the matrix option of the
-strategy configuration can be set to containers: [1, 2, 3, 4, 5], where the
-number of items defined in the containers array will be how many instances of
-the job will start up.
+要设置多个容器并行运行，策略配置的矩阵选项可以设置为`containers: [1, 2, 3, 4, 5]`，
+其中`containers`数组中定义的项数将是启动的作业实例数。
 
-For instance, `containers: [1, 2, 3, 4, 5]` will provision five worker instances
-to run in parallel. For our purposes, the array's values are arbitrary and
-aren't used in the steps.
+例如，`containers: [1, 2, 3, 4, 5]`将配置五个并行运行的工作实例。
+对于我们的目的，数组的值是任意的，不会在步骤中使用。
 
-### Specifying Browsers in Parallel Builds
+### 在并行构建中指定浏览器
 
-When GitHub deploys new runner image versions containing updated browser versions,
-and the deployment is still in progress,
-the workflow "Set up job" phase randomly uses either an old or a new runner image version.
-Your test run might fail if Cypress Cloud detects differences in the browser versions between parallel jobs.
+当GitHub部署包含更新浏览器版本的新运行器镜像版本，并且部署仍在进行中时，
+工作流程的“Set up job”阶段会随机使用旧或新的运行器镜像版本。
+如果Cypress Cloud检测到并行作业之间的浏览器版本差异，你的测试运行可能会失败。
 
-To work around this issue,
-and if you specify a browser other than the default Electron browser in parallel mode,
-we recommend using a
-[cypress/browsers](#Testing-with-Cypress-Docker-Images) Docker image which then uses one consistent browser version.
-This shields the workflow from browser version changes due to possible incomplete GitHub runner image deployments.
+为了解决这个问题，
+并且如果你在并行模式下指定了非默认的Electron浏览器，
+我们建议使用[cypress/browsers](#Testing-with-Cypress-Docker-Images) Docker镜像，
+该镜像使用一致的浏览器版本。
+这样可以屏蔽由于GitHub运行器镜像部署不完整而导致的浏览器版本变化。
 
-As mentioned in [Testing with Cypress Docker Images](#Testing-with-Cypress-Docker-Images),
-this option is only available with GitHub Actions Linux runners.
+如[使用Cypress Docker镜像进行测试](#Testing-with-Cypress-Docker-Images)所述，
+此选项仅适用于GitHub Actions Linux运行器。
 
-## Using Cypress Cloud with GitHub Actions
+## 在GitHub Actions中使用Cypress Cloud
 
 <DocsVideo
   src="https://youtube.com/embed/Oqq-_QZWzhg"
   title="GitHub Actions + Cypress: Debugging Test Failures in CI"
 />
 
-In the GitHub Actions configuration, we have defined in the previous section, we
-are leveraging three useful features of
-[Cypress Cloud](/cloud/get-started/introduction):
+在上一节定义的GitHub Actions配置中，我们利用了
+[Cypress Cloud](/cloud/get-started/introduction)的三个有用功能：
 
-1. [Recording test results with the `record: true` option](/cloud/get-started/setup)
-   to [Cypress Cloud](https://on.cypress.io/cloud):
+1. [使用`record: true`选项录制测试结果](/cloud/get-started/setup)到
+   [Cypress Cloud](https://on.cypress.io/cloud)：
 
-   - In-depth and shareable
-     [test reports](/cloud/features/recorded-runs#Latest-Runs).
-   - Visibility into test failures via quick access to [Test Replay](/cloud/features/test-replay), error messages, stack
-     traces, screenshots, videos, and contextual details.
-   - [Integrating testing with the pull-request (PR) process](/cloud/integrations/source-control/github)
-     via
-     [commit status check guards](/cloud/integrations/source-control/github#Status-checks)
-     and convenient
-     [test report comments](/cloud/integrations/source-control/github#Pull-request-comments).
-   - [Detecting flaky tests](/cloud/features/flaky-test-management) and surfacing
-     them via [Slack alerts](/cloud/features/flaky-test-management#Slack) or
-     [GitHub PR status checks](/cloud/features/flaky-test-management#GitHub).
+   - 深入且可共享的[测试报告](/cloud/features/recorded-runs#Latest-Runs)。
+   - 通过快速访问[Test Replay](/cloud/features/test-replay)、错误消息、堆栈跟踪、截图、视频和上下文细节，了解测试失败情况。
+   - [通过提交状态检查守卫](/cloud/integrations/source-control/github#Status-checks)和方便的
+     [测试报告评论](/cloud/integrations/source-control/github#Pull-request-comments)，
+     [将测试与拉取请求（PR）流程集成](/cloud/integrations/source-control/github)。
+   - [检测不稳定测试](/cloud/features/flaky-test-management)并通过
+     [Slack警报](/cloud/features/flaky-test-management#Slack)或
+     [GitHub PR状态检查](/cloud/features/flaky-test-management#GitHub)展示它们。
 
-2. [Parallelizing test runs](/cloud/features/smart-orchestration/parallelization)
-   and optimizing their execution via
-   [intelligent load-balancing](/cloud/features/smart-orchestration/load-balancing#Balance-strategy)
-   of test specs across CI machines with the `parallel: true` option.
+2. [并行化测试运行](/cloud/features/smart-orchestration/parallelization)并通过
+   [智能负载均衡](/cloud/features/smart-orchestration/load-balancing#Balance-strategy)跨CI机器优化测试规范执行，
+   使用`parallel: true`选项。
 
-3. Organizing and consolidating multiple `cypress run` calls by labeled groups
-   into a single report within [Cypress Cloud](https://on.cypress.io/cloud). In
-   the example above, we use the `group: "UI-Chrome"` option to organize all
-   UI tests for the Chrome browser into a group labeled "UI - Chrome" in the
-   [Cypress Cloud](https://on.cypress.io/cloud) report.
+3. 通过标记组组织和合并多个`cypress run`调用到一个[Cypress Cloud](https://on.cypress.io/cloud)报告中。
+   在上面的示例中，我们使用`group: "UI-Chrome"`选项将所有Chrome浏览器的UI测试组织到
+   [Cypress Cloud](https://on.cypress.io/cloud)报告中标记为“UI - Chrome”的组中。
 
-## Cypress Real World Example with GitHub Actions
+## Cypress Real World App与GitHub Actions示例
 
-A complete CI workflow against multiple browsers, viewports, and operating
-systems is available in the **Cypress Real World App**.
+针对多个浏览器、视口和操作系统的完整CI工作流程可在**Cypress Real World App**中找到。
 
-Clone the <Icon name="github" inline="true" contentType="rwa" /> and refer to
-the
-[.github/workflows/main.yml](https://github.com/cypress-io/cypress-realworld-app/blob/develop/.github/workflows/main.yml)
-file.
+克隆<Icon name="github" inline="true" contentType="rwa" />并参考
+[.github/workflows/main.yml](https://github.com/cypress-io/cypress-realworld-app/blob/develop/.github/workflows/main.yml)文件。
 
 <DocsImage
   src="/img/app/github-actions/rwa-run-matrix.png"
@@ -492,18 +432,17 @@ file.
 
 :::info
 
-To see additional how-to examples, you can also refer to our
-[Cypress GitHub Action repo](https://github.com/cypress-io/github-action).
+要查看更多操作示例，还可以参考我们的
+[Cypress GitHub Action仓库](https://github.com/cypress-io/github-action)。
 
 :::
 
-## Common Problems and Solutions
+## 常见问题及解决方案
 
-### Re-run jobs passing with empty tests
+### 重新运行通过空测试的作业
 
-We recommend passing the `GITHUB_TOKEN` secret (created by the GH Action
-automatically) as an environment variable. This will allow the accurate
-identification of each build to avoid confusion when re-running a build.
+我们建议传递`GITHUB_TOKEN`密钥（由GH Action自动创建）作为环境变量。
+这将允许准确识别每个构建，以避免在重新运行构建时产生混淆。
 
 ```yml
 name: Cypress tests
@@ -521,16 +460,14 @@ jobs:
         with:
           record: true
         env:
-          # pass GitHub token to detect new build vs re-run build
+          # 传递GitHub令牌以检测新构建与重新运行构建
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 ```
 
-### Pull requests commit message is `merge SHA into SHA`
+### 拉取请求的提交消息为`merge SHA into SHA`
 
-You can overwrite the commit message sent to Cypress Cloud by setting an
-environment variable. See
-[Issue #124](https://github.com/cypress-io/github-action/issues/124) for more
-details.
+你可以通过设置环境变量覆盖发送到Cypress Cloud的提交消息。更多详情请参阅
+[Issue #124](https://github.com/cypress-io/github-action/issues/124)。
 
 ```yml
 name: Cypress tests
@@ -548,22 +485,21 @@ jobs:
         with:
           record: true
         env:
-          # overwrite commit message sent to Cypress Cloud
+          # 覆盖发送到Cypress Cloud的提交消息
           COMMIT_INFO_MESSAGE: ${{github.event.pull_request.title}}
-          # re-enable PR comment bot
+          # 重新启用PR评论机器人
           COMMIT_INFO_SHA: ${{github.event.pull_request.head.sha}}
 ```
 
 :::tip
 
-We also recommend adding `COMMIT_INFO_SHA` to re-enable
-[Cypress bot PR comments](/cloud/integrations/source-control/github#Pull-request-comments).
-See
-[this comment](https://github.com/cypress-io/github-action/issues/124#issuecomment-716584972)
-for more details.
+我们还建议添加`COMMIT_INFO_SHA`以重新启用
+[Cypress机器人PR评论](/cloud/integrations/source-control/github#Pull-request-comments)。
+更多详情请参阅
+[此评论](https://github.com/cypress-io/github-action/issues/124#issuecomment-716584972)。
 
 :::
 
-## See also
+## 另请参阅
 
-- [Test anything that runs in the browser with Cypress and GitHub Actions](https://www.youtube.com/watch?v=gokM_zEmWLA)
+- [使用Cypress和GitHub Actions测试任何在浏览器中运行的内容](https://www.youtube.com/watch?v=gokM_zEmWLA)

@@ -7,7 +7,7 @@ export default function E2EOnlyBadge() {
       type="hint"
       path="/app/core-concepts/testing-types#What-is-E2E-Testing"
     >
-      End-to-End Only
+      仅限端到端测试
     </Badge>
   );
 }

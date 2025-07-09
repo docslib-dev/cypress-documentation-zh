@@ -1,6 +1,6 @@
 ---
-title: 'root | Cypress Documentation'
-description: Get the root DOM element in Cypress.
+title: 'root | Cypress 文档'
+description: 在Cypress中获取根DOM元素。
 sidebar_label: root
 slug: /api/commands/root
 ---
@@ -9,87 +9,84 @@ slug: /api/commands/root
 
 # root
 
-Get the root DOM element.
+获取根DOM元素。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.root()
 cy.root(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.root() // Yield root element <html>
+cy.root() // 返回根元素 <html>
 cy.get('nav').within(($nav) => {
-  cy.root() // Yield root element <nav>
+  cy.root() // 返回根元素 <nav>
 })
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `.root()`.
+传入一个选项对象以更改`.root()`的默认行为。
 
-| Option    | Default                                                           | Description                                                                         |
-| --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.root()` to resolve before [timing out](#Timeouts)              |
+| 选项      | 默认值                                                           | 描述                                                                         |
+| --------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令           |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 等待`cy.root()`解析的超时时间，超过则[超时](#Timeouts)                      |
 
 <HeaderYields />
 
-`cy.root()` yields the root DOM element.
+`cy.root()`返回根DOM元素。
 
-The root element yielded is `<html>` by default. However, when calling `.root()`
-from a [`.within()`](/api/commands/within) command, the root element will point
-to the element you are "within".
+默认情况下返回的根元素是`<html>`。但是，当在[`.within()`](/api/commands/within)命令中调用`.root()`时，根元素将指向你当前"within"的元素。
 
-`cy.root()` is a query, and it is _safe_ to chain further commands.
+`cy.root()`是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
 ### HTML
 
-#### Get the root element
+#### 获取根元素
 
 ```javascript
-cy.root() // yields <html>
+cy.root() // 返回 <html>
 ```
 
 ### Within
 
-#### Get the root element in a [`.within()`](/api/commands/within) callback function
+#### 在[`.within()`](/api/commands/within)回调函数中获取根元素
 
 ```javascript
 cy.get('form').within(($form) => {
   cy.get('input[name="email"]').type('john.doe@email.com')
   cy.get('input[name="password"]').type('password')
-  cy.root().submit() // submits the form yielded from 'within'
+  cy.root().submit() // 提交从'within'返回的表单
 })
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.root()` requires being chained off of `cy`.
+- `cy.root()`需要链式调用`cy`。
 
 <HeaderAssertions />
 
-- `cy.root()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed
+- `cy.root()`会自动[重试](/app/core-concepts/retry-ability)，直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `cy.root()` can time out waiting for assertions you've added to pass.
+- `cy.root()`可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Get root element_**
+**_获取根元素_**
 
 ```javascript
 cy.root().should('match', 'html')
@@ -99,22 +96,21 @@ cy.get('.query-ul').within(() => {
 })
 ```
 
-The commands above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/root/find-root-element-and-assert.png"
-  alt="Command Log root"
+  alt="命令日志 root"
 />
 
-When clicking on the `root` command within the command log, the console outputs
-the following:
+当点击命令日志中的`root`命令时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/root/console-log-root-which-is-usually-the-main-document.png"
-  alt="Console Log root"
+  alt="控制台日志 root"
 />
 
-## See also
+## 另请参阅
 
 - [`cy.get()`](/api/commands/get)
 - [`.within()`](/api/commands/within)

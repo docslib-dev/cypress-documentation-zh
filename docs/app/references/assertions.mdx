@@ -1,35 +1,28 @@
 ---
-title: 'Assertions in Cypress: A Guide'
-description: 'Assertions available in Cypress with Chai, Chai-jQuery, and Sinon-Chai assertions'
-sidebar_label: 'Assertions'
+title: 'Cypress中的断言指南'
+description: 'Cypress支持的断言类型：Chai、Chai-jQuery和Sinon-Chai断言'
+sidebar_label: '断言'
 ---
 
 <ProductHeading product="app" />
 
-# Assertions
+# 断言
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学习到
 
-- Assertions available in Cypress with Chai, Chai-jQuery, and Sinon-Chai assertions
-- How to write assertions for common use cases
-- How to chain assertions together
+- Cypress支持的Chai、Chai-jQuery和Sinon-Chai断言
+- 如何为常见用例编写断言
+- 如何链式组合断言
 
 :::
 
-Cypress bundles the popular [Chai](/app/references/assertions#Chai) assertion
-library, as well as helpful extensions for
-[Sinon](/app/references/assertions#Sinon-Chai) and
-[jQuery](/app/references/assertions#Chai-jQuery), bringing you dozens of
-powerful assertions for free.
+Cypress内置了流行的[Chai](/app/references/assertions#Chai)断言库，以及针对[Sinon](/app/references/assertions#Sinon-Chai)和[jQuery](/app/references/assertions#Chai-jQuery)的扩展，为您提供了数十种强大的断言功能。
 
 :::tip
 
-If you're looking to understand **how** to use these assertions please read
-about assertions in our
-[Introduction to Cypress](/app/core-concepts/introduction-to-cypress#Assertions)
-guide.
+如果想了解**如何使用**这些断言，请阅读[Cypress入门指南](/app/core-concepts/introduction-to-cypress#Assertions)中的断言部分。
 
 :::
 
@@ -37,11 +30,9 @@ guide.
 
 <Icon name="github" url="https://github.com/chaijs/chai" />
 
-These chainers are available for BDD assertions (`expect`/`should`). Aliases
-listed can be used interchangeably with their original chainer. You can see the
-entire list of available BDD Chai assertions [here](http://chaijs.com/api/bdd/).
+以下链式断言可用于BDD风格断言(`expect`/`should`)。列出的别名可与原始链式断言互换使用。完整BDD Chai断言列表参见[此处](http://chaijs.com/api/bdd/)。
 
-| Chainer                                                                                   | Example                                                                                                                                                                                                                |
+| 断言链                                                                                   | 示例                                                                                                                                                                                                                |
 | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | not                                                                                       | `.should('not.equal', 'Jane')`<br />`expect(name).to.not.equal('Jane')`                                                                                                                                                |
 | deep                                                                                      | `.should('deep.equal', { name: 'Jane' })`<br />`expect(obj).to.deep.equal({ name: 'Jane' })`                                                                                                                           |
@@ -49,8 +40,8 @@ entire list of available BDD Chai assertions [here](http://chaijs.com/api/bdd/).
 | ordered                                                                                   | `.should('have.ordered.members', [1, 2])`<br />`expect([1, 2]).to.have.ordered.members([1, 2])`<br />`expect([1, 2]).not.to.have.ordered.members([2, 1])`                                                              |
 | any                                                                                       | `.should('have.any.keys', 'age')`<br />`expect(arr).to.have.any.keys('age')`                                                                                                                                           |
 | all                                                                                       | `.should('have.all.keys', 'name', 'age')`<br />`expect(arr).to.have.all.keys('name', 'age')`                                                                                                                           |
-| a(_type_) <br /><small>**Aliases:** an</small>                                            | `.should('be.a', 'string')`<br />`expect('test').to.be.a('string')`                                                                                                                                                    |
-| include(_value_) <br /><small>**Aliases:** contain, includes, contains</small>            | `.should('include', 2)`<br />`expect([1,2,3]).to.include(2)`                                                                                                                                                           |
+| a(_类型_) <br /><small>**别名:** an</small>                                            | `.should('be.a', 'string')`<br />`expect('test').to.be.a('string')`                                                                                                                                                    |
+| include(_值_) <br /><small>**别名:** contain, includes, contains</small>            | `.should('include', 2)`<br />`expect([1,2,3]).to.include(2)`                                                                                                                                                           |
 | ok                                                                                        | `.should('not.be.ok')`<br />`expect(undefined).to.not.be.ok`                                                                                                                                                           |
 | true                                                                                      | `.should('be.true')`<br />`expect(true).to.be.true`                                                                                                                                                                    |
 | false                                                                                     | `.should('be.false')`<br />`expect(false).to.be.false`                                                                                                                                                                 |
@@ -58,39 +49,38 @@ entire list of available BDD Chai assertions [here](http://chaijs.com/api/bdd/).
 | undefined                                                                                 | `.should('be.undefined')`<br />`expect(undefined).to.be.undefined`                                                                                                                                                     |
 | exist                                                                                     | `.should('exist')`<br />`expect(myVar).to.exist`                                                                                                                                                                       |
 | empty                                                                                     | `.should('be.empty')`<br />`expect([]).to.be.empty`                                                                                                                                                                    |
-| arguments <br /><small>**Aliases:** Arguments</small>                                     | `.should('be.arguments')`<br />`expect(arguments).to.be.arguments`                                                                                                                                                     |
-| equal(_value_) <br /><small>**Aliases:** equals, eq</small>                               | `.should('equal', 42)`<br />`expect(42).to.equal(42)`                                                                                                                                                                  |
-| deep.equal(_value_)                                                                       | `.should('deep.equal', { name: 'Jane' })`<br />`expect({ name: 'Jane' }).to.deep.equal({ name: 'Jane' })`                                                                                                              |
-| eql(_value_) <br /><small>**Aliases:** eqls</small>                                       | `.should('eql', { name: 'Jane' })`<br />`expect({ name: 'Jane' }).to.eql({ name: 'Jane' })`                                                                                                                            |
-| greaterThan(_value_) <br /><small>**Aliases:** gt, above</small>                          | `.should('be.greaterThan', 5)`<br />`expect(10).to.be.greaterThan(5)`                                                                                                                                                  |
-| least(_value_)<br /><small>**Aliases:** gte</small>                                       | `.should('be.at.least', 10)`<br />`expect(10).to.be.at.least(10)`                                                                                                                                                      |
-| lessThan(_value_) <br /><small>**Aliases:** lt, below</small>                             | `.should('be.lessThan', 10)`<br />`expect(5).to.be.lessThan(10)`                                                                                                                                                       |
-| most(_value_) <br /><small>**Aliases:** lte</small>                                       | `.should('have.length.of.at.most', 4)`<br />`expect('test').to.have.length.of.at.most(4)`                                                                                                                              |
-| within(_start_, _finish_)                                                                 | `.should('be.within', 5, 10)`<br />`expect(7).to.be.within(5, 10)`                                                                                                                                                     |
-| instanceOf(_constructor_) <br /><small>**Aliases:** instanceof</small>                    | `.should('be.instanceOf', Array)`<br />`expect([1, 2, 3]).to.be.instanceOf(Array)`                                                                                                                                     |
-| property(_name_, _[value]_)                                                               | `.should('have.property', 'name')`<br />`expect(obj).to.have.property('name')`                                                                                                                                         |
-| deep.property(_name_, _[value]_)                                                          | `.should('have.deep.property', 'tests[1]', 'e2e')`<br />`expect(deepObj).to.have.deep.property('tests[1]', 'e2e')`                                                                                                     |
-| ownProperty(_name_) <br /><small>**Aliases:** haveOwnProperty, own.property</small>       | `.should('have.ownProperty', 'length')`<br />`expect('test').to.have.ownProperty('length')`                                                                                                                            |
-| ownPropertyDescriptor(_name_) <br /><small>**Aliases:** haveOwnPropertyDescriptor</small> | `.should('have.ownPropertyDescriptor', 'a')`<br />`expect({a: 1}).to.have.ownPropertyDescriptor('a')`                                                                                                                  |
-| lengthOf(_value_)                                                                         | `.should('have.lengthOf', 4)`<br />`expect('test').to.have.lengthOf(4)`                                                                                                                                                |
-| match(_RegExp_) <br /><small>**Aliases:** matches</small>                                 | `.should('to.match', /^test/)`<br />`expect('testing').to.match(/^test/)`                                                                                                                                              |
-| string(_string_)                                                                          | `.should('have.string', 'test')`<br />`expect('testing').to.have.string('test')`                                                                                                                                       |
-| keys(_key1_, _[key2]_, _[...]_) <br /><small>**Aliases:** key</small>                     | `.should('have.keys', 'pass', 'fail')`<br />`expect({ pass: 1, fail: 2 }).to.have.keys('pass', 'fail')`                                                                                                                |
-| throw(_constructor_) <br /><small>**Aliases:** throws, Throw</small>                      | `.should('throw', Error)`<br />`expect(fn).to.throw(Error)`                                                                                                                                                            |
-| respondTo(_method_) <br /><small>**Aliases:** respondsTo</small>                          | `.should('respondTo', 'getName')`<br />`expect(obj).to.respondTo('getName')`                                                                                                                                           |
+| arguments <br /><small>**别名:** Arguments</small>                                     | `.should('be.arguments')`<br />`expect(arguments).to.be.arguments`                                                                                                                                                     |
+| equal(_值_) <br /><small>**别名:** equals, eq</small>                               | `.should('equal', 42)`<br />`expect(42).to.equal(42)`                                                                                                                                                                  |
+| deep.equal(_值_)                                                                       | `.should('deep.equal', { name: 'Jane' })`<br />`expect({ name: 'Jane' }).to.deep.equal({ name: 'Jane' })`                                                                                                              |
+| eql(_值_) <br /><small>**别名:** eqls</small>                                       | `.should('eql', { name: 'Jane' })`<br />`expect({ name: 'Jane' }).to.eql({ name: 'Jane' })`                                                                                                                            |
+| greaterThan(_值_) <br /><small>**别名:** gt, above</small>                          | `.should('be.greaterThan', 5)`<br />`expect(10).to.be.greaterThan(5)`                                                                                                                                                  |
+| least(_值_)<br /><small>**别名:** gte</small>                                       | `.should('be.at.least', 10)`<br />`expect(10).to.be.at.least(10)`                                                                                                                                                      |
+| lessThan(_值_) <br /><small>**别名:** lt, below</small>                             | `.should('be.lessThan', 10)`<br />`expect(5).to.be.lessThan(10)`                                                                                                                                                       |
+| most(_值_) <br /><small>**别名:** lte</small>                                       | `.should('have.length.of.at.most', 4)`<br />`expect('test').to.have.length.of.at.most(4)`                                                                                                                              |
+| within(_起始_, _结束_)                                                                 | `.should('be.within', 5, 10)`<br />`expect(7).to.be.within(5, 10)`                                                                                                                                                     |
+| instanceOf(_构造函数_) <br /><small>**别名:** instanceof</small>                    | `.should('be.instanceOf', Array)`<br />`expect([1, 2, 3]).to.be.instanceOf(Array)`                                                                                                                                     |
+| property(_名称_, _[值]_)                                                               | `.should('have.property', 'name')`<br />`expect(obj).to.have.property('name')`                                                                                                                                         |
+| deep.property(_名称_, _[值]_)                                                          | `.should('have.deep.property', 'tests[1]', 'e2e')`<br />`expect(deepObj).to.have.deep.property('tests[1]', 'e2e')`                                                                                                     |
+| ownProperty(_名称_) <br /><small>**别名:** haveOwnProperty, own.property</small>       | `.should('have.ownProperty', 'length')`<br />`expect('test').to.have.ownProperty('length')`                                                                                                                              |
+| ownPropertyDescriptor(_名称_) <br /><small>**别名:** haveOwnPropertyDescriptor</small> | `.should('have.ownPropertyDescriptor', 'a')`<br />`expect({a: 1}).to.have.ownPropertyDescriptor('a')`                                                                                                                  |
+| lengthOf(_值_)                                                                         | `.should('have.lengthOf', 4)`<br />`expect('test').to.have.lengthOf(4)`                                                                                                                                                |
+| match(_正则表达式_) <br /><small>**别名:** matches</small>                                 | `.should('to.match', /^test/)`<br />`expect('testing').to.match(/^test/)`                                                                                                                                              |
+| string(_字符串_)                                                                          | `.should('have.string', 'test')`<br />`expect('testing').to.have.string('test')`                                                                                                                                       |
+| keys(_键1_, _[键2]_, _[...]_) <br /><small>**别名:** key</small>                     | `.should('have.keys', 'pass', 'fail')`<br />`expect({ pass: 1, fail: 2 }).to.have.keys('pass', 'fail')`                                                                                                                |
+| throw(_构造函数_) <br /><small>**别名:** throws, Throw</small>                      | `.should('throw', Error)`<br />`expect(fn).to.throw(Error)`                                                                                                                                                            |
+| respondTo(_方法_) <br /><small>**别名:** respondsTo</small>                          | `.should('respondTo', 'getName')`<br />`expect(obj).to.respondTo('getName')`                                                                                                                                           |
 | itself                                                                                    | `.should('itself.respondTo', 'getName')`<br />`expect(Foo).itself.to.respondTo('bar')`                                                                                                                                 |
-| satisfy(_method_) <br /><small>**Aliases:** satisfies</small>                             | `.should('satisfy', (num) => num > 0)`<br />`expect(1).to.satisfy((num) => num > 0)`                                                                                                                                   |
-| closeTo(_expected_, _delta_) <br /><small>**Aliases:** approximately</small>              | `.should('be.closeTo', 1, 0.5)`<br />`expect(1.5).to.be.closeTo(1, 0.5)`                                                                                                                                               |
-| members(_set_)                                                                            | `.should('include.members', [3, 2])`<br />`expect([1, 2, 3]).to.include.members([3, 2])`                                                                                                                               |
-| oneOf(_values_)                                                                           | `.should('be.oneOf', [1, 2, 3])`<br />`expect(2).to.be.oneOf([1,2,3])`                                                                                                                                                 |
-| change(_function_) <br /><small>**Aliases:** changes</small>                              | `.should('change', obj, 'val')`<br />`expect(fn).to.change(obj, 'val')`                                                                                                                                                |
-| increase(_function_) <br /><small>**Aliases:** increases</small>                          | `.should('increase', obj, 'val')`<br />`expect(fn).to.increase(obj, 'val')`                                                                                                                                            |
-| decrease(_function_) <br /><small>**Aliases:** decreases</small>                          | `.should('decrease', obj, 'val')`<br />`expect(fn).to.decrease(obj, 'val')`                                                                                                                                            |
+| satisfy(_方法_) <br /><small>**别名:** satisfies</small>                             | `.should('satisfy', (num) => num > 0)`<br />`expect(1).to.satisfy((num) => num > 0)`                                                                                                                                   |
+| closeTo(_期望值_, _误差范围_) <br /><small>**别名:** approximately</small>              | `.should('be.closeTo', 1, 0.5)`<br />`expect(1.5).to.be.closeTo(1, 0.5)`                                                                                                                                               |
+| members(_集合_)                                                                            | `.should('include.members', [3, 2])`<br />`expect([1, 2, 3]).to.include.members([3, 2])`                                                                                                                               |
+| oneOf(_值列表_)                                                                           | `.should('be.oneOf', [1, 2, 3])`<br />`expect(2).to.be.oneOf([1,2,3])`                                                                                                                                                 |
+| change(_函数_) <br /><small>**别名:** changes</small>                              | `.should('change', obj, 'val')`<br />`expect(fn).to.change(obj, 'val')`                                                                                                                                                |
+| increase(_函数_) <br /><small>**别名:** increases</small>                          | `.should('increase', obj, 'val')`<br />`expect(fn).to.increase(obj, 'val')`                                                                                                                                            |
+| decrease(_函数_) <br /><small>**别名:** decreases</small>                          | `.should('decrease', obj, 'val')`<br />`expect(fn).to.decrease(obj, 'val')`                                                                                                                                            |
 
-These getters are also available for BDD assertions. They don't actually do
-anything, but they enable you to write clear, English sentences.
+以下获取器也可用于BDD断言。它们本身不执行任何操作，但能让您编写更清晰的英语句子。
 
-| Chainable getters                                                                           |
+| 可链式获取器                                                                           |
 | ------------------------------------------------------------------------------------------- |
 | `to`, `be`, `been`, `is`, `that`, `which`, `and`, `has`, `have`, `with`, `at`, `of`, `same` |
 
@@ -98,24 +88,23 @@ anything, but they enable you to write clear, English sentences.
 
 <Icon name="github" url="https://github.com/chaijs/chai-jquery" />
 
-These chainers are available when asserting about a DOM object.
+这些链式断言用于DOM对象断言。
 
-You will commonly use these chainers after using DOM commands like:
-[`cy.get()`](/api/commands/get), [`cy.contains()`](/api/commands/contains), etc.
+通常在使用了DOM命令如：[`cy.get()`](/api/commands/get)、[`cy.contains()`](/api/commands/contains)等后使用这些断言。
 
 {/* textlint-disable */}
 
-| Chainers                | Assertion                                                                                                                    |
+| 断言链                | 断言示例                                                                                                                    |
 | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| attr(_name_, _[value]_) | `.should('have.attr', 'bar')`<br />`expect($el).to.have.attr('foo', 'bar')`                                                  |
-| prop(_name_, _[value]_) | `.should('have.prop', 'disabled', false)`<br />`expect($el).to.have.prop('disabled', false)`                                 |
-| css(_name_, _[value]_)  | `.should('have.css', 'background-color', 'rgb(0, 0, 0)')`<br />`expect($el).to.have.css('background-color', 'rgb(0, 0, 0)')` |
-| data(_name_, _[value]_) | `.should('have.data', 'foo', 'bar')`<br />`expect($el).to.have.data('foo', 'bar')`                                           |
-| class(_className_)      | `.should('have.class', 'foo')`<br />`expect($el).to.have.class('foo')`                                                       |
-| id(_id_)                | `.should('have.id', 'foo')`<br />`expect($el).to.have.id('foo')`                                                             |
-| html(_html_)            | `.should('have.html', 'I love testing')`<br />`expect($el).to.have.html('with Cypress')`                                     |
-| text(_text_)            | `.should('have.text', 'I love testing')`<br />`expect($el).to.have.text('with Cypress')`                                     |
-| value(_value_)          | `.should('have.value', 'test@dev.com')`<br />`expect($el).to.have.value('test@dev.com')`                                     |
+| attr(_名称_, _[值]_) | `.should('have.attr', 'bar')`<br />`expect($el).to.have.attr('foo', 'bar')`                                                  |
+| prop(_名称_, _[值]_) | `.should('have.prop', 'disabled', false)`<br />`expect($el).to.have.prop('disabled', false)`                                 |
+| css(_名称_, _[值]_)  | `.should('have.css', 'background-color', 'rgb(0, 0, 0)')`<br />`expect($el).to.have.css('background-color', 'rgb(0, 0, 0)')` |
+| data(_名称_, _[值]_) | `.should('have.data', 'foo', 'bar')`<br />`expect($el).to.have.data('foo', 'bar')`                                           |
+| class(_类名_)      | `.should('have.class', 'foo')`<br />`expect($el).to.have.class('foo')`                                                       |
+| id(_ID_)                | `.should('have.id', 'foo')`<br />`expect($el).to.have.id('foo')`                                                             |
+| html(_HTML_)            | `.should('have.html', 'I love testing')`<br />`expect($el).to.have.html('with Cypress')`                                     |
+| text(_文本_)            | `.should('have.text', 'I love testing')`<br />`expect($el).to.have.text('with Cypress')`                                     |
+| value(_值_)          | `.should('have.value', 'test@dev.com')`<br />`expect($el).to.have.value('test@dev.com')`                                     |
 | visible                 | `.should('be.visible')`<br />`expect($el).to.be.visible`                                                                     |
 | hidden                  | `.should('be.hidden')`<br />`expect($el).to.be.hidden`                                                                       |
 | selected                | `.should('be.selected')`<br />`expect($option).not.to.be.selected`                                                           |
@@ -125,9 +114,9 @@ You will commonly use these chainers after using DOM commands like:
 | disabled                | `.should('be.disabled')`<br />`expect($input).to.be.disabled`                                                                |
 | empty                   | `.should('be.empty')`<br />`expect($el).not.to.be.empty`                                                                     |
 | exist                   | `.should('exist')`<br />`expect($nonexistent).not.to.exist`                                                                  |
-| match(_selector_)       | `.should('match', ':empty')`<br />`expect($emptyEl).to.match(':empty')`                                                      |
-| contain(_text_)         | `.should('contain', 'text')`<br />`expect($el).to.contain('text')`                                                           |
-| descendants(_selector_) | `.should('have.descendants', 'div')`<br />`expect($el).to.have.descendants('div')`                                           |
+| match(_选择器_)       | `.should('match', ':empty')`<br />`expect($emptyEl).to.match(':empty')`                                                      |
+| contain(_文本_)         | `.should('contain', 'text')`<br />`expect($el).to.contain('text')`                                                           |
+| descendants(_选择器_) | `.should('have.descendants', 'div')`<br />`expect($el).to.have.descendants('div')`                                           |
 
 {/* textlint-enable */}
 
@@ -135,10 +124,9 @@ You will commonly use these chainers after using DOM commands like:
 
 <Icon name="github" url="https://github.com/domenic/sinon-chai" />
 
-These chainers are used on assertions with [`cy.stub()`](/api/commands/stub) and
-[`cy.spy()`](/api/commands/spy).
+这些断言链用于[`cy.stub()`](/api/commands/stub)和[`cy.spy()`](/api/commands/spy)的断言。
 
-| Sinon.JS property/method | Assertion                                                                                                                 |
+| Sinon.JS属性/方法 | 断言示例                                                                                                                 |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
 | called                   | `.should('have.been.called')`<br />`expect(spy).to.be.called`                                                             |
 | callCount                | `.should('have.callCount', 3)`<br />`expect(spy).to.have.callCount(n)`                                                    |
@@ -164,118 +152,106 @@ These chainers are used on assertions with [`cy.stub()`](/api/commands/stub) and
 | threw                    | `.should('have.thrown', TypeError)`<br />`expect(spy).to.have.thrown(errorObjOrErrorTypeStringOrNothing)`                 |
 | alwaysThrew              | `.should('have.always.thrown', 'TypeError')`<br />`expect(spy).to.have.always.thrown(errorObjOrErrorTypeStringOrNothing)` |
 
-## Adding New Assertions
+## 添加新断言
 
-Because we are using `chai`, that means you can extend it however you'd like.
-Cypress will "just work" with new assertions added to `chai`. You can:
+由于我们使用`chai`，这意味着您可以按需扩展它。Cypress会自动兼容添加到`chai`的新断言。您可以：
 
-- Write your own `chai` assertions as
-  [documented here](https://chaijs.com/guide/helpers/).
-- npm install any existing `chai` library and import into your test file or
-  [support file](/app/core-concepts/writing-and-organizing-tests#Support-file).
+- 按照[此处文档](https://chaijs.com/guide/helpers/)编写自己的`chai`断言
+- 通过npm安装现有的`chai`库并导入到测试文件或[支持文件](/app/core-concepts/writing-and-organizing-tests#Support-file)
 
 :::info
 
-[Check out our example recipe extending chai with new assertions.](/app/references/recipes#Fundamentals)
+[查看我们扩展chai新断言的示例配方](/app/references/recipes#Fundamentals)
 
 :::
 
-## Common Assertions
+## 常见断言
 
-Here is a list of common element assertions. Notice how we use these assertions
-(listed above) with [`.should()`](/api/commands/should). You may also want to
-read about how Cypress [retries](/app/core-concepts/retry-ability)
-assertions.
+以下是常见的元素断言列表。注意我们如何将上述断言与[`.should()`](/api/commands/should)结合使用。您可能还想阅读Cypress如何[重试](/app/core-concepts/retry-ability)断言。
 
-### Length
+### 长度
 
 ```javascript
-// retry until we find 3 matching <li.selected>
+// 重试直到找到3个匹配的<li.selected>
 cy.get('li.selected').should('have.length', 3)
 ```
 
-### Class
+### 类名
 
 ```javascript
-// retry until this input does not have class disabled
+// 重试直到此输入没有disabled类
 cy.get('form').find('input').should('not.have.class', 'disabled')
 ```
 
-### Value
+### 值
 
 ```javascript
-// retry until this textarea has the correct value
+// 重试直到此文本区域有正确的值
 cy.get('textarea').should('have.value', 'foo bar baz')
 ```
 
-### Text Content
+### 文本内容
 
 ```javascript
-// assert the element's text content is exactly the given text
+// 断言元素的文本内容完全匹配给定文本
 cy.get('[data-testid="user-name"]').should('have.text', 'Joe Smith')
-// assert the element's text includes the given substring
+// 断言元素的文本包含给定子字符串
 cy.get('[data-testid="address"]').should('include.text', 'Atlanta')
-// retry until this span does not contain 'click me'
+// 重试直到此span不包含'click me'
 cy.get('a').parent('span.help').should('not.contain', 'click me')
-// the element's text should start with "Hello"
+// 元素的文本应以"Hello"开头
 cy.get('[data-testid="greeting"]')
   .invoke('text')
   .should('match', /^Hello/)
-// use cy.contains to find an element with its text
-// matching the given regular expression
+// 使用cy.contains通过文本查找元素
+// 匹配给定的正则表达式
 cy.contains('[data-testid="greeting"]', /^Hello/)
 ```
 
 :::info
 
-**Tip:** read about assertions against text with non-breaking space entities in
-[How do I get an element's text contents?](/app/faq#How-do-I-get-an-elements-text-contents)
+**提示：**关于包含不间断空格实体的文本断言，请阅读[如何获取元素的文本内容？](/app/faq#How-do-I-get-an-elements-text-contents)
 
 :::
 
-### Visibility
+### 可见性
 
 ```javascript
-// retry until the element with
-// data-testid "form-submit" is visible
+// 重试直到data-testid为"form-submit"的元素可见
 cy.get('[data-testid="form-submit"]').should('be.visible')
-// retry until the list item with
-// text "write tests" is visible
+// 重试直到文本为"write tests"的列表项可见
 cy.contains('[data-testid="todo"] li', 'write tests').should('be.visible')
 ```
 
-**Note:** if there are multiple elements, the assertions `be.visible` and
-`not.be.visible` act differently:
+**注意：**如果存在多个元素，断言`be.visible`和`not.be.visible`的行为不同：
 
 ```javascript
-// retry until SOME elements are visible
+// 重试直到某些元素可见
 cy.get('li').should('be.visible')
-// retry until EVERY element is invisible
+// 重试直到所有元素不可见
 cy.get('li.hidden').should('not.be.visible')
 ```
 
-Watch the short video
-["Multiple elements and should('be.visible') assertion"](https://www.youtube.com/watch?v=LxkrhUEE2Qk)
-that shows how to correctly check the visibility of elements.
+观看短视频["多个元素与should('be.visible')断言"](https://www.youtube.com/watch?v=LxkrhUEE2Qk)，了解如何正确检查元素的可见性。
 
-### Existence
+### 存在性
 
 ```javascript
-// retry until loading spinner no longer exists
+// 重试直到加载旋转器不存在
 cy.get('[data-testid="loading"]').should('not.exist')
 ```
 
-### State
+### 状态
 
 ```javascript
-// retry until our radio is checked
+// 重试直到单选按钮被选中
 cy.get(':radio').should('be.checked')
 ```
 
 ### CSS
 
 ```javascript
-// retry until element has matching css
+// 重试直到元素有匹配的CSS
 cy.get('[data-testid="completed"]').should(
   'have.css',
   'text-decoration',
@@ -284,12 +260,11 @@ cy.get('[data-testid="completed"]').should(
 ```
 
 ```javascript
-// retry while accordion css has the
-// "display: none" property
+// 重试直到手风琴CSS有"display: none"属性
 cy.get('[data-testid="accordion"]').should('not.have.css', 'display', 'none')
 ```
 
-### Disabled property
+### 禁用属性
 
 ```html
 <input type="text" data-testid="example-input" disabled />
@@ -298,19 +273,19 @@ cy.get('[data-testid="accordion"]').should('not.have.css', 'display', 'none')
 ```javascript
 cy.get('[data-testid="example-input"]')
   .should('be.disabled')
-  // let's enable this element from the test
+  // 从测试中启用此元素
   .invoke('prop', 'disabled', false)
 
 cy.get('[data-testid="example-input"]')
-  // we can use "enabled" assertion
+  // 可以使用"enabled"断言
   .should('be.enabled')
-  // or negate the "disabled" assertion
+  // 或否定"disabled"断言
   .and('not.be.disabled')
 ```
 
-## Negative assertions
+## 否定断言
 
-There are positive and negative assertions. Examples of positive assertions are:
+断言分为肯定和否定两种。肯定断言的例子：
 
 ```javascript
 cy.get('[data-testid="todo-item"]')
@@ -318,64 +293,50 @@ cy.get('[data-testid="todo-item"]')
   .and('have.class', 'completed')
 ```
 
-The negative assertions have the "not" chainer prefixed to the assertion.
-Examples of negative assertions are:
+否定断言在断言前加上"not"链。否定断言的例子：
 
 ```javascript
 cy.contains('first todo').should('not.have.class', 'completed')
 cy.get('[data-testid="loading"]').should('not.be.visible')
 ```
 
-### <Icon name="exclamation-triangle" color="red"/> False passing tests
+### <Icon name="exclamation-triangle" color="red"/> 误通过的测试
 
-Negative assertions may pass for reasons you weren't expecting. Let's say we
-want to test that a Todo list app adds a new Todo item after typing the Todo and
-pressing enter.
+否定断言可能会因意外原因通过。假设我们要测试一个Todo列表应用在输入Todo并按下回车后是否添加了新Todo项。
 
-**Positive assertions**
+**肯定断言**
 
-When adding an element to the list and using a **positive assertion**, the test
-asserts a specific number of Todo items in our application.
+当向列表添加元素并使用**肯定断言**时，测试断言应用中特定数量的Todo项。
 
-The test below may still falsely pass if the application behaves unexpectedly,
-like adding a blank Todo, instead of adding the new Todo with the text "Write
-tests".
+如果应用行为异常，比如添加空白Todo而不是包含文本"Write tests"的新Todo，下面的测试可能仍会错误地通过。
 
 ```javascript
 cy.get('[data-testid="todos"]').should('have.length', 2)
 cy.get('[data-testid="new-todo"]').type('Write tests{enter}')
 
-// using a positive assertion to check the
-// exact number of items
+// 使用肯定断言检查确切的项目数量
 cy.get('[data-testid="todos"]').should('have.length', 3)
 ```
 
-**Negative assertions**
+**否定断言**
 
-But when using a **negative assertion** in the test below, the test can falsely
-pass when the application behaves in multiple unexpected ways:
+但在下面的测试中使用**否定断言**时，当应用以多种意外方式行为时，测试可能会错误地通过：
 
-- The app deletes the entire list of Todo items instead of inserting the 3rd
-  Todo
-- The app deletes a Todo instead of adding a new Todo
-- The app adds a blank Todo
+- 应用删除了整个Todo列表而不是插入第3个Todo
+- 应用删除了一个Todo而不是添加新Todo
+- 应用添加了空白Todo
 
 ```javascript
 cy.get('[data-testid="todos"]').should('have.length', 2)
 cy.get('[data-testid="new-todo"]').type('Write tests{enter}')
 
-// using negative assertion to check it's
-// not a number of items
+// 使用否定断言检查不是某个数量的项目
 cy.get('[data-testid="todos"]').should('not.have.length', 2)
 ```
 
-## Should callback
+## Should回调
 
-If built-in assertions are not enough, you can write your own assertion function
-and pass it as a callback to the `.should()` command. Cypress will automatically
-[retry](/app/core-concepts/retry-ability) the callback function until it
-passes or the command times out. See the
-[`.should()`](/api/commands/should#Function) documentation.
+如果内置断言不够用，您可以编写自己的断言函数并将其作为回调传递给`.should()`命令。Cypress会自动[重试](/app/core-concepts/retry-ability)回调函数直到通过或命令超时。参见[`.should()`](/api/commands/should#Function)文档。
 
 ```html
 <div class="main-abc123 heading-xyz987">Introduction</div>
@@ -387,14 +348,14 @@ cy.get('div').should(($div) => {
 
   const className = $div[0].className
 
-  // className will be a string like "main-abc123 heading-xyz987"
+  // className将是类似"main-abc123 heading-xyz987"的字符串
   expect(className).to.match(/heading-/)
 })
 ```
 
-## Multiple assertions
+## 多重断言
 
-You can attach multiple assertions to the same command.
+您可以在同一命令上附加多个断言。
 
 ```html
 <a
@@ -414,25 +375,22 @@ cy.get('[data-testid="assertions-link"]')
   .and('include', 'cypress.io')
 ```
 
-Note that all chained assertions will use the same reference to the original
-subject. For example, if you wanted to test a loading element that first appears
-and then disappears, the following WILL NOT WORK because the same element cannot
-be visible and invisible at the same time:
+注意所有链式断言都使用对原始主题的相同引用。例如，如果要测试一个先出现后消失的加载元素，以下方法**不适用**，因为同一元素不能同时可见和不可见：
 
 ```js
-// ⛔️ DOES NOT WORK
+// ⛔️ 不适用
 cy.get('[data-testid="loading"]').should('be.visible').and('not.be.visible')
 ```
 
-Instead you should split the assertions and re-query the element:
+正确的做法是拆分断言并重新查询元素：
 
 ```js
-// ✅ THE CORRECT WAY
+// ✅ 正确方法
 cy.get('[data-testid="loading"]').should('be.visible')
 cy.get('[data-testid="loading"]').should('not.be.visible')
 ```
 
-## See also
+## 另请参阅
 
-- [Guide: Introduction to Cypress](/app/core-concepts/introduction-to-cypress#Assertions)
-- [cypress-example-kitchensink Assertions](https://example.cypress.io/commands/assertions)
+- [指南：Cypress入门](/app/core-concepts/introduction-to-cypress#Assertions)
+- [cypress-example-kitchensink断言示例](https://example.cypress.io/commands/assertions)

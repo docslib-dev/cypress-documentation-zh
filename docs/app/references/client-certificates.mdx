@@ -1,62 +1,55 @@
 ---
-title: 'Configure Client Certificates in Cypress'
-description: 'Configure certificate authority (CA) and client certificates to use within tests on a per-URL basis.'
-sidebar_label: 'Client Certificates'
+title: '在Cypress中配置客户端证书'
+description: '按URL配置测试中使用的证书颁发机构(CA)和客户端证书'
+sidebar_label: '客户端证书'
 ---
 
 <ProductHeading product="app" />
 
-# Client Certificates
+# 客户端证书
 
-Configure certificate authority (CA) and client certificates to use within tests
-on a per-URL basis.
+按URL配置测试中使用的证书颁发机构(CA)和客户端证书。
 
 :::info
 
-<strong>Document Scope</strong>
+<strong>文档范围</strong>
 
-This document merely offers guidance on how to specify certificate file paths
-for given test URLs. Details around the content and purpose of such files are
-not within the scope of Cypress documentation.
+本文档仅提供如何为指定测试URL配置证书文件路径的指导。关于这些文件内容和用途的详细信息不属于Cypress文档范围。
 
 :::
 
-## Syntax
+## 语法
 
 <Icon name="angle-right" /> **clientCertificates _(Object[])_**
 
-An array of objects defining the certificates. Each object must have the
-following properties
+定义证书的对象数组。每个对象必须包含以下属性：
 
-| Property | Type       | Description                                                                                                              |
-| -------- | ---------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `url`    | `String`   | URL to match requests against. Wildcards following [minimatch](https://github.com/isaacs/minimatch) rules are supported. |
-| `ca`     | `Array`    | _(Optional)_ Paths to one or more CA files to validate certs against, relative to project root.                          |
-| `certs`  | `Object[]` | A PEM format certificate/private key pair or PFX certificate container                                                   |
+| 属性     | 类型       | 描述                                                                                                              |
+| -------- | ---------- | ----------------------------------------------------------------------------------------------------------------- |
+| `url`    | `String`   | 要匹配请求的URL。支持遵循[minimatch](https://github.com/isaacs/minimatch)规则的通配符。                          |
+| `ca`     | `Array`    | _(可选)_ 用于验证证书的一个或多个CA文件路径，相对于项目根目录。                                                   |
+| `certs`  | `Object[]` | PEM格式的证书/私钥对或PFX证书容器                                                                                |
 
-Each object in the `certs` array can define either a **PEM format
-certificate/private key pair** or a **PFX certificate container**.
+`certs`数组中的每个对象可以定义**PEM格式证书/私钥对**或**PFX证书容器**。
 
-**A PEM format certificate/private key pair can have the following properties:**
+**PEM格式证书/私钥对可包含以下属性：**
 
-| Property     | Type     | Description                                                                           |
-| ------------ | -------- | ------------------------------------------------------------------------------------- |
-| `cert`       | `String` | Path to the certificate file, relative to project root.                               |
-| `key`        | `String` | Path to the private key file, relative to project root.                               |
-| `passphrase` | `String` | _(Optional)_ Path to a text file containing the passphrase, relative to project root. |
+| 属性         | 类型     | 描述                                                                           |
+| ------------ | -------- | ----------------------------------------------------------------------------- |
+| `cert`       | `String` | 证书文件路径，相对于项目根目录。                                              |
+| `key`        | `String` | 私钥文件路径，相对于项目根目录。                                              |
+| `passphrase` | `String` | _(可选)_ 包含密码短语的文本文件路径，相对于项目根目录。                       |
 
-**A PFX certificate container can have the following properties:**
+**PFX证书容器可包含以下属性：**
 
-| Property     | Type     | Description                                                                           |
-| ------------ | -------- | ------------------------------------------------------------------------------------- |
-| `pfx`        | `String` | Path to the certificate container, relative to project root.                          |
-| `passphrase` | `String` | _(Optional)_ Path to a text file containing the passphrase, relative to project root. |
+| 属性         | 类型     | 描述                                                                           |
+| ------------ | -------- | ----------------------------------------------------------------------------- |
+| `pfx`        | `String` | 证书容器路径，相对于项目根目录。                                              |
+| `passphrase` | `String` | _(可选)_ 包含密码短语的文本文件路径，相对于项目根目录。                       |
 
-## Usage
+## 使用方式
 
-To configure CA / client certificates within your Cypress configuration, you can
-add the `clientCertificates` key to define an array of client certificates as
-shown below:
+要在Cypress配置中配置CA/客户端证书，可以添加`clientCertificates`键来定义客户端证书数组，如下所示：
 
 :::cypress-config-example
 
@@ -100,8 +93,8 @@ shown below:
 
 :::
 
-## History
+## 历史版本
 
-| Version                                  | Changes                                         |
-| ---------------------------------------- | ----------------------------------------------- |
-| [8.0.0](/app/references/changelog#8-0-0) | Added Client Certificates configuration options |
+| 版本                                   | 变更内容                                         |
+| ------------------------------------- | ----------------------------------------------- |
+| [8.0.0](/app/references/changelog#8-0-0) | 新增客户端证书配置选项 |

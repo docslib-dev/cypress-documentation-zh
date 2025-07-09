@@ -7,7 +7,7 @@ export default function ComponentOnlyBadge() {
       type="hint"
       path="/app/core-concepts/testing-types#What-is-Component-Testing"
     >
-      Component Only
+      仅限组件
     </Badge>
   );
 }

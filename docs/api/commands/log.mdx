@@ -1,6 +1,6 @@
 ---
-title: 'log | Cypress Documentation'
-description: Print a message to the Cypress Command Log.
+title: 'log | Cypress 文档'
+description: '在 Cypress 命令日志中打印消息。'
 sidebar_label: log
 slug: /api/commands/log
 ---
@@ -9,97 +9,94 @@ slug: /api/commands/log
 
 # log
 
-Print a message to the Cypress Command Log.
+在 Cypress 命令日志中打印消息。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.log(message)
 cy.log(message, args...)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 cy.log('created new user')
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **message _(String)_**
 
-Message to be printed to Cypress Command Log. Accepts a Markdown formatted
-message.
+要打印到 Cypress 命令日志中的消息。支持 Markdown 格式的消息。
 
 <Icon name="angle-right" /> **args...**
 
-Additional arguments to be printed to the Cypress Command Log. There is no limit
-to the number of arguments.
+要打印到 Cypress 命令日志中的额外参数。参数数量没有限制。
 
 <HeaderYields />
 
-- `cy.log()` yields `null`.
+- `cy.log()` 返回 `null`。
 
-## Examples
+## 示例
 
-### Message
+### 消息
 
-#### Print a message to the Command Log.
+#### 在命令日志中打印消息。
 
 ```javascript
 cy.click('Login')
 cy.log('Login successful')
 ```
 
-### Args
+### 参数
 
-#### Print a message with arguments to the Command Log.
+#### 在命令日志中打印带参数的消息。
 
 ```javascript
 cy.log('events triggered', events)
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.log()` requires being chained off of `cy`.
+- `cy.log()` 必须通过 `cy` 链式调用。
 
 <HeaderAssertions />
 
-- `cy.log()` cannot have any assertions chained.
+- `cy.log()` 不能链式调用任何断言。
 
 <HeaderTimeouts />
 
-- `cy.log()` cannot time out.
+- `cy.log()` 不会超时。
 
-## Command Log
+## 命令日志
 
-**_Print messages with arguments to the Command Log._**
+**_在命令日志中打印带参数的消息。_**
 
 ```javascript
 cy.log('log out any message we want here')
 cy.log('another message', ['one', 'two', 'three'])
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/log/custom-command-log-with-any-message.png"
   alt="Command Log log"
 />
 
-When clicking on `log` within the command log, the console outputs the
-following:
+当点击命令日志中的 `log` 时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/log/console-shows-logs-message-and-any-arguments.png"
   alt="Console Log log"
 />
 
-## See also
+## 另请参阅
 
 - [`cy.exec()`](/api/commands/exec)
 - [`Cypress.log`](/api/cypress-api/cypress-log)

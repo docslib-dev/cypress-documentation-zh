@@ -1,6 +1,6 @@
 ---
-title: 'tick | Cypress Documentation'
-description: Move time after overriding a native time function with `cy.clock()` in Cypress.
+title: 'tick | Cypress 文档'
+description: 在使用 `cy.clock()` 覆盖原生时间函数后，移动时间。
 sidebar_label: tick
 ---
 
@@ -8,70 +8,64 @@ sidebar_label: tick
 
 # tick
 
-Move time after overriding a native time function with
-[`cy.clock()`](/api/commands/clock).
+在使用 [`cy.clock()`](/api/commands/clock) 覆盖原生时间函数后，移动时间。
 
 :::caution
 
-[`cy.clock()`](/api/commands/clock) must be called before `cy.tick()` in order
-to override native time functions first.
+必须先调用 [`cy.clock()`](/api/commands/clock) 覆盖原生时间函数，然后才能使用 `cy.tick()`。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 cy.tick(milliseconds, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 cy.tick(500)
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **milliseconds _(Number)_**
 
-The number of `milliseconds` to move the clock. Any timers within the affected
-range of time will be called.
+要移动时钟的毫秒数。在此时间范围内的任何计时器将被调用。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `cy.tick()`.
+传入一个选项对象以更改 `cy.tick()` 的默认行为。
 
-| Option | Default | Description                                                                         |
-| ------ | ------- | ----------------------------------------------------------------------------------- |
-| `log`  | `true`  | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
+| 选项   | 默认值  | 描述                                                                         |
+| ------ | ------- | --------------------------------------------------------------------------- |
+| `log`  | `true`  | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令           |
 
 <HeaderYields />
 
-`cy.tick()` yields a `clock` object with the following methods:
+`cy.tick()` 返回一个具有以下方法的 `clock` 对象：
 
 - **`clock.tick(milliseconds)`**
 
-  Move the clock a number of milliseconds. Any timers within the affected range
-  of time will be called.
+  将时钟移动指定的毫秒数。在此时间范围内的任何计时器将被调用。
 
 - **`clock.restore()`**
 
-  Restore all overridden native functions. This is automatically called between
-  tests, so should not generally be needed.
+  恢复所有被覆盖的原生函数。这会在测试之间自动调用，通常不需要手动调用。
 
-You can also access the `clock` object via `this.clock` in a
-[`.then()`](/api/commands/then) callback.
+你也可以在 [`.then()`](/api/commands/then) 回调中通过 `this.clock` 访问 `clock` 对象。
 
-## Examples
+## 示例
 
-### Milliseconds
+### 毫秒
 
-#### Create a clock and move time to trigger a `setTimeout`
+#### 创建一个时钟并移动时间以触发 `setTimeout`
 
 ```javascript
-// app code loaded by index.html
+// 由 index.html 加载的应用代码
 window.addIntro = () => {
   setTimeout(() => {
     document.getElementById('#header').textContent = 'Hello, World'
@@ -87,93 +81,88 @@ cy.tick(500)
 cy.get('#header').should('have.text', 'Hello, World')
 ```
 
-#### Using `cy.clock()` with `cy.tick()`
+#### 结合使用 `cy.clock()` 和 `cy.tick()`
 
 :::info
 
-[Check out our example recipe testing spying, stubbing and time](/app/references/recipes#Stubbing-and-spying)
+[查看我们关于测试间谍、存根和时间的示例配方](/app/references/recipes#Stubbing-and-spying)
 
 :::
 
-### Restore clock
+### 恢复时钟
 
-You can restore the clock and allow your application to resume normally without
-manipulating native global functions related to time. This is automatically
-called between tests.
+你可以恢复时钟，让你的应用在不操纵与时间相关的原生全局函数的情况下正常运行。这会在测试之间自动调用。
 
 ```javascript
 cy.clock()
 cy.visit('http://localhost:3333')
 cy.get('#search').type('Acme Company')
 cy.tick(1000)
-// more test code here
+// 更多测试代码
 
-// restore the clock
+// 恢复时钟
 cy.clock().then((clock) => {
   clock.restore()
 })
-// more test code here
+// 更多测试代码
 ```
 
-You could also restore by using [.invoke()](/api/commands/invoke) to invoke the
-`restore` function.
+你也可以使用 [.invoke()](/api/commands/invoke) 调用 `restore` 函数来恢复时钟。
 
 ```js
 cy.clock().invoke('restore')
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.tick()` requires being chained off of `cy`.
-- `cy.tick()` requires that `cy.clock()` be called before it.
+- `cy.tick()` 需要链式调用 `cy`。
+- `cy.tick()` 需要先调用 `cy.clock()`。
 
 <HeaderAssertions />
 
-- `cy.tick()` is a utility command.
-- `cy.tick()` will not run assertions. Assertions will pass through as if this
-  command did not exist.
+- `cy.tick()` 是一个实用命令。
+- `cy.tick()` 不会运行断言。断言会直接通过，就像该命令不存在一样。
 
 <HeaderTimeouts />
 
-- `cy.tick()` cannot time out.
+- `cy.tick()` 不会超时。
 
-## Command Log
+## 命令日志
 
-**_Create a clock and tick it 1 second_**
+**_创建一个时钟并将其移动 1 秒_**
 
 ```javascript
 cy.clock()
 cy.tick(1000)
 ```
 
-The command above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/tick/tick-machine-clock-1-second-in-time.png"
   alt="Console Log tick"
 />
 
-When clicking on the `tick` command within the command log, the console outputs
-the following:
+当点击命令日志中的 `tick` 命令时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/tick/console-shows-same-clock-object-as-clock-command.png"
   alt="Console Log tick"
 />
 
-## History
+## 历史
 
-| Version                                    | Changes                           |
+| 版本                                       | 变更                              |
 | ------------------------------------------ | --------------------------------- |
-| [7.0.0](/app/references/changelog#7-0-0)   | `log` option added to `cy.tick()` |
-| [0.18.8](/app/references/changelog#0-18-8) | `cy.tick()` command added         |
+| [7.0.0](/app/references/changelog#7-0-0)   | 为 `cy.tick()` 添加了 `log` 选项  |
+| [0.18.8](/app/references/changelog#0-18-8) | 添加了 `cy.tick()` 命令           |
 
-## See also
+## 另请参阅
 
 - [`cy.clock()`](/api/commands/clock)
 - [`cy.spy()`](/api/commands/spy)
 - [`cy.stub()`](/api/commands/stub)
-- [Guide: Stubs, Spies and Clocks](/app/guides/stubs-spies-and-clocks)
-- [Recipe: Stubbing, Spying](/app/references/recipes#Stubbing-and-spying)
+- [指南：存根、间谍和时钟](/app/guides/stubs-spies-and-clocks)
+- [配方：存根、间谍](/app/references/recipes#Stubbing-and-spying)

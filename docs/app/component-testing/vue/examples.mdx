@@ -1,32 +1,31 @@
 ---
-title: Vue Examples
-description: Examples for testing Vue components with Cypress.
+title: Vue 示例
+description: 使用 Cypress 测试 Vue 组件的示例。
 sidebar_position: 30
-sidebar_label: Examples
+sidebar_label: 示例
 ---
 
 <ProductHeading product="app" />
 
-# Vue Examples
+# Vue 示例
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学习到
 
-- How to mount Vue components in Cypress
-- How to pass props and events to components
-- How to use slots in components
-- How to use Vue Test Utils with Cypress
-- How to customize `cy.mount()` with Vue
+- 如何在 Cypress 中挂载 Vue 组件
+- 如何向组件传递 props 和事件
+- 如何在组件中使用插槽
+- 如何将 Vue Test Utils 与 Cypress 结合使用
+- 如何为 Vue 自定义 `cy.mount()`
 
 :::
 
-## Mounting Components
+## 挂载组件
 
-### Using `cy.mount()`
+### 使用 `cy.mount()`
 
-To mount a component with `cy.mount()`, import the component and pass it to the
-method:
+要使用 `cy.mount()` 挂载组件，需导入组件并将其传递给该方法：
 
 ```ts
 import { Stepper } from './Stepper.vue'
@@ -36,9 +35,9 @@ it('mounts', () => {
 })
 ```
 
-### Passing Data to a Component
+### 向组件传递数据
 
-You can pass props and events to a component by setting `props` in the options:
+可以通过在选项中设置 `props` 来向组件传递 props 和事件：
 
 ```js
 cy.mount(Stepper, {
@@ -48,10 +47,9 @@ cy.mount(Stepper, {
 })
 ```
 
-### Testing Event Handlers
+### 测试事件处理器
 
-Pass a Cypress [spy](/app/guides/stubs-spies-and-clocks#Spies) to an event
-prop and validate it was called:
+将 Cypress 的 [spy](/app/guides/stubs-spies-and-clocks#Spies) 传递给事件 prop 并验证其是否被调用：
 
 ```js
 it('clicking + fires a change event with the incremented value', () => {
@@ -62,13 +60,11 @@ it('clicking + fires a change event with the incremented value', () => {
 })
 ```
 
-### Using JSX
+### 使用 JSX
 
-The mount command also supports JSX syntax (provided that you've configured your
-bundler to support transpiling JSX or TSX files). Some might find using JSX
-syntax beneficial when writing tests.
+mount 命令也支持 JSX 语法（前提是你已配置打包工具支持转译 JSX 或 TSX 文件）。有些人可能会发现使用 JSX 语法在编写测试时更有优势。
 
-Sample with JSX:
+JSX 示例：
 
 ```jsx
 it('clicking + fires a change event with the incremented value', () => {
@@ -79,9 +75,9 @@ it('clicking + fires a change event with the incremented value', () => {
 })
 ```
 
-## Using Slots
+## 使用插槽
 
-### Default Slot
+### 默认插槽
 
 <Tabs>
 <TabItem value="DefaultSlot.cy.js">
@@ -133,7 +129,7 @@ describe('<DefaultSlot />', () => {
 </TabItem>
 </Tabs>
 
-### Named Slot
+### 具名插槽
 
 <Tabs>
 <TabItem value="NamedSlot.cy.js">
@@ -196,26 +192,22 @@ describe('<NamedSlot />', () => {
 </TabItem>
 </Tabs>
 
-For more info on testing Vue components with slots, refer to the
-[Vue Test Utils Slots guide](https://test-utils.vuejs.org/guide/advanced/slots.html).
+有关使用插槽测试 Vue 组件的更多信息，请参考 [Vue Test Utils 插槽指南](https://test-utils.vuejs.org/guide/advanced/slots.html)。
 
-## Using Vue Test Utils
+## 使用 Vue Test Utils
 
-In order to encourage interoperability between your existing component tests and
-Cypress, we support using Vue Test Utils' API.
+为了鼓励现有组件测试与 Cypress 之间的互操作性，我们支持使用 Vue Test Utils 的 API。
 
 ```js
 cy.mount(Stepper).then(({ wrapper, component }) => {
-  // `wrapper` is the Vue Test Utils wrapper
-  // `component` is the component instance itself
+  // `wrapper` 是 Vue Test Utils 的包装器
+  // `component` 是组件实例本身
 })
 ```
 
-{/* TODO: Custom mount command docs */}
+{/* TODO: 自定义挂载命令文档 */}
 
-If you intend to use the `wrapper` frequently and use Vue Test Util's API, we
-recommend you write a [custom mount command](/api/commands/mount) and create a
-Cypress alias to get back at the `wrapper`.
+如果你打算频繁使用 `wrapper` 并利用 Vue Test Utils 的 API，我们建议你编写一个 [自定义挂载命令](/api/commands/mount) 并为 `wrapper` 创建一个 Cypress 别名。
 
 ```js
 import { mount } from 'cypress/vue'
@@ -226,31 +218,20 @@ Cypress.Commands.add('mount', (...args) => {
   })
 })
 
-// the "@vue" alias will now work anywhere
-// after you've mounted your component
-cy.mount(Stepper).doStuff().get('@vue') // The subject is now the Vue Wrapper
+// "@vue" 别名现在可以在任何地方使用
+// 在你挂载组件之后
+cy.mount(Stepper).doStuff().get('@vue') // 现在主题是 Vue 包装器
 ```
 
-This means that you are able to get to the resulting `wrapper` returned from the
-`mount` command and use `wrapper.emitted()` in order to gain access to Native
-DOM events that were fired, as well as custom events that were emitted by your
-component under test.
+这意味着你可以访问 `mount` 命令返回的 `wrapper`，并使用 `wrapper.emitted()` 来获取组件测试中触发的原生 DOM 事件以及自定义事件。
 
-Because `wrapper.emitted()` is only data, and NOT spy-based you will have to
-unpack its results to write assertions.
+因为 `wrapper.emitted()` 只是数据，而不是基于 spy 的，所以你需要解包其结果来编写断言。
 
-Your test failure messages will not be as helpful because you're not able to use
-the Sinon-Chai library that Cypress ships, which comes with methods such as
-`to.have.been.called` and `to.have.been.calledWith`.
+你的测试失败信息不会那么有帮助，因为你无法使用 Cypress 内置的 Sinon-Chai 库，该库提供了诸如 `to.have.been.called` 和 `to.have.been.calledWith` 等方法。
 
-Usage of the `cy.get('@vue')` alias may look something like the below code
-snippet.
+使用 `cy.get('@vue')` 别名的代码可能如下所示。
 
-Notice that we're using the `'should'` function signature in order to take
-advantage of Cypress's [retryability](/app/guides/test-retries). If we
-chained using `cy.then` instead of `cy.should`, we may run into the kinds of
-issues you have in Vue Test Utils tests where you have to use `await` frequently
-in order to make sure the DOM has updated or any reactive events have fired.
+注意我们使用 `'should'` 函数签名来利用 Cypress 的 [重试机制](/app/guides/test-retries)。如果我们使用 `cy.then` 而不是 `cy.should` 进行链式调用，可能会遇到 Vue Test Utils 测试中的那种问题，即你需要频繁使用 `await` 来确保 DOM 已更新或任何响应式事件已触发。
 
 <Tabs>
 <TabItem value="With emitted">
@@ -279,22 +260,15 @@ cy.get('@onChangeSpy').should('have.been.calledWith', '101')
 </TabItem>
 </Tabs>
 
-Regardless of our recommendation to use spies instead of the internal Vue Test
-Utils API, you may decide to continue using `emitted` as it _automatically_
-records every single event emitted from the component, and so you won't have to
-create a spy for every event emitted.
+尽管我们推荐使用 spies 而不是 Vue Test Utils 的内部 API，但你可能决定继续使用 `emitted`，因为它会自动记录组件发出的每一个事件，因此你无需为每个发出的事件创建 spy。
 
-This auto-spying behavior could be useful for components that emit _many_ custom
-events.
+这种自动 spy 行为对于发出许多自定义事件的组件可能很有用。
 
-## Custom Mount Commands
+## 自定义挂载命令
 
-### Customizing `cy.mount()`
+### 自定义 `cy.mount()`
 
-While you can use the [mount()](/app/component-testing/vue/api#mount)
-function in your tests, we recommend using [`cy.mount()`](/api/commands/mount),
-which is a [custom command](/api/cypress-api/custom-commands) that is defined in
-the **cypress/support/component.js** file:
+虽然你可以在测试中使用 [mount()](/app/component-testing/vue/api#mount) 函数，但我们推荐使用 [`cy.mount()`](/api/commands/mount)，这是一个定义在 **cypress/support/component.js** 文件中的 [自定义命令](/api/cypress-api/custom-commands)：
 
 ```js title=cypress/support/component.js
 import { mount } from 'cypress/vue'
@@ -302,33 +276,27 @@ import { mount } from 'cypress/vue'
 Cypress.Commands.add('mount', mount)
 ```
 
-This allows you to use `cy.mount()` in any test without having to import the
-`mount()` function in each and every spec file.
+这允许你在任何测试中使用 `cy.mount()`，而无需在每个规范文件中导入 `mount()` 函数。
 
-By default, `cy.mount()` is a simple passthrough to `mount()`, however, you can
-customize `cy.mount()` to fit your needs. For instance, if you are using plugins
-or other global app-level setups in your Vue app, you can configure them here.
+默认情况下，`cy.mount()` 是 `mount()` 的简单传递，但是你可以自定义 `cy.mount()` 以满足你的需求。例如，如果你在 Vue 应用中使用插件或其他全局应用级设置，可以在这里配置它们。
 
-Below are a few examples that demonstrate using a custom mount command. These
-examples can be adjusted for most other providers that you will need to support.
+以下是几个演示使用自定义挂载命令的示例。这些示例可以调整为支持大多数其他提供者。
 
-### Replicating Plugins
+### 复制插件
 
-Most applications will have state management or routing. Both of these are Vue
-plugins.
+大多数应用程序会有状态管理或路由。这两者都是 Vue 插件。
 
 <Tabs>
 <TabItem value="cypress/support/component.js">
 
 ```js
-import { createPinia } from 'pinia' // or Vuex
+import { createPinia } from 'pinia' // 或 Vuex
 import { createI18n } from 'vue-i18n'
 import { mount } from 'cypress/vue'
 import { h } from 'vue'
 
-// We recommend that you pull this out
-// into a constants file that you share with
-// your main.js file.
+// 我们建议你将这个提取出来
+// 到一个与你的 main.js 文件共享的常量文件中。
 const i18nOptions = {
   locale: 'en',
   messages: {
@@ -360,13 +328,12 @@ Cypress.Commands.add('mount', (component, ...args) => {
 <TabItem value="With JSX">
 
 ```jsx
-import { createPinia } from 'pinia' // or Vuex
+import { createPinia } from 'pinia' // 或 Vuex
 import { createI18n } from 'vue-i18n'
 import { mount } from 'cypress/vue'
 
-// We recommend that you pull this out
-// into a constants file that you share with
-// your main.js file.
+// 我们建议你将这个提取出来
+// 到一个与你的 main.js 文件共享的常量文件中。
 const i18nOptions = {
   locale: 'en',
   messages: {
@@ -385,7 +352,7 @@ Cypress.Commands.add('mount', (component, ...args) => {
   args.global.plugins.push(createPinia())
   args.global.plugins.push(createI18n())
 
-  // <component> is a built-in component that comes with Vue
+  // <component> 是 Vue 内置的组件
   return mount(
     () => (
       <VApp>
@@ -400,23 +367,15 @@ Cypress.Commands.add('mount', (component, ...args) => {
 </TabItem>
 </Tabs>
 
-### Replicating the expected Component Hierarchy
+### 复制预期的组件层次结构
 
-Some Vue applications, most famously Vue apps built on top of Vuetify, require
-certain components to be structured in a specific hierarchy.
+一些 Vue 应用程序，最著名的是基于 Vuetify 构建的 Vue 应用，要求某些组件以特定的层次结构构建。
 
-All Vuetify applications require that you wrap your app in a `VApp` component
-when you build it. This is an implementation detail of Vuetify, but once users
-try to test components that depend on Vuetify, they get Vuetify-specific
-compilation errors and quickly find out that **they need to replicate that
-component hierarchy any time they need to mount a component that uses a Vuetify
-component**!
+所有 Vuetify 应用程序都要求你在构建应用时将应用包装在 `VApp` 组件中。这是 Vuetify 的实现细节，但一旦用户尝试测试依赖 Vuetify 的组件，他们会遇到 Vuetify 特定的编译错误，并很快发现他们需要复制该组件层次结构，任何时候他们需要挂载使用 Vuetify 组件的组件！
 
-Custom `cy.mount` commands to the rescue! You may find the JSX syntax to be more
-straightforward.
+自定义 `cy.mount` 命令来拯救！你可能会发现 JSX 语法更直接。
 
-You'll also need to replicate the plugin setup steps from the Vuetify docs for
-everything to compile.
+你还需要按照 Vuetify 文档复制插件设置步骤，以便一切编译。
 
 <Tabs>
 <TabItem value="cypress/support/component.js">
@@ -427,9 +386,8 @@ import { VApp } from 'vuetify'
 import { mount } from 'cypress/vue'
 import { h } from 'vue'
 
-// We recommend that you pull this out
-// into a constants file that you share with
-// your main.js file.
+// 我们建议你将这个提取出来
+// 到一个与你的 main.js 文件共享的常量文件中。
 const vuetifyOptions = {}
 
 Cypress.Commands.add('mount', (component, ...args) => {
@@ -454,9 +412,8 @@ import Vuetify from 'vuetify/lib'
 import { VApp } from 'vuetify'
 import { mount } from 'cypress/vue'
 
-// We recommend that you pull this out
-// into a constants file that you share with
-// your main.js file.
+// 我们建议你将这个提取出来
+// 到一个与你的 main.js 文件共享的常量文件中。
 const vuetifyOptions = {}
 
 Cypress.Commands.add('mount', (component, ...args) => {
@@ -464,7 +421,7 @@ Cypress.Commands.add('mount', (component, ...args) => {
   args.global.plugins = args.global.plugins || []
   args.global.plugins.push(new Vuetify(vuetifyOptions))
 
-  // <component> is a built-in component that comes with Vue
+  // <component> 是 Vue 内置的组件
   return mount(
     () => (
       <VApp>
@@ -481,8 +438,7 @@ Cypress.Commands.add('mount', (component, ...args) => {
 
 ### Vue Router
 
-To use Vue Router, create a command to register the plugin and pass in a custom
-implementation of the router via the options param.
+要使用 Vue Router，创建一个命令来注册插件并通过 options 参数传入路由器的自定义实现。
 
 <Tabs>
 <TabItem value="cypress/support/component.js">
@@ -493,11 +449,11 @@ import { createMemoryHistory, createRouter } from 'vue-router'
 import { routes } from '../../src/router'
 
 Cypress.Commands.add('mount', (component, options = {}) => {
-  // Setup options object
+  // 设置 options 对象
   options.global = options.global || {}
   options.global.plugins = options.global.plugins || []
 
-  // create router if one is not provided
+  // 如果没有提供 router，则创建一个
   if (!options.router) {
     options.router = createRouter({
       routes: routes,
@@ -505,7 +461,7 @@ Cypress.Commands.add('mount', (component, options = {}) => {
     })
   }
 
-  // Add router plugin
+  // 添加 router 插件
   options.global.plugins.push({
     install(app) {
       app.use(options.router)
@@ -530,9 +486,9 @@ declare global {
   namespace Cypress {
     interface Chainable {
       /**
-       * Helper mount function for Vue Components
-       * @param component Vue Component or JSX Element to mount
-       * @param options Options passed to Vue Test Utils
+       * Vue 组件的辅助挂载函数
+       * @param component 要挂载的 Vue 组件或 JSX 元素
+       * @param options 传递给 Vue Test Utils 的选项
        */
       mount(component: any, options?: OptionsParam): Chainable<any>
     }
@@ -549,24 +505,24 @@ import { routes } from '../router'
 import { createMemoryHistory, createRouter } from 'vue-router'
 
 it('home link should be active when url is "/"', () => {
-  // No need to pass in custom router as default url is '/'
+  // 无需传入自定义 router，因为默认 url 是 '/'
   cy.mount(<Navigation />)
 
   cy.get('a').contains('Home').should('have.class', 'router-link-active')
 })
 
 it('login link should be active when url is "/login"', () => {
-  // Create a new router instance for each test
+  // 为每个测试创建一个新的 router 实例
   const router = createRouter({
     routes: routes,
     history: createMemoryHistory(),
   })
 
-  // Change location to `/login`,
-  // and await on the promise with cy.wrap
+  // 将位置更改为 `/login`，
+  // 并使用 cy.wrap 等待 promise
   cy.wrap(router.push('/login'))
 
-  // Pass the already initialized router for use
+  // 传递已初始化的 router 供使用
   cy.mount(<Navigation />, { router })
 
   cy.get('a').contains('Login').should('have.class', 'router-link-active')
@@ -575,9 +531,7 @@ it('login link should be active when url is "/login"', () => {
 
 :::info
 
-Calling `router.push()` in the router for Vue 3 is an asynchronous operation.
-Use the [cy.wrap](/api/commands/wrap) command to have Cypress await the
-promise's resolve before it continues with other commands:
+在 Vue 3 的路由器中调用 `router.push()` 是一个异步操作。使用 [cy.wrap](/api/commands/wrap) 命令让 Cypress 在继续其他命令之前等待 promise 的 resolve：
 
 :::
 
@@ -586,8 +540,7 @@ promise's resolve before it continues with other commands:
 
 ### Vuex
 
-To use a component that uses [Vuex](https://vuex.vuejs.org/), create a `mount`
-command that configures a Vuex store for your component.
+要使用依赖 [Vuex](https://vuex.vuejs.org/) 的组件，创建一个 `mount` 命令来为你的组件配置 Vuex store。
 
 <Tabs>
 <TabItem value="cypress/support/component.js">
@@ -597,17 +550,17 @@ import { mount } from 'cypress/vue'
 import { getStore } from '../../src/plugins/store'
 
 Cypress.Commands.add('mount', (component, options = {}) => {
-  // Setup options object
+  // 设置 options 对象
   options.global = options.global || {}
   options.global.stubs = options.global.stubs || {}
   options.global.stubs['transition'] = false
   options.global.components = options.global.components || {}
   options.global.plugins = options.global.plugins || []
 
-  // Use store passed in from options, or initialize a new one
+  // 使用 options 中传入的 store，或初始化一个新的
   const { store = getStore(), ...mountOptions } = options
 
-  // Add Vuex plugin
+  // 添加 Vuex 插件
   options.global.plugins.push({
     install(app) {
       app.use(store)
@@ -620,9 +573,7 @@ Cypress.Commands.add('mount', (component, options = {}) => {
 
 :::info
 
-The `getStore` method is a factory method that initializes Vuex and creates a
-new store. It is important that the store be initialized with each new test to
-ensure changes to the store don't affect other tests.
+`getStore` 方法是一个工厂方法，用于初始化 Vuex 并创建一个新的 store。重要的是每个新测试都要初始化 store，以确保 store 的更改不会影响其他测试。
 
 :::
 
@@ -640,9 +591,9 @@ declare global {
   namespace Cypress {
     interface Chainable {
       /**
-       * Helper mount function for Vue Components
-       * @param component Vue Component or JSX Element to mount
-       * @param options Options passed to Vue Test Utils
+       * Vue 组件的辅助挂载函数
+       * @param component 要挂载的 Vue 组件或 JSX 元素
+       * @param options 传递给 Vue Test Utils 的选项
        */
       mount(
         component: any,
@@ -663,10 +614,10 @@ import UserProfile from './UserProfile.vue'
 it.only('User profile should display user name', () => {
   const user = { name: 'test person' }
 
-  // getStore is a factory method that creates a new store
+  // getStore 是一个创建新 store 的工厂方法
   const store = getStore()
 
-  // mutate the store with user
+  // 用 user 修改 store
   store.commit('setUser', user)
 
   cy.mount(UserProfile, {
@@ -680,22 +631,20 @@ it.only('User profile should display user name', () => {
 </TabItem>
 </Tabs>
 
-### Global Components
+### 全局组件
 
-If you have components that are registered globally in the main application
-file, set them up in your mount command so your component will render them
-properly:
+如果你有在主应用文件中全局注册的组件，在你的挂载命令中设置它们，以便你的组件能正确渲染它们：
 
 ```js
 import { mount } from 'cypress/vue'
 import Button from '../../src/components/Button.vue'
 
 Cypress.Commands.add('mount', (component, options = {}) => {
-  // Setup options object
+  // 设置 options 对象
   options.global = options.global || {}
   options.global.components = options.global.components || {}
 
-  // Register global components
+  // 注册全局组件
   options.global.components['Button'] = Button
 
   return mount(component, options)

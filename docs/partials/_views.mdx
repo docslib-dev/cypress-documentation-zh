@@ -1,31 +1,31 @@
-Cypress automatically groups certain URL patterns to create views. However, for URLs that are not automatically grouped (e.g., `/users/alice` and `/users/bob` are not automatically grouped into `/users/*`), the `views` property allows you to specify custom URL patterns to define views. This configuration enhances the clarity and organization of your coverage reports.
+Cypress 会自动对某些 URL 模式进行分组以创建视图。但对于未被自动分组的 URL（例如 `/users/alice` 和 `/users/bob` 不会自动分组为 `/users/*`），`views` 属性允许您指定自定义 URL 模式来定义视图。此配置可增强覆盖率报告的清晰度和组织性。
 
-The `groupBy` property allows you to create multiple views from a single URL pattern by specifying which parts of the URL should create distinct groupings.
+`groupBy` 属性允许您通过指定 URL 中应创建不同分组的部分，从单个 URL 模式创建多个视图。
 
-## Why use views?
+## 为什么使用视图？
 
 :::info
-**Note**: setting `views` impacts both Accessibility and UI Coverage reports.
-This cannot be nested.
+**注意**：设置 `views` 会影响无障碍性和 UI 覆盖率报告。
+此配置不可嵌套。
 :::
 
-- **Group Dynamic URLs**: Group URLs with dynamic path parameters (e.g., `/users/alice` and `/users/bob`) that are not ids or uuids into a single view.
-- **Organize by Query Parameters**: Create views based on query parameters to group URLs where query strings are important to the context of the page.
-- **Create Distinct View Groups**: Use `groupBy` to maintain separate views for meaningful URL parameters while still grouping dynamic content.
+- **分组动态 URL**：将带有动态路径参数（如 `/users/alice` 和 `/users/bob`）且非 ID 或 UUID 的 URL 分组到单个视图中。
+- **按查询参数组织**：基于查询参数创建视图，以分组那些查询字符串对页面上下文很重要的 URL。
+- **创建不同的视图组**：使用 `groupBy` 为有意义的 URL 参数维护单独的视图，同时仍对动态内容进行分组。
 
-## Using groupBy
+## 使用 groupBy
 
-The `groupBy` property creates distinct views based on named parameters in your URL pattern. For example, if your pattern is `/analytics/:type/:id`, using `groupBy: ["type"]` would create separate views for each unique value of `type` (like `/analytics/performance/:id` and `/analytics/usage/:id`).
+`groupBy` 属性基于 URL 模式中的命名参数创建不同的视图。例如，如果您的模式是 `/analytics/:type/:id`，使用 `groupBy: ["type"]` 将为 `type` 的每个唯一值（如 `/analytics/performance/:id` 和 `/analytics/usage/:id`）创建单独的视图。
 
-This is particularly useful when:
+这在以下情况下特别有用：
 
-- Different parameter values represent distinct functional areas
-- You want to track coverage separately for different categories of content
-- URL parameters determine significant UI changes
+- 不同的参数值代表不同的功能区域
+- 您希望分别跟踪不同类别内容的覆盖率
+- URL 参数决定了重大的 UI 变化
 
-URLs with the same values for the specified parameters will be grouped together, while different values create distinct views.
+具有相同指定参数值的 URL 将被分组在一起，而不同的值将创建不同的视图。
 
-## Syntax
+## 语法
 
 ```json
 {
@@ -40,20 +40,20 @@ URLs with the same values for the specified parameters will be grouped together,
 }
 ```
 
-### Options
+### 选项
 
-The first pattern that a given URL matches is used as its view. If a URL doesn't match any of the patterns, it is grouped by the default view grouping rules, if possible.
+URL 匹配的第一个模式将用作其视图。如果 URL 不匹配任何模式，则尽可能按默认视图分组规则进行分组。
 
-| Option    | Required | Default | Description                                                                                                                                               |
-| --------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pattern` | Required |         | A URL pattern to group matching URLs into a single view. Uses [URL Pattern API](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API) syntax. |
-| `groupBy` | Optional |         | An array of named parameters from your pattern that should create separate views.                                                                         |
+| 选项       | 是否必填 | 默认值 | 描述                                                                                                                                               |
+| ---------- | -------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pattern`  | 必填     |        | 用于将匹配的 URL 分组到单个视图中的 URL 模式。使用 [URL Pattern API](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API) 语法。      |
+| `groupBy`  | 可选     |        | 从模式中指定应创建单独视图的命名参数数组。                                                                                                         |
 
-## Examples
+## 示例
 
-### Grouping dynamic path parameters
+### 分组动态路径参数
 
-#### Config
+#### 配置
 
 ```typescript
 {
@@ -65,7 +65,7 @@ The first pattern that a given URL matches is used as its view. If a URL doesn't
 }
 ```
 
-#### Visited URLs
+#### 访问的 URL
 
 ```
 https://www.my-app.com/users/alice
@@ -74,7 +74,7 @@ https://www.my-app.com/users/bob#settings
 https://www.my-app.com/users?assigned=true
 ```
 
-#### Views shown in UI
+#### UI 中显示的视图
 
 ```
 www.my-app.com/users
@@ -83,9 +83,9 @@ www.my-app.com/users/*
 
 ---
 
-### Using named path parameters
+### 使用命名路径参数
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -97,7 +97,7 @@ www.my-app.com/users/*
 }
 ```
 
-#### Visited URLs
+#### 访问的 URL
 
 ```
 https://www.my-app.com/users/alice
@@ -106,7 +106,7 @@ https://www.my-app.com/users/bob#settings
 https://www.my-app.com/users?assigned=true
 ```
 
-#### Views shown in UI
+#### UI 中显示的视图
 
 ```
 www.my-app.com/users
@@ -115,9 +115,9 @@ www.my-app.com/users/:name
 
 ---
 
-### Group URLs by named parameters
+### 按命名参数分组 URL
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -130,7 +130,7 @@ www.my-app.com/users/:name
 }
 ```
 
-#### Visited URLs
+#### 访问的 URL
 
 ```
 https://www.my-app.com/analytics/performance/amara
@@ -139,7 +139,7 @@ https://www.my-app.com/analytics/usage/amara
 https://www.my-app.com/analytics/usage/harper
 ```
 
-#### Views shown in UI
+#### UI 中显示的视图
 
 ```
 www.my-app.com/analytics/performance/:id
@@ -148,9 +148,9 @@ www.my-app.com/analytics/usage/:id
 
 ---
 
-### Group URLs by named query parameters
+### 按命名查询参数分组 URL
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -163,7 +163,7 @@ www.my-app.com/analytics/usage/:id
 }
 ```
 
-#### Visited URLs
+#### 访问的 URL
 
 ```
 https://www.my-app.com/home?page=1&status=done
@@ -172,7 +172,7 @@ https://www.my-app.com/home?tag=trip&status=new&group=4
 https://www.my-app.com/home?tag=trip&status=new#statusView
 ```
 
-#### Views shown in UI
+#### UI 中显示的视图
 
 ```
 www.my-app.com/home?status=done
@@ -181,9 +181,9 @@ www.my-app.com/home?status=new
 
 ---
 
-### Grouping URLs across subdomains
+### 跨子域分组 URL
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -196,7 +196,7 @@ www.my-app.com/home?status=new
 }
 ```
 
-#### Visited URLs
+#### 访问的 URL
 
 ```
 https://staging1.my-app.com/home
@@ -206,7 +206,7 @@ https://staging1.my-app.com/profile
 https://www.my-app.com/profile/edit
 ```
 
-#### Views shown in UI
+#### UI 中显示的视图
 
 ```
 https://*.my-app.com/home

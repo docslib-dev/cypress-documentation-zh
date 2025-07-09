@@ -1,6 +1,6 @@
 ---
-title: 'nextUntil | Cypress Documentation'
-description: Get all following siblings of each DOM element in a set of matched DOM elements up to, but not including, the element provided in Cypress.
+title: 'nextUntil | Cypress 文档'
+description: 获取匹配DOM元素集合中每个DOM元素的所有后续兄弟元素，直到但不包括Cypress中提供的元素。
 sidebar_label: nextUntil
 slug: /api/commands/nextuntil
 ---
@@ -9,17 +9,15 @@ slug: /api/commands/nextuntil
 
 # nextUntil
 
-Get all following siblings of each DOM element in a set of matched DOM elements
-up to, but not including, the element provided.
+获取匹配DOM元素集合中每个DOM元素的所有后续兄弟元素，直到但不包括提供的元素。
 
 :::info
 
-The querying behavior of this command matches exactly how
-[`.nextUntil()`](http://api.jquery.com/nextUntil) works in jQuery.
+该命令的查询行为与jQuery中的[`.nextUntil()`](http://api.jquery.com/nextUntil)完全一致。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .nextUntil(selector)
@@ -30,122 +28,116 @@ The querying behavior of this command matches exactly how
 .nextUntil(element, filter, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('div').nextUntil('.warning') // Yield siblings after 'div' until '.warning'
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.nextUntil() // Errors, cannot be chained off 'cy'
-cy.clock().nextUntil('path') // Errors, 'clock' does not yield DOM elements
+cy.get('div').nextUntil('.warning') // 获取'div'之后直到'.warning'之前的兄弟元素
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
-<Icon name="angle-right" /> **selector _(String selector)_**
+```javascript
+cy.nextUntil() // 错误，不能直接链式调用'cy'
+cy.clock().nextUntil('path') // 错误，'clock'不返回DOM元素
+```
 
-The selector where you want finding next siblings to stop.
+### 参数
 
-<Icon name="angle-right" /> **element _(DOM node, jQuery Object)_**
+<Icon name="angle-right" /> **selector _(字符串选择器)_**
 
-The element where you want finding next siblings to stop.
+停止查找后续兄弟元素的选择器。
 
-<Icon name="angle-right" /> **filter _(String selector)_**
+<Icon name="angle-right" /> **element _(DOM节点, jQuery对象)_**
 
-A selector used to filter matching DOM elements.
+停止查找后续兄弟元素的DOM节点。
 
-<Icon name="angle-right" /> **options _(Object)_**
+<Icon name="angle-right" /> **filter _(字符串选择器)_**
 
-Pass in an options object to change the default behavior of `.nextUntil()`.
+用于过滤匹配DOM元素的选择器。
 
-| Option    | Default                                                           | Description                                                                         |
+<Icon name="angle-right" /> **options _(对象)_**
+
+传入选项对象以改变`.nextUntil()`的默认行为。
+
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.nextUntil()` to resolve before [timing out](#Timeouts)           |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 等待`.nextUntil()`解析的[超时时间](#Timeouts)           |
 
 <HeaderYields />
 
-- `.nextUntil()` yields the new DOM element(s) it found.
-- `.nextUntil()` is a query, and it is _safe_ to chain further commands.
+- `.nextUntil()`返回找到的新DOM元素集合。
+- `.nextUntil()`是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### Selector
+### 选择器
 
-#### Find all of the element's siblings following `#veggies` until `#nuts`
+#### 查找`#veggies`之后直到`#nuts`之前的所有兄弟元素
 
 ```html
 <ul>
-  <li id="fruits" class="header">Fruits</li>
-  <li>apples</li>
-  <li>oranges</li>
-  <li>bananas</li>
-  <li id="veggies" class="header">Vegetables</li>
-  <li>cucumbers</li>
-  <li>carrots</li>
-  <li>corn</li>
-  <li id="nuts" class="header">Nuts</li>
-  <li>walnuts</li>
-  <li>cashews</li>
-  <li>almonds</li>
+  <li id="fruits" class="header">水果</li>
+  <li>苹果</li>
+  <li>橙子</li>
+  <li>香蕉</li>
+  <li id="veggies" class="header">蔬菜</li>
+  <li>黄瓜</li>
+  <li>胡萝卜</li>
+  <li>玉米</li>
+  <li id="nuts" class="header">坚果</li>
+  <li>核桃</li>
+  <li>腰果</li>
+  <li>杏仁</li>
 </ul>
 ```
 
 ```javascript
-//returns [<li>cucumbers</li>, <li>carrots</li>, <li>corn</li>]
+//返回[<li>黄瓜</li>, <li>胡萝卜</li>, <li>玉米</li>]
 cy.get('#veggies').nextUntil('#nuts')
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.nextUntil()` requires being chained off a command that yields DOM
-  element(s).
+- `.nextUntil()`必须链式调用自返回DOM元素的命令。
 
 <HeaderAssertions />
 
-- `.nextUntil()` will automatically [retry](/app/core-concepts/retry-ability)
-  until the element(s)
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.nextUntil()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed.
+- `.nextUntil()`会自动[重试](/app/core-concepts/retry-ability)直到元素[存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)。
+- `.nextUntil()`会自动[重试](/app/core-concepts/retry-ability)直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `.nextUntil()` can time out waiting for the element(s) to
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.nextUntil()` can time out waiting for assertions you've added to pass.
+- `.nextUntil()`可能因等待元素[存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)而超时。
+- `.nextUntil()`可能因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Find all of the element's siblings following `#veggies` until `#nuts`_**
+**_查找`#veggies`之后直到`#nuts`之前的所有兄弟元素_**
 
 ```javascript
 cy.get('#veggies').nextUntil('#nuts')
 ```
 
-The commands above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/nextuntil/find-next-elements-until-selector.png"
-  alt="Command Log nextUntil"
+  alt="命令日志 nextUntil"
 />
 
-When clicking on `nextUntil` within the command log, the console outputs the
-following:
+当点击命令日志中的`nextUntil`时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/nextuntil/console-log-of-next-elements-until.png"
-  alt="Console Log nextUntil"
+  alt="控制台日志 nextUntil"
 />
 
-## See also
+## 另请参阅
 
 - [`.next()`](/api/commands/next)
 - [`.nextAll()`](/api/commands/nextall)

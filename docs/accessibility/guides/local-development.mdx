@@ -1,15 +1,15 @@
 ---
-sidebar_label: Feedback during local development
-title: 'Feedback during local development | Cypress Accessibility Documentation'
-description: 'Get precise, fast, and scoped accessibility feedback during local development by recording Cypress tests directly to Cypress Cloud—bypassing CI pipelines and ensuring accurate insights with minimal effort.'
+sidebar_label: 本地开发期间的反馈
+title: '本地开发期间的反馈 | Cypress 无障碍测试文档'
+description: '通过将 Cypress 测试直接录制到 Cypress Cloud，在本地开发期间获取精确、快速且针对性强的无障碍测试反馈——绕过 CI 流水线，以最小努力确保准确的测试洞察。'
 sidebar_position: 50
 ---
 
 <ProductHeading product="accessibility" />
 
-# Feedback during local development
+# 本地开发期间的反馈
 
-For reliable accessibility feedback during local development, the best approach is recording your tests directly to Cypress Cloud. By running tests related to your changes locally, you can bypass build pipelines and CI processes entirely. This can be achieved with a single command:
+要在本地开发期间获得可靠的无障碍测试反馈，最佳方法是将测试直接录制到 Cypress Cloud。通过在本地运行与变更相关的测试，您可以完全绕过构建流水线和 CI 流程。只需执行以下命令即可实现：
 
 <Tabs>
   <TabItem value="npm">
@@ -35,16 +35,16 @@ pnpm cypress run --key <record_key> --record --spec "cypress/e2e/my-spec.cy.js"
   </TabItem>
 </Tabs>
 
-(You can skip the `--key` option by setting `CYPRESS_RECORD_KEY` as an environment variable. Learn more about recording in our [Recorded Runs documentation](/cloud/features/recorded-runs)).
+（您可以通过设置环境变量 `CYPRESS_RECORD_KEY` 来跳过 `--key` 选项。更多录制相关信息请参阅我们的[录制运行文档](/cloud/features/recorded-runs)）。
 
-## Key benefits
+## 核心优势
 
-- **Accuracy:** See how Cypress processes your new code changes, taking into account your project's configuration, and using the Cloud's version of Axe Core®. There will be no violation reports for rules, pages, or elements your team has chosen to ignore, for example.
-- **Speed:** With the application already built locally, tests can run immediately without requiring your build pipeline.
-- **Scope:** Execute only the tests you need to focus on your changes, ensuring faster results and excluding unrelated issues.
+- **准确性:** 查看 Cypress 如何处理您的新代码变更，考虑项目配置，并使用 Cloud 版的 Axe Core®。例如，不会报告团队选择忽略的规则、页面或元素的无障碍违规。
+- **速度:** 由于应用已在本地构建，测试可以立即运行，无需等待构建流水线。
+- **针对性:** 仅执行与变更相关的必要测试，确保快速获取结果并排除无关问题。
 
-Recording tests locally offers early feedback, helping you quickly detect if resolving one accessibility issue introduces another. This targeted testing workflow can significantly enhance development efficiency and quality.
+本地录制测试能提供早期反馈，帮助您快速发现修复某个无障碍问题是否会引发其他问题。这种针对性测试工作流能显著提升开发效率和质量。
 
-## Organizing Local Runs
+## 组织本地运行
 
-If your team frequently records local runs and you're concerned about cluttering your Cypress Cloud project, consider setting up a dedicated Cloud project for "local runs". This keeps your main project organized while supporting local testing workflows.
+如果团队频繁录制本地运行测试，且担心会扰乱 Cypress Cloud 项目，建议为"本地运行"单独创建一个 Cloud 项目。这样既能保持主项目整洁，又能支持本地测试工作流。

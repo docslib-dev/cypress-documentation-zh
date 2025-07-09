@@ -10,9 +10,9 @@ export default function MobileSidebarToggle() {
       onClick={toggle}
       aria-label={translate({
         id: 'theme.docs.sidebar.toggleSidebarButtonAriaLabel',
-        message: 'Toggle navigation bar',
+        message: '切换导航栏',
         description:
-          'The ARIA label for hamburger menu button of mobile navigation',
+          '移动导航栏汉堡菜单按钮的ARIA标签',
       })}
       aria-expanded={shown}
       className="navbar__toggle clean-btn"

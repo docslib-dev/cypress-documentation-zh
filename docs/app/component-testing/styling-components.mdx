@@ -1,175 +1,125 @@
 ---
-title: "Test your component's styles | Cypress Documentation"
-description: "Learn how to test your component's markup, styles, and script logic with Cypress Component Testing"
-sidebar_label: Styling Components
+title: "测试组件样式 | Cypress 文档"
+description: "学习如何使用 Cypress 组件测试来测试组件的标记、样式和脚本逻辑"
+sidebar_label: 组件样式测试
 sidebar_position: 20
 ---
 
 <ProductHeading product="app" />
 
-# Styling Components
+# 组件样式测试
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学习到
 
-- Why you should test your component's styles
-- How to render components correctly with their CSS styles
-- How to handle 3rd party CSS libraries
+- 为什么需要测试组件样式
+- 如何正确渲染带样式的组件
+- 如何处理第三方 CSS 库
 
 :::
 
-## Why Test Your Component's Styles?
+## 为什么需要测试组件样式？
 
-Stylesheets are a critical part of your component's business logic. One of the
-best examples of this is a modal component. Common modal bugs include: z-index
-issues, inability to dismiss the overlay, and inability to interact with the
-parent page _after_ dismissing the modal.
+样式表是组件业务逻辑的重要组成部分。最典型的例子就是模态框组件，常见问题包括：z-index 层级问题、无法关闭遮罩层、关闭模态框后仍无法与父页面交互等。
 
-Node-based test runners like Jest or Vitest can't catch these kinds of issues
-because they render your styles in **emulated DOM environments** like JSDom.
-JSDom doesn't have a box model and certain kinds of assertions, such as if a
-parent is covering a child and preventing clicks, are not possible to test
-without a more realistic environment.
+基于 Node 的测试运行器（如 Jest 或 Vitest）无法捕获这类问题，因为它们是在 JSDom 等模拟 DOM 环境中渲染样式的。JSDom 没有盒模型，某些断言（如判断父元素是否覆盖子元素阻止点击）在没有更真实环境的情况下无法测试。
 
-On the other hand, browser-based runners like Cypress allow you to render your
-application's styles and components and allow Cypress's Driver to take advantage
-of the real box-model and style rendering engine. Cypress's commands like
-`cy.click` and assertions like `should('be.visible')` have business logic that
-makes sure the UI you're trying to assert on and interact with is visible and
-interactible for your end users. This is a benefit unique to browser-based test
-runners.
+而基于浏览器的测试运行器（如 Cypress）可以渲染应用样式和组件，并利用真实的盒模型和样式渲染引擎。Cypress 的 `cy.click` 等命令和 `should('be.visible')` 等断言能确保你测试的 UI 对终端用户可见且可交互，这是浏览器测试运行器的独特优势。
 
-## Rendering Components Correctly
+## 正确渲染组件
 
-The first time you mount _any_ new component, you may notice that the component
-doesn't look like it should. Unless your application is written _exclusively_
-using Component-scoped CSS (e.g. Styled Components or Vue's Scoped Styles) you
-will need to follow this guide in order to get your component looking **and
-behaving** like it will in production.
+首次挂载任何新组件时，你可能会发现组件显示不正常。除非你的应用完全使用组件作用域 CSS（如 Styled Components 或 Vue 的 Scoped Styles），否则需要遵循本指南才能使组件在生产环境中正常显示和行为。
 
 :::tip
 
-Ensure that whatever you're doing in production is happening within either the
-Component HTML file or the Component Support File.
+确保你在生产环境中的所有操作都在组件 HTML 文件或组件支持文件中完成。
 
 :::
 
-## Component Support File
+## 组件支持文件
 
-When you load a component or end-to-end spec file, it will first load something
-called a supportFile. By default, this is created for you during first-time
-setup of Cypress Component Testing and is located at
-`cypress/support/component.js`. This file gives you the opportunity to set up
-your spec's environment.
+加载组件或端到端测试文件时，会首先加载一个支持文件。默认情况下，首次设置 Cypress 组件测试时会自动创建该文件，位于 `cypress/support/component.js`。这个文件让你有机会设置测试环境。
 
-For component specs, you use this file to set up page-level concerns that would
-usually exist by the time you mount the component. Some examples include:
+对于组件测试，你可以用这个文件设置通常在挂载组件前就已存在的页面级配置，例如：
 
-1. Run-time JavaScript code (state management, routers, UI libraries)
-2. Global styles (style resets, Tailwind)
+1. 运行时 JavaScript 代码（状态管理、路由、UI 库）
+2. 全局样式（样式重置、Tailwind）
 
-As a rule, your Component Support File should look **very similar** to your
-application's main JavaScript (ie: main.js, index.js) and main CSS (ie:
-main.css, index.css) files.
+一般来说，你的组件支持文件应该与应用的入口 JavaScript 文件（如 main.js、index.js）和主 CSS 文件（如 main.css、index.css）非常相似。
 
-## 3rd Party CSS Libraries (Tailwind, Bootstrap, PopperJS)
+## 第三方 CSS 库（Tailwind、Bootstrap、PopperJS）
 
 <!--
-What you would see is classes being applied in the inspector, but no styles. e.g. bg-red-500 wouldn't do anything, but it would show up in Chrome.
+你会看到检查器中应用了类名但没有样式。例如 bg-red-500 不会生效，但会在 Chrome 中显示。
 
-PopperJS (Floating UI) is probably a better example because the UI is malformed -- not just missing. e.g. the :after CSS being semi-visible
+PopperJS（Floating UI）可能是更好的例子，因为 UI 会变形而不仅仅是缺失。例如 :after CSS 会半透明显示
 -->
 
-Components can have three parts: markup, styles, and script logic. All three of
-these work together in order to deliver a working component.
+组件包含三个部分：标记、样式和脚本逻辑。三者共同作用才能交付可工作的组件。
 
-Styles are business logic, too.
+样式也是业务逻辑的一部分。
 
 <!--
-Demonstrate cypress.get('element').should('be.visible')
-OR
+演示 cypress.get('element').should('be.visible')
+或
 cy.get('element').click().get('something-else').should('be.visible')
 
-// Demonstrate before and after import of main.css
-// in the user's support/component.js file
-// and how 'element' becomes visible/not visible
-// and how that breaks the test
+// 演示在用户 support/component.js 文件中导入 main.css 前后的区别
+// 展示 'element' 如何变为可见/不可见
+// 以及这会如何破坏测试
 
-// What's a good example?
-Overlays + Modals are usually really good.
-1. Parent covers child (prevents click due to overflow)
-2. Child height issues
-3. Child visibility issues (opacity)
+// 什么例子合适？
+覆盖层和模态框通常很典型：
+1. 父元素覆盖子元素（因溢出阻止点击）
+2. 子元素高度问题
+3. 子元素可见性问题（透明度）
 
 <template>
   <div class="absolute w-screen h-screen bg-red-500 overlay z-1000">
     <button>X</button>
   </div>
   <div>
-    Page content
+    页面内容
   </div>
 </template>
 -->
 
 1. Tailwind
-2. CSS Modules
-3. Scoped Styled
+2. CSS 模块
+3. 作用域样式
 4. Styled Components
-5. Regular Stylesheets
-6. UI Libraries
+5. 常规样式表
+6. UI 库
 
-This guide will help you setup your test infrastructure to render your
-component's styles properly.
+本指南将帮助你设置测试基础设施以正确渲染组件样式。
 
-Depending on how your application is built, the first time you mount a new
-component, it may be completely or somewhat unstyled.
+根据应用构建方式的不同，首次挂载新组件时可能会完全或部分丢失样式。
 
-This makes sense. Many applications have some amount of one-time setup that is
-run outside of the component file.
+这很正常。许多应用都有一些在组件文件外运行的一次性设置。
 
-We build our applications within the context that they're supposed to run in,
-and we make assumptions that our components will always be rendered within a
-root-level component (such as an `<App>`) or a top-level selector with style
-rules (such as `#app { /* styles in here */ }` )
+我们在预期运行环境中构建应用，并假设组件总是在根级组件（如 `<App>`）或带样式规则的顶级选择器（如 `#app { /* 样式 */ }`）中渲染。
 
-When we attempt to isolate our component to put it under test, we need to put
-that environment back together. We'll go into that in a moment. First, let's
-talk about stylesheets, testing, and one of Cypress's biggest differences in
-contrast to other component testing tools.
+当尝试隔离组件进行测试时，我们需要重建这个环境。稍后会详细说明。首先，让我们讨论样式表测试以及 Cypress 与其他组件测试工具的最大区别。
 
-## Importing Stylesheets
+## 导入样式表
 
-Each application or component library imports styles a little differently. We'll
-go over a few methods and describe how you can quickly restructure your
-components to become more testable.
+每个应用或组件库导入样式的方式略有不同。我们将介绍几种方法，并说明如何快速重构组件使其更易于测试。
 
-If you do not follow this guide, your components will mount, but they won't look
-correct and you may not be able to benefit from some of the most valuable parts
-of Cypress. Namely, implicit checks for width, height, and overflow to ensure
-that your components not only exist in the page's HTML but are also visible.
+如果不遵循本指南，你的组件可以挂载，但显示不正确，且无法充分利用 Cypress 最有价值的功能，特别是对宽度、高度和溢出的隐式检查，以确保组件不仅存在于页面 HTML 中，而且对用户可见。
 
-## Rules for Setting Up Your Styles
+## 样式设置规则
 
-All of your application's styles need to end up in Cypress so that when your
-component mounts, it looks right.
+所有应用样式最终都需要进入 Cypress，这样挂载组件时才能正确显示。
 
-We expose two hooks for you to configure your styles:
+我们提供两个钩子供你配置样式：
 
-1. An HTML file called `cypress/support/component-index.html`
-2. A JavaScript support file called `cypress/support/component.js`
+1. 名为 `cypress/support/component-index.html` 的 HTML 文件
+2. 名为 `cypress/support/component.js` 的 JavaScript 支持文件
 
-When creating a production-like test environment, you should _always_ mimic your
-own application's setup. If your application has multiple `<link>` tags to load
-fonts or other stylesheets within the `head`, ensure that the
-`cypress/support/component-index.html` file contains the same `<link>` tags. The
-same logic follows for any styles loaded in your Application's `main.js` file.
-If you import a `./styles.css` at the top of your `main.js` file, make sure to
-`import` it in your `cypress/support/component.js` file.
+创建类生产测试环境时，应始终模仿你自己的应用设置。如果应用在 `head` 中有多个 `<link>` 标签加载字体或其他样式表，确保 `cypress/support/component-index.html` 文件包含相同的 `<link>` 标签。同理，如果在应用的 `main.js` 文件中加载样式，确保在 `cypress/support/component.js` 文件中 `import` 这些样式。
 
-For this reason, it's strongly suggested to make a `src/setup.js` file that will
-be re-used in your `main.js` entrypoint as well as in your test setup. An
-example project structure would look like so:
+因此，强烈建议创建一个 `src/setup.js` 文件，在 `main.js` 入口点和测试设置中复用。示例项目结构如下：
 
 ```
 > /cypress
@@ -181,7 +131,7 @@ example project structure would look like so:
 >  /setup.js
 ```
 
-The contents of **setup.js** may look like so:
+**setup.js** 内容可能如下：
 
 ```js
 import '~normalize/normalize.css'
@@ -201,7 +151,7 @@ export const createApp = () => {
 }
 ```
 
-and its usage in `main.js` could look like so:
+在 `main.js` 中的使用方式如下：
 
 ```js
 import { createApp } from './setup.js'
@@ -209,37 +159,30 @@ import { createApp } from './setup.js'
 ReactDOM.render(createApp())
 ```
 
-and Cypress would re-use it in its support file
+而 Cypress 会在支持文件中复用：
 
 ```js
-/* And that's it! */
+/* 就这样简单！ */
 import '../../src/setup.js'
 ```
 
-The rest of this section is dedicated to discussing specific style problems you
-may have, including: Fonts, Icon Fonts, Style Resets, Global App Styles, and 3rd
-party component library styles.
+本节其余部分将讨论你可能遇到的特定样式问题，包括：字体、图标字体、样式重置、全局应用样式和第三方组件库样式。
 
-### Global App Styles
+### 全局应用样式
 
-Your global application styles are usually in one of the following places:
+全局应用样式通常位于以下位置之一：
 
-1. A `styles.css` file you import within the `head` of your application.
+1. 在应用 `head` 中导入的 `styles.css` 文件。
 
-This should be loaded within your Cypress Index HTML file.
+这应该在 Cypress 索引 HTML 文件中加载。
 
-2. Within a root-level component like `App.jsx`, `App.vue`, `App.svelte`, etc.
+2. 在根级组件如 `App.jsx`、`App.vue`、`App.svelte` 等中。
 
-Decouple your Root CSS from your App or Entrypoint component by pulling out
-these global styles into a top-level stylesheet. Both Vue and Svelte embed
-global application styles into the main entry point components. The rest of your
-application expects to be rendered _within_ those components, and so any
-assumptions you made when writing those components must be replicated in your
-test environment or else your components won't look right.
+通过将根 CSS 从 App 或入口组件中解耦，将这些全局样式提取到顶级样式表中。Vue 和 Svelte 都将全局应用样式嵌入到主入口组件中。应用的其余部分期望在这些组件中渲染，因此在编写这些组件时所做的任何假设都必须在测试环境中复制，否则组件显示会不正常。
 
 ```html
 <style>
-  /* In certain scaffolds, the App.vue file does not have a separate styles file */
+  /* 在某些脚手架中，App.vue 文件没有单独的样式文件 */
 
   #app {
     font-family: Sans-serif;
@@ -247,43 +190,39 @@ test environment or else your components won't look right.
 </style>
 ```
 
-Should become
+应改为
 
 ```html
 /* App.vue */ <style src="./app.css" />
 ```
 
-and
+和
 
 ```html
 /* cypress/support/component.js */ import '../../src/app.css'
 ```
 
-3. Within the `main.js` file of your application (which subsequently mounts your
-   root-level component).
+3. 在应用的 `main.js` 文件中（随后挂载根级组件）。
 
-Re-using stylesheets that are imported in the beginning of your application was
-covered in the last section.
+上一节已经介绍了如何复用应用开头导入的样式表。
 
 ```js
 import './main.css'
 ```
 
-4. Within a configuration file like `next.config.js`.
+4. 在配置文件中，如 `next.config.js`。
 
-You're usually providing public paths to these stylesheets. You can import the
-same paths within your `cypress/support/component-index.html` file.
+你通常需要为这些样式表提供公共路径。可以在 `cypress/support/component-index.html` 文件中导入相同的路径。
 
-### CSS Reset or Normalize isn't applied
+### CSS 重置或 Normalize 未生效
 
-Are you importing your normalize file within
-`cypress/support/component-index.html` or within `cypress/support/component.js`?
+你是否在 `cypress/support/component-index.html` 或 `cypress/support/component.js` 中导入了 normalize 文件？
 
-### Fonts: Everything is rendering in Times New Roman
+### 字体：所有内容都以 Times New Roman 渲染
 
-Most applications handle fonts in one of two ways.
+大多数应用通过两种方式处理字体。
 
-1. Your `index.html` loads external fonts in the `head` tag.
+1. `index.html` 在 `head` 标签中加载外部字体。
 
 ```html
 <head>
@@ -296,7 +235,7 @@ Most applications handle fonts in one of two ways.
 </head>
 ```
 
-Or via an `@import` statement
+或通过 `@import` 语句
 
 ```html
 <head>
@@ -306,7 +245,7 @@ Or via an `@import` statement
 </head>
 ```
 
-2. Your main stylesheet loads fonts
+2. 主样式表加载字体
 
 ```css
 /* main.css */
@@ -323,27 +262,21 @@ Or via an `@import` statement
 }
 ```
 
-### Icon Fonts: None of my icons are rendering
+### 图标字体：所有图标都无法渲染
 
-### Theme Providers: My components don't look right/compile because they can't access providers
+### 主题提供者：组件显示/编译不正常，因为无法访问提供者
 
-Theme Provider or other application-level wrappers like I18n or Material UI work
-by injecting themselves around your application. When you're component testing,
-you haven't rendered the component hierarchy surrounding your component.
+主题提供者或其他应用级包装器（如 I18n 或 Material UI）通过围绕应用注入自身来工作。进行组件测试时，你还没有渲染组件周围的层级结构。
 
-To solve issues like these, people review the Custom Commands and Wrappers
+要解决这类问题，人们会查看自定义命令和包装器。
 
-To first explain why it's not right, you first have to explain what
-production-like even means.
+首先解释为什么不对，必须先说明什么是"类生产环境"。
 
-So we have this before & after up, and now our job is to step through the
-component under test and try to figure out where the differences between
-Production and Test are.
+因此我们有这个前后对比，现在任务是逐步检查被测组件，尝试找出生产环境和测试环境之间的差异。
 
-Sometimes these are as simple as colors or fonts not lining up. Other times, the
-entire component or sections of it may not compile.
+有时这些差异简单如颜色或字体不匹配。其他时候，整个组件或部分可能无法编译。
 
-The reason this doesn't look right is because:
+显示不正常的原因是：
 
-1. My browser supports dark mode
-2. The `<App>` component provides its own styles
+1. 我的浏览器支持深色模式
+2. `<App>` 组件提供了自己的样式

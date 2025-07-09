@@ -1,97 +1,96 @@
 ---
-title: 'Comparing UI Coverage Reports | Cypress Documentation'
-description: 'Review where coverage has changed in the application between two runs.'
+title: 'UI覆盖率报告对比 | Cypress 文档'
+description: '审查应用程序在两次运行之间覆盖率发生变化的区域。'
 sidebar_position: 40
-sidebar_label: Compare reports
+sidebar_label: 报告对比
 ---
 
 <ProductHeading product="ui-coverage" />
 
-# Compare reports
+# 报告对比
 
-UI Coverage reports from different runs can be compared in the [Branch Review](/cloud/features/branch-review#Getting-Started) area of Cypress Cloud. This allows you to understand the exact change in coverage between any two points in time, revealing the impact of application changes or test code updates on your overall coverage area.
+不同运行的UI覆盖率报告可以在Cypress Cloud的[分支评审](/cloud/features/branch-review#Getting-Started)区域进行对比。这使您能够了解任意两个时间点之间覆盖率的具体变化，揭示应用程序变更或测试代码更新对整体覆盖范围的影响。
 
 <DocsImage
   src="/img/ui-coverage/branch-review/uic-branch-review.png"
-  alt="UI Coverage Branch Review showing coverage changes between two runs, with sections highlighting new untested elements, resolved coverage gaps, and elements with changed coverage status"
+  alt="UI覆盖率分支评审界面，展示两次运行间的覆盖率变化，高亮显示新增未测试元素、已解决的覆盖率缺口以及覆盖率状态发生变化的元素"
 />
 
-## Use cases
+## 使用场景
 
-Comparing the results from different runs is useful in multiple scenarios.
+对比不同运行结果在多种场景下非常有用。
 
-**Key use cases:**
+**主要应用场景：**
 
-- **Pre-merge checks**: Know if any net-new untested elements are introduced by UI code changes.
-- **Monitoring changes**: Compare nightly monitoring runs and track down changes in coverage caused by unexpected changes in the application.
-- **Reviewing AI-generated code changes**: The increased use of AI to generate and/or review both tests and application code increases the risk of reducing coverage, or adding redundant coverage.
-- **Tracing the introduction of issues**: With dropdowns for each run, it's easy to rapidly compare different A and B runs to find the exact commit that introduced a problem.
-- **Demonstrating the resolution of issues**: Confirm the effect of your improvements, and share the overview with your team to more quickly review changes.
+- **合并前检查**：了解UI代码变更是否引入了任何新增未测试元素。
+- **监控变更**：对比夜间监控运行结果，追踪由应用程序意外变更导致的覆盖率变化。
+- **审查AI生成的代码变更**：AI越来越多地用于生成和/或审查测试代码和应用程序代码，这会增加覆盖率降低或产生冗余覆盖的风险。
+- **追踪问题引入**：通过每次运行的下拉菜单，可以快速对比不同A/B运行，准确找到引入问题的提交。
+- **展示问题修复**：确认改进效果，并与团队分享概要以加速变更审查。
 
-## Content of the report
+## 报告内容
 
-The Branch Review report is organized into three sections:
+分支评审报告分为三个部分：
 
-### Untested links
+### 未测试链接
 
 <DocsImage
   src="/img/ui-coverage/branch-review/new-untested-links.png"
-  alt="UI Coverage Branch Review showing new untested links that appear in the Changed run but were not present in the Base run"
+  alt="UI覆盖率分支评审界面，展示变更运行中新增的未测试链接（这些链接在基准运行中不存在）"
 />
 
-Untested links represent unopened doors in your application - pages that a user can reach through your UI, but that are not tested with Cypress. This report shows any new untested pages that appear in the Changed run that were not present in the Base run.
+未测试链接代表应用程序中未开启的门户——用户可以通过UI访问但未被Cypress测试的页面。本报告显示变更运行中新增的未测试页面（这些页面在基准运行中不存在）。
 
-### Untested elements
+### 未测试元素
 
 <DocsImage
   src="/img/ui-coverage/branch-review/new-untested-elements.png"
-  alt="UI Coverage Branch Review showing new untested elements that appear in the Changed run but were not present or tested in the Base run"
+  alt="UI覆盖率分支评审界面，展示变更运行中新增的未测试元素（这些元素在基准运行中不存在或未被测试）"
 />
 
-Untested interactive elements can increase for two potential reasons:
+未测试交互元素增加可能有两个原因：
 
-1. In the Changed run, the tests are no longer interacting with an element that was interacted with in the Base run. The element is still present, but the **test code** has changed.
-2. In the Changed run, new elements exist that were not present in the Base run, and they are not tested in the Changed run. This happens when the **application code** has changed but tests have not kept up.
+1. 在变更运行中，测试不再操作基准运行中曾被操作过的元素。元素仍然存在，但测试代码发生了变化。
+2. 在变更运行中，出现了基准运行中不存在的新元素，且这些元素未被测试。这发生在应用程序代码变更但测试未同步更新时。
 
-Both changes are worth reviewing, and while the causes are different, the way to increase coverage is the same. The elements can be tested with Cypress to contribute towards your coverage score, or they can be ignored with configuration if it is not important to test the elements.
+两种变更都值得审查，虽然原因不同，但提高覆盖率的方法是相同的。可以通过Cypress测试这些元素来提高覆盖率分数，如果元素不重要也可以通过配置忽略。
 
-### Added links, elements, and views
+### 新增链接、元素和视图
 
 <DocsImage
   src="/img/ui-coverage/branch-review/added-links-and-elements.png"
-  alt="UI Coverage Branch Review showing a summary of new links, elements, and views added in the Changed run compared to the Base run"
+  alt="UI覆盖率分支评审界面，展示变更运行相比基准运行新增的链接、元素和视图汇总"
 />
 
-This is a summary of everything that appears to be new in the Changed run, and includes both tested and untested items. It's a useful way to compare two builds of your application and how the changes in the application itself relate to your overall coverage metrics.
+这是变更运行中所有新增内容的汇总，包括已测试和未测试项。这是对比两个应用程序构建版本的有效方式，可了解应用程序本身变更与整体覆盖率指标的关联。
 
-### Detail View
+### 详情视图
 
 <DocsImage
   src="/img/ui-coverage/branch-review/detail-view.png"
-  alt="A list of only the new untested elements, displaying a log-out link in red with a tooltip pointing to it."
+  alt="仅显示新增未测试元素的列表，其中登出链接显示为红色并带有指向它的工具提示"
 />
 
-Clicking on any untested link or element will take you into the Detail View, where you can see all the examples of the specific elements that have changed between the two runs. Elements that have the same status on both runs are removed here, so you can focus only on the changes.
+点击任何未测试链接或元素将进入详情视图，您可以查看两次运行间具体变更元素的所有实例。此处会过滤掉两次运行状态相同的元素，让您只专注于变更部分。
 
-## How to compare runs
+## 如何对比运行
 
-The first step is to get to the [Branch Review](/cloud/features/branch-review.mdx) area of Cypress Cloud, which will let you compare one branch against another - or different runs on the same branch, if needed.
-You can access this area by clicking the branch name associated with a run, or in several other ways. [Learn more about how to compare runs](/cloud/features/branch-review.mdx).
+第一步是进入Cypress Cloud的[分支评审](/cloud/features/branch-review.mdx)区域，这里可以对比不同分支——或同一分支的不同运行（如果需要）。您可以通过点击运行关联的分支名称或其他多种方式访问该区域。[了解更多对比运行的方法](/cloud/features/branch-review.mdx)。
 
-## FAQ
+## 常见问题
 
-### How do I ensure a good comparison?
+### 如何确保有效对比？
 
-The best subjects to compare are passing runs that ran similar tests on the same set of content. This means that each run visited roughly the same pages and completed the same kinds of workflows. In this situation, any diff in the results is likely the result of changes present in the newer run. This is usually what happens out-of-the box when comparing a pull-request branch with your main branch.
+最佳对比对象是在相同内容集上执行相似测试的通过运行。这意味着每次运行访问了大致相同的页面并完成了相同类型的工作流。这种情况下，结果差异很可能是新运行中变更导致的。这通常是直接对比拉取请求分支与主分支时的默认情况。
 
-That said, it is still possible and valid to compare runs from different points in time with different sets of test results, as long as you bear in mind all the potential sources of difference between the two runs, which you can evaluate for yourself as you explore the results.
+也就是说，只要您清楚两次运行间所有潜在差异来源，对比不同时间点、不同测试结果集的运行仍然是可行且有效的，您可以在查看结果时自行评估。
 
-In order to see unified changes for your entire test suite, you need to group all the tests together under a single Cypress run, for each report. Learn more about this in the [Branch Review Best Practices documentation](/cloud/features/branch-review#Best-Practices).
+要查看整个测试套件的统一变更，您需要将每次报告的所有测试分组到单个Cypress运行中。详见[分支评审最佳实践文档](/cloud/features/branch-review#Best-Practices)。
 
-### What is the purpose of the Beta label?
+### Beta标签的意义是什么？
 
-This indicates the feature is ready for use and actively seeking feedback based on real usage of the current implementation. We have a few known issues to work through on our side before we consider this fully production-ready and remove the beta label. These issues only affect a subset of projects -- in most cases everything is working as intended. If you see anything unexpected, please use the feedback button and let us know.
+这表示该功能已可供使用，并基于当前实现的实际使用情况积极寻求反馈。在我们认为功能完全生产就绪并移除beta标签前，还有一些已知问题需要解决。这些问题仅影响部分项目——大多数情况下功能都按预期工作。如发现任何异常，请使用反馈按钮告知我们。
 
-### Why do I see some views (pages or components) changing from run-to-run?
+### 为什么我看到某些视图（页面或组件）在不同运行间变化？
 
-URLs with dynamic slugs in them can appear as "new" pages in some situations. This behavior can be adjusted with [View configuration](/accessibility/configuration/views) to make sure page names will match across runs by wildcarding parts of the URL as needed.
+带有动态slug的URL在某些情况下可能显示为"新"页面。可以通过[视图配置](/accessibility/configuration/views)调整此行为，通过按需对URL部分使用通配符来确保跨运行时页面名称匹配。

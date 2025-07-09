@@ -1,6 +1,6 @@
 ---
-title: 'dblclick | Cypress Documentation'
-description: Double-click a DOM element in Cypress.
+title: 'dblclick | Cypress 文档'
+description: 在 Cypress 中双击一个 DOM 元素。
 sidebar_label: dblclick
 slug: /api/commands/dblclick
 ---
@@ -9,12 +9,11 @@ slug: /api/commands/dblclick
 
 # dblclick
 
-Double-click a DOM element.
+双击一个 DOM 元素。
 
-It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried) to
-chain further commands that rely on the subject after `.dblclick()`.
+在 `.dblclick()` 之后继续链式调用依赖于该元素的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Syntax
+## 语法
 
 ```javascript
 .dblclick()
@@ -25,30 +24,28 @@ chain further commands that rely on the subject after `.dblclick()`.
 .dblclick(x, y, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('button').dblclick() // Double click on button
-cy.focused().dblclick() // Double click on el with focus
-cy.contains('Welcome').dblclick() // Double click on first el containing 'Welcome'
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.dblclick('button') // Errors, cannot be chained off 'cy'
-cy.window().dblclick() // Errors, 'window' does not yield DOM element
+cy.get('button').dblclick() // 双击按钮
+cy.focused().dblclick() // 双击获得焦点的元素
+cy.contains('Welcome').dblclick() // 双击第一个包含 'Welcome' 的元素
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
+
+```javascript
+cy.dblclick('button') // 错误，不能从 'cy' 链式调用
+cy.window().dblclick() // 错误，'window' 不返回 DOM 元素
+```
+
+### 参数
 
 <Icon name="angle-right" /> **position _(String)_**
 
-The position where the double click should be issued. The `center` position is
-the default position. Valid positions are `topLeft`, `top`, `topRight`, `left`,
-`center`, `right`, `bottomLeft`, `bottom`, and `bottomRight`.
+指定双击的位置。默认位置是 `center`。有效位置包括 `topLeft`、`top`、`topRight`、`left`、`center`、`right`、`bottomLeft`、`bottom` 和 `bottomRight`。
 
 <DocsImage
   src="/img/api/coordinates-diagram.jpg"
@@ -57,196 +54,181 @@ the default position. Valid positions are `topLeft`, `top`, `topRight`, `left`,
 
 <Icon name="angle-right" /> **x _(Number)_**
 
-The distance in pixels from the element's left to issue the double click.
+距离元素左侧的像素距离，用于指定双击位置。
 
 <Icon name="angle-right" /> **y _(Number)_**
 
-The distance in pixels from the element's top to issue the double click.
+距离元素顶部的像素距离，用于指定双击位置。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `.dblclick()`.
+传入一个选项对象以改变 `.dblclick()` 的默认行为。
 
-| Option                       | Default                                                                     | Description                                                                                                                                     |
+| 选项                       | 默认值                                                                     | 描述                                                                                                                                     |
 | ---------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `altKey`                     | `false`                                                                     | Activates the alt key (option key for Mac). Aliases: `optionKey`.                                                                               |
-| `animationDistanceThreshold` | [`animationDistanceThreshold`](/app/references/configuration#Actionability) | The distance in pixels an element must exceed over time to be [considered animating](/app/core-concepts/interacting-with-elements#Animations).  |
-| `ctrlKey`                    | `false`                                                                     | Activates the control key. Aliases: `controlKey`.                                                                                               |
-| `log`                        | `true`                                                                      | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log)                                                             |
-| `force`                      | `false`                                                                     | Forces the action, disables [waiting for actionability](#Assertions)                                                                            |
-| `metaKey`                    | `false`                                                                     | Activates the meta key (Windows key or command key for Mac). Aliases: `commandKey`, `cmdKey`.                                                   |
-| `multiple`                   | `true`                                                                      | Serially click multiple elements                                                                                                                |
-| `scrollBehavior`             | [`scrollBehavior`](/app/references/configuration#Actionability)             | Viewport position to where an element [should be scrolled](/app/core-concepts/interacting-with-elements#Scrolling) before executing the command |
-| `shiftKey`                   | `false`                                                                     | Activates the shift key.                                                                                                                        |
-| `timeout`                    | [`defaultCommandTimeout`](/app/references/configuration#Timeouts)           | Time to wait for `.dblclick()` to resolve before [timing out](#Timeouts)                                                                        |
-| `waitForAnimations`          | [`waitForAnimations`](/app/references/configuration#Actionability)          | Whether to wait for elements to [finish animating](/app/core-concepts/interacting-with-elements#Animations) before executing the command.       |
+| `altKey`                     | `false`                                                                     | 激活 alt 键（Mac 上是 option 键）。别名：`optionKey`。                                                                               |
+| `animationDistanceThreshold` | [`animationDistanceThreshold`](/app/references/configuration#Actionability) | 元素随时间移动超过的像素距离，以[被视为动画](/app/core-concepts/interacting-with-elements#Animations)。  |
+| `ctrlKey`                    | `false`                                                                     | 激活 control 键。别名：`controlKey`。                                                                                               |
+| `log`                        | `true`                                                                      | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示命令                                                             |
+| `force`                      | `false`                                                                     | 强制执行操作，禁用[等待可操作性](#Assertions)                                                                            |
+| `metaKey`                    | `false`                                                                     | 激活 meta 键（Windows 键或 Mac 上的 command 键）。别名：`commandKey`、`cmdKey`。                                                   |
+| `multiple`                   | `true`                                                                      | 依次双击多个元素                                                                                                                |
+| `scrollBehavior`             | [`scrollBehavior`](/app/references/configuration#Actionability)             | 在执行命令前将元素[滚动到](/app/core-concepts/interacting-with-elements#Scrolling)的视口位置 |
+| `shiftKey`                   | `false`                                                                     | 激活 shift 键。                                                                                                                        |
+| `timeout`                    | [`defaultCommandTimeout`](/app/references/configuration#Timeouts)           | 等待 `.dblclick()` 解析的超时时间，超过则[超时](#Timeouts)                                                                        |
+| `waitForAnimations`          | [`waitForAnimations`](/app/references/configuration#Actionability)          | 是否在执行命令前等待元素[完成动画](/app/core-concepts/interacting-with-elements#Animations)。       |
 
 <HeaderYields />
 
-- `.dblclick()` yields the same subject it was given.
-- It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried)
-  to chain further commands that rely on the subject after `.dblclick()`.
+- `.dblclick()` 返回与传入相同的元素。
+- 在 `.dblclick()` 之后继续链式调用依赖于该元素的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Double click an anchor link
+#### 双击一个锚链接
 
 ```javascript
-cy.get('a#nav1').dblclick() // yields the <a>
+cy.get('a#nav1').dblclick() // 返回 <a> 元素
 ```
 
-### Position
+### 位置
 
-#### Specify a position of the element to double click
+#### 指定元素上的双击位置
 
-Click the bottom center of the button.
+双击按钮的底部中心位置。
 
 ```javascript
 cy.get('button').dblclick('bottom')
 ```
 
-### Coordinates
+### 坐标
 
-#### Specify coordinates relative to the top left corner
+#### 指定相对于左上角的坐标
 
-The double click below will be issued inside of the element (30px from the left
-and 10px from the top).
+以下双击将在元素内部执行（距离左侧 30px，距离顶部 10px）。
 
 ```javascript
 cy.get('button').dblclick(30, 10)
 ```
 
-### Options
+### 选项
 
-#### Force a double click regardless of its actionable state
+#### 强制双击，无论其可操作性状态如何
 
-Forcing a double click overrides the
-[actionable checks](/app/core-concepts/interacting-with-elements#Forcing)
-Cypress applies and will automatically fire the events.
+强制双击会覆盖 Cypress 应用的[可操作性检查](/app/core-concepts/interacting-with-elements#Forcing)，并自动触发事件。
 
 ```javascript
 cy.get('button').dblclick({ force: true })
 ```
 
-#### Force a double click with position argument
+#### 带位置参数的强制双击
 
 ```javascript
 cy.get('button').dblclick('topRight', { force: true })
 ```
 
-#### Force a double click with relative coordinates
+#### 带相对坐标的强制双击
 
 ```javascript
 cy.get('button').dblclick(60, 60, { force: true })
 ```
 
-#### Double click all buttons found on the page
+#### 双击页面上找到的所有按钮
 
-By default, Cypress will iteratively apply the double click to each element and
-will also log to the
-[Command Log](/app/core-concepts/open-mode#Command-Log) multiple times.
+默认情况下，Cypress 会依次对每个元素执行双击，并在[命令日志](/app/core-concepts/open-mode#Command-Log)中多次记录。
 
-You can turn this off by passing `multiple: false` to `.dblclick()`.
+你可以通过传递 `multiple: false` 给 `.dblclick()` 来关闭此行为。
 
 ```javascript
 cy.get('button').dblclick({ multiple: false })
 ```
 
-#### Double click with key combinations
+#### 带组合键的双击
 
-The `.dblclick()` command may also be fired with key modifiers in order to
-simulate holding key combinations while double clicking, such as
-`SHIFT + double click`.
+`.dblclick()` 命令也可以与按键修饰符一起使用，以模拟在双击时按住组合键，例如 `SHIFT + 双击`。
 
 :::info
 
-You can also use key combinations during [.type()](/api/commands/type). This
-offers options to hold down keys across multiple commands. See
-[Key Combinations](/api/commands/type#Key-Combinations) for more information.
+你也可以在 [.type()](/api/commands/type) 中使用组合键。这提供了跨多个命令按住键的选项。更多信息请参见[组合键](/api/commands/type#Key-Combinations)。
 
 :::
 
-The following modifiers can be combined with `.dblclick()`.
+以下修饰符可以与 `.dblclick()` 结合使用。
 
-| Option     | Notes                                                                                         |
+| 选项     | 说明                                                                                         |
 | ---------- | --------------------------------------------------------------------------------------------- |
-| `altKey`   | Activates the alt key (option key for Mac). Aliases: `optionKey`.                             |
-| `ctrlKey`  | Activates the control key. Aliases: `controlKey`.                                             |
-| `metaKey`  | Activates the meta key (Windows key or command key for Mac). Aliases: `commandKey`, `cmdKey`. |
-| `shiftKey` | Activates the shift key.                                                                      |
+| `altKey`   | 激活 alt 键（Mac 上是 option 键）。别名：`optionKey`。                             |
+| `ctrlKey`  | 激活 control 键。别名：`controlKey`。                                             |
+| `metaKey`  | 激活 meta 键（Windows 键或 Mac 上的 command 键）。别名：`commandKey`、`cmdKey`。 |
+| `shiftKey` | 激活 shift 键。                                                                      |
 
-##### Alt click
+##### Alt 键 + 双击
 
 ```js
-// execute ALT + dblclick on the first <li>
+// 在第一个 <li> 上执行 ALT + 双击
 cy.get('li:first').dblclick({
   altKey: true,
 })
 ```
 
-## Notes
+## 说明
 
-### Actionability
+### 可操作性
 
-#### The element must first reach actionability
+#### 元素必须首先达到可操作性
 
-`.dblclick()` is an "action command" that follows all the rules of
-[Actionability](/app/core-concepts/interacting-with-elements).
+`.dblclick()` 是一个“操作命令”，遵循所有[可操作性](/app/core-concepts/interacting-with-elements)的规则。
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.dblclick()` requires being chained off a command that yields DOM element(s).
+- `.dblclick()` 需要链式调用返回 DOM 元素的命令。
 
 <HeaderAssertions />
 
-- `.dblclick()` will automatically wait for the element to reach an
-  [actionable state](/app/core-concepts/interacting-with-elements).
-- `.dblclick()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed.
+- `.dblclick()` 会自动等待元素达到[可操作状态](/app/core-concepts/interacting-with-elements)。
+- `.dblclick()` 会自动[重试](/app/core-concepts/retry-ability)，直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `.dblclick()` can time out waiting for the element to reach an
-  [actionable state](/app/core-concepts/interacting-with-elements).
-- `.dblclick()` can time out waiting for assertions you've added to pass.
+- `.dblclick()` 可能会因等待元素达到[可操作状态](/app/core-concepts/interacting-with-elements)而超时。
+- `.dblclick()` 可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Double click on a div_**
+**_双击一个 div_**
 
 ```javascript
 cy.get('.action-div').dblclick()
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/dblclick/double-click-in-testing.png"
-  alt="Command Log dblclick"
+  alt="命令日志 dblclick"
 />
 
-When clicking on `dblclick` within the command log, the console outputs the
-following:
+当点击命令日志中的 `dblclick` 时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/dblclick/element-double-clicked-on.png"
   alt="console.log dblclick"
 />
 
-## History
+## 历史
 
-| Version                                  | Changes                                                                                                                 |
+| 版本                                  | 变更                                                                                                                 |
 | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| [6.1.0](/app/references/changelog#6-1-0) | Added option `scrollBehavior`                                                                                           |
-| [3.5.0](/app/references/changelog#3-5-0) | Added support for options `force` and `multiple`.                                                                       |
-| [3.5.0](/app/references/changelog#3-5-0) | Added support for `position`, `x`, and `y` arguments.                                                                   |
-| [3.5.0](/app/references/changelog#3-5-0) | Added sending `mouseover`, `mousemove`, `mouseout`, `pointerdown`, `pointerup`, and `pointermove` during `.dblclick()`. |
+| [6.1.0](/app/references/changelog#6-1-0) | 添加了 `scrollBehavior` 选项                                                                                           |
+| [3.5.0](/app/references/changelog#3-5-0) | 添加了对 `force` 和 `multiple` 选项的支持。                                                                       |
+| [3.5.0](/app/references/changelog#3-5-0) | 添加了对 `position`、`x` 和 `y` 参数的支持。                                                                   |
+| [3.5.0](/app/references/changelog#3-5-0) | 添加了在 `.dblclick()` 期间发送 `mouseover`、`mousemove`、`mouseout`、`pointerdown`、`pointerup` 和 `pointermove` 事件的功能。 |
 
-## See also
+## 另请参阅
 
 - [`.click()`](/api/commands/click)
 - [`.rightclick()`](/api/commands/rightclick)

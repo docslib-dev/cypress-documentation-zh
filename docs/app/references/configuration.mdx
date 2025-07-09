@@ -1,60 +1,47 @@
 ---
-title: 'Configuration in Cypress'
-description: 'Change the default behavior of Cypress by configuring options in the Cypress configuration file.'
-sidebar_label: Configuration
+title: 'Cypress 配置'
+description: '通过在 Cypress 配置文件中设置选项来改变 Cypress 的默认行为。'
+sidebar_label: 配置
 ---
 
 <ProductHeading product="app" />
 
-# Cypress Configuration
+# Cypress 配置
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学习到
 
-- How to configure Cypress to change the default behavior of Cypress
-- Configuration options available in Cypress
-- How to view and override configuration at runtime
+- 如何配置 Cypress 以改变其默认行为
+- Cypress 中可用的配置选项
+- 如何在运行时查看和覆盖配置
 
 :::
 
 :::caution
 
-This guide is for Cypress 10+.
+本指南适用于 Cypress 10+。
 
-For more info on upgrading configuration to Cypress 10, see the
-[migration guide](/app/references/migration-guide#Migrating-to-Cypress-100).
+有关升级到 Cypress 10 的更多信息，请参阅
+[迁移指南](/app/references/migration-guide#Migrating-to-Cypress-100)。
 
 :::
 
-## Configuration File
+## 配置文件
 
-Launching Cypress for the first time, you will be guided through a wizard that
-will create a Cypress configuration file for you. This file will be
-`cypress.config.js` for JavaScript apps or `cypress.config.ts` for
-[TypeScript](/app/tooling/typescript-support) apps. This file is used to
-store any configuration specific to Cypress.
+首次启动 Cypress 时，向导将引导你创建一个 Cypress 配置文件。对于 JavaScript 应用，该文件为 `cypress.config.js`；对于 [TypeScript](/app/tooling/typescript-support) 应用，则为 `cypress.config.ts`。此文件用于存储 Cypress 特有的配置。
 
-Cypress additionally supports config files with `.mjs` or `.cjs` extensions.
+Cypress 还支持 `.mjs` 或 `.cjs` 扩展名的配置文件。
 
-Using a `.mjs` file will allow you to use
-[ESM Module](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules)
-syntax in your config without the need of a transpiler step.
+使用 `.mjs` 文件允许你在配置中使用 [ESM 模块](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) 语法，而无需转译步骤。
 
-A '.cjs' file uses the [CommonJS](https://nodejs.org/api/modules.html) module
-syntax, which is the default for JavaScript files. All JavaScript config
-examples in our docs use the CommonJS format.
+`.cjs` 文件使用 [CommonJS](https://nodejs.org/api/modules.html) 模块语法，这是 JavaScript 文件的默认格式。我们文档中的所有 JavaScript 配置示例均使用 CommonJS 格式。
 
-If you [configure your tests to record](/cloud/get-started/setup#Setup) the
-results to [Cypress Cloud](/cloud/get-started/introduction) the
-`projectId` will be stored in the config file as well.
+如果你 [配置测试以记录](/cloud/get-started/setup#Setup) 结果到 [Cypress Cloud](/cloud/get-started/introduction)，`projectId` 也将存储在配置文件中。
 
-## Intelligent Code Completion
+## 智能代码补全
 
-The `defineConfig` helper function is exported by Cypress, and it provides
-automatic code completion for configuration in many popular code editors. While
-it's not strictly necessary for Cypress to parse your configuration, we
-recommend wrapping your config object with `defineConfig()` like this:
+`defineConfig` 辅助函数由 Cypress 导出，它在许多流行的代码编辑器中为配置提供自动代码补全。虽然 Cypress 解析你的配置并不严格要求使用它，但我们建议像这样用 `defineConfig()` 包装你的配置对象：
 
 :::cypress-config-example
 
@@ -68,147 +55,139 @@ recommend wrapping your config object with `defineConfig()` like this:
 
 :::
 
-## Options
+## 选项
 
-The default behavior of Cypress can be modified by supplying any of the
-following configuration options. Below is a list of available options and their
-default values.
+可以通过提供以下任何配置选项来修改 Cypress 的默认行为。以下是可用选项及其默认值的列表。
 
-### Global
+### 全局
 
-| Option                 | Default                               | Description                                                                                                                                                                                                                                                                                               |
+| 选项                 | 默认值                               | 描述                                                                                                                                                                                                                                                                                               |
 | ---------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `clientCertificates`   | `[]`                                  | An optional array of [client certificates](/app/references/client-certificates).                                                                                                                                                                                                                          |
-| `env`                  | `{}`                                  | Any values to be set as [environment variables](/app/references/environment-variables).                                                                                                                                                                                                                   |
-| `includeShadowDom`     | `false`                               | Whether to traverse shadow DOM boundaries and include elements within the shadow DOM in the results of query commands (e.g. [`cy.get()`](/api/commands/get)).                                                                                                                                             |
-| `numTestsKeptInMemory` | Default based on `run` or `open` mode | The number of tests for which snapshots and command data are kept in memory. `numTestsKeptInMemory` is set to `50` by default during `cypress open` and set to `0` by default during `cypress run`. Reduce this number if you are experiencing high memory consumption in your browser during a test run. |
-| `port`                 | `null`                                | Port used to host Cypress. Normally this is a randomly generated port.                                                                                                                                                                                                                                    |
-| `redirectionLimit`     | `20`                                  | The number of times that the application under test can redirect before erroring.                                                                                                                                                                                                                         |
-| `reporter`             | `spec`                                | The [reporter](/app/tooling/reporters) used during `cypress run`.                                                                                                                                                                                                                                         |
-| `reporterOptions`      | `null`                                | The [reporter options](/app/tooling/reporters#Reporter-Options) used. Supported options depend on the reporter.                                                                                                                                                                                           |
-| `retries`              | `{ "runMode": 0, "openMode": 0 }`     | The number of times to retry a failing test. Can be configured to apply to `cypress run` or `cypress open` separately. As of Cypress `13.4.0`, the experimental Flake Detection strategy can also be configured. See [Test Retries](/app/guides/test-retries) for more information.                       |
-| `watchForFileChanges`  | Default based on `run` or `open` mode | Whether Cypress will watch and restart tests on test file changes. `watchForFileChanges` is set to `true` by default during `cypress open` and set to `false` by default during `cypress run`.                                                                                                            |
+| `clientCertificates`   | `[]`                                  | 可选的 [客户端证书](/app/references/client-certificates) 数组。                                                                                                                                                                                                                          |
+| `env`                  | `{}`                                  | 要设置为 [环境变量](/app/references/environment-variables) 的任何值。                                                                                                                                                                                                                   |
+| `includeShadowDom`     | `false`                               | 是否遍历 shadow DOM 边界并在查询命令（如 [`cy.get()`](/api/commands/get)）的结果中包含 shadow DOM 中的元素。                                                                                                                                             |
+| `numTestsKeptInMemory` | 基于 `run` 或 `open` 模式的默认值 | 内存中保留的快照和命令数据的测试数量。`numTestsKeptInMemory` 在 `cypress open` 期间默认为 `50`，在 `cypress run` 期间默认为 `0`。如果在测试运行期间浏览器内存消耗过高，可以减小此值。 |
+| `port`                 | `null`                                | 用于托管 Cypress 的端口。通常这是一个随机生成的端口。                                                                                                                                                                                                                                    |
+| `redirectionLimit`     | `20`                                  | 被测应用在出错前可以重定向的次数。                                                                                                                                                                                                                         |
+| `reporter`             | `spec`                                | 在 `cypress run` 期间使用的 [报告器](/app/tooling/reporters)。                                                                                                                                                                                                                                         |
+| `reporterOptions`      | `null`                                | 使用的 [报告器选项](/app/tooling/reporters#Reporter-Options)。支持的选项取决于报告器。                                                                                                                                                                                           |
+| `retries`              | `{ "runMode": 0, "openMode": 0 }`     | 重试失败测试的次数。可以配置为分别应用于 `cypress run` 或 `cypress open`。从 Cypress `13.4.0` 开始，还可以配置实验性的 Flake Detection 策略。更多信息请参阅 [测试重试](/app/guides/test-retries)。                       |
+| `watchForFileChanges`  | 基于 `run` 或 `open` 模式的默认值 | Cypress 是否监视并在测试文件更改时重新启动测试。`watchForFileChanges` 在 `cypress open` 期间默认为 `true`，在 `cypress run` 期间默认为 `false`。                                                                                                            |
 
-### Timeouts
+### 超时
 
 :::tip
 
-<strong>Core Concept</strong>
+<strong>核心概念</strong>
 
-[Timeouts are a core concept](/app/core-concepts/introduction-to-cypress#Timeouts)
-you should understand well. The default values listed here are meaningful.
+[超时是一个核心概念](/app/core-concepts/introduction-to-cypress#Timeouts)，你应该充分理解。这里列出的默认值是有意义的。
 
 :::
 
-| Option                  | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| 选项                  | 默认值 | 描述                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ----------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `defaultCommandTimeout` | `4000`  | Time, in milliseconds, to wait until most DOM based commands are considered timed out.                                                                                                                                                                                                                                                                                                                                                                                             |
-| `execTimeout`           | `60000` | Time, in milliseconds, to wait for a system command to finish executing during a [`cy.exec()`](/api/commands/exec) command.                                                                                                                                                                                                                                                                                                                                                        |
-| `taskTimeout`           | `60000` | Time, in milliseconds, to wait for a task to finish executing during a [`cy.task()`](/api/commands/task) command.                                                                                                                                                                                                                                                                                                                                                                  |
-| `pageLoadTimeout`       | `60000` | Time, in milliseconds, to wait for `page transition events` or [`cy.visit()`](/api/commands/visit), [`cy.go()`](/api/commands/go), [`cy.reload()`](/api/commands/reload) commands to fire their page `load` events. Network requests are limited by the underlying operating system, and may still time out if this value is increased.                                                                                                                                            |
-| `requestTimeout`        | `5000`  | Time, in milliseconds, to wait for a request to go out in a [`cy.wait()`](/api/commands/wait) command.                                                                                                                                                                                                                                                                                                                                                                             |
-| `responseTimeout`       | `30000` | Time, in milliseconds, to wait until a response in a [`cy.request()`](/api/commands/request), [`cy.wait()`](/api/commands/wait), [`cy.fixture()`](/api/commands/fixture), [`cy.getCookie()`](/api/commands/getcookie), [`cy.getCookies()`](/api/commands/getcookies), [`cy.setCookie()`](/api/commands/setcookie), [`cy.clearCookie()`](/api/commands/clearcookie), [`cy.clearCookies()`](/api/commands/clearcookies), and [`cy.screenshot()`](/api/commands/screenshot) commands. |
+| `defaultCommandTimeout` | `4000`  | 大多数基于 DOM 的命令在被视为超时前等待的时间（毫秒）。                                                                                                                                                                                                                                                                                                                                                                                             |
+| `execTimeout`           | `60000` | 在 [`cy.exec()`](/api/commands/exec) 命令期间等待系统命令完成执行的时间（毫秒）。                                                                                                                                                                                                                                                                                                                                                        |
+| `taskTimeout`           | `60000` | 在 [`cy.task()`](/api/commands/task) 命令期间等待任务完成执行的时间（毫秒）。                                                                                                                                                                                                                                                                                                                                                                  |
+| `pageLoadTimeout`       | `60000` | 等待 `页面过渡事件` 或 [`cy.visit()`](/api/commands/visit)、[`cy.go()`](/api/commands/go)、[`cy.reload()`](/api/commands/reload) 命令触发其页面 `load` 事件的时间（毫秒）。网络请求受底层操作系统限制，如果增加此值，仍可能超时。                                                                                                                                            |
+| `requestTimeout`        | `5000`  | 在 [`cy.wait()`](/api/commands/wait) 命令中等待请求发出的时间（毫秒）。                                                                                                                                                                                                                                                                                                                                                                             |
+| `responseTimeout`       | `30000` | 在 [`cy.request()`](/api/commands/request)、[`cy.wait()`](/api/commands/wait)、[`cy.fixture()`](/api/commands/fixture)、[`cy.getCookie()`](/api/commands/getcookie)、[`cy.getCookies()`](/api/commands/getcookies)、[`cy.setCookie()`](/api/commands/setcookie)、[`cy.clearCookie()`](/api/commands/clearcookie)、[`cy.clearCookies()`](/api/commands/clearcookies) 和 [`cy.screenshot()`](/api/commands/screenshot) 命令中等待响应的时间（毫秒）。 |
 
-### Folders / Files
+### 文件夹/文件
 
-| Option              | Default               | Description                                                                                                                                           |
+| 选项              | 默认值               | 描述                                                                                                                                           |
 | ------------------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `downloadsFolder`   | `cypress/downloads`   | Path to folder where files downloaded during a test are saved.                                                                                        |
-| `fileServerFolder`  | root project folder   | Path to folder where application files will attempt to be served from.                                                                                |
-| `fixturesFolder`    | `cypress/fixtures`    | Path to folder containing fixture files (Pass `false` to disable).                                                                                    |
-| `screenshotsFolder` | `cypress/screenshots` | Path to folder where screenshots will be saved from [`cy.screenshot()`](/api/commands/screenshot) command or after a test fails during `cypress run`. |
-| `videosFolder`      | `cypress/videos`      | Path to folder where videos will be saved during `cypress run`.                                                                                       |
+| `downloadsFolder`   | `cypress/downloads`   | 测试期间下载的文件保存的文件夹路径。                                                                                        |
+| `fileServerFolder`  | 项目根文件夹   | 尝试从中提供应用文件的文件夹路径。                                                                                |
+| `fixturesFolder`    | `cypress/fixtures`    | 包含夹具文件的文件夹路径（传递 `false` 以禁用）。                                                                                    |
+| `screenshotsFolder` | `cypress/screenshots` | 从 [`cy.screenshot()`](/api/commands/screenshot) 命令或测试在 `cypress run` 期间失败后保存屏幕截图的文件夹路径。 |
+| `videosFolder`      | `cypress/videos`      | 在 `cypress run` 期间保存视频的文件夹路径。                                                                                       |
 
-### Screenshots
+### 屏幕截图
 
-| Option                   | Default               | Description                                                                                                                                           |
+| 选项                   | 默认值               | 描述                                                                                                                                           |
 | ------------------------ | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `screenshotOnRunFailure` | `true`                | Whether Cypress will take a screenshot when a test fails during `cypress run`.                                                                        |
-| `screenshotsFolder`      | `cypress/screenshots` | Path to folder where screenshots will be saved from [`cy.screenshot()`](/api/commands/screenshot) command or after a test fails during `cypress run`. |
-| `trashAssetsBeforeRuns`  | `true`                | Whether Cypress will trash assets within the `downloadsFolder`, `screenshotsFolder`, and `videosFolder` before tests run with `cypress run`.          |
+| `screenshotOnRunFailure` | `true`                | 测试在 `cypress run` 期间失败时，Cypress 是否拍摄屏幕截图。                                                                        |
+| `screenshotsFolder`      | `cypress/screenshots` | 从 [`cy.screenshot()`](/api/commands/screenshot) 命令或测试在 `cypress run` 期间失败后保存屏幕截图的文件夹路径。 |
+| `trashAssetsBeforeRuns`  | `true`                | 在 `cypress run` 运行测试之前，Cypress 是否清理 `downloadsFolder`、`screenshotsFolder` 和 `videosFolder` 中的资源。          |
 
-For more options regarding screenshots, view the
-[Cypress.Screenshot API](/api/cypress-api/screenshot-api).
+有关屏幕截图的更多选项，请查看 [Cypress.Screenshot API](/api/cypress-api/screenshot-api)。
 
-### Videos
+### 视频
 
 <VideoRecordingSupportedBrowsers />
 
-| Option                  | Default          | Description                                                                                                                                                                                                                                                                                                                   |
+| 选项                  | 默认值          | 描述                                                                                                                                                                                                                                                                                                                   |
 | ----------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `trashAssetsBeforeRuns` | `true`           | Whether Cypress will trash assets within the `downloadsFolder`, `screenshotsFolder`, and `videosFolder` before tests run with `cypress run`.                                                                                                                                                                                  |
-| `videoCompression`      | `false`          | The quality setting for the video compression, in Constant Rate Factor (CRF). The value can be `false` or `0` to disable compression or a CRF between `1` and `51`, where a lower value results in better quality (at the expense of a higher file size). Setting this option to `true` will result in a default CRF of `32`. |
-| `videosFolder`          | `cypress/videos` | Where Cypress will automatically save the video of the test run when tests run with `cypress run`.                                                                                                                                                                                                                            |
-| `video`                 | `false`          | Whether Cypress will capture a video of the tests run with `cypress run`.                                                                                                                                                                                                                                                     |
+| `trashAssetsBeforeRuns` | `true`           | 在 `cypress run` 运行测试之前，Cypress 是否清理 `downloadsFolder`、`screenshotsFolder` 和 `videosFolder` 中的资源。                                                                                                                                                                                  |
+| `videoCompression`      | `false`          | 视频压缩的质量设置，以恒定速率因子（CRF）表示。值可以是 `false` 或 `0` 以禁用压缩，或介于 `1` 和 `51` 之间的 CRF，较低的值会导致更好的质量（但文件大小更大）。将此选项设置为 `true` 将导致默认 CRF 为 `32`。 |
+| `videosFolder`          | `cypress/videos` | Cypress 在 `cypress run` 运行测试时自动保存测试运行视频的位置。                                                                                                                                                                                                                            |
+| `video`                 | `false`          | Cypress 是否捕获 `cypress run` 运行测试的视频。                                                                                                                                                                                                                                                     |
 
-### Downloads
+### 下载
 
-| Option                  | Default             | Description                                                                                                                                  |
+| 选项                  | 默认值             | 描述                                                                                                                                  |
 | ----------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `downloadsFolder`       | `cypress/downloads` | Path to folder where files downloaded during a test are saved.                                                                               |
-| `trashAssetsBeforeRuns` | `true`              | Whether Cypress will trash assets within the `downloadsFolder`, `screenshotsFolder`, and `videosFolder` before tests run with `cypress run`. |
+| `downloadsFolder`       | `cypress/downloads` | 测试期间下载的文件保存的文件夹路径。                                                                               |
+| `trashAssetsBeforeRuns` | `true`              | 在 `cypress run` 运行测试之前，Cypress 是否清理 `downloadsFolder`、`screenshotsFolder` 和 `videosFolder` 中的资源。 |
 
-### Browser
+### 浏览器
 
-| Option                  | Default | Description                                                                                                                                                                                                                                                                                                                                           |
+| 选项                  | 默认值 | 描述                                                                                                                                                                                                                                                                                                                                           |
 | ----------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `defaultBrowser`        | `null`  | The default browser to launch if the "--browser" command line option is not provided. This option only affects the first browser launch; changing this option after the browser is already launched will have no effect.                                                                                                                              |
-| `chromeWebSecurity`     | `true`  | Whether to enable Chromium-based browser's Web Security for same-origin policy and insecure mixed content.                                                                                                                                                                                                                                            |
-| `blockHosts`            | `null`  | A String or Array of hosts that you wish to block traffic for. [Please read the notes for examples on using this.](#blockHosts)                                                                                                                                                                                                                       |
-| `modifyObstructiveCode` | `true`  | Whether Cypress will search for and replace obstructive JS code in `.js` or `.html` files. [Please read the notes for more information on this setting.](#modifyObstructiveCode)                                                                                                                                                                      |
-| `userAgent`             | `null`  | Enables you to override the default user agent the browser sends in all request headers. User agent values are typically used by servers to help identify the operating system, browser, and browser version. See [User-Agent MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent) for example user agent values. |
+| `defaultBrowser`        | `null`  | 如果未提供 "--browser" 命令行选项，则启动的默认浏览器。此选项仅影响首次浏览器启动；浏览器已启动后更改此选项将无效。                                                                                                                                                                                              |
+| `chromeWebSecurity`     | `true`  | 是否启用基于 Chromium 的浏览器的 Web Security，以执行同源策略和不安全的混合内容。                                                                                                                                                                                                                                            |
+| `blockHosts`            | `null`  | 要阻止其流量的主机字符串或数组。[请阅读注释以了解使用示例。](#blockHosts)                                                                                                                                                                                                                       |
+| `modifyObstructiveCode` | `true`  | Cypress 是否在 `.js` 或 `.html` 文件中搜索并替换阻碍性 JS 代码。[请阅读注释以了解有关此设置的更多信息。](#modifyObstructiveCode)                                                                                                                                                                      |
+| `userAgent`             | `null`  | 覆盖浏览器在所有请求标头中发送的默认用户代理。用户代理值通常由服务器用于帮助识别操作系统、浏览器和浏览器版本。有关示例用户代理值，请参阅 [User-Agent MDN 文档](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent)。 |
 
-### Viewport
+### 视口
 
-| Option           | Default | Description                                                                                                                           |
+| 选项           | 默认值 | 描述                                                                                                                           |
 | ---------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `viewportHeight` | `660`   | Default height in pixels for the application under tests' viewport. (Override with [`cy.viewport()`](/api/commands/viewport) command) |
-| `viewportWidth`  | `1000`  | Default width in pixels for the application under tests' viewport. (Override with [`cy.viewport()`](/api/commands/viewport) command)  |
+| `viewportHeight` | `660`   | 被测应用视口的默认高度（像素）。（使用 [`cy.viewport()`](/api/commands/viewport) 命令覆盖） |
+| `viewportWidth`  | `1000`  | 被测应用视口的默认宽度（像素）。（使用 [`cy.viewport()`](/api/commands/viewport) 命令覆盖）  |
 
-### Actionability
+### 可操作性
 
-| Option                       | Default | Description                                                                                                                                                                      |
+| 选项                       | 默认值 | 描述                                                                                                                                                                      |
 | ---------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `animationDistanceThreshold` | `5`     | The distance in pixels an element must exceed over time to be considered animating.                                                                                              |
-| `waitForAnimations`          | `true`  | Whether to wait for elements to finish animating before executing commands.                                                                                                      |
-| `scrollBehavior`             | `top`   | Viewport position to which an element should be scrolled before executing commands. Can be `'center'`, `'top'`, `'bottom'`, `'nearest'`, or `false`. `false` disables scrolling. |
+| `animationDistanceThreshold` | `5`     | 元素必须随时间超过的像素距离才能被视为动画。                                                                                              |
+| `waitForAnimations`          | `true`  | 在执行命令之前是否等待元素完成动画。                                                                                                      |
+| `scrollBehavior`             | `top`   | 在执行命令之前将元素滚动到的视口位置。可以是 `'center'`、`'top'`、`'bottom'`、`'nearest'` 或 `false`。`false` 禁用滚动。 |
 
-For more information, see the docs on
-[actionability](/app/core-concepts/interacting-with-elements#Actionability).
+更多信息，请参阅 [可操作性](/app/core-concepts/interacting-with-elements#Actionability) 文档。
 
-### Experiments
+### 实验性
 
-Configuration might include experimental options currently being tested. See
-[Experiments](/app/references/experiments) page.
+配置可能包括当前正在测试的实验性选项。请参阅 [实验性](/app/references/experiments) 页面。
 
-## Testing Type-Specific Options
+## 测试类型特定选项
 
-You can provide configuration options for either E2E or Component Testing by
-creating `e2e` and `component` objects inside your Cypress configuration.
+你可以通过在 Cypress 配置中创建 `e2e` 和 `component` 对象来为 [端到端测试](/app/core-concepts/testing-types#What-is-E2E-Testing) 或 [组件测试](/app/core-concepts/testing-types#What-is-Component-Testing) 提供配置选项。
 
 ### e2e
 
-These options are available to be specified inside the `e2e` configuration
-object:
+这些选项可以在 `e2e` 配置对象中指定：
 
-| Option                                                          | Default                                               | Description                                                                                                                                                                                           |
+| 选项                                                          | 默认值                                               | 描述                                                                                                                                                                                           |
 | --------------------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `baseUrl`                                                       | `null`                                                | URL used as prefix for [`cy.visit()`](/api/commands/visit) or [`cy.request()`](/api/commands/request) command's URL.                                                                                  |
-| `setupNodeEvents`                                               | `null`                                                | Function in which node events can be registered and config can be modified. Takes the place of the (removed) pluginFile option. [Please read the notes for examples on using this.](#setupNodeEvents) |
-| `supportFile`                                                   | `cypress/support/e2e.{js,jsx,ts,tsx}`                 | Path to file to load before spec files load. This file is compiled and bundled. (Pass `false` to disable)                                                                                             |
-| `specPattern`                                                   | <code>cypress/e2e/\*\*/\*.cy.\{js,jsx,ts,tsx\}</code> | A String or Array of glob patterns of the test files to load.                                                                                                                                         |
-| `excludeSpecPattern`                                            | `*.hot-update.js`                                     | A String or Array of glob patterns used to ignore test files that would otherwise be shown in your list of tests. [Please read the notes on using this.](#excludeSpecPattern)                         |
-| `experimentalRunAllSpecs`                                       | `false`                                               | Enables the "Run All Specs" UI feature, allowing the execution of multiple specs sequentially.                                                                                                        |
-| `slowTestThreshold`                                             | `10000`                                               | Time, in milliseconds, to consider a test "slow" during `cypress run`. A slow test will display in orange text in the default reporter.                                                               |
-| `testIsolation`                                                 | `true`                                                | Whether or not [test isolation](/app/core-concepts/writing-and-organizing-tests#Test-Isolation) is enabled to ensure a clean browser context between tests.                                           |
-| `injectDocumentDomain` <Badge type="caution">deprecated</Badge> | `false`                                               | Instructs Cypress to use the `document.domain` property to reduce the need for [`cy.origin`](/api/commands/origin). [Please read the notes on using this.](#injectDocumentDomain)                     |
+| `baseUrl`                                                       | `null`                                                | 用作 [`cy.visit()`](/api/commands/visit) 或 [`cy.request()`](/api/commands/request) 命令 URL 前缀的 URL。                                                                                  |
+| `setupNodeEvents`                                               | `null`                                                | 可以注册节点事件并修改配置的函数。取代（已移除的）pluginFile 选项。[请阅读注释以了解使用示例。](#setupNodeEvents) |
+| `supportFile`                                                   | `cypress/support/e2e.{js,jsx,ts,tsx}`                 | 在规范文件加载之前加载的文件路径。此文件会被编译和打包。（传递 `false` 以禁用）                                                                                             |
+| `specPattern`                                                   | <code>cypress/e2e/\*\*/\*.cy.\{js,jsx,ts,tsx\}</code> | 要加载的测试文件的 glob 模式字符串或数组。                                                                                                                                         |
+| `excludeSpecPattern`                                            | `*.hot-update.js`                                     | 用于忽略在测试列表中显示的测试文件的 glob 模式字符串或数组。[请阅读有关使用此选项的注释。](#excludeSpecPattern)                         |
+| `experimentalRunAllSpecs`                                       | `false`                                               | 启用 "Run All Specs" UI 功能，允许顺序执行多个规范。                                                                                                        |
+| `slowTestThreshold`                                             | `10000`                                               | 在 `cypress run` 期间认为测试“慢”的时间（毫秒）。慢测试将在默认报告器中显示为橙色文本。                                                               |
+| `testIsolation`                                                 | `true`                                                | 是否启用 [测试隔离](/app/core-concepts/writing-and-organizing-tests#Test-Isolation) 以确保测试之间的浏览器上下文干净。                                           |
+| `injectDocumentDomain` <Badge type="caution">deprecated</Badge> | `false`                                               | 指示 Cypress 使用 `document.domain` 属性来减少对 [`cy.origin`](/api/commands/origin) 的需求。[请阅读有关使用此选项的注释。](#injectDocumentDomain)                     |
 
 :::cypress-config-example
 
 ```ts
 {
   e2e: {
-    // e2e options here
+    // e2e 选项在此
   }
 }
 ```
@@ -217,87 +196,77 @@ object:
 
 ### component
 
-These options are available to be specified inside the `component` configuration
-object:
+这些选项可以在 `component` 配置对象中指定：
 
-| Option                         | Default                                   | Description                                                                                                                                                                                                                                                                                         |
+| 选项                         | 默认值                                   | 描述                                                                                                                                                                                                                                                                                         |
 | ------------------------------ | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `devServer`                    | `null`                                    | Required option used to configure the component testing dev server. [Please read the notes for examples on using this.](#devServer)                                                                                                                                                                 |
-| `indexHtmlFile`                | `cypress/support/component-index.html`    | This is where Cypress renders your components and allows you to add in global assets, such as styles, fonts, and external scripts.                                                                                                                                                                  |
-| `justInTimeCompile`            | `true`                                    | Compile resources directly related to your spec for webpack, compiling them 'just-in-time' before spec execution.                                                                                                                                                                                   |
-| `setupNodeEvents`              | `null`                                    | Function in which node events can be registered and config can be modified. Takes the place of the (removed) plugins file. [Please read the notes for examples on using this.](#setupNodeEvents)                                                                                                    |
-| `supportFile`                  | `cypress/support/component.js`            | Path to file to load before spec files load. This file is compiled and bundled. (Pass `false` to disable)                                                                                                                                                                                           |
-| `specPattern`                  | <code>\*\*/\*.cy.\{js,jsx,ts,tsx\}</code> | A glob pattern String or Array of glob pattern Strings of the spec files to load. <br /><br />Note that any files found matching the `e2e.specPattern` value will be automatically **excluded.**                                                                                                    |
-| `excludeSpecPattern`           | `['/snapshots/*', '/image_snapshots/*']`  | A String or Array of glob patterns used to ignore spec files that would otherwise be shown in your list of specs. [Please read the notes on using this.](#excludeSpecPattern)                                                                                                                       |
-| `experimentalSingleTabRunMode` | `false`                                   | Run all specs in a single tab, instead of creating a new tab per spec. This can improve run mode performance, but can impact spec isolation and reliability on large test suites. This experiment currently only applies to Component Testing.                                                      |
-| `slowTestThreshold`            | `250`                                     | Time, in milliseconds, to consider a test "slow" during `cypress run`. A slow test will display in orange text in the default reporter.                                                                                                                                                             |
-| `devServerPublicPathRoute`     | `/__cypress/src`                          | The public path of the dev server in use. Use caution overriding the default value as it can have unintended consequences. See [Framework Configuration](/app/component-testing/component-framework-configuration) or dev server specific documentation (in particular `@cypress/vite-dev-server`). |
+| `devServer`                    | `null`                                    | 用于配置组件测试开发服务器的必需选项。[请阅读注释以了解使用示例。](#devServer)                                                                                                                                                                 |
+| `indexHtmlFile`                | `cypress/support/component-index.html`    | Cypress 渲染组件并允许你添加全局资源（如样式、字体和外部脚本）的位置。                                                                                                                                                                  |
+| `justInTimeCompile`            | `true`                                    | 为 webpack 直接编译与你的规范相关的资源，在规范执行前“即时”编译它们。                                                                                                                                                                                   |
+| `setupNodeEvents`              | `null`                                    | 可以注册节点事件并修改配置的函数。取代（已移除的）插件文件。[请阅读注释以了解使用示例。](#setupNodeEvents)                                                                                                    |
+| `supportFile`                  | `cypress/support/component.js`            | 在规范文件加载之前加载的文件路径。此文件会被编译和打包。（传递 `false` 以禁用）                                                                                                                                                                                           |
+| `specPattern`                  | <code>\*\*/\*.cy.\{js,jsx,ts,tsx\}</code> | 要加载的规范文件的 glob 模式字符串或数组。 <br /><br />注意，任何与 `e2e.specPattern` 值匹配的文件将自动 **排除。**                                                                                                    |
+| `excludeSpecPattern`           | `['/snapshots/*', '/image_snapshots/*']`  | 用于忽略在规范列表中显示的规范文件的 glob 模式字符串或数组。[请阅读有关使用此选项的注释。](#excludeSpecPattern)                                                                                                                       |
+| `experimentalSingleTabRunMode` | `false`                                   | 在单个标签页中运行所有规范，而不是为每个规范创建新标签页。这可以提高运行模式性能，但可能影响大型测试套件的规范隔离和可靠性。此实验目前仅适用于组件测试。                                                      |
+| `slowTestThreshold`            | `250`                                     | 在 `cypress run` 期间认为测试“慢”的时间（毫秒）。慢测试将在默认报告器中显示为橙色文本。                                                                                                                                                             |
+| `devServerPublicPathRoute`     | `/__cypress/src`                          | 正在使用的开发服务器的公共路径。覆盖默认值时要小心，因为它可能会产生意外后果。请参阅 [框架配置](/app/component-testing/component-framework-configuration) 或特定开发服务器文档（特别是 `@cypress/vite-dev-server`）。 |
 
 :::cypress-config-example
 
 ```ts
 {
   component: {
-    // component options here
+    // 组件选项在此
   }
 }
 ```
 
 :::
 
-## Overriding Options
+## 覆盖选项
 
-Cypress gives you the option to dynamically alter configuration options. This is
-helpful when running Cypress in multiple environments and on multiple developer
-machines.
+Cypress 允许你动态更改配置选项。这在多个环境和多个开发人员机器上运行 Cypress 时非常有用。
 
-### Overriding Individual Options
+### 覆盖单个选项
 
-When running Cypress from the command line you can pass a `--config` flag to
-override individual config options.
+从命令行运行 Cypress 时，可以传递 `--config` 标志来覆盖单个配置选项。
 
-For example, to override `viewportWidth` and `viewportHeight`, you can run:
+例如，要覆盖 `viewportWidth` 和 `viewportHeight`，可以运行：
 
 ```shell
 cypress run --browser firefox --config viewportWidth=1280,viewportHeight=720
 ```
 
-### Specifying an Alternative Config File
+### 指定替代配置文件
 
-In the Cypress CLI, you can change which config file Cypress will use with the
-[`--config-file`](/app/references/command-line#cypress-open-config-file-lt-configuration-file-gt)
-flag.
+在 Cypress CLI 中，可以使用 [`--config-file`](/app/references/command-line#cypress-open-config-file-lt-configuration-file-gt) 标志更改 Cypress 将使用的配置文件。
 
 ```shell
 cypress run --config-file tests/cypress.config.js
 ```
 
-See the [Command Line](/app/references/command-line) guide for more examples.
+更多示例请参阅 [命令行](/app/references/command-line) 指南。
 
-### Testing Type-Specific Overrides
+### 测试类型特定覆盖
 
-In addition to setting
-[Testing Type-Specific options](#Testing-Type-Specific-Options), you can
-override other configuration options for either the
-[E2E Testing](/app/core-concepts/testing-types#What-is-E2E-Testing) or
-[Component Testing](/app/core-concepts/testing-types#What-is-Component-Testing).
+除了设置 [测试类型特定选项](#Testing-Type-Specific-Options) 外，你还可以为 [端到端测试](/app/core-concepts/testing-types#What-is-E2E-Testing) 或 [组件测试](/app/core-concepts/testing-types#What-is-Component-Testing) 覆盖其他配置选项。
 
-For example:
+例如：
 
 :::cypress-config-example
 
 ```ts
 {
-  // These settings apply everywhere unless overridden
+  // 这些设置在所有地方适用，除非被覆盖
   defaultCommandTimeout: 5000,
   viewportWidth: 1000,
   viewportHeight: 600,
-  // Viewport settings overridden for component tests
+  // 组件测试的视口设置被覆盖
   component: {
     viewportWidth: 500,
     viewportHeight: 500,
   },
-  // Command timeout overridden for E2E tests
+  // 端到端测试的命令超时被覆盖
   e2e: {
     defaultCommandTimeout: 10000,
   },
@@ -306,43 +275,30 @@ For example:
 
 :::
 
-### Environment Variables
+### 环境变量
 
-Configuration options can be overridden with
-[environment variables](/app/references/environment-variables). This is
-especially useful in
-[Continuous Integration](/app/continuous-integration/overview) or when
-working locally. This gives you the ability to change configuration options
-without modifying any code or build scripts.
+配置选项可以通过 [环境变量](/app/references/environment-variables) 覆盖。这在 [持续集成](/app/continuous-integration/overview) 或本地工作时特别有用。这使你可以更改配置选项而无需修改任何代码或构建脚本。
 
-For example, these environment variables in the command line will override any
-`viewportWidth` or `viewportHeight` options set in the Cypress configuration:
+例如，命令行中的这些环境变量将覆盖 Cypress 配置中设置的任何 `viewportWidth` 或 `viewportHeight` 选项：
 
 ```shell
 export CYPRESS_VIEWPORT_WIDTH=800
 export CYPRESS_VIEWPORT_HEIGHT=600
 ```
 
-See the
-[Environment Variables](/app/references/environment-variables#Option-3-CYPRESS_)
-guide for more examples.
+更多示例请参阅 [环境变量](/app/references/environment-variables#Option-3-CYPRESS_) 指南。
 
-## Test Configuration
+## 测试配置
 
-We provide two options to override the configuration while your test are
-running, `Cypress.config()` and suite-specific or test-specific configuration
-overrides.
+我们提供了两种选项来在测试运行时覆盖配置：`Cypress.config()` 和特定于套件或测试的配置覆盖。
 
-⚠️ **Note:** The configuration values below are all writeable and **can be
-changed** via per test configuration. Any other configuration values are
-readonly and cannot be changed at run time.
+⚠️ **注意：** 以下配置值都是可写的，并且可以通过每个测试的配置 **更改**。任何其他配置值都是只读的，不能在运行时更改。
 
 - `animationDistanceThreshold`
 - `baseUrl`
 - `blockHosts`
 - `defaultCommandTimeout`
-- `env` **note:** Provided environment variables will be merged with current
-  environment variables.
+- `env` **注意：** 提供的环境变量将与当前环境变量合并。
 - `execTimeout`
 - `includeShadowDom`
 - `keystrokeDelay`
@@ -356,20 +312,16 @@ readonly and cannot be changed at run time.
 - `scrollBehavior`
 - `slowTestThreshold`
 - `taskTimeout`
-- `testIsolation` - this option can only be overridden at the suite-specific
-  override level
+- `testIsolation` - 此选项只能在套件特定覆盖级别覆盖
 - `viewportHeight`
 - `viewportWidth`
 - `waitForAnimations`
 
 ### `Cypress.config()`
 
-You can also override configuration values within your test using
-[`Cypress.config()`](/api/cypress-api/config).
+你也可以在测试中使用 [`Cypress.config()`](/api/cypress-api/config) 覆盖配置值。
 
-This changes the configuration _for the remaining execution of the current spec
-file_. The values will reset to the previous default values after the spec has
-complete.
+这会更改 _当前规范文件剩余执行时间_ 的配置。在规范完成后，值将重置为之前的默认值。
 
 ```javascript
 Cypress.config('pageLoadTimeout', 100000)
@@ -377,17 +329,13 @@ Cypress.config('pageLoadTimeout', 100000)
 Cypress.config('pageLoadTimeout') // => 100000
 ```
 
-### Test-specific Configuration
+### 测试特定配置
 
-To apply specific Cypress [configuration](/app/references/configuration)
-values to a suite or test, pass a configuration object to the test or suite
-function as the second argument.
+要将特定的 Cypress [配置](/app/references/configuration) 值应用于套件或测试，将配置对象作为第二个参数传递给测试或套件函数。
 
-The configuration values passed in will only take effect during the suite or
-test where they are set. The values will then reset to the previous default
-values after the suite or test is complete.
+传入的配置值仅在设置它们的套件或测试期间生效。在套件或测试完成后，值将重置为之前的默认值。
 
-#### Syntax
+#### 语法
 
 ```javascript
 describe(name, config, fn)
@@ -396,15 +344,11 @@ it(name, config, fn)
 specify(name, config, fn)
 ```
 
-#### Suite configuration
+#### 套件配置
 
-If you want to target a suite of tests to run or be excluded when run in a
-specific browser, you can override the `browser` configuration within the suite
-configuration. The `browser` option accepts the same arguments as
-[`Cypress.isBrowser()`](/api/cypress-api/isbrowser).
+如果你想针对一组测试在特定浏览器中运行或排除，可以在套件配置中覆盖 `browser` 配置。`browser` 选项接受与 [`Cypress.isBrowser()`](/api/cypress-api/isbrowser) 相同的参数。
 
-You can configure the number of times to retries a suite of tests if they fail
-during `cypress run` and `cypress open` separately.
+你可以配置在 `cypress run` 和 `cypress open` 期间分别重试失败的测试套件的次数。
 
 ```js
 describe(
@@ -427,12 +371,9 @@ describe(
 )
 ```
 
-#### Single test configuration
+#### 单个测试配置
 
-If you want to target a test to run or be excluded when run in a specific
-browser, you can override the `browser` configuration within the test
-configuration. The `browser` option accepts the same arguments as
-[Cypress.isBrowser()](/api/cypress-api/isbrowser).
+如果你想针对一个测试在特定浏览器中运行或排除，可以在测试配置中覆盖 `browser` 配置。`browser` 选项接受与 [`Cypress.isBrowser()`](/api/cypress-api/isbrowser) 相同的参数。
 
 ```js
 it('Show warning outside Chrome', { browser: '!chrome' }, () => {
@@ -443,52 +384,45 @@ it('Show warning outside Chrome', { browser: '!chrome' }, () => {
 })
 ```
 
-## Resolved Configuration
+## 解析后的配置
 
-When you open a Cypress project, expanding the Project Settings panel under
-**Settings** will display the resolved configuration to you. This helps you to
-understand and see where different values came from. Each set value is
-highlighted to show where the value has been set via the following ways:
+当你打开一个 Cypress 项目时，在 **设置** 下展开项目设置面板将显示解析后的配置。这有助于你理解和查看不同值的来源。每个设置的值都会高亮显示，以显示它是通过以下哪种方式设置的：
 
-- Default value
-- [Cypress configuration file](/app/references/configuration)
-- The
-  [Cypress environment file](/app/references/environment-variables#Option-2-cypressenvjson)
-- System
-  [environment variables](/app/references/environment-variables#Option-3-CYPRESS_)
-- [Command Line arguments](/app/references/command-line)
+- 默认值
+- [Cypress 配置文件](/app/references/configuration)
+- [Cypress 环境文件](/app/references/environment-variables#Option-2-cypressenvjson)
+- 系统 [环境变量](/app/references/environment-variables#Option-3-CYPRESS_)
+- [命令行参数](/app/references/command-line)
 - [setupNodeEvents](#setupNodeEvents)
 
 <DocsImage
   src="/img/app/configuration/v10/see-resolved-configuration.png"
-  alt="See resolved configuration"
+  alt="查看解析后的配置"
 />
 
-## Notes
+## 注释
 
 ### blockHosts
 
-By passing a string or array of strings you can block requests made to one or
-more hosts.
+通过传递一个字符串或字符串数组，你可以阻止对一个或多个主机的请求。
 
-To block a host:
+要阻止一个主机：
 
-- ✅ Pass only the host
-- ✅ Use wildcard `*` patterns
-- ✅ Include the port other than `80` and `443`
-- ❌ Do **NOT** include protocol: `http://` or `https://`
+- ✅ 仅传递主机
+- ✅ 使用通配符 `*` 模式
+- ✅ 包括 `80` 和 `443` 以外的端口
+- ❌ **不要** 包括协议：`http://` 或 `https://`
 
 :::info
 
-Not sure what a part of the URL a host is?
-[Use this guide as a reference.](https://nodejs.org/api/url.html#url_url_strings_and_url_objects)
+不确定 URL 的哪部分是主机？
+[使用此指南作为参考。](https://nodejs.org/api/url.html#url_url_strings_and_url_objects)
 
-When blocking a host, we use [`minimatch`](/api/utilities/minimatch) to check
-the host. When in doubt you can test whether something matches yourself.
+阻止主机时，我们使用 [`minimatch`](/api/utilities/minimatch) 来检查主机。如有疑问，你可以自行测试是否匹配。
 
 :::
 
-Given the following URLs:
+给定以下 URL：
 
 ```text
 https://www.google-analytics.com/ga.js
@@ -496,7 +430,7 @@ https://www.google-analytics.com/ga.js
 http://localhost:1234/some/user.json
 ```
 
-This would match the following blocked hosts:
+这将匹配以下被阻止的主机：
 
 ```text
 www.google-analytics.com
@@ -506,40 +440,34 @@ www.google-analytics.com
 localhost:1234
 ```
 
-Because `localhost:1234` uses a port other than `80` and `443` it **must be
-included**.
+因为 `localhost:1234` 使用了 `80` 和 `443` 以外的端口，所以 **必须包括端口**。
 
 :::caution
 
-<strong>Subdomains</strong>
+<strong>子域名</strong>
 
-Be cautious for URL's which have no subdomain.
+对于没有子域名的 URL 要小心。
 
-For instance given a URL: `https://google.com/search?q=cypress`
+例如给定 URL：`https://google.com/search?q=cypress`
 
-- ✅ Matches `google.com`
-- ✅ Matches `*google.com`
-- ❌ Does NOT match `*.google.com`
+- ✅ 匹配 `google.com`
+- ✅ 匹配 `*google.com`
+- ❌ 不匹配 `*.google.com`
 
 :::
 
-When Cypress blocks a request made to a matching host, it will automatically
-send a `503` status code. As a convenience it also sets a
-`x-cypress-matched-blocked-host` header so you can see which rule it
-matched.
+当 Cypress 阻止对匹配主机的请求时，它会自动发送 `503` 状态码。为了方便起见，它还设置了一个 `x-cypress-matched-blocked-host` 标头，以便你可以看到它匹配了哪个规则。
 
 <DocsImage
   src="/img/app/references/v10/blocked-host.png"
-  alt="Network tab of dev tools showing blocked host"
+  alt="开发者工具的网络标签显示被阻止的主机"
 />
 
 ### devServer
 
-The `devServer` option is required for [`component`](#component) testing, and
-allows you to register a component testing dev server.
+`devServer` 选项是 [`component`](#component) 测试必需的，允许你注册一个组件测试开发服务器。
 
-Typically, you will specify a `framework` and `bundler` options in `devServer`
-for your framework and UI library like so:
+通常，你会在 `devServer` 中为你的框架和 UI 库指定 `framework` 和 `bundler` 选项，如下所示：
 
 :::cypress-config-example
 
@@ -556,17 +484,13 @@ for your framework and UI library like so:
 
 :::
 
-See
-[Framework Configuration](/app/component-testing/component-framework-configuration)
-guide for more info on all the available `framework` and `bundler` options, as
-well as additional configuration options.
+有关所有可用的 `framework` 和 `bundler` 选项以及其他配置选项的更多信息，请参阅 [框架配置](/app/component-testing/component-framework-configuration) 指南。
 
-#### Custom Dev Server
+#### 自定义开发服务器
 
-It is possible to customize the devServer and provide your own function for
-custom or advanced setups.
+可以自定义 devServer 并提供自己的函数以实现自定义或高级设置。
 
-The devServer function receives a `cypressConfig` argument:
+devServer 函数接收一个 `cypressConfig` 参数：
 
 :::cypress-config-example
 
@@ -574,8 +498,7 @@ The devServer function receives a `cypressConfig` argument:
 {
   component: {
     devServer(cypressConfig) {
-      // return dev server instance or a promise that resolves to
-      // a dev server instance here
+      // 返回开发服务器实例或解析为开发服务器实例的 promise
     },
   },
 }
@@ -583,52 +506,38 @@ The devServer function receives a `cypressConfig` argument:
 
 :::
 
-See the
-[Custom Dev Server](/app/component-testing/component-framework-configuration)
-guide for more info.
+更多信息请参阅 [自定义开发服务器](/app/component-testing/component-framework-configuration) 指南。
 
 ### excludeSpecPattern
 
-Cypress uses `minimatch` with the options: `{dot: true, matchBase: true}`. We
-suggest using [https://globster.xyz](https://globster.xyz) to test what files
-would match.
+Cypress 使用 `minimatch` 和选项：`{dot: true, matchBase: true}`。我们建议使用 [https://globster.xyz](https://globster.xyz) 来测试哪些文件会匹配。
 
-The `**/node_modules/**` pattern is automatically added to `excludeSpecPattern`,
-and does not need to be specified (and can't be overridden). See [`e2e`](#e2e)
-or [`component`](#component) testing-specific options.
+`**/node_modules/**` 模式会自动添加到 `excludeSpecPattern`，无需指定（也无法覆盖）。请参阅 [`e2e`](#e2e) 或 [`component`](#component) 测试特定选项。
 
 ### injectDocumentDomain
 
-This option is <Badge type="caution">deprecated</Badge>, and will be removed in a future version of Cypress.
+此选项已 <Badge type="caution">弃用</Badge>，并将在未来的 Cypress 版本中移除。
 
-Set this configuration option to `true` to instruct Cypress to
-[inject document.domain](/app/guides/cross-origin-testing#What-Cypress-does-under-the-hood)
-into your test application.
-This can reduce the need for [`cy.origin()`](/api/commands/origin)
-when [navigating between subdomains](/app/guides/cross-origin-testing),
-but comes with compatibility caveats for some sites.
+将此配置选项设置为 `true` 以指示 Cypress
+[注入 document.domain](/app/guides/cross-origin-testing#What-Cypress-does-under-the-hood)
+到你的测试应用中。
+这可以减少在 [子域之间导航](/app/guides/cross-origin-testing) 时对 [`cy.origin()`](/api/commands/origin) 的需求，
+但对于某些站点存在兼容性问题。
 
-This configuration option is provided to ease the transition between [`cy.origin()`](/api/commands/origin)'s behavior
-in Cypress 13 and the default behavior in Cypress 14.
-[Read the Cypress 14 migration guide](/app/references/migration-guide#Migrating-to-Cypress-140) to understand how to update your tests to remove
-the need to set this flag.
+此配置选项用于缓解 Cypress 13 和 Cypress 14 默认行为之间的 [`cy.origin()`](/api/commands/origin) 行为差异。
+[阅读 Cypress 14 迁移指南](/app/references/migration-guide#Migrating-to-Cypress-140) 以了解如何更新你的测试以移除设置此标志的需求。
 
-This configuration value _must_ be set to true if you are running tests with experimental
-WebKit support, as [`cy.origin()`](/api/commands/origin) is not yet supported in WebKit.
+如果你正在运行支持实验性 WebKit 的测试，此配置值 _必须_ 设置为 true，因为 WebKit 尚不支持 [`cy.origin()`](/api/commands/origin)。
 
 :::caution
 
-#### Known Incompatibilities
+#### 已知不兼容性
 
-Setting this configuration value to `true` can cause the application you are testing
-to behave in unexpected ways. This is especially true if a site your tests visit
-sets the [`Origin-Agent-Cluster`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster)
-header.
+将此配置值设置为 `true` 可能导致你正在测试的应用行为异常。如果你的测试访问的站点设置了 [`Origin-Agent-Cluster`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster) 标头，这一点尤其明显。
 
-At this point in time, we are aware of the following sites that cannot be tested properly
-if this option is set to `true`:
+目前，我们知道以下站点在此选项设置为 `true` 时无法正确测试：
 
-- Azure AD B2C authentication workflows
+- Azure AD B2C 认证流程
 - Salesforce
 - Google
 
@@ -648,50 +557,33 @@ if this option is set to `true`:
 
 ### isInteractive
 
-You can open Cypress in the interactive mode via the `cypress open` command, and
-in run mode via the `cypress run` command. To detect the mode from your test
-code you can query the `isInteractive` property on
-[Cypress.config](/api/cypress-api/config).
+你可以通过 `cypress open` 命令以交互模式打开 Cypress，通过 `cypress run` 命令以运行模式打开。要从测试代码中检测模式，可以查询 [Cypress.config](/api/cypress-api/config) 上的 `isInteractive` 属性。
 
 ```javascript
 if (Cypress.config('isInteractive')) {
-  // interactive "cypress open" mode!
+  // 交互式 "cypress open" 模式！
 } else {
-  // "cypress run" mode
+  // "cypress run" 模式
 }
 ```
 
 ### modifyObstructiveCode
 
-With this option enabled - Cypress will search through the response streams
-coming from your server on `.html` and `.js` files and replace code that matches
-patterns commonly found in framebusting.
+启用此选项后，Cypress 将在来自服务器的 `.html` 和 `.js` 文件的响应流中搜索并替换常见于防框架破坏的代码模式。
 
-These script patterns are antiquated and deprecated security techniques to
-prevent clickjacking and framebusting. They are a relic of the past and are no
-longer necessary in modern browsers. However many sites and applications still
-implement them.
+这些脚本模式是过时和弃用的安全技术，用于防止点击劫持和防框架破坏。它们是过去的遗物，在现代浏览器中不再必要。然而，许多站点和应用仍然实现它们。
 
-These techniques prevent Cypress from working, and they can be safely removed
-without altering any of your application's behavior.
+这些技术阻止 Cypress 工作，并且可以在不改变应用行为的情况下安全移除。
 
-Cypress modifies these scripts at the network level, and therefore there is a
-tiny performance cost to search the response streams for these patterns.
+Cypress 在网络级别修改这些脚本，因此搜索响应流中的这些模式会有微小的性能成本。
 
-You can turn this option off if the application or site you're testing **does
-not** implement these security measures. Additionally it's possible that the
-patterns we search for may accidentally rewrite valid JS code. If that's the
-case, please disable this option.
+如果你测试的应用或站点 **没有** 实现这些安全措施，可以关闭此选项。此外，我们搜索的模式可能会意外重写有效的 JS 代码。如果发生这种情况，请禁用此选项。
 
-Details for `experimentalModifyObstructiveThirdPartyCode` can be found
-[here](/app/guides/cross-origin-testing#Modifying-Obstructive-Third-Party-Code).
+`experimentalModifyObstructiveThirdPartyCode` 的详细信息可以在 [这里](/app/guides/cross-origin-testing#Modifying-Obstructive-Third-Party-Code) 找到。
 
 ### setupNodeEvents
 
-The `setupNodeEvents` function allows you to tap into, modify, or extend the
-internal behavior of Cypress using the [`on`](/api/node-events/overview#on)
-and [`config`](/api/node-events/overview#config) arguments, and is valid as
-an [`e2e`](#e2e) or [`component`](#component) testing specific option.
+`setupNodeEvents` 函数允许你使用 [`on`](/api/node-events/overview#on) 和 [`config`](/api/node-events/overview#config) 参数来接入、修改或扩展 Cypress 的内部行为，并且作为 [`e2e`](#e2e) 或 [`component`](#component) 测试特定选项有效。
 
 :::cypress-config-example
 
@@ -699,12 +591,12 @@ an [`e2e`](#e2e) or [`component`](#component) testing specific option.
 {
   e2e: {
     setupNodeEvents(on, config) {
-      // e2e testing node events setup code
+      // 端到端测试节点事件设置代码
     },
   },
   component: {
     setupNodeEvents(on, config) {
-      // component testing node events setup code
+      // 组件测试节点事件设置代码
     },
   },
 }
@@ -712,20 +604,19 @@ an [`e2e`](#e2e) or [`component`](#component) testing specific option.
 
 :::
 
-See the [plugins guide](/app/plugins/plugins-guide) for more information.
+更多信息请参阅 [插件指南](/app/plugins/plugins-guide)。
 
-## Common problems
+## 常见问题
 
-### <Icon name="angle-right" /> `baseUrl` is not set
+### <Icon name="angle-right" /> `baseUrl` 未设置
 
-Make sure you do not accidentally place the `baseUrl` config option into the
-`env` object. The following configuration is _incorrect_ and will not work:
+确保你没有意外将 `baseUrl` 配置选项放入 `env` 对象中。以下配置是 _不正确_ 的，将不起作用：
 
 :::cypress-config-example
 
 ```ts
 {
-  // ⛔️ DOES NOT WORK
+  // ⛔️ 不起作用
   env: {
     baseUrl: 'http://localhost:3030',
     FOO: 'bar',
@@ -735,14 +626,13 @@ Make sure you do not accidentally place the `baseUrl` config option into the
 
 :::
 
-Solution: place the `baseUrl` property outside the `env` object and inside the
-[e2e](/app/references/configuration#e2e) testing-type specific object.
+解决方案：将 `baseUrl` 属性放在 `env` 对象之外，放在 [e2e](/app/references/configuration#e2e) 测试类型特定对象内。
 
 :::cypress-config-example
 
 ```ts
 {
-  // ✅ THE CORRECT WAY
+  // ✅ 正确方式
   env: {
     FOO: 'bar',
   },
@@ -754,47 +644,43 @@ Solution: place the `baseUrl` property outside the `env` object and inside the
 
 :::
 
-You can also find a few tips on setting the `baseUrl` in this
-[short video](https://www.youtube.com/watch?v=f5UaXuAc52c).
+你还可以在这个 [短视频](https://www.youtube.com/watch?v=f5UaXuAc52c) 中找到一些关于设置 `baseUrl` 的技巧。
 
-### <Icon name="angle-right" /> Test files not found when using `spec` parameter
+### <Icon name="angle-right" /> 使用 `spec` 参数时未找到测试文件
 
-When using the `--spec <path or mask>` argument, make it relative to the
-project's folder. If the specs are still missing, run Cypress with
-[DEBUG logs](/app/references/troubleshooting#Print-DEBUG-logs) with the
-following setting to see how Cypress is looking for spec files:
+使用 `--spec <路径或掩码>` 参数时，请使其相对于项目文件夹。如果仍然缺少规范，请使用 [DEBUG 日志](/app/references/troubleshooting#Print-DEBUG-logs) 运行 Cypress，并设置以下选项以查看 Cypress 如何查找规范文件：
 
 ```shell
 DEBUG=cypress:cli,cypress:data-context:sources:FileDataSource,cypress:data-context:sources:ProjectDataSource
 ```
 
-## History
+## 历史
 
-| Version                                      | Changes                                                                                                                                       |
+| 版本                                      | 变更                                                                                                                                       |
 | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| [14.0.0](/app/references/changelog#14-0-0)   | Added support for re-enabling superdomain navigation with the `injectDocumentDomain` configuration option                                     |
-| [13.16.0](/app/references/changelog#13-16-0) | Added `defaultBrowser` option.                                                                                                                |
-| [13.4.0](/app/references/changelog#13-4-0)   | Added support for configuring the Experimental Flake Detection strategy via `retries.experimentalStrategy` and `retries.experimentalOptions`. |
-| [13.0.0](/app/references/changelog#13-0-0)   | Removed `nodeVersion` option.                                                                                                                 |
-| [13.0.0](/app/references/changelog#13-0-0)   | Removed `videoUploadOnPasses` option.                                                                                                         |
-| [11.0.0](/app/references/changelog#11-0-0)   | Removed `e2e.experimentalSessionAndOrigin` option.                                                                                            |
-| [10.4.0](/app/references/changelog#10-4-0)   | Added `e2e.testIsolation` option.                                                                                                             |
-| [10.0.0](/app/references/changelog#10-0-0)   | Reworked page to support new `cypress.config.js` and deprecated `cypress.json` files.                                                         |
-| [8.7.0](/app/references/changelog#8-7-0)     | Added `slowTestThreshold` option.                                                                                                             |
-| [8.0.0](/app/references/changelog#8-0-0)     | Added `clientCertificates` option and removed `firefoxGcInterval` configuration.                                                              |
-| [7.0.0](/app/references/changelog#7-0-0)     | Added `e2e` and `component` options.                                                                                                          |
-| [7.0.0](/app/references/changelog#7-0-0)     | Added `redirectionLimit` option.                                                                                                              |
-| [6.1.0](/app/references/changelog#6-1-0)     | Added `scrollBehavior` option.                                                                                                                |
-| [5.2.0](/app/references/changelog#5-2-0)     | Added `includeShadowDom` option.                                                                                                              |
-| [5.0.0](/app/references/changelog#5-0-0)     | Added `retries` configuration.                                                                                                                |
-| [5.0.0](/app/references/changelog#5-0-0)     | Renamed `blacklistHosts` configuration to `blockHosts`.                                                                                       |
-| [4.1.0](/app/references/changelog#4-12-0)    | Added `screenshotOnRunFailure` configuration.                                                                                                 |
-| [4.0.0](/app/references/changelog#4-0-0)     | Added `firefoxGcInterval` configuration.                                                                                                      |
-| [3.5.0](/app/references/changelog#3-5-0)     | Added `nodeVersion` configuration.                                                                                                            |
+| [14.0.0](/app/references/changelog#14-0-0)   | 添加了通过 `injectDocumentDomain` 配置选项重新启用超级域名导航的支持                                     |
+| [13.16.0](/app/references/changelog#13-16-0) | 添加了 `defaultBrowser` 选项。                                                                                                                |
+| [13.4.0](/app/references/changelog#13-4-0)   | 添加了通过 `retries.experimentalStrategy` 和 `retries.experimentalOptions` 配置实验性 Flake Detection 策略的支持。 |
+| [13.0.0](/app/references/changelog#13-0-0)   | 移除了 `nodeVersion` 选项。                                                                                                                 |
+| [13.0.0](/app/references/changelog#13-0-0)   | 移除了 `videoUploadOnPasses` 选项。                                                                                                         |
+| [11.0.0](/app/references/changelog#11-0-0)   | 移除了 `e2e.experimentalSessionAndOrigin` 选项。                                                                                            |
+| [10.4.0](/app/references/changelog#10-4-0)   | 添加了 `e2e.testIsolation` 选项。                                                                                                             |
+| [10.0.0](/app/references/changelog#10-0-0)   | 重新设计了页面以支持新的 `cypress.config.js` 并弃用 `cypress.json` 文件。                                                         |
+| [8.7.0](/app/references/changelog#8-7-0)     | 添加了 `slowTestThreshold` 选项。                                                                                                             |
+| [8.0.0](/app/references/changelog#8-0-0)     | 添加了 `clientCertificates` 选项并移除了 `firefoxGcInterval` 配置。                                                              |
+| [7.0.0](/app/references/changelog#7-0-0)     | 添加了 `e2e` 和 `component` 选项。                                                                                                          |
+| [7.0.0](/app/references/changelog#7-0-0)     | 添加了 `redirectionLimit` 选项。                                                                                                              |
+| [6.1.0](/app/references/changelog#6-1-0)     | 添加了 `scrollBehavior` 选项。                                                                                                               |
+| [5.2.0](/app/references/changelog#5-2-0)     | 添加了 `includeShadowDom` 选项。                                                                                                              |
+| [5.0.0](/app/references/changelog#5-0-0)     | 添加了 `retries` 配置。                                                                                                                       |
+| [5.0.0](/app/references/changelog#5-0-0)     | 将 `blacklistHosts` 配置重命名为 `blockHosts`。                                                                                       |
+| [4.1.0](/app/references/changelog#4-12-0)    | 添加了 `screenshotOnRunFailure` 配置。                                                                                                 |
+| [4.0.0](/app/references/changelog#4-0-0)     | 添加了 `firefoxGcInterval` 配置。                                                                                                      |
+| [3.5.0](/app/references/changelog#3-5-0)     | 添加了 `nodeVersion` 配置。                                                                                                            |
 
-## See also
+## 另请参阅
 
-- [Cypress.config()](/api/cypress-api/config) and
+- [Cypress.config()](/api/cypress-api/config) 和
   [Cypress.env()](/api/cypress-api/env)
-- [Environment variables](/app/references/environment-variables)
-- [Environment Variables recipe](/app/references/recipes#Fundamentals)
+- [环境变量](/app/references/environment-variables)
+- [环境变量配方](/app/references/recipes#Fundamentals)

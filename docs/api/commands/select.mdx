@@ -1,6 +1,6 @@
 ---
-title: 'select | Cypress Documentation'
-description: 'Select an option within a select in Cypress.'
+title: 'select | Cypress 文档'
+description: '在 Cypress 中选择 select 元素中的选项'
 sidebar_label: select
 slug: /api/commands/select
 ---
@@ -9,12 +9,11 @@ slug: /api/commands/select
 
 # select
 
-Select an `<option>` within a `<select>`.
+选择 `<select>` 元素中的 `<option>` 选项。
 
-It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried) to
-chain further commands that rely on the subject after `.select()`.
+在 `.select()` 之后继续链式调用依赖于该主题的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Syntax
+## 语法
 
 ```javascript
 .select(value)
@@ -23,53 +22,51 @@ chain further commands that rely on the subject after `.select()`.
 .select(values, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('select').select('user-1') // Select the 'user-1' option
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.select('John Adams') // Errors, cannot be chained off 'cy'
-cy.clock().select() // Errors, 'clock' does not yield a <select> element
+cy.get('select').select('user-1') // 选择 'user-1' 选项
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
+
+```javascript
+cy.select('John Adams') // 错误，不能直接链式调用 'cy'
+cy.clock().select() // 错误，'clock' 不返回 <select> 元素
+```
+
+### 参数
 
 <Icon name="angle-right" /> **value _(String, Number)_**
 
-The `value`, `index`, or text content of the `<option>` to be selected.
+要选择的 `<option>` 的 `value`、`index` 或文本内容。
 
 <Icon name="angle-right" /> **values _(Array)_**
 
-An array of `values`, `indexes`, or text contents of the `<option>`s to be
-selected.
+要选择的多个 `<option>` 的 `value`、`index` 或文本内容的数组。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `.select()`.
+传入一个选项对象以改变 `.select()` 的默认行为。
 
-| Option    | Default                                                           | Description                                                                         |
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `force`   | `false`                                                           | Forces the action, disables [waiting for actionability](#Assertions)                |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.select()` to resolve before [timing out](#Timeouts)              |
+| `force`   | `false`                                                           | 强制执行操作，禁用[等待可操作性](#Assertions)                |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 在[超时](#Timeouts)前等待 `.select()` 解析的时间              |
 
 <HeaderYields />
 
-- `.select()` yields the same subject it was given.
-- It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried)
-  to chain further commands that rely on the subject after `.select()`.
+- `.select()` 返回与原始主题相同的主题。
+- 在 `.select()` 之后继续链式调用依赖于该主题的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Examples
+## 示例
 
-### Text Content
+### 文本内容
 
-#### Select the `option` with the text `apples`
+#### 选择文本为 `apples` 的 `option`
 
 ```html
 <select>
@@ -80,13 +77,13 @@ Pass in an options object to change the default behavior of `.select()`.
 ```
 
 ```javascript
-// yields <option value="456">apples</option>
+// 返回 <option value="456">apples</option>
 cy.get('select').select('apples').should('have.value', '456')
 ```
 
 ### Value
 
-#### Select the `option` with the value "456"
+#### 选择 value 为 "456" 的 `option`
 
 ```html
 <select>
@@ -97,13 +94,13 @@ cy.get('select').select('apples').should('have.value', '456')
 ```
 
 ```javascript
-// yields <option value="456">apples</option>
+// 返回 <option value="456">apples</option>
 cy.get('select').select('456').should('have.value', '456')
 ```
 
 ### Index
 
-#### Select the `option` with index 0
+#### 选择 index 为 0 的 `option`
 
 ```html
 <select>
@@ -114,13 +111,13 @@ cy.get('select').select('456').should('have.value', '456')
 ```
 
 ```javascript
-// yields <option value="456">apples</option>
+// 返回 <option value="456">apples</option>
 cy.get('select').select(0).should('have.value', '456')
 ```
 
-### Select multiple options
+### 选择多个选项
 
-#### Select the options with the texts "apples" and "bananas"
+#### 选择文本为 "apples" 和 "bananas" 的选项
 
 ```html
 <select multiple>
@@ -137,7 +134,7 @@ cy.get('select')
   .should('deep.equal', ['456', '458'])
 ```
 
-#### Select the options with the values "456" and "457"
+#### 选择 value 为 "456" 和 "457" 的选项
 
 ```html
 <select multiple>
@@ -154,7 +151,7 @@ cy.get('select')
   .should('deep.equal', ['456', '457'])
 ```
 
-#### Select the options with the indexes 0 and 1
+#### 选择 index 为 0 和 1 的选项
 
 ```html
 <select multiple>
@@ -173,16 +170,13 @@ cy.get('select')
 
 :::info
 
-**Note:** Passing an array into `cy.select()` will select only the options
-matching values in the array, leaving all other options unselected (even those
-that were previously selected). In the same manner, calling `cy.select([])` with
-an empty array will clear selections on all options.
+**注意：** 向 `cy.select()` 传入数组将仅选择数组中匹配的选项，其他所有选项将保持未选中状态（即使之前已选中）。同样，调用 `cy.select([])` 并传入空数组将清除所有选项的选中状态。
 
 :::
 
-### Force select
+### 强制选择
 
-#### Force select a hidden `<select>`
+#### 强制选择一个隐藏的 `<select>`
 
 ```html
 <select style="display: none;">
@@ -202,13 +196,9 @@ cy.get('select')
   .should('eq', 'banana')
 ```
 
-#### Force select a disabled `<select>`
+#### 强制选择一个禁用的 `<select>`
 
-Passing `{ force: true }` to `.select()` will override the actionability checks
-for selecting a disabled `<select>`. However, it will not override the
-actionability checks for selecting a disabled `<option>` or an option within a
-disabled `<optgroup>`. See
-[this issue](https://github.com/cypress-io/cypress/issues/107) for more detail.
+向 `.select()` 传入 `{ force: true }` 将覆盖对禁用 `<select>` 的可操作性检查。但是，它不会覆盖对禁用 `<option>` 或禁用 `<optgroup>` 中选项的可操作性检查。更多详情请参阅[此问题](https://github.com/cypress-io/cypress/issues/107)。
 
 ```html
 <select disabled>
@@ -228,10 +218,9 @@ cy.get('select')
   .should('eq', 'okra')
 ```
 
-### Selected option
+### 已选选项
 
-You can get the currently selected option using the jQuery's
-[:selected selector](https://api.jquery.com/selected-selector/).
+您可以使用 jQuery 的[:selected 选择器](https://api.jquery.com/selected-selector/)获取当前选中的选项。
 
 ```html
 <select id="name">
@@ -245,63 +234,54 @@ You can get the currently selected option using the jQuery's
 cy.get('select#name option:selected').should('have.text', 'Peter')
 ```
 
-## Notes
+## 注意事项
 
-### Actionability
+### 可操作性
 
-`.select()` is an action command that follows the rules of
-[Actionability](/app/core-concepts/interacting-with-elements).
+`.select()` 是一个遵循[可操作性规则](/app/core-concepts/interacting-with-elements)的操作命令。
 
-However, passing `{ force: true }` to `.select()` will not override the
-actionability checks for selecting a disabled `<option>` or an option within a
-disabled `<optgroup>`. See
-[this issue](https://github.com/cypress-io/cypress/issues/107) for more detail.
+然而，向 `.select()` 传入 `{ force: true }` 不会覆盖对禁用 `<option>` 或禁用 `<optgroup>` 中选项的可操作性检查。更多详情请参阅[此问题](https://github.com/cypress-io/cypress/issues/107)。
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.select()` requires being chained off a command that yields DOM element(s).
-- `.select()` requires the element to be a `select`.
+- `.select()` 需要链式调用返回 DOM 元素的命令。
+- `.select()` 要求元素为 `select` 类型。
 
 <HeaderAssertions />
 
-- `.select()` will automatically wait for the element to reach an
-  [actionable state](/app/core-concepts/interacting-with-elements).
-- `.select()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed.
+- `.select()` 会自动等待元素达到[可操作状态](/app/core-concepts/interacting-with-elements)。
+- `.select()` 会自动[重试](/app/core-concepts/retry-ability)直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `.select()` can time out waiting for the element to reach an
-  [actionable state](/app/core-concepts/interacting-with-elements).
-- `.select()` can time out waiting for assertions you've added to pass.
+- `.select()` 可能会因等待元素达到[可操作状态](/app/core-concepts/interacting-with-elements)而超时。
+- `.select()` 可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Select the option with the text "Homer Simpson"_**
+**_选择文本为 "Homer Simpson" 的选项_**
 
 ```javascript
 cy.get('select').select('Homer Simpson')
 ```
 
-The commands above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/select/select-homer-option-from-browser-dropdown.png"
   alt="Command Log select"
 />
 
-When clicking on `select` within the command log, the console outputs the
-following:
+当点击命令日志中的 `select` 时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/select/console-log-for-select-shows-option-and-any-events-caused-from-clicking.png"
   alt="Console Log select"
 />
 
-## See also
+## 另请参阅
 
-- Read
-  [Working with Select elements and Select2 widgets in Cypress](https://www.cypress.io/blog/2020/03/20/working-with-select-elements-and-select2-widgets-in-cypress/)
+- 阅读[在 Cypress 中处理 Select 元素和 Select2 小部件](https://www.cypress.io/blog/2020/03/20/working-with-select-elements-and-select2-widgets-in-cypress/)
 - [`.click()`](/api/commands/click)

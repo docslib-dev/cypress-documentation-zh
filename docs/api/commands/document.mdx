@@ -1,6 +1,6 @@
 ---
-title: 'document | Cypress Documentation'
-description: Get the `window.document` of the page that is currently active.
+title: 'document | Cypress 文档'
+description: 获取当前活动页面的 `window.document` 对象。
 sidebar_label: document
 slug: /api/commands/document
 ---
@@ -9,96 +9,94 @@ slug: /api/commands/document
 
 # document
 
-Get the `window.document` of the page that is currently active.
+获取当前活动页面的 `window.document` 对象。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.document()
 cy.document(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.document() // yield the window.document object
+cy.document() // 返回 window.document 对象
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `cy.document()`.
+传入一个选项对象来改变 `cy.document()` 的默认行为。
 
-| Option    | Default                                                           | Description                                                                         |
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.document()` to resolve before [timing out](#Timeouts)          |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 等待 `cy.document()` 解析的超时时间，超过则[超时](#Timeouts)          |
 
 <HeaderYields />
 
-- `cy.document()` 'yields the `window.document` object.
-- `cy.document()` is a query, and it is _safe_ to chain further commands.
+- `cy.document()` 返回 `window.document` 对象。
+- `cy.document()` 是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Get document and do some work
+#### 获取 document 并执行操作
 
 ```javascript
 cy.document().then((doc) => {
-  // work with document element
+  // 操作 document 元素
 })
 ```
 
-#### Make an assertion about the document
+#### 对 document 进行断言
 
 ```javascript
 cy.document().its('contentType').should('eq', 'text/html')
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.document()` requires being chained off of `cy`.
+- `cy.document()` 必须通过 `cy` 链式调用。
 
 <HeaderAssertions />
 
-- `cy.document()` will automatically
-  [retry](/app/core-concepts/retry-ability) until all chained assertions have
-  passed
+- `cy.document()` 会自动
+  [重试](/app/core-concepts/retry-ability) 直到所有链式断言通过
 
 <HeaderTimeouts />
 
-- `cy.document()` can time out waiting for assertions you've added to pass.
+- `cy.document()` 可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Get the document_**
+**_获取 document_**
 
 ```javascript
 cy.document()
 ```
 
-The command above will display in the Command Log as:
+上述命令在命令日志中显示为：
 
 <DocsImage
   src="/img/api/document/get-document-of-application-in-command-log.png"
-  alt="Command log document"
+  alt="命令日志中的 document"
 />
 
-When clicking on `document` within the command log, the console outputs the
-following:
+当点击命令日志中的 `document` 时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/document/console-yields-the-document-of-aut.png"
-  alt="console.log document"
+  alt="console.log 输出的 document"
 />
 
-## See also
+## 另请参阅
 
 - [`cy.window()`](/api/commands/window)

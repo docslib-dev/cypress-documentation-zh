@@ -1,6 +1,6 @@
 ---
-title: 'hover | Cypress Documentation'
-description: 'Cypress does not have a cy.hover() command: See common workarounds'
+title: 'hover | Cypress 文档'
+description: 'Cypress 没有 cy.hover() 命令：查看常见解决方案'
 sidebar_label: hover
 ---
 
@@ -10,49 +10,42 @@ sidebar_label: hover
 
 :::danger
 
-Cypress does not have a **cy.hover()** command. See
-[Issue #10](https://github.com/cypress-io/cypress/issues/10).
+Cypress 没有 **cy.hover()** 命令。请参阅
+[Issue #10](https://github.com/cypress-io/cypress/issues/10)。
 
 :::
 
-If `cy.hover()` is used, an error will display and redirect you to this page.
+如果使用了 `cy.hover()`，将会显示错误并跳转到本页面。
 
-## Workarounds
+## 解决方案
 
-Sometimes an element has specific logic on hover and you _do_ need to "hover" in
-Cypress. Maybe the element doesn't even display to be clickable until you hover
-over another element.
+有时元素在悬停时有特定逻辑，你确实需要在 Cypress 中模拟"悬停"。可能元素在悬停到另一个元素之前甚至不会显示为可点击状态。
 
-Oftentimes you can use [`.trigger()`](/api/commands/trigger),
-[`.invoke()`](/api/commands/invoke) or [`cy.wrap()`](/api/commands/wrap) to show
-the element before you perform the action.
+通常你可以使用 [`.trigger()`](/api/commands/trigger)、
+[`.invoke()`](/api/commands/invoke) 或 [`cy.wrap()`](/api/commands/wrap) 来在执行操作前显示元素。
 
 :::info
 
-[Check out our example recipe on testing hover and working with hidden elements](/app/references/recipes#Testing-the-DOM).
-Also take a look at the
-[cypress-real-events](https://github.com/dmtrKovalenko/cypress-real-events)
-plugin that provides native events like hover and swipe in Chromium browsers.
+[查看我们关于测试悬停和处理隐藏元素的示例配方](/app/references/recipes#Testing-the-DOM)。
+也可以看看 [cypress-real-events](https://github.com/dmtrKovalenko/cypress-real-events)
+插件，它提供了在 Chromium 浏览器中的原生事件如悬停和滑动。
 
 :::
 
 ### Trigger
 
-If the hover behavior depends on a JavaScript event like `mouseover`, you can
-trigger the event to achieve that behavior.
+如果悬停行为依赖于 JavaScript 事件如 `mouseover`，你可以触发该事件来实现该行为。
 
 :::danger
 
-Using `.trigger()` will only affect events in JavaScript and will not trigger
-any effects in CSS.
+使用 `.trigger()` 只会影响 JavaScript 中的事件，不会触发 CSS 中的任何效果。
 
 :::
 
-As a workaround, check out the
-[recipe leveraging Chrome remote debugging](/app/references/recipes#Fundamentals) to
-set pseudo classes like `hover`.
+作为解决方案，可以查看
+[利用 Chrome 远程调试的配方](/app/references/recipes#Fundamentals) 来设置如 `hover` 这样的伪类。
 
-#### Simulating `mouseover` event to get popover to display
+#### 模拟 `mouseover` 事件使弹出框显示
 
 ```javascript
 cy.get('.menu-item').trigger('mouseover')
@@ -61,61 +54,55 @@ cy.get('.popover').should('be.visible')
 
 ### Invoke
 
-#### Example of showing an element in order to perform action
+#### 显示元素以执行操作的示例
 
 ```javascript
 cy.get('.hidden').invoke('show').click()
 ```
 
-### Force click
+### 强制点击
 
-You can also force the action to be performed on the element regardless of
-whether the element is visible or not.
+你也可以强制对元素执行操作，无论元素是否可见。
 
-#### Example of clicking on a hidden element
+#### 点击隐藏元素的示例
 
 ```javascript
 cy.get('.hidden').click({ force: true })
 ```
 
-#### Example of checking a hidden element
+#### 勾选隐藏元素的示例
 
 ```javascript
 cy.get('.checkbox').check({ force: true })
 ```
 
-### Add as a custom command
+### 添加为自定义命令
 
-Although Cypress does not have a built-in `cy.hover()` command, you can create
-your own custom command using
-[`Cypress.Commands.add()`](/api/cypress-api/custom-commands).
+尽管 Cypress 没有内置的 `cy.hover()` 命令，但你可以使用
+[`Cypress.Commands.add()`](/api/cypress-api/custom-commands) 创建自己的自定义命令。
 
 ```javascript
 Cypress.Commands.add('hover', (...args) => {})
 ```
 
-Note that while `Cypress.Commands.add()` is the recommended way to define a
-custom `cy.hover()` command since Cypress 10.0,
+请注意，虽然 `Cypress.Commands.add()` 是自 Cypress 10.0 以来推荐的定义自定义 `cy.hover()` 命令的方式，
 [`Cypress.Commands.overwrite()`](/api/cypress-api/custom-commands#Overwrite-Existing-Commands)
-will still work.
+仍然有效。
 
 ```javascript
 Cypress.Commands.overwrite('hover', (originalFn, ...otherArgs) => {})
 ```
 
-## See also
+## 另请参阅
 
-We show how to use the `.trigger` command and the
+我们在视频 [Cypress hover 示例](https://www.youtube.com/watch?v=TZjphtLrRT4) 中展示了如何使用 `.trigger` 命令和
 [cypress-real-events](https://github.com/dmtrKovalenko/cypress-real-events)
-plugin to test elements with hover states in the video
-[Cypress hover example](https://www.youtube.com/watch?v=TZjphtLrRT4), with the
-source code available in the
-[bahmutov/cy-hover-example](https://github.com/bahmutov/cy-hover-example) repo.
+插件来测试具有悬停状态的元素，源代码可在
+[bahmutov/cy-hover-example](https://github.com/bahmutov/cy-hover-example) 仓库中找到。
 
 - [`.invoke()`](/api/commands/invoke)
 - [`.trigger()`](/api/commands/trigger)
 - [`cy.wrap()`](/api/commands/wrap)
 - [`Cypress.Commands.overwrite()`](/api/cypress-api/custom-commands#Overwrite-Existing-Commands)
-- [Recipe: Hover and Hidden Elements](/app/references/recipes#Testing-the-DOM)
-- blog post [Hover in Cypress](https://filiphric.com/hover-in-cypress) by Filip
-  Hric
+- [配方：悬停和隐藏元素](/app/references/recipes#Testing-the-DOM)
+- Filip Hric 的博客文章 [Hover in Cypress](https://filiphric.com/hover-in-cypress)

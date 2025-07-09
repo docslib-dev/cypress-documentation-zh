@@ -1,166 +1,165 @@
 ---
-title: 'Comparing Accessibility Reports | Cypress Documentation'
-description: 'Review the main areas to pay attention to when first reviewing an accessibility report for a Cypress run.'
+title: '对比无障碍测试报告 | Cypress 文档'
+description: '首次查看Cypress运行的无障碍测试报告时需要注意的主要方面'
 sidebar_position: 40
-sidebar_label: Compare reports
+sidebar_label: 对比报告
 ---
 
 <ProductHeading product="accessibility" />
 
-# Compare reports
+# 对比报告
 
-Accessibility reports from different runs can be compared in the [Branch Review](/cloud/features/branch-review#Getting-Started) area of Cypress Cloud. This allows you to instantly see if any new issues have been introduced, and drill in to see full-page HTML and CSS snapshots showing only the new issues.
+不同运行周期的无障碍测试报告可以在Cypress Cloud的[分支评审](/cloud/features/branch-review#Getting-Started)区域进行对比。这使您能立即发现是否引入了新问题，并深入查看仅显示新问题的完整页面HTML和CSS快照。
 
-See the video below for an example of using Branch Review in a Pull Request:
+以下视频展示了在Pull Request中使用分支评审的示例：
 
 <DocsVideo
   src="https://www.youtube.com/embed/k3vq57O4P4M"
-  title="Accessibility branch review demo"
+  title="无障碍分支评审演示"
 />
 
-Comparing two accessibility reports manually is usually a challenge:
+手动对比两份无障碍测试报告通常具有挑战性：
 
-- each report may test thousands of application snapshots for a single Cypress run
-- 80+ accessibility rules are tested for each snapshot
-- many different pages or components are tested and may have changes
-- elements might be identified differently in each run
+- 每份报告可能针对单个Cypress运行测试了数千个应用快照
+- 每个快照测试80+条无障碍规则
+- 测试了多个不同页面或组件，且可能存在变更
+- 元素在不同运行周期中可能被不同方式标识
 
-Branch Review for Cypress Accessibility is set up to help you easily browse this nested set of changes and find what's important. You can review any accessibility violation increases found for specific rules, and drill into the Views where those changes happened.
+Cypress无障碍测试的分支评审功能旨在帮助您轻松浏览这组嵌套变更并发现重要内容。您可以查看特定规则下新增的无障碍违规情况，并深入查看发生这些变更的具体视图。
 
-## Use cases
+## 使用场景
 
-Comparing the results from different runs is useful in multiple scenarios.
+对比不同运行周期的结果在多种场景下都很有用。
 
-**Key use cases:**
+**主要使用场景：**
 
-- **Pre-merge checks**: Know if any net-new issues are introduced by UI code changes.
-- **Monitoring changes**: Compare nightly monitoring runs and track down the introduction of new problems caused by underlying changes in the application.
-- **Detecting content issues**: Sometimes content editors can introduce accessibility issues unrelated to code changes. Seeing the example issues presented visually, in context, helps you quickly triage whether you are dealing with a recent code change issue, or a content authorship problem.
-- **Reviewing AI-generated code changes**: The increased use of AI to generate and/or review front-end code creates some increased risks of accessibility regressions making it to production. The increase or decrease of accessibility issues when reviewing a pull request helps you understand the impact of the change.
-- **Tracing the introduction of issues**: With dropdowns for each run, it's easy to rapidly compare different A and B runs to find the exact commit that introduced a problem.
-- **Demonstrating the resolution of issues**: Confirm the effect of your improvements, and share the overview with your team to more quickly review code changes.
+- **合并前检查**：了解UI代码变更是否引入了净新增问题
+- **监控变更**：对比夜间监控运行结果，追踪由应用底层变更导致的新问题
+- **检测内容问题**：有时内容编辑者会引入与代码变更无关的无障碍问题。通过可视化、上下文中的示例问题，帮助您快速判断是近期代码变更问题还是内容创作问题
+- **审查AI生成的代码变更**：AI生成和/或审查前端代码的增多，增加了无障碍问题进入生产环境的风险。在审查pull request时查看无障碍问题的增减情况，有助于理解变更影响
+- **追踪问题引入**：通过每个运行周期的下拉菜单，可以快速对比不同A/B运行，找到引入问题的具体提交
+- **展示问题解决情况**：确认改进效果，并与团队分享概要以加速代码变更审查
 
-## Content of the report
+## 报告内容
 
 <DocsImage
   src="/img/accessibility/core-concepts/branch-review-example-diff.png"
-  alt="Cypress Accessibility Branch Review showing two main sections - New Failed Elements and Resolved Elements"
+  alt="Cypress无障碍分支评审显示两个主要部分 - 新增失败元素和已解决元素"
 />
 
-The key to understanding the run comparison report is that the Changed run is the focal point for all data that will be displayed, and the Base run is used as a reference point for comparison. So everywhere that you see an element, or drill in for more details, you will only see data from the Changed run.
+理解运行对比报告的关键在于：变更运行是所有显示数据的焦点，而基准运行仅作为对比参考点。因此您看到的任何元素或深入查看的详细信息，都只来自变更运行。
 
-The Branch Review report is divided into two sections:
+分支评审报告分为两部分：
 
-- **New failed elements**: Counts of elements that have failures in the Changed run, where matching failures were not found on the Base run. These are listed by View, for each accessibility rule where new failures were detected.
-- **Resolved elements**: Counts of elements that had failures detected in the Base run which are no longer detected in the Changed run. These are also listed as improvements in each View, under the accessibility rules that had improvements.
+- **新增失败元素**：变更运行中存在但在基准运行中未发现的失败元素计数。这些按视图列出，针对每个检测到新失败的无障碍规则
+- **已解决元素**：基准运行中检测到但变更运行中不再存在的失败元素计数。这些也按视图列出，作为各无障碍规则下的改进项
 
-If the Changed run is associated with a Pull Request and runs the same overall test suite as the Base run, the changes in the report are likely due to code changes in the pull request.
+如果变更运行与Pull Request关联，且运行了与基准运行相同的整体测试套件，则报告中的变更可能由pull request中的代码变更引起。
 
-## How to compare runs
+## 如何对比运行
 
-The first step is to get to the [Branch Review](/cloud/features/branch-review.mdx) area of Cypress Cloud, which will let you compare one branch against another - or different runs on the same branch, if needed.
-You can access this area by clicking the branch name associated with a run, or in several other ways. [Learn more about how to compare runs](/cloud/features/branch-review.mdx).
+第一步是进入Cypress Cloud的[分支评审](/cloud/features/branch-review.mdx)区域，这里可以对比不同分支，或同一分支的不同运行（如有需要）。您可以通过点击运行关联的分支名称或其他多种方式访问该区域。[了解更多对比运行的方法](/cloud/features/branch-review.mdx)。
 
-## Details of each section
+## 各部分详情
 
-### New failed elements
+### 新增失败元素
 
-A **new failed element** is any failed element which either did not exist in the Base run at all, or existed in the Base run but was passing its accessibility checks.
+**新增失败元素**指在基准运行中完全不存在，或存在但通过无障碍检查的元素。
 
 <DocsImage
   src="/img/accessibility/core-concepts/branch-review-a11y-new-failed.png"
-  alt="Cypress Accessibility Branch Review showing two main sections - New Failed Elements and Resolved Elements"
+  alt="Cypress无障碍分支评审显示两个主要部分 - 新增失败元素和已解决元素"
 />
 
-Any rules with new failed elements will appear here. There are two ways to explore this list. You can open each rule and choose from he list of Views where a new failed element was detected, or if you click the "View All" link, you will see a full report containing all of the net-new failures in the run, across all rules and views.
+存在新增失败元素的规则会在此显示。有两种方式浏览此列表：可以打开每个规则并从检测到新失败元素的视图列表中选择，或点击"查看全部"链接查看包含所有规则和视图中净新增失败的完整报告。
 
-Either path will take you to the detailed report, either for a single View or for all View combined. This report works exactly like the main Cypress Accessibility report, with full-page snapshot examples for every violation. The only difference is that all issues that are the same on both runs have been removed, leaving just what's new - either for the specific View you've chosen, or across all views.
+两种方式都会进入详细报告（针对单个视图或所有视图）。该报告与主Cypress无障碍报告工作方式相同，为每个违规提供完整页面快照示例。唯一区别是两份报告中相同的问题已被移除，仅显示新增内容（针对所选特定视图或所有视图）。
 
 <DocsImage
   src="/img/accessibility/core-concepts/branch-review-a11y-detail-view.png"
-  alt="Cypress Accessibility Branch Review showing the detailed diff for a demo contact form. A 'name' field in the contact form is highlighted in red because it is missing a label."
+  alt="Cypress无障碍分支评审显示演示联系表单的详细对比。联系表单中的'name'字段被红色高亮，因为它缺少标签"
 />
 
-#### Single-View diff vs whole-run diff
+#### 单视图对比 vs 全运行对比
 
-Each rule has an "All Views" comparison as the first item, and then lists individual Views below that. Depending on the level of detail you are looking for, you can drill into a specific page or component and see the changes in accessibility there, or just look at the combined report.
+每个规则首先显示"所有视图"对比项，然后在下方列出单个视图。根据您需要的详细程度，可以深入特定页面或组件查看无障碍变更，或仅查看合并报告。
 
-The combined "All Views" report for a single rule is especially useful if violations tend to move around between pages over time. For example, if there is a popup with an accessibility problem that appears on a random page in every run, it may appear "new" for a View in the Changed run, and "resolved" for the View where it was in the Base run, but in reality your accessibility score is the same and the problem is the same. "All Views" allows you to sidestep any noise of this kind if needed.
+对于单个规则的合并"所有视图"报告特别有用，如果违规倾向于在不同页面间移动。例如，如果存在无障碍问题的弹窗在每次运行中随机出现在不同页面，它可能在变更运行的某个视图中显示为"新增"，而在基准运行的另一个视图中显示为"已解决"，但实际上您的无障碍分数相同且问题相同。"所有视图"让您能根据需要避开此类干扰。
 
-### Resolved elements
+### 已解决元素
 
-A **resolved element** is an element that had a failed accessibility rule in the Base Run, where a matching failure is not found in the Changed run.
+**已解决元素**指在基准运行中存在无障碍规则失败，但在变更运行中未发现匹配失败的元素。
 
 <DocsImage
   src="/img/accessibility/core-concepts/branch-review-a11y-resolved-elements.png"
-  alt="A list of accessibility rules with resolved elements in the new run"
+  alt="新运行中已解决元素的无障碍规则列表"
 />
 
-Resolved elements are calculated for every rule and View, but are not displayed individually. This is because, as far as the Changed report is concerned, the failures do not exists, so there is not a guarantee the element is still present in the "new" report.
+已解决元素会为每个规则和视图计算，但不单独显示。这是因为就变更报告而言，这些失败已不存在，无法保证元素仍存在于"新"报告中。
 
-If you have a use case for seeing the specific elements that are no longer detected to have failures, please reach out to your Cypress representative for further discussion. For the time being the focus of Branch Review is on **new problems** - we avoid mixing old and new data in the same report to minimize the chances of confusion.
+如果您需要查看不再检测到失败的具体元素，请联系Cypress代表进一步讨论。目前分支评审的重点是**新问题**——我们避免在同一报告中混合新旧数据以最小化混淆可能。
 
-### What if there are no changes?
+### 如果没有变更会怎样？
 
-If there are no changes, the Accessibility Branch Review report still displays all the sections, and explains that there are no elements that appear to be new or resolved in Changed run:
+如果没有变更，无障碍分支评审报告仍会显示所有部分，并说明变更运行中没有新增或已解决元素：
 
 <DocsImage
   src="/img/accessibility/core-concepts/branch-review-a11y-empty-state.png"
-  alt="The new and resolved elements sections each showing a message to explain that there are no findings"
+  alt="新增和已解决元素部分各显示一条消息，说明没有发现"
 />
 
-This means the reports are identical, and that the Changed run has not had any impact on accessibility.
+这意味着报告完全相同，变更运行对无障碍性没有影响。
 
-## Ensuring a good comparison
+## 确保良好对比
 
-The easiest subjects to compare are **passing runs** that ran **similar tests** on the **similar content**. This means that each run visited roughly the same pages and completed the same kinds of workflows. In this situation, any diff in the results is likely the result of changes present in the newer run. This is usually what happens out-of-the box when comparing a pull-request branch with your main branch, for example - assuming the same tests run on both branches.
+最容易对比的主体是**通过运行**、运行**相似测试**于**相似内容**。这意味着每次运行访问大致相同的页面并完成相似的工作流。这种情况下，结果的任何差异都可能是新运行中变更的结果。例如，当对比pull request分支与主分支时通常如此（假设两个分支运行相同测试）。
 
-That said, it still possible and valid to compare runs from different points in time with different sets of test results, as long as you bear in mind all the potential sources of difference between the two runs, which you can evaluate for yourself as you explore the results.
+也就是说，只要您注意两个运行间所有潜在差异来源，对比不同时间点、不同测试结果集的运行仍是可能且有效的。您可以在探索结果时自行评估这些差异。
 
-In order to see unified changes for your entire test suite, you need to group all the tests together under a single Cypress run, for each report. Learn more about this in the [Branch Review Best Practices documentation](/cloud/features/branch-review#Best-Practices).
+要查看整个测试套件的统一变更，您需要将每次报告的所有测试分组到单个Cypress运行下。[分支评审最佳实践文档](/cloud/features/branch-review#Best-Practices)中有更多相关信息。
 
-### Stabilizing the comparison
+### 稳定对比
 
-On most projects, comparing accessibility reports will work nicely out of the box. But in some cases, configuration is useful to handle dynamic values that might be present in page URLs or element locator. You may also want to take steps to improve the consistency of the elements under test.
+在大多数项目中，无障碍测试报告对比开箱即用效果良好。但某些情况下，配置对于处理页面URL或元素定位器中的动态值很有用。您可能还需要采取措施提高被测元素的一致性。
 
-### Stable Views
+### 稳定视图
 
-URLs with dynamic slugs in them can appear as "new" pages in some situations. This behavior can be adjusted with [View configuration](/accessibility/configuration/views) to make sure page names will match across runs by wildcarding parts of the URL as needed.
+带有动态slug的URL在某些情况下可能显示为"新"页面。可以通过[视图配置](/accessibility/configuration/views)调整此行为，通过通配URL部分确保跨运行页面名称匹配。
 
-Cypress performs this process automatically for certain known patterns. For example, the default behavior is to track a URL like `https://example.com/products/123` as `https://example.com/products/*` so that the underlying product pages are grouped together as one View, and then between runs that View is recognized in a stable way.
+Cypress对某些已知模式自动执行此过程。例如，默认行为是将`https://example.com/products/123`这样的URL跟踪为`https://example.com/products/*`，使底层产品页面作为一个视图分组，然后在运行间以稳定方式识别该视图。
 
-If a View appears to be "new", it is identified with a green plus icon, and a tooltip explaining that this View was seen on the Changed run but not on the base run, as seen here in the New Failed Elements section:
+如果视图显示为"新增"，会以绿色加号图标标识，并有工具提示说明该视图在变更运行中出现但基准运行中没有，如下所示：
 
 <DocsImage
   src="/img/accessibility/core-concepts/added-views.png"
-  alt="Cypress Accessibility Branch Review showing several added views in a report, with a plus sign beside each one and a tooltip explaining that the view was seen in one report, but not the other."
+  alt="Cypress无障碍分支评审显示报告中几个新增视图，每个旁边有加号，工具提示说明该视图在一个报告中看到而另一个没有"
 />
 
-Likewise, if a rule appears to have resolved elements on Views that are simply no longer captured on the Changed run, this is identified in the Resolved Elements section:
+同样，如果规则在变更运行中不再捕获的视图上显示已解决元素，这会在已解决元素部分标识：
 
 <DocsImage
   src="/img/accessibility/core-concepts/removed-views.png"
-  alt="Cypress Accessibility Branch Review showing several added views in a report, with a plus sign beside each one and a tooltip explaining that the view was seen in one report, but not the other."
+  alt="Cypress无障碍分支评审显示报告中几个新增视图，每个旁边有加号，工具提示说明该视图在一个报告中看到而另一个没有"
 />
 
-These changes in Views may be because a new page was actually added to the application, or a new page was reached by testing that wasn't reached before. It will be clear to you if configuration is needed to improve View stability across runs, as you will see unexpected added and removed URLs.
+这些视图变更可能是因为应用中实际添加了新页面，或测试到达了之前未到达的新页面。当您看到意外的添加和移除URL时，会清楚是否需要配置以提高跨运行视图稳定性。
 
-### Stable Elements
+### 稳定元素
 
-Cypress stores a string that represents each failed element in a report, determined using a standardized [element identification process](/accessibility/core-concepts/element-identification). This operates in a different way to the standard Axe-Core® element identification algorithm, to support the comparison of runs from different builds of the application, and make use of the testing-related attributes you may already have created in the DOM.
+Cypress存储代表报告中每个失败元素的字符串，使用标准化的[元素识别流程](/accessibility/core-concepts/element-identification)确定。这与标准Axe-Core®元素识别算法不同，支持对比应用不同构建版本的运行，并利用DOM中已有的测试相关属性。
 
-Where possible, we prioritize known stable locators like `data-cy` or `data-testid`. In some cases the identification strings will contain dynamic values that change on every build of your application, introducing noise in a diff. The element identification behavior is flexible and can be configured to meet your needs and fully avoid dynamic values as identifiers.
+在可能的情况下，我们优先使用已知稳定定位器如`data-cy`或`data-testid`。某些情况下识别字符串包含每次应用构建时变化的动态值，在差异中引入干扰。元素识别行为灵活可配置，可满足您的需求并完全避免使用动态值作为标识符。
 
-For example, if an element's default locator includes a class like `.css-21kj23` in Build A, and a slightly different class like `.css-2309kj` in Build B, it will appear as though there was a "resolved element" and "new violation".
+例如，如果元素的默认定位器在构建A中包含`.css-21kj23`类，在构建B中包含稍有不同的`.css-2309kj`类，它会显示为存在"已解决元素"和"新违规"。
 
-This behavior is highly customizable so that you can avoid depending on values that don't matter to you, but also you can choose specific attributes that _do_ matter for element recognition and get sensible deduplication and matching behavior based on your own goals.
+此行为高度可定制，您可以选择不依赖不重要的值，也可以选择对元素识别_确实_重要的特定属性，根据自身目标获得合理的去重和匹配行为。
 
-Learn more about the [`attributeFilters`](/accessibility/configuration/attributefilters) and [`significantAttributes`](/accessibility/configuration/significantattributes) configuration available, or reach out to us for any assistance on dialing in the behavior.
+了解更多关于[`attributeFilters`](/accessibility/configuration/attributefilters)和[`significantAttributes`](/accessibility/configuration/significantattributes)配置的信息，或联系我们获取任何调整行为的帮助。
 
-### Stable underlying reporting area
+### 稳定的底层报告区域
 
-It's likely that your tests have never been used for always-on accessibility tests before, and while most codebases produce stable results, some projects have inherent differences between runs due to the performance of specific processes during testing.
+您的测试可能从未用于持续无障碍测试，虽然大多数代码库产生稳定结果，但某些项目由于测试期间特定过程的性能，运行间存在固有差异。
 
-For example, sometimes the test may spend enough time on a page to see a confirmation message after a form is submitted, unless the server response is slow, then the test may finish without rendering the state.
+例如，有时测试可能在页面上停留足够长时间以在表单提交后看到确认消息，除非服务器响应慢，测试可能在未渲染该状态时完成。
 
-There are different solutions depending on the nature of the issue. If you want to ensure the state is always picked up in Cypress Accessibility, you can add some assertion about that state to your tests. On the other hand, if you do not want to account for this state at all, it can be ignored with [`elementFilters`](/accessibility/configuration/elementfilters) configuration. Either approach will lead to a more stable branch comparison.
+根据问题性质有不同解决方案。如果希望确保Cypress无障碍测试始终捕获该状态，可以在测试中添加关于该状态的断言。另一方面，如果完全不想考虑该状态，可以使用[`elementFilters`](/accessibility/configuration/elementfilters)配置忽略它。两种方法都能带来更稳定的分支对比。

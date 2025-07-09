@@ -1,27 +1,16 @@
 ---
-title: Overview
-description: Cypress Cloud provides four distinct Smart Orchestration features for use in CI to speed up test runs, accelerate debugging workflows, and reduce costs.
+title: 概述
+description: Cypress Cloud 提供四项智能编排功能，可在 CI 中使用以加速测试运行、提升调试效率并降低成本。
 sidebar_position: 10
 ---
 
 <ProductHeading product="cloud" />
 
-# Smart Orchestration Overview
+# 智能编排概述
 
-Cypress Cloud provides four distinct Smart Orchestration features for use in CI
-to speed up test runs, accelerate debugging workflows, and reduce costs:
+Cypress Cloud 提供四项智能编排功能，可在 CI 中使用以加速测试运行、提升调试效率并降低成本：
 
-- [Parallelization](/cloud/features/smart-orchestration/parallelization): Reduce
-  test duration by running multiple test spec files simultaneously across
-  available CI machines.
-- [Load Balancing](/cloud/features/smart-orchestration/load-balancing): Optimize
-  CI resources and minimize test duration by intelligently prioritizing running
-  of test spec files during parallelization.
-- [Spec Prioritization](/cloud/features/smart-orchestration/spec-prioritization):
-  Quickly verify that your latest changes fixed a build by prioritizing the
-  specs that failed in the previous Cypress run.
-- [Auto Cancellation](/cloud/features/smart-orchestration/run-cancellation):
-  Automatically cancel a Cypress run when tests fail. Canceling tests
-  early reduces the number of “tests recorded” and thus your
-  monthly bill as you won't be billed for tests that aren't valuable once your run
-  has failed. This will also free up CI resources for validating fixes, and helping other users.
+- [并行测试](/cloud/features/smart-orchestration/parallelization)：通过在可用 CI 机器上同时运行多个测试规范文件，缩短测试时长。
+- [负载均衡](/cloud/features/smart-orchestration/load-balancing)：在并行测试期间智能优先执行测试规范文件，优化 CI 资源并最小化测试时长。
+- [规范优先级](/cloud/features/smart-orchestration/spec-prioritization)：通过优先运行上次 Cypress 运行中失败的测试规范，快速验证最新变更是否修复了构建问题。
+- [自动取消](/cloud/features/smart-orchestration/run-cancellation)：当测试失败时自动取消 Cypress 运行。提前取消测试可减少"记录的测试"数量，从而降低月度账单（对于运行失败后无价值的测试不会计费）。同时还能释放 CI 资源用于验证修复和帮助其他用户。

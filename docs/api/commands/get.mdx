@@ -1,6 +1,6 @@
 ---
-title: 'get | Cypress Documentation'
-description: Get one or more DOM elements by selector or alias in Cypress.
+title: 'get | Cypress 文档'
+description: 在Cypress中通过选择器或别名获取一个或多个DOM元素。
 sidebar_label: get
 slug: /api/commands/get
 ---
@@ -9,17 +9,15 @@ slug: /api/commands/get
 
 # get
 
-Get one or more DOM elements by selector or
-[alias](/app/core-concepts/variables-and-aliases).
+通过选择器或[别名](/app/core-concepts/variables-and-aliases)获取一个或多个DOM元素。
 
 :::info
 
-The querying behavior of this command is similar to how
-[`$(...)`](http://api.jquery.com/jQuery/) works in jQuery.
+该命令的查询行为类似于jQuery中的[`$(...)`](http://api.jquery.com/jQuery/)工作原理。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 cy.get(selector)
@@ -28,196 +26,185 @@ cy.get(selector, options)
 cy.get(alias, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.get('.list > li') // Yield the <li>'s in .list
+cy.get('.list > li') // 获取.list中的<li>元素
 ```
 
-### Arguments
+### 参数
 
-<Icon name="angle-right" /> **selector _(String selector)_**
+<Icon name="angle-right" /> **selector _(字符串选择器)_**
 
-A selector used to filter matching DOM elements.
+用于过滤匹配DOM元素的选择器。
 
-<Icon name="angle-right" /> **alias _(String)_**
+<Icon name="angle-right" /> **alias _(字符串)_**
 
-An alias as defined using the [`.as()`](/api/commands/as) command and referenced
-with the `@` character and the name of the alias.
+使用[`.as()`](/api/commands/as)命令定义的别名，并通过`@`字符和别名名称引用。
 
-You can use `cy.get()` for aliases of primitives, regular objects, or even DOM
-elements.
+你可以使用`cy.get()`获取基本类型、常规对象甚至DOM元素的别名。
 
-When using aliases with DOM elements, Cypress will query the DOM again if the
-previously aliased DOM element has gone stale.
+当使用DOM元素的别名时，如果之前别名的DOM元素已失效，Cypress会重新查询DOM。
 
 :::info
 
-<strong>Core Concept</strong>
+<strong>核心概念</strong>
 
-[You can read more about aliasing objects and elements in our Core Concept Guide](/app/core-concepts/variables-and-aliases#Aliases).
+[你可以在我们的核心概念指南中阅读更多关于对象和元素别名的内容](/app/core-concepts/variables-and-aliases#Aliases)。
 
 :::
 
-<Icon name="angle-right" /> **options _(Object)_**
+<Icon name="angle-right" /> **options _(对象)_**
 
-Pass in an options object to change the default behavior of `cy.get()`.
+传入一个选项对象以更改`cy.get()`的默认行为。
 
-| Option             | Default                                                                        | Description                                                                                                  |
-| ------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
-| `log`              | `true`                                                                         | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log)                          |
-| `timeout`          | [`defaultCommandTimeout`](/app/references/configuration#Timeouts)              | Time to wait for `cy.get()` to resolve before [timing out](#Timeouts)                                        |
-| `withinSubject`    | null                                                                           | Element to search for children in. If null, search begins from root-level DOM element                        |
-| `includeShadowDom` | [`includeShadowDom` config option value](/app/references/configuration#Global) | Whether to traverse shadow DOM boundaries and include elements within the shadow DOM in the yielded results. |
+| 选项                | 默认值                                                                        | 描述                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `log`               | `true`                                                                         | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令                                   |
+| `timeout`           | [`defaultCommandTimeout`](/app/references/configuration#Timeouts)              | 在[超时](#Timeouts)前等待`cy.get()`解析的时间                                                         |
+| `withinSubject`     | null                                                                           | 在其中搜索子元素的元素。如果为null，则从根级DOM元素开始搜索                                           |
+| `includeShadowDom`  | [`includeShadowDom`配置选项值](/app/references/configuration#Global)           | 是否跨越shadow DOM边界并在返回结果中包含shadow DOM中的元素                                            |
 
 <HeaderYields />
 
-- `cy.get()` yields the DOM element(s) it found, or the results of the alias
-  lookup.
-- `cy.get()` is a query, and it is _safe_ to chain further commands.
+- `cy.get()`返回找到的DOM元素或别名查找的结果。
+- `cy.get()`是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### Selector
+### 选择器
 
-#### Get the input element
+#### 获取输入元素
 
 ```javascript
 cy.get('input').should('be.disabled')
 ```
 
-#### Find the first `li` descendent within a `ul`
+#### 查找`ul`内的第一个`li`后代元素
 
 ```javascript
 cy.get('ul li:first').should('have.class', 'active')
 ```
 
-#### Find the dropdown-menu and click it
+#### 查找下拉菜单并点击它
 
 ```javascript
 cy.get('.dropdown-menu').click()
 ```
 
-#### Find 5 elements with the given data attribute
+#### 查找5个具有指定data属性的元素
 
 ```javascript
 cy.get('[data-test-id="test-example"]').should('have.length', 5)
 ```
 
-#### Find the link with an href attribute containing the word "questions" and click it
+#### 查找href属性包含"questions"的链接并点击它
 
 ```javascript
 cy.get('a[href*="questions"]').click()
 ```
 
-#### Find the element with id that starts with "local-"
+#### 查找id以"local-"开头的元素
 
 ```javascript
 cy.get('[id^=local-]')
 ```
 
-#### Find the element with id that ends with "-remote"
+#### 查找id以"-remote"结尾的元素
 
 ```javascript
 cy.get('[id$=-remote]')
 ```
 
-#### Find the element with id that starts with "local-" and ends with "-remote"
+#### 查找id以"local-"开头且以"-remote"结尾的元素
 
 ```javascript
 cy.get('[id^=local-][id$=-remote]')
 ```
 
-#### Find the element with id that has characters used in CSS like ".", ":".
+#### 查找id包含CSS特殊字符如".", ":"的元素
 
 ```javascript
-cy.get('#id\\.\\.\\.1234') // escape the character with \\
+cy.get('#id\\.\\.\\.1234') // 使用\\转义字符
 ```
 
-### `cy.get()` in the [`.within()`](/api/commands/within) command
+### 在[`.within()`](/api/commands/within)命令中使用`cy.get()`
 
-Since `cy.get()` is chained off of `cy`, it always looks for the selector within
-the entire `document`. The only exception is when used inside a
-[.within()](/api/commands/within) command.
+由于`cy.get()`是从`cy`链式调用的，它总是在整个`document`中查找选择器。唯一的例外是在[.within()](/api/commands/within)命令内部使用时。
 
 ```javascript
 cy.get('form').within(() => {
-  cy.get('input').type('Pamela') // Only yield inputs within form
-  cy.get('textarea').type('is a developer') // Only yield textareas within form
+  cy.get('input').type('Pamela') // 仅获取表单内的输入框
+  cy.get('textarea').type('is a developer') // 仅获取表单内的文本域
 })
 ```
 
-### Get vs Find
+### Get与Find的区别
 
-The `cy.get` command always starts its search from the
-[cy.root](/api/commands/root) element. In most cases, it is the
-`document` element, unless used inside the [.within()](/api/commands/within)
-command. The [.find](/api/commands/find) command starts its search from
-the current subject.
+`cy.get`命令总是从[cy.root](/api/commands/root)元素开始搜索。在大多数情况下，这是`document`元素，除非在[.within()](/api/commands/within)命令内部使用。[.find](/api/commands/find)命令则从当前主题开始搜索。
 
 ```html
 <div class="test-title">cy.get vs .find</div>
 <section id="comparison">
-  <div class="feature">Both are querying commands</div>
+  <div class="feature">两者都是查询命令</div>
 </section>
 ```
 
 ```js
 cy.get('#comparison')
   .get('div')
-  // finds the div.test-title outside the #comparison
-  // and the div.feature inside
+  // 会找到#comparison外部的div.test-title
+  // 和内部的div.feature
   .should('have.class', 'test-title')
   .and('have.class', 'feature')
 cy.get('#comparison')
   .find('div')
-  // the search is limited to the tree at #comparison element
-  // so it finds div.feature only
+  // 搜索范围仅限于#comparison元素树
+  // 所以只找到div.feature
   .should('have.length', 1)
   .and('have.class', 'feature')
 ```
 
-### Alias
+### 别名
 
-For a detailed explanation of aliasing,
-[read more about aliasing here](/app/core-concepts/variables-and-aliases#Aliases).
+关于别名的详细解释，[请阅读更多关于别名的内容](/app/core-concepts/variables-and-aliases#Aliases)。
 
-#### Get the aliased 'todos' elements
+#### 获取别名为'todos'的元素
 
 ```javascript
 cy.get('ul#todos').as('todos')
 
-//...hack hack hack...
+//...进行一些操作...
 
-//later retrieve the todos
+//稍后获取todos
 cy.get('@todos')
 ```
 
-#### Get the aliased 'submitBtn' element
+#### 获取别名为'submitBtn'的元素
 
 ```javascript
 beforeEach(() => {
   cy.get('button[type=submit]').as('submitBtn')
 })
 
-it('disables on click', () => {
+it('点击后禁用', () => {
   cy.get('@submitBtn').should('be.disabled')
 })
 ```
 
-#### Get the aliased 'users' fixture
+#### 获取别名为'users'的fixture数据
 
 ```javascript
 beforeEach(() => {
   cy.fixture('users.json').as('users')
 })
 
-it('disables on click', () => {
-  // access the array of users
+it('点击后禁用', () => {
+  // 访问用户数组
   cy.get('@users').then((users) => {
-    // get the first user
+    // 获取第一个用户
     const user = users[0]
 
     cy.get('header').contains(user.name)
@@ -225,59 +212,54 @@ it('disables on click', () => {
 })
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.get()` requires being chained off a command that yields DOM element(s).
+- `cy.get()`需要链式调用一个返回DOM元素的命令。
 
 <HeaderAssertions />
 
-- `cy.get()` will automatically [retry](/app/core-concepts/retry-ability)
-  until the element(s)
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `cy.get()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed.
+- `cy.get()`会自动[重试](/app/core-concepts/retry-ability)直到元素[存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)。
+- `cy.get()`会自动[重试](/app/core-concepts/retry-ability)直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `cy.get()` can time out waiting for the element(s) to
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `cy.get()` can time out waiting for assertions you've added to pass.
+- `cy.get()`可能会因等待元素[存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)而超时。
+- `cy.get()`可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Get an input and assert on the value_**
+**_获取输入框并断言其值_**
 
 ```javascript
 cy.get('input[name="firstName"]').should('have.value', 'Homer')
 ```
 
-The commands above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/get/get-element-and-make-an-assertion.png"
-  alt="Command Log get"
+  alt="命令日志get"
 />
 
-When clicking on the `get` command within the command log, the console outputs
-the following:
+当点击命令日志中的`get`命令时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/get/console-log-get-command-and-elements-found.png"
-  alt="Console Log get"
+  alt="控制台日志get"
 />
 
-## History
+## 历史
 
-| Version                                  | Changes                          |
-| ---------------------------------------- | -------------------------------- |
-| [5.2.0](/app/references/changelog#5-2-0) | Added `includeShadowDom` option. |
+| 版本                                   | 变更                          |
+| ------------------------------------- | ----------------------------- |
+| [5.2.0](/app/references/changelog#5-2-0) | 添加了`includeShadowDom`选项。 |
 
-## See also
+## 另请参阅
 
 - [`.as()`](/api/commands/as)
 - [`cy.contains()`](/api/commands/contains)
 - [`.find()`](/api/commands/find)
 - [`.within()`](/api/commands/within)
-- [Retry-ability](/app/core-concepts/retry-ability)
+- [重试机制](/app/core-concepts/retry-ability)

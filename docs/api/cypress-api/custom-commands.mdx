@@ -1,46 +1,34 @@
 ---
-title: 'Custom Commands in Cypress'
-description: 'Learn how to create custom Cypress commands and overwrite existing commands.'
-sidebar_label: 'Custom Commands'
+title: 'Cypress中的自定义命令'
+description: '学习如何创建自定义Cypress命令并覆盖现有命令。'
+sidebar_label: '自定义命令'
 sidebar_position: 20
 ---
 
 <ProductHeading product="app" />
 
-# Custom Commands
+# 自定义命令
 
-Cypress comes with its own API for creating custom commands and overwriting
-existing commands. The built in Cypress commands use the very same API that's
-defined below.
+Cypress提供了创建自定义命令和覆盖现有命令的API。内置的Cypress命令使用的正是下文定义的相同API。
 
-There are two API available for adding custom commands:
+有两种API可用于添加自定义命令：
 
-- [`Cypress.Commands.add()`](#Syntax) - use to add a custom command to use when
-  writing tests
-- [`Cypress.Commands.overwrite()`](#Overwrite-Existing-Commands) - use to
-  override an existing built-in Cypress command or reserved internal function.
-  **Caution:** this overrides it for Cypress as well and could impact how
-  Cypress behaves.
+- [`Cypress.Commands.add()`](#语法) - 用于添加自定义命令以便在编写测试时使用
+- [`Cypress.Commands.overwrite()`](#覆盖现有命令) - 用于覆盖现有的内置Cypress命令或保留的内部函数。**注意：**这会同时覆盖Cypress的行为，可能影响Cypress的运行方式。
 
 :::info
 
-If you want your method to have builtin
-[retry-ability](/app/core-concepts/retry-ability), and especially if you
-return a DOM element for further commands to act on, consider writing a
-[custom query](/api/cypress-api/custom-queries) instead.
+如果你希望方法具备内置的[重试能力](/app/core-concepts/retry-ability)，特别是如果你返回一个DOM元素供后续命令操作，考虑编写[自定义查询](/api/cypress-api/custom-queries)代替。
 
 :::
 
 :::info
 
-We recommend defining queries is in your `cypress/support/commands.js` file,
-since it is loaded before any test files are evaluated via an import statement
-in the
-[supportFile](/app/core-concepts/writing-and-organizing-tests#Support-file).
+我们建议在`cypress/support/commands.js`文件中定义查询，因为该文件通过[supportFile](/app/core-concepts/writing-and-organizing-tests#支持文件)中的import语句在任何测试文件执行前加载。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 Cypress.Commands.add(name, callbackFn)
@@ -50,9 +38,9 @@ Cypress.Commands.addAll(options, callbackObj)
 Cypress.Commands.overwrite(name, callbackFn)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 Cypress.Commands.add('login', (email, pw) => {})
@@ -63,64 +51,60 @@ Cypress.Commands.addAll({
 Cypress.Commands.overwrite('visit', (orig, url, options) => {})
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **name _(String)_**
 
-The name of the command you're either adding or overwriting.
+要添加或覆盖的命令名称。
 
 <Icon name="angle-right" /> **callbackFn _(Function)_**
 
-Pass a function that receives the arguments passed to the command.
+传入一个接收命令参数的函数。
 
 <Icon name="angle-right" /> **callbackObj _(Object)_**
 
-An object with `callbackFn`s as properties.
+包含`callbackFn`作为属性的对象。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to define the implicit behavior of the custom command.
+传入一个选项对象以定义自定义命令的隐式行为。
 
 :::caution
 
-`options` is only supported for use in `Cypress.Commands.add()` and not
-supported for use in `Cypress.Commands.overwrite()`
+`options`仅支持在`Cypress.Commands.add()`中使用，不支持在`Cypress.Commands.overwrite()`中使用。
 
 :::
 
-| Option        | Accepts                        | Default | Description                                   |
-| ------------- | ------------------------------ | ------- | --------------------------------------------- |
-| `prevSubject` | `Boolean`, `String` or `Array` | `false` | how to handle the previously yielded subject. |
+| 选项          | 接受值                       | 默认值  | 描述                                   |
+| ------------- | --------------------------- | ------- | ------------------------------------- |
+| `prevSubject` | `Boolean`, `String` 或 `Array` | `false` | 如何处理先前产生的主题。              |
 
-The `prevSubject` accepts the following values:
+`prevSubject`接受以下值：
 
-- `false`: ignore any previous subjects: **_(parent command)_**
-- `true`: receives the previous subject: **_(child command)_**
-- `optional`: may start a chain, or use an existing chain: **_(dual command)_**
+- `false`: 忽略任何先前的主题：**_(父命令)_**
+- `true`: 接收先前的主题：**_(子命令)_**
+- `optional`: 可以开始一个新链或使用现有链：**_(双重命令)_**
 
-In addition to controlling the command's implicit behavior you can also add
-declarative subject validations such as:
+除了控制命令的隐式行为外，你还可以添加声明式主题验证，如：
 
-- `element`: requires the previous subject be a DOM element
-- `document`: requires the previous subject be the document
-- `window`: requires the previous subject be the window
+- `element`: 要求先前主题是DOM元素
+- `document`: 要求先前主题是文档
+- `window`: 要求先前主题是窗口
 
-## Examples
+## 示例
 
-### Parent Commands
+### 父命令
 
-Parent commands always **begin** a new chain of commands. Even if you've chained
-it off of a previous command, parent commands will always start a new chain, and
-ignore previously yielded subjects.
+父命令总是**开始**一个新的命令链。即使你在先前命令上链式调用它，父命令也会始终开始一个新链，并忽略先前产生的主题。
 
-Examples of parent commands:
+父命令的示例：
 
 - [`cy.visit()`](/api/commands/visit)
 - [`cy.request()`](/api/commands/request)
 - [`cy.exec()`](/api/commands/exec)
 - [`cy.intercept()`](/api/commands/intercept)
 
-#### Click link containing text
+#### 点击包含文本的链接
 
 ```js
 Cypress.Commands.add('clickLink', (label) => {
@@ -129,10 +113,10 @@ Cypress.Commands.add('clickLink', (label) => {
 ```
 
 ```js
-cy.clickLink('Buy Now')
+cy.clickLink('立即购买')
 ```
 
-#### Check a token
+#### 检查令牌
 
 ```js
 Cypress.Commands.add('checkToken', (token) => {
@@ -144,11 +128,9 @@ Cypress.Commands.add('checkToken', (token) => {
 cy.checkToken('abc123')
 ```
 
-#### Download a file
+#### 下载文件
 
-Originally used in
-[cypress-downloadfile](https://github.com/Xvier/cypress-downloadfile), this
-command calls other Cypress commands.
+最初用于[cypress-downloadfile](https://github.com/Xvier/cypress-downloadfile)，此命令调用其他Cypress命令。
 
 ```javascript
 Cypress.Commands.add('downloadFile', (url, directory, fileName) => {
@@ -167,7 +149,7 @@ Cypress.Commands.add('downloadFile', (url, directory, fileName) => {
 cy.downloadFile('https://path_to_file.pdf', 'mydownloads', 'demo.pdf')
 ```
 
-#### Commands to work with `sessionStorage`
+#### 操作`sessionStorage`的命令
 
 ```js
 Cypress.Commands.add('getSessionStorage', (key) => {
@@ -186,7 +168,7 @@ cy.setSessionStorage('token', 'abc123')
 cy.getSessionStorage('token').should('eq', 'abc123')
 ```
 
-#### Log in command using UI
+#### 通过UI登录的命令
 
 ```js
 Cypress.Commands.add('loginViaUi', (user) => {
@@ -197,7 +179,7 @@ Cypress.Commands.add('loginViaUi', (user) => {
       cy.get('input[name=email]').type(user.email)
       cy.get('input[name=password]').type(user.password)
       cy.get('button#login').click()
-      cy.get('h1').contains(`Welcome back ${user.name}!`)
+      cy.get('h1').contains(`欢迎回来 ${user.name}!`)
     },
     {
       validate: () => {
@@ -212,40 +194,40 @@ Cypress.Commands.add('loginViaUi', (user) => {
 cy.loginViaUi({ email: 'fake@email.com', password: '$ecret1', name: 'johndoe' })
 ```
 
-#### Log in command using request
+#### 通过API登录的命令
 
 ```javascript
 Cypress.Commands.add('loginViaApi', (userType, options = {}) => {
-  // this is an example of skipping your UI and logging in programmatically
+  // 这是一个跳过UI直接通过编程方式登录的示例
 
-  // setup some basic types
-  // and user properties
+  // 设置一些基本类型
+  // 和用户属性
   const types = {
     admin: {
-      name: 'Jane Lane',
+      name: '简·莱恩',
       admin: true,
     },
     user: {
-      name: 'Jim Bob',
+      name: '吉姆·鲍勃',
       admin: false,
     },
   }
 
-  // grab the user
+  // 获取用户
   const user = types[userType]
 
-  // create the user first in the DB
+  // 首先在数据库中创建用户
   cy.request({
-    url: '/seed/users', // assuming you've exposed a seeds route
+    url: '/seed/users', // 假设你暴露了一个种子路由
     method: 'POST',
     body: user,
   })
     .its('body')
     .then((body) => {
-      // assuming the server sends back the user details
-      // including a randomly generated password
+      // 假设服务器返回用户详情
+      // 包括随机生成的密码
       //
-      // we can now login as this newly created user
+      // 我们现在可以以这个新创建的用户登录
       cy.request({
         url: '/login',
         method: 'POST',
@@ -259,26 +241,26 @@ Cypress.Commands.add('loginViaApi', (userType, options = {}) => {
 ```
 
 ```javascript
-// can start a chain off of cy
+// 可以从cy开始一个链
 cy.loginViaApi('admin')
 
-// can be chained but will not receive the previous subject
+// 可以链式调用但不会接收先前主题
 cy.get('button').loginViaApi('user')
 ```
 
-#### Log out command using UI
+#### 通过UI注销的命令
 
 ```js
 Cypress.Commands.add('logout', () => {
-  cy.contains('Login').should('not.exist')
+  cy.contains('登录').should('not.exist')
   cy.get('.avatar').click()
-  cy.contains('Logout').click()
-  cy.get('h1').contains('Login')
+  cy.contains('注销').click()
+  cy.get('h1').contains('登录')
   cy.getCookie('auth_key').should('not.exist')
 })
 ```
 
-#### Log out command using `localStorage` <E2EOnlyBadge />
+#### 使用`localStorage`注销的命令 <E2EOnlyBadge />
 
 ```js
 Cypress.Commands.add('logout', () => {
@@ -292,7 +274,7 @@ Cypress.Commands.add('logout', () => {
 cy.logout()
 ```
 
-#### Create a user
+#### 创建用户
 
 ```js
 Cypress.Commands.add('createUser', (user) => {
@@ -317,57 +299,55 @@ Cypress.Commands.add('createUser', (user) => {
 ```js
 cy.createUser({
   id: 123,
-  name: 'Jane Lane',
+  name: '简·莱恩',
 })
 ```
 
 :::info
 
-<strong>Command Log</strong>
+<strong>命令日志</strong>
 
-Did you know that you can control how your custom commands appear in the Command
-Log? Read more about [Command Logging](#Command-Logging).
+你知道你可以控制自定义命令在命令日志中的显示方式吗？阅读更多关于[命令日志](#命令日志)的内容。
 
 :::
 
-### Child Commands
+### 子命令
 
-Child commands are always chained off of a **parent** command, or another
-**child** command.
+子命令总是从**父命令**或另一个**子命令**链式调用。
 
-The previous subject will automatically be yielded to the callback function.
+先前主题会自动传递给回调函数。
 
-Examples of child commands:
+子命令的示例：
 
 - [`.click()`](/api/commands/click)
 - [`.submit()`](/api/commands/submit)
 - [`.trigger()`](/api/commands/trigger)
 
-#### Custom `console` command
+#### 自定义`console`命令
 
 ```javascript
-// not a super useful custom command
-// but demonstrates how subject is passed
-// and how the arguments are shifted
+// 不是一个非常有用的自定义命令
+// 但演示了如何传递主题
+// 以及参数如何移位
 Cypress.Commands.add(
   'console',
   {
     prevSubject: true,
   },
   (subject, method) => {
-    // the previous subject is automatically received
-    // and the commands arguments are shifted
+    // 自动接收先前主题
+    // 命令参数移位
 
-    // allow us to change the console method used
+    // 允许我们更改使用的控制台方法
     method = method || 'log'
 
-    // log the subject to the console
-    console[method]('The subject is', subject)
+    // 将主题记录到控制台
+    console[method]('主题是', subject)
 
-    // whatever we return becomes the new subject
+    // 我们返回的任何内容都会成为新主题
     //
-    // we don't want to change the subject so
-    // we return whatever was passed in
+    // 我们不想更改主题，所以
+    // 返回传入的任何内容
     return subject
   }
 )
@@ -377,56 +357,48 @@ Cypress.Commands.add(
 cy.get('button')
   .console('info')
   .then(($button) => {
-    // subject is still $button
+    // 主题仍然是$button
   })
 ```
 
-By setting the `{ prevSubject: true }`, our new `.console()` command will
-require a subject.
+通过设置`{ prevSubject: true }`，我们的新`.console()`命令将需要一个主题。
 
-Invoking it like this would error:
+这样调用会出错：
 
 ```javascript
-cy.console() // error about how you can't call console without a subject
+cy.console() // 错误：没有主题不能调用console
 ```
 
 :::info
 
-Whenever you're using a child command you likely want to use
-[cy.wrap()](/api/commands/wrap) on the subject. Wrapping it enables you to
-immediately use more Cypress commands on that subject.
+当你使用子命令时，你可能希望在主题上使用[cy.wrap()](/api/commands/wrap)。包装它使你能够立即在该主题上使用更多Cypress命令。
 
 :::
 
-### Dual Commands
+### 双重命令
 
-A dual command can either start a chain of commands or be chained off of an
-existing one. It is basically the hybrid between both a parent and a child
-command. You will likely rarely use this, and only a handful of our internal
-commands use this.
+双重命令可以**开始**一个命令链或**链式调用**现有命令。它基本上是父命令和子命令的混合体。你可能很少使用这个，只有少数内部命令使用这个。
 
-Nevertheless, it is useful if your command can work in multiple ways - either
-with an existing subject or without one.
+尽管如此，如果你的命令可以以多种方式工作——有或没有现有主题，它会很有用。
 
-Examples of dual commands:
+双重命令的示例：
 
 - [`cy.screenshot()`](/api/commands/screenshot)
 - [`cy.scrollTo()`](/api/commands/scrollto)
 - [`cy.wait()`](/api/commands/wait)
 
-#### Custom Dual Command
+#### 自定义双重命令
 
 ```javascript
 Cypress.Commands.add('dismiss', {
   prevSubject: 'optional'
 }, (subject, arg1, arg2) => {
-  // subject may be defined or undefined
-  // so you likely want to branch the logic
-  // based off of that
+  // 主题可能已定义或未定义
+  // 因此你可能希望基于此分支逻辑
 
   if (subject) {
-    // wrap the existing subject
-    // and do something with it
+    // 包装现有主题
+    // 并对其进行操作
     cy.wrap(subject)
     ...
   } else {
@@ -436,25 +408,21 @@ Cypress.Commands.add('dismiss', {
 ```
 
 ```javascript
-cy.dismiss() // no subject
-cy.get('#dialog').dismiss() // with subject
+cy.dismiss() // 无主题
+cy.get('#dialog').dismiss() // 有主题
 ```
 
-### Overwrite Existing Commands
+### 覆盖现有命令
 
-You can also modify the behavior of existing Cypress commands. This is useful to
-always set some defaults to avoid creating another command that ends up using
-the original.
+你也可以修改现有Cypress命令的行为。这对于总是设置一些默认值以避免创建另一个最终使用原始命令的命令很有用。
 
 :::caution
 
-`Cypress.Commands.overwrite` can only overwrite commands, not queries. If you
-want to modify the behavior of a query, you'll need to use
-[`Cypress.Commands.overwriteQuery`](/api/cypress-api/custom-queries) instead.
+`Cypress.Commands.overwrite`只能覆盖命令，不能覆盖查询。如果你想修改查询的行为，需要使用[`Cypress.Commands.overwriteQuery`](/api/cypress-api/custom-queries)代替。
 
 :::
 
-#### Overwrite `visit` command
+#### 覆盖`visit`命令
 
 ```javascript
 Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
@@ -468,35 +436,27 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
     url = '...'
   }
 
-  // originalFn is the existing `visit` command that you need to call
-  // and it will receive whatever you pass in here.
+  // originalFn是现有的`visit`命令，你需要调用它
+  // 它会接收你在这里传入的任何内容。
   //
-  // make sure to add a return here!
+  // 确保在这里添加一个返回！
   return originalFn(url, options)
 })
 ```
 
 :::info
 
-We see many of our users creating their own `visitApp` command. We commonly see
-that all you're doing is swapping out base urls for `development` vs
-`production` environments.
+我们看到许多用户创建自己的`visitApp`命令。我们常见的是你只是为`development`和`production`环境交换基本URL。
 
-This is usually unnecessary because Cypress is already configured to swap out a
-`baseUrl` that both [cy.visit()](/api/commands/visit) and
-[cy.request()](/api/commands/request) use. Set the `baseUrl` configuration
-property in your [Cypress configuration](/app/references/configuration) and
-override it with the `CYPRESS_BASE_URL` environment variable.
+这通常是不必要的，因为Cypress已经配置为交换[cy.visit()](/api/commands/visit)和[cy.request()](/api/commands/request)都使用的`baseUrl`。在你的[Cypress配置](/app/references/configuration)中设置`baseUrl`配置属性，并使用`CYPRESS_BASE_URL`环境变量覆盖它。
 
-For more complex use cases feel free to overwrite existing commands.
+对于更复杂的用例，可以随意覆盖现有命令。
 
 :::
 
-#### Overwrite `type` command
+#### 覆盖`type`命令
 
-If you are typing into a password field, the password input is masked
-automatically within your application. But [.type()](/api/commands/type)
-automatically logs any typed content into the Cypress Command Log.
+如果你在密码字段中输入内容，密码输入在你的应用程序中会自动被屏蔽。但[.type()](/api/commands/type)会自动将任何输入的内容记录到Cypress命令日志中。
 
 ```js
 cy.get('#username').type('username@email.com')
@@ -505,20 +465,17 @@ cy.get('#password').type('superSecret123')
 
 <DocsImage
   src="/img/api/custom-commands/custom-command-type-no-masked-password.png"
-  alt="Cypress Command Log showing password within type command"
+  alt="Cypress命令日志显示type命令中的密码"
 />
 
-You may want to mask some values passed to the [.type()](/api/commands/type)
-command so that sensitive data does not display in screenshots or videos of your
-test run. This example overwrites the [.type()](/api/commands/type) command to
-allow you to mask sensitive data in the Cypress Command Log.
+你可能希望屏蔽传递给[.type()](/api/commands/type)命令的一些值，以便敏感数据不会显示在测试运行的截图或视频中。这个示例覆盖了[.type()](/api/commands/type)命令，允许你在Cypress命令日志中屏蔽敏感数据。
 
 ```js
 Cypress.Commands.overwrite('type', (originalFn, element, text, options) => {
   if (options && options.sensitive) {
-    // turn off original log
+    // 关闭原始日志
     options.log = false
-    // create our own log with masked message
+    // 创建我们自己的带有屏蔽消息的日志
     Cypress.log({
       $el: element,
       name: 'type',
@@ -535,41 +492,38 @@ cy.get('#username').type('username@email.com')
 cy.get('#password').type('superSecret123', { sensitive: true })
 ```
 
-Now our sensitive password is not printed to the Cypress Command Log when
-`sensitive: true` is passed as an option to [.type()](/api/commands/type).
+现在，当传递`sensitive: true`作为[.type()](/api/commands/type)的选项时，我们的敏感密码不会打印到Cypress命令日志中。
 
 <DocsImage
   src="/img/api/custom-commands/custom-command-type-masked-password.png"
-  alt="Cypress command log showing masked password as asterisks within type command"
+  alt="Cypress命令日志显示type命令中密码被屏蔽为星号"
 />
 
-#### Overwrite `screenshot` command
+#### 覆盖`screenshot`命令
 
-This example overwrites [cy.screenshot()](/api/commands/screenshot) to always
-wait until a certain element is visible.
+这个示例覆盖了[cy.screenshot()](/api/commands/screenshot)，以始终等待直到某个元素可见。
 
 ```javascript
 Cypress.Commands.overwrite(
   'screenshot',
   (originalFn, subject, fileName, options) => {
-    // call another command, no need to return as it is managed
+    // 调用另一个命令，无需返回，因为它被管理
     cy.get('.app')
       .should('be.visible')
 
-      // overwrite the default timeout, because screenshot does that internally
-      // otherwise the `then` is limited to the default command timeout
+      // 覆盖默认超时，因为screenshot内部会这样做
+      // 否则`then`受限于默认命令超时
       .then({ timeout: Cypress.config('responseTimeout') }, () => {
-        // return the original function so that cypress waits for it
+        // 返回原始函数以便Cypress等待它
         return originalFn(subject, fileName, options)
       })
   }
 )
 ```
 
-#### Overwrite `click` command
+#### 覆盖`click`命令
 
-This example overwrites [.click()](/api/commands/click) to always have the
-`waitForAnimations` option set to `false`.
+这个示例覆盖了[.click()](/api/commands/click)，以始终将`waitForAnimations`选项设置为`false`。
 
 ```js
 Cypress.Commands.overwrite(
@@ -581,111 +535,108 @@ Cypress.Commands.overwrite(
 )
 ```
 
-## Validations
+## 验证
 
-As noted in the [Arguments](#Arguments) above, you can also set `prevSubject` to
-one of:
+如[参数](#参数)中所述，你也可以将`prevSubject`设置为以下之一：
 
 - `element`
 - `document`
 - `window`
 
-When doing so Cypress will automatically validate your subject to ensure it
-conforms to one of those types.
+这样做时，Cypress会自动验证你的主题以确保它符合其中一种类型。
 
 :::info
 
-Adding validations is optional. Passing `{ prevSubject: true }` will require a
-subject, but not validate its type.
+添加验证是可选的。传递`{ prevSubject: true }`将需要一个主题，但不会验证其类型。
 
 :::
 
-### Require Element
+### 要求元素
 
-Require subject be of type: `element`.
+要求主题类型为：`element`。
 
 ```javascript
-// this is how .click() is implemented
+// 这是.click()的实现方式
 Cypress.Commands.add(
   'click',
   {
     prevSubject: 'element',
   },
   (subject, options) => {
-    // receives the previous subject and it's
-    // guaranteed to be an element
+    // 接收先前主题，并且它
+    // 保证是一个元素
   }
 )
 ```
 
-<Icon name="check-circle" color="green" /> **Valid Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.get('button').click() // has subject, and is `element`
+cy.get('button').click() // 有主题，且是`element`
 ```
 
-<Icon name="exclamation-triangle" color="red" /> **Invalid Usage**
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
 ```javascript
-cy.click() // no subject, will error
-cy.wrap([]).click() // has subject, but not `element`, will error
+cy.click() // 无主题，会出错
+cy.wrap([]).click() // 有主题，但不是`element`，会出错
 ```
 
-### Allow Multiple Types
+### 允许多种类型
 
 #### `.trigger()`
 
-Require subject be one of the following types: `element`, `document` or `window`
+要求主题是以下类型之一：`element`, `document` 或 `window`
 
 ```javascript
-// this is how .trigger() is implemented
+// 这是.trigger()的实现方式
 Cypress.Commands.add(
   'trigger',
   {
     prevSubject: ['element', 'document', 'window'],
   },
   (subject, eventName, options) => {
-    // receives the previous subject and it's
-    // guaranteed to be an element, document, or window
+    // 接收先前主题，并且它
+    // 保证是一个元素、文档或窗口
   }
 )
 ```
 
-<Icon name="check-circle" color="green" /> **Valid Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.get('button').trigger() // has subject, and is `element`
-cy.document().trigger() // has subject, and is `document`
-cy.window().trigger() // has subject, and is `window`
+cy.get('button').trigger() // 有主题，且是`element`
+cy.document().trigger() // 有主题，且是`document`
+cy.window().trigger() // 有主题，且是`window`
 ```
 
-<Icon name="exclamation-triangle" color="red" /> **Invalid Usage**
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
 ```javascript
-cy.trigger() // no subject, will error
-cy.wrap(true).trigger() // has subject, but not `element`, will error
+cy.trigger() // 无主题，会出错
+cy.wrap(true).trigger() // 有主题，但不是`element`，会出错
 ```
 
-Validations always work as "or" not "and".
+验证始终作为“或”而不是“与”工作。
 
-### Optional with Types
+### 可选类型
 
-You can also mix optional commands **with** validations.
+你也可以将可选命令**与**验证混合使用。
 
 ```javascript
-// this is how .scrollTo() is implemented
+// 这是.scrollTo()的实现方式
 Cypress.Commands.add(
   'scrollTo',
   {
     prevSubject: ['optional', 'element', 'window'],
   },
   (subject, ...args) => {
-    // subject could be undefined
-    // since it's optional.
+    // 主题可能是undefined
+    // 因为它是可选的。
     //
-    // if it's present then it's and element or window.
-    // - when window, we'll scroll to a position on the page.
-    // - when element, we'll scroll to a position related to the element.
+    // 如果存在，则它是一个元素或窗口。
+    // - 当是窗口时，我们将滚动到页面上的位置。
+    // - 当是元素时，我们将滚动到与元素相关的位置。
     if (subject) {
       // ...
     } else {
@@ -695,78 +646,64 @@ Cypress.Commands.add(
 )
 ```
 
-<Icon name="check-circle" color="green" /> **Valid Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.scrollTo() // no subject, but valid because it's optional
-cy.get('#main').scrollTo() // has subject, and is `element`
-cy.visit().scrollTo() // has subject, and since visit yields `window` it's ok
+cy.scrollTo() // 无主题，但有效，因为它是可选的
+cy.get('#main').scrollTo() // 有主题，且是`element`
+cy.visit().scrollTo() // 有主题，因为visit产生`window`，所以没问题
 ```
 
-<Icon name="exclamation-triangle" color="red" /> **Invalid Usage**
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
 ```javascript
-cy.document().scrollTo() // has subject, but it's a `document`, will error
-cy.wrap(null).scrollTo() // has subject, but it's `null`, will error
+cy.document().scrollTo() // 有主题，但它是`document`，会出错
+cy.wrap(null).scrollTo() // 有主题，但它是`null`，会出错
 ```
 
-## Notes
+## 注意事项
 
-### Command Logging
+### 命令日志
 
-When creating your own custom command, you can control how it appears and
-behaves in the Command Log.
+创建自定义命令时，你可以控制它在命令日志中的显示和行为。
 
-Take advantage of the [`Cypress.log()`](/api/cypress-api/cypress-log) API. When
-you're issuing many internal Cypress commands, consider passing `{ log: false }`
-to those commands, and programmatically controlling your custom command. This
-will cleanup the Command Log and be much more visually appealing and
-understandable.
+利用[`Cypress.log()`](/api/cypress-api/cypress-log) API。当你发出许多内部Cypress命令时，考虑传递`{ log: false }`给这些命令，并以编程方式控制你的自定义命令。这将清理命令日志，使其更加视觉上吸引人和易于理解。
 
-### `cy.hover()` and `cy.mount()`
+### `cy.hover()` 和 `cy.mount()`
 
-Cypress does not have `cy.hover()` or `cy.mount()` commands out-of-the-box. See
-how to craft your own [`cy.hover()`](/api/commands/hover) and
-[`cy.mount()`](/api/commands/mount) custom commands.
+Cypress默认不包含`cy.hover()`或`cy.mount()`命令。查看如何制作你自己的[`cy.hover()`](/api/commands/hover)和[`cy.mount()`](/api/commands/mount)自定义命令。
 
-### Best Practices
+### 最佳实践
 
-#### 1. Don't make everything a custom command
+#### 1. 不要将所有内容都变成自定义命令
 
-Custom commands work well when you're needing to describe behavior that's
-desirable across **all of your tests**. Examples would be a `cy.setup()` or
-`cy.login()` or extending your application's behavior like
-`cy.get('.dropdown').dropdown('Apples')`. These are specific to your application
-and can be used everywhere.
+自定义命令在描述**所有测试**中所需的行为时效果很好。例如`cy.setup()`或`cy.login()`或扩展你的应用程序行为如`cy.get('.dropdown').dropdown('Apples')`。这些特定于你的应用程序，可以在任何地方使用。
 
-However, this pattern can be used and abused. Let's not forget - writing Cypress
-tests is **JavaScript**, and it's often more efficient to write a function for
-repeatable behavior that's specific to only **a single spec file**.
+然而，这种模式可能被滥用。别忘了——编写Cypress测试就是**JavaScript**，通常更高效的是为仅**单个spec文件**特定的可重复行为编写一个函数。
 
-If you're working on a `search.cy.js` file and want to compose several
-repeatable actions together, you should first ask yourself:
+如果你正在处理一个`search.cy.js`文件，并希望组合几个可重复的操作，你应该首先问自己：
 
-> Can this be written as a function?
+> 这可以写成一个函数吗？
 
-The answer is usually **yes**. Here's an example:
+答案通常是**可以**。这里有一个例子：
 
 ```javascript
-// There's no reason to create something like a cy.search() custom
-// command because this behavior is only applicable to a single spec file
+// 没有理由创建一个像cy.search()这样的自定义
+// 命令，因为这种行为仅适用于单个spec文件
 //
-// Use a regular ol' javascript function folks!
+// 使用普通的JavaScript函数吧！
 const search = (term, options = {}) => {
-  // example massaging to defaults
+  // 示例默认值处理
   _.defaults(options, {
     headers: {},
   })
 
   const { fixture, headers } = options
 
-  // return cy chain here so we can
-  // chain off this function below
+  // 在这里返回cy链，以便我们
+  // 可以在下面链式调用这个函数
   return cy
-    .log(`Searching for: ${term} `)
+    .log(`搜索：${term} `)
     .intercept('GET', '/search/**', (req) => {
       req.reply({
         statusCode: 200,
@@ -780,15 +717,14 @@ const search = (term, options = {}) => {
     .wait('@getSearchResults')
 }
 
-it('displays a list of search results', () => {
+it('显示搜索结果列表', () => {
   cy.visit('/page')
     .then(() => {
       search('cypress.io', {
         fixture: 'list',
       }).then((reqRes) => {
-        // do something with the '@getSearchResults'
-        // request such as make assertions on the
-        // request body or url params
+        // 可以对'@getSearchResults'做一些操作
+        // 比如对请求体或URL参数进行断言
         // {
         //   url: 'http://app.com/search?cypress.io'
         //   method: 'GET',
@@ -804,7 +740,7 @@ it('displays a list of search results', () => {
     .should('not.exist')
 })
 
-it('displays no search results', () => {
+it('显示无搜索结果', () => {
   cy.visit('/page')
     .then(() => {
       search('cypress.io', {
@@ -812,97 +748,72 @@ it('displays no search results', () => {
       })
     })
     .get('#results')
-    .should('contain', 'No results found')
+    .should('contain', '未找到结果')
 })
 
-it('paginates many search results', () => {
+it('分页显示多个搜索结果', () => {
   cy.visit('/page')
     .then(() => {
       search('cypress.io', {
         fixture: 'list',
         headers: {
-          // trick our app into thinking
-          // there's a bunch of pages
+          // 欺骗我们的应用程序认为
+          // 有很多页
           'x-pagination-total': 3,
         },
       })
     })
     .get('#pagination')
     .should(($pagination) => {
-      // should offer to goto next page
-      expect($pagination).to.contain('Next')
+      // 应该提供下一页选项
+      expect($pagination).to.contain('下一页')
 
-      // should have provided 3 page links
+      // 应该提供3个页面链接
       expect($pagination.find('li.page')).to.have.length(3)
     })
 })
 ```
 
-#### 2. Don't overcomplicate things
+#### 2. 不要过度复杂化
 
-Custom commands you write are generally an abstraction over a series of internal
-commands. That means you and your team members exert much more mental effort to
-understand what your custom command does.
+你编写的自定义命令通常是一系列内部命令的抽象。这意味着你和你的团队成员需要花费更多的脑力来理解你的自定义命令的作用。
 
-There's no reason to add this level of complexity when you're only wrapping a
-couple commands.
+当仅包装几个命令时，没有理由增加这种复杂性。
 
-Don't do things like:
+不要做以下事情：
 
 - <Icon name="exclamation-triangle" color="red" /> `cy.clickButton(selector)`
 - <Icon name="exclamation-triangle" color="red" /> `.shouldBeVisible()`
 
-This first custom command is wrapping `cy.get(selector).click()`. Going down
-this route would lead to creating dozens or even hundreds of custom commands to
-cover every possible combination of element interactions. It's completely
-unnecessary.
+第一个自定义命令包装了`cy.get(selector).click()`。沿着这条路走下去会导致创建数十甚至数百个自定义命令来覆盖每个可能的元素交互组合。这完全没有必要。
 
-The `.shouldBeVisible()` custom command isn't worth the trouble or abstraction
-when you can already use: `.should('be.visible')`
+`.shouldBeVisible()`自定义命令不值得麻烦或抽象，因为你已经可以使用：`.should('be.visible')`
 
-Testing in Cypress is all about **readability** and **simplicity**. You don't
-have to do that much actual programming to get a lot done. You also don't need
-to worry about keeping your code as DRY as possible. Test code serves a
-different purpose than app code. Understandability and debuggability should be
-prioritized above all else.
+在Cypress中测试主要是关于**可读性**和**简单性**。你不需要做太多实际的编程就能完成很多工作。你也不需要担心保持代码尽可能DRY。测试代码服务于与应用程序代码不同的目的。可理解性和可调试性应优先于一切。
 
-Try not to overcomplicate things and create too many abstractions. When in
-doubt, use a regular function for individual spec files.
+尽量不要过度复杂化并创建太多抽象。有疑问时，为单个spec文件使用普通函数。
 
-#### 3. Don't do too much in a single command
+#### 3. 不要在单个命令中做太多事情
 
-Make your custom commands composable and as unopinionated as possible. Cramming
-too much into them makes them inflexible and requires more and more options
-passing to control their behavior.
+使你的自定义命令可组合且尽可能无意见。在其中塞入太多内容会使它们不灵活，并需要传递越来越多的选项来控制其行为。
 
-Try to add either zero or as few assertions as possible in your custom command.
-Those tend to shape your command into a much more rigid structure. Sometimes
-this is unavoidable, but a best practice is to let the calling code choose when
-and how to use assertions.
+尝试在你的自定义命令中添加零或尽可能少的断言。这些往往会使你的命令形成更刚性的结构。有时这是不可避免的，但最佳实践是让调用代码选择何时以及如何使用断言。
 
-#### 4. Skip your UI as much as possible
+#### 4. 尽可能跳过你的UI
 
-Custom commands are a great way to abstract away setup (specific to your app).
-When doing those kinds of tasks, skip as much of the UI as possible. Use
-[`cy.request()`](/api/commands/request) to login, set cookies or localStorage
-directly, stub and mock your applications functions, and / or trigger events
-programmatically.
+自定义命令是抽象设置（特定于你的应用程序）的好方法。在执行这些任务时，尽可能跳过UI。使用[`cy.request()`](/api/commands/request)登录，直接设置cookie或localStorage，存根和模拟你的应用程序函数，和/或以编程方式触发事件。
 
-Having custom commands repeat the same UI actions over and over again is slow,
-and unnecessary. Try to take as many shortcuts as possible.
+让自定义命令一遍又一遍地重复相同的UI操作是缓慢且不必要的。尝试尽可能多地使用快捷方式。
 
-#### 5. Write TypeScript definitions
+#### 5. 编写TypeScript定义
 
-You can describe the method signature for your custom command, allowing
-IntelliSense to show helpful documentation. See the
-[`cypress-example-todomvc`](https://github.com/cypress-io/cypress-example-todomvc#cypress-intellisense)
-repository for a working example.
+你可以描述自定义命令的方法签名，使IntelliSense显示有用的文档。查看[`cypress-example-todomvc`](https://github.com/cypress-io/cypress-example-todomvc#cypress-intellisense)仓库获取工作示例。
 
-#### 6. Create a function that adds the custom command
+#### 6. 创建一个添加自定义命令的函数
 
-Cypress [12.17.4](/app/references/changelog#12-17-4) includes a Webpack upgrade (v4 to v5), which [tree shakes out](https://webpack.js.org/blog/2020-10-10-webpack-5-release/#inner-module-tree-shaking) any side-effects or files that _only_ include side-effects.
+Cypress [12.17.4](/app/references/changelog#12-17-4) 包含一个Webpack升级（v4到v5），它会[树摇出](https://webpack.js.org/blog/2020-10-10-webpack-5-release/#inner-module-tree-shaking)任何副作用或仅包含副作用的文件。
 
-If you are using TypeScript and have Webpack's `sideEffects:false` set in your package.json, custom Cypress commands will not be registered by the common pattern of writing the commands in one file and having them be run as a side effect of importing the file. For example:
+如果你使用TypeScript并在package.json中设置了Webpack的`sideEffects:false`，自定义Cypress命令将不会通过在一个文件中编写命令并通过导入文件作为副作用运行的常见模式注册。例如：
 
 ```typescript
 // cypress/support/commands.ts
@@ -914,7 +825,7 @@ Cypress.Commands.add("login", (email, password) => { ... })
 import './commands'
 ```
 
-To support `sideEffects:false`, you can wrap the Cypress commands in a function that will be imported by the support file.
+为了支持`sideEffects:false`，你可以将Cypress命令包装在一个函数中，该函数将由支持文件导入。
 
 ```typescript
 // cypress/support/commands.ts
@@ -930,18 +841,17 @@ import { registerCommands } from './commands'
 registerCommands()
 ```
 
-## History
+## 历史
 
-| Version                                    | Changes                      |
-| ------------------------------------------ | ---------------------------- |
-| [0.20.0](/app/references/changelog#0-20-0) | `Cypress.Commands` API added |
+| 版本                                       | 变更                       |
+| ----------------------------------------- | ------------------------- |
+| [0.20.0](/app/references/changelog#0-20-0) | 添加了`Cypress.Commands` API |
 
-## See also
+## 另请参阅
 
-- See how to add
-  [TypeScript support for custom commands](/app/tooling/typescript-support#Types-for-Custom-Commands)
+- 查看如何为自定义命令添加[TypeScript支持](/app/tooling/typescript-support#自定义命令的类型)
 - <a href="/app/plugins/plugins-list#custom-commands">
-    Plugins using custom commands
+    使用自定义命令的插件
   </a>
 - [Cypress.log()](/api/cypress-api/cypress-log)
-- [Recipe: Logging In](/app/references/recipes#Logging-In)
+- [配方：登录](/app/references/recipes#登录)

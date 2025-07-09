@@ -1,169 +1,137 @@
 ---
-title: 'Testing Types'
-description: 'Learn the differences between Cypress end-to-end and component tests, the benefits and considerations for each type of test, and common scenarios for each type of test.'
+title: '测试类型'
+description: '了解Cypress端到端测试与组件测试的区别、每种测试类型的优势与注意事项，以及常见测试场景。'
 sidebar_position: 20
 ---
 
 <ProductHeading product="app" />
 
-# Testing Types
+# 测试类型
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 学习内容
 
-- The differences between end-to-end and component tests
-- The benefits and considerations for each type of test
-- Common scenarios for each type of test
-
-:::
-
-## End-to-End or Component Tests?
-
-One of the first decisions you will need to make on your testing journey is what
-type of test to create. Cypress offers two options: end-to-end and component
-tests. There are benefits and considerations for each choice, and the decision
-will depend on the needs of what you are currently trying to accomplish. In the
-end, you will probably have a combination of both types of tests for your app,
-but how do you choose right now?
-
-Let's go over each of these test types, the benefits they bring, things to
-consider, and scenarios for each.
-
-:::tip
-
-Cypress is adaptable to many different types of tests outside of end-to-end and component tests, including
-[API Testing](/app/get-started/why-cypress#Other), [Visual Testing](/app/tooling/visual-testing), [Unit Testing](/app/references/recipes#Unit-Testing),
-[Accessibility Testing](/accessibility/get-started/introduction) and more. Our [plugins](/app/plugins/plugins-list) provide many more tools to help you extensively test your app.
+- 端到端测试与组件测试的区别
+- 每种测试类型的优势与注意事项
+- 每种测试类型的常见场景
 
 :::
 
-## What is E2E Testing?
+## 选择端到端测试还是组件测试？
 
-E2E Testing is a technique that tests your app from the web browser through to
-the back end of your application, as well as testing integrations with
-third-party APIs and services. These types of tests are great at making sure
-your entire app is functioning as a cohesive whole.
+在开始测试之旅时，首先需要决定创建哪种类型的测试。Cypress提供两种选择：端到端测试和组件测试。每种选择都有其优势和注意事项，具体取决于当前要实现的目标。最终，您的应用很可能会同时包含这两种测试类型，但如何立即做出选择呢？
 
-Cypress runs end-to-end tests the same way users interact with your app by using
-a real browser, visiting URLs, viewing content, clicking on links and buttons,
-etc. Testing this way helps ensure your tests and the user's experience are the
-same.
-
-Writing end-to-end tests in Cypress can be done by developers building the
-application, specialized testing engineers, or a quality assurance team
-responsible for verifying an app is ready for release. Tests are written in code
-with an API that simulates the steps that a real user would take.
-
-End-to-end tests are great at verifying your app runs as intended, from the
-front end to the back end. However, end-to-end tests can be more difficult to
-set up, run, and maintain. There are often infrastructure needs in setting up a
-backend for testing purposes. Your team will need to develop a
-[strategy](/app/end-to-end-testing/testing-your-app#Testing-strategies)
-on how to handle this complexity.
+让我们分别了解这些测试类型、它们的优势、注意事项以及适用场景。
 
 :::tip
 
-### Benefits of end-to-end tests:
+Cypress不仅支持端到端和组件测试，还适应多种其他测试类型，包括
+[API测试](/app/get-started/why-cypress#Other)、[视觉测试](/app/tooling/visual-testing)、[单元测试](/app/references/recipes#Unit-Testing)、
+[无障碍测试](/accessibility/get-started/introduction)等。我们的[插件](/app/plugins/plugins-list)提供了更多工具来帮助您全面测试应用。
 
-- Ensure your app is functioning as a cohesive whole
-- Tests match the user experience
-- Can be written by developers or QA Teams
-- Can be used for integration testing as well
+:::
+
+## 什么是端到端测试？
+
+端到端测试是一种从网页浏览器到应用后端，包括与第三方API和服务集成的全面测试技术。这类测试非常适合确保整个应用作为一个协调的整体正常运行。
+
+Cypress通过真实浏览器运行端到端测试，模拟用户与应用的交互：访问URL、查看内容、点击链接和按钮等。这种方式有助于确保测试与用户体验一致。
+
+在Cypress中编写端到端测试可以由开发应用的开发人员、专业测试工程师或负责验证应用发布准备的质量保证团队完成。测试通过代码编写，使用模拟真实用户操作的API。
+
+端到端测试非常适合验证从前端到后端的应用运行是否符合预期。然而，端到端测试的设置、运行和维护可能更为复杂。通常需要为测试目的搭建后端基础设施。您的团队需要制定
+[策略](/app/end-to-end-testing/testing-your-app#Testing-strategies)
+来处理这种复杂性。
+
+:::tip
+
+### 端到端测试的优势：
+
+- 确保应用作为协调的整体运行
+- 测试与用户体验匹配
+- 可由开发人员或QA团队编写
+- 也可用于集成测试
 
 :::
 
 :::info
 
-### Considerations for end-to-end tests:
+### 端到端测试的注意事项：
 
-- More difficult to set up, run, and maintain
-- Provision testing infrastructure in CI
-- Testing certain scenarios require more setup
+- 设置、运行和维护更复杂
+- 在CI中配置测试基础设施
+- 测试某些场景需要更多设置
 
 :::
 
 :::note
 
-### Common scenarios for end-to-end tests:
+### 端到端测试的常见场景：
 
-- Validating critical workflows like authentication and purchasing
-- Ensuring data is persisted and displayed through multiple screens
-- Running Smoke Tests and System Checks before deployment
+- 验证关键流程（如身份验证和购买）
+- 确保数据在多屏间持久化和显示
+- 部署前运行冒烟测试和系统检查
 
 :::
 
-To learn more about end-to-end testing in Cypress, visit our guide on
-[Writing Your First End-to-end Test](/app/end-to-end-testing/writing-your-first-end-to-end-test).
+要了解更多关于Cypress端到端测试的内容，请访问我们的指南
+[编写第一个端到端测试](/app/end-to-end-testing/writing-your-first-end-to-end-test)。
 
-## What is Component Testing?
+## 什么是组件测试？
 
-Modern web frameworks provide ways to write applications by breaking them into
-smaller logical units called components. Components can range from fairly small
-(like a button) to more complex (like a registration form).
+现代Web框架通过将应用分解为称为组件的较小逻辑单元来编写应用。组件的范围可以从相当小（如按钮）到更复杂（如注册表单）。
 
-Because of their nature, components tend to be easily testable, which is where
-Cypress Component Testing comes into play.
+由于其特性，组件往往易于测试，这正是Cypress组件测试的用武之地。
 
-Component tests differ from end-to-end tests in that instead of visiting a URL
-to pull up an entire app, a component can be "mounted" and tested on its own.
-This allows you to focus on testing only the component's functionality and not
-worrying about other nuances with testing a component as part of the larger
-application.
+组件测试与端到端测试的不同之处在于，它不是通过访问URL来启动整个应用，而是可以单独"挂载"和测试组件。这使您可以专注于仅测试组件的功能，而不必担心作为大型应用一部分测试组件的其他细微差别。
 
-Typically, a component test is written by the developers working on the
-component. The code for the test lives alongside the component code, and it is
-common for tests to be coded simultaneously with the component, helping
-developers verify the required functionality while building it.
+通常，组件测试由负责组件的开发人员编写。测试代码与组件代码并存，通常测试与组件同时编码，帮助开发人员在构建时验证所需功能。
 
-One thing to consider, though, is even if all your component tests pass, it does
-not mean your app is functioning properly. Component tests do nothing to ensure
-that all the layers of your app are working well together. Therefore, a
-well-tested app has a combination of end-to-end and component tests, with each
-set of tests specializing in what they do best.
+然而，需要考虑的是，即使所有组件测试都通过，也不意味着应用正常运行。组件测试无法确保应用的所有层都能良好协作。因此，一个经过良好测试的应用应结合端到端测试和组件测试，每组测试专注于其最擅长的领域。
 
 :::tip
 
-### Benefits of component tests:
+### 组件测试的优势：
 
-- Easier to test components in isolation
-- Fast and reliable
-- Easy to set up specific scenarios in tests
-- Don't rely on any external system to run
+- 更容易隔离测试组件
+- 快速可靠
+- 易于在测试中设置特定场景
+- 不依赖任何外部系统运行
 
 :::
 
 :::info
 
-### Considerations for component tests:
+### 组件测试的注意事项：
 
-- Do not ensure overall app quality
-- Do not call into external APIs/Services
-- Usually written by developers working on the component
+- 不保证整体应用质量
+- 不调用外部API/服务
+- 通常由负责组件的开发人员编写
 
 :::
 
 :::note
 
-### Common scenarios for component tests:
+### 组件测试的常见场景：
 
-- Testing a date picker works properly for a variety of scenarios
-- That a form shows and hides specific sections based on input
-- Testing components coming out of a design system
-- Testing logic not tied to a component (like unit tests!)
+- 测试日期选择器在各种场景下的正常工作
+- 表单根据输入显示和隐藏特定部分
+- 测试设计系统中的组件
+- 测试与组件无关的逻辑（如单元测试！）
 
 :::
 
-To learn more about component testing in Cypress, visit our guide on
-[Testing Your Components with Cypress](/app/component-testing/get-started).
+要了解更多关于Cypress组件测试的内容，请访问我们的指南
+[使用Cypress测试组件](/app/component-testing/get-started)。
 
-## Testing Type Comparison
+## 测试类型对比
 
-| Attributes             |                       E2E                        |                   Component                   |
-| ---------------------- | :----------------------------------------------: | :-------------------------------------------: |
-| What's Tested          |                  All app layers                  |             Individual component              |
-| Characteristics        | Comprehensive, slower, more susceptible to flake |         Specialized, quick, reliable          |
-| Used For               |     Verifying app works as a cohesive whole      | Testing functionality of individual component |
-| Written By             |            Developers, QA Team, SDETs            |             Developers, Designers             |
-| CI Infrastructure      |           Often requires complex setup           |                  None needed                  |
-| Initialization Command |                 `cy.visit(url)`                  |          `cy.mount(<MyComponent />)`          |
+| 属性                 |                       端到端测试                       |                   组件测试                   |
+| -------------------- | :-----------------------------------------------------: | :------------------------------------------: |
+| 测试对象             |                    所有应用层                     |             单个组件              |
+| 特点                 | 全面、较慢、更易出现不稳定情况         | 专门化、快速、可靠          |
+| 用途                 |     验证应用作为协调的整体运行      | 测试单个组件的功能 |
+| 编写者               |            开发人员、QA团队、SDETs            |             开发人员、设计师             |
+| CI基础设施           |           通常需要复杂设置           |                  无需                  |
+| 初始化命令           |                 `cy.visit(url)`                  |          `cy.mount(<MyComponent />)`          |

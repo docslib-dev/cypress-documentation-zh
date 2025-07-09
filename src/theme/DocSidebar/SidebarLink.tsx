@@ -24,7 +24,7 @@ export const SidebarLink: React.FC<SidebarLinkProps> = ({
       {children}{' '}
       {customProps?.new_label ? (
         <Tag color="indigo" size="16" dark style={{ marginTop: '-2px' }}>
-          New
+          新
         </Tag>
       ) : null}
     </Link>

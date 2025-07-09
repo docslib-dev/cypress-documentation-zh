@@ -1,117 +1,77 @@
 ---
-title: 'Social Authentication: Cypress Guide'
-sidebar_label: Social Authentication
-description: Authenticate with common social authentication platforms with cy.origin() and use cy.session() to cache authenticated users.
+title: '社交登录认证：Cypress指南'
+sidebar_label: '社交登录认证'
+description: '使用cy.origin()与常见社交平台进行认证，并通过cy.session()缓存已认证用户。'
 ---
 
 <ProductHeading product="app" />
 
-# Social Authentication
+# 社交登录认证
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 学习内容
 
-- How to authenticate with Auth0 for Tenant with `cy.origin()`
-- How to use `cy.session()` to cache authenticated users
+- 如何使用`cy.origin()`通过Auth0租户进行认证
+- 如何使用`cy.session()`缓存已认证用户
 
 :::
 
 :::caution
 
-<Icon name="exclamation-triangle" /> **Not recommended in CI**
+<Icon name="exclamation-triangle" /> **不推荐在CI中使用**
 
-Cypress does **not** recommend testing social connection authentication as a
-primary means of authentication testing. This is due to the
-[challenges](/app/core-concepts/best-practices#Potential-Challenges-Authenticating-with-Social-Platforms)
-mentioned in our
-[Best Practices Guide](/app/core-concepts/best-practices).
+Cypress**不**推荐将测试社交连接认证作为主要的认证测试手段。这是由于我们在[最佳实践指南](/app/core-concepts/best-practices)中提到的[挑战](/app/core-concepts/best-practices#Potential-Challenges-Authenticating-with-Social-Platforms)。
 
-Relying on social authentication in CI will likely result in bot detection and
-in some cases, account suspension due to violating the provider's Terms of
-Service.
+在CI中依赖社交认证很可能触发机器人检测机制，并可能因违反服务提供商条款而导致账号暂停。
 
 :::
 
-## Application Setup
+## 应用设置
 
-For this guide, we're going to set up an application that uses Auth0 for Tenant
-that has social connections set up for Google, Facebook, and Microsoft which
-will authenticate users on our behalf to our application.
+本指南将配置一个使用Auth0租户的应用，该租户已设置Google、Facebook和Microsoft的社交连接，可代表用户向我们的应用进行认证。
 
-### Set up the Auth0 tenant
+### 设置Auth0租户
 
-To get started, first create a free [Auth0](https://auth0.com/signup)
-account and select the **I am a new Auth0 User** flow. This will have 4 steps:
+首先创建一个免费的[Auth0](https://auth0.com/signup)账号，选择**我是新Auth0用户**流程。包含4个步骤：
 
-- **Step 1:** When configuring your Sample App, please select the
-  **Single-Page App** for you platform and **React** for the technology.
-- **Step 2:** For **Social Connections**, please select **Facebook**, **Microsoft**, and
-  **Google**
-- **Step 3:** Try login and verify the connections are set up properly
-- **Step 4:** You can either download the sample via the **Download Sample App**
-  button or clone it
-  [here](https://github.com/auth0-samples/auth0-react-samples/tree/d5848ed710db85d6ef060731b296603c0eca744b/Sample-01).
-  We'll need this application in the next step. Select
-  **I am Ready to Use Auth0**. Your social connections on your Auth0 tenant
-  should now be configured correctly
+- **步骤1:** 配置示例应用时，请为您的平台选择**单页应用**，技术栈选择**React**
+- **步骤2:** 在**社交连接**中，请选择**Facebook**、**Microsoft**和**Google**
+- **步骤3:** 尝试登录并验证连接是否设置正确
+- **步骤4:** 可通过**下载示例应用**按钮或[此处](https://github.com/auth0-samples/auth0-react-samples/tree/d5848ed710db85d6ef060731b296603c0eca744b/Sample-01)克隆获取示例。下一步需要此应用。选择**我已准备好使用Auth0**。现在您的Auth0租户社交连接应已正确配置
 
-### Set up the application
+### 设置应用
 
-On your Auth0 dashboard, visit **Applications Dropdown** in the left menu.
-Select the dropdown and go to **Applications**.
+在Auth0仪表板左侧菜单访问**应用下拉框**，选择下拉框并进入**应用**。
 
-- Select the **Default Application**
-- Visit the **Settings** tab
-  - Copy the `domain` and `client ID` fields inside **Basic Information**. These
-    will be needed shortly.
-  - The **Application Properties** should have **Single Page Application** selected
-    for **Application Type**,
-  - Inside **Application URIs**, please add `http://localhost:3000` to
-    **Allowed Callback URLs**, **Allowed Web Origins** and **Allowed Logout URLs**.
-- Create the `src/auth_config.json` file from the
-  [`src/auth_config.json.example`](https://github.com/auth0-samples/auth0-react-samples/blob/d5848ed710db85d6ef060731b296603c0eca744b/Sample-01/src/auth_config.json.example)
-  file as described in the
-  [sample app](https://github.com/auth0-samples/auth0-react-samples/tree/d5848ed710db85d6ef060731b296603c0eca744b/Sample-01#create-an-api).
-- Once created, paste the `domain` and `client ID` into their respective fields
-  inside `src/auth_config.json`. The `audience` key can be removed. The
-  login/callback URIs will default to `http://localhost:3000` which is the url
-  of our test application.
-- [Install](https://github.com/auth0-samples/auth0-react-samples/tree/d5848ed710db85d6ef060731b296603c0eca744b/Sample-01#project-setup)
-  the application dependencies and
-  [start the dev server](https://github.com/auth0-samples/auth0-react-samples/tree/d5848ed710db85d6ef060731b296603c0eca744b/Sample-01#compile-and-hot-reload-for-development)
-- Verify the application is running correctly by visiting
-  `http://localhost:3000` and clicking the **Log in** button in the top right
-  corner. Select one of our social connections and log in and make sure to
-  complete the **Authorize App** prompt. This only needs to be done once. This
-  should take you back to the sample app authenticated as the test user. When
-  finished, click the **Log Out** dropdown button. Repeat for Google, Microsoft,
-  and Facebook or the accounts you would like to test.
+- 选择**默认应用**
+- 访问**设置**标签页
+  - 复制**基本信息**中的`domain`和`client ID`字段，后续会用到
+  - **应用属性**中**应用类型**应选择**单页应用**
+  - 在**应用URI**中，请将`http://localhost:3000`添加到**允许的回调URL**、**允许的Web来源**和**允许的登出URL**
+- 按照[示例应用](https://github.com/auth0-samples/auth0-react-samples/tree/d5848ed710db85d6ef060731b296603c0eca744b/Sample-01#create-an-api)说明，从[`src/auth_config.json.example`](https://github.com/auth0-samples/auth0-react-samples/blob/d5848ed710db85d6ef060731b296603c0eca744b/Sample-01/src/auth_config.json.example)创建`src/auth_config.json`文件
+- 创建后，将`domain`和`client ID`粘贴到`src/auth_config.json`对应字段。可移除`audience`键。登录/回调URI默认为`http://localhost:3000`，即测试应用的URL
+- [安装](https://github.com/auth0-samples/auth0-react-samples/tree/d5848ed710db85d6ef060731b296603c0eca744b/Sample-01#project-setup)应用依赖并[启动开发服务器](https://github.com/auth0-samples/auth0-react-samples/tree/d5848ed710db85d6ef060731b296603c0eca744b/Sample-01#compile-and-hot-reload-for-development)
+- 访问`http://localhost:3000`验证应用运行正常，点击右上角**登录**按钮。选择任一社交连接登录并确保完成**授权应用**提示(只需操作一次)。这将带您回到已认证的示例应用。完成后点击**登出**下拉按钮。对Google、Microsoft和Facebook或您想测试的账号重复此过程
 
-Here is what this process should look like for Facebook setup:
+以下是Facebook设置的过程示例：
 
 <DocsVideo
   src="https://vimeo.com/789093604"
-  title="Facebook social application setup"
+  title="Facebook社交应用设置"
 />
 
-## Test with Cypress
+## 使用Cypress测试
 
-Now that our application is set up and ready to go, we're ready to write our
-automated tests.
+现在应用已设置完毕，可以编写自动化测试了。
 
 :::caution
-For these social connections, the
-[`experimentalModifyObstructiveThirdPartyCode`](/app/guides/cross-origin-testing#Modifying-Obstructive-Third-Party-Code)
-configuration option must be enabled.
+对于这些社交连接，必须启用[`experimentalModifyObstructiveThirdPartyCode`](/app/guides/cross-origin-testing#Modifying-Obstructive-Third-Party-Code)配置选项。
 :::
 
-## Setting Auth0 app credentials in Cypress
+## 在Cypress中设置Auth0应用凭证
 
-To have access to test user credentials within our tests we need to configure
-Cypress to use the social username, password, and name environment variables set
-in the `cypress.env.json` file or by one of our
-[supported methods](/app/references/environment-variables#Setting).
+要在测试中使用社交账号凭证，需要配置Cypress通过`cypress.env.json`文件或[支持的方法](/app/references/environment-variables#Setting)设置社交用户名、密码和名称环境变量。
 
 ```json title='cypress.env.json'
 {
@@ -127,21 +87,18 @@ in the `cypress.env.json` file or by one of our
 }
 ```
 
-### Login with `cy.origin()`
+### 使用`cy.origin()`登录
 
-We'll write a custom command called `loginToAuth0ViaSocial` to perform a
-login to either Facebook, Google, or Microsoft. This command will use
-[`cy.origin()`](/api/commands/origin) to:
+我们将编写名为`loginToAuth0ViaSocial`的自定义命令，用于通过Facebook、Google或Microsoft登录。该命令将使用[`cy.origin()`](/api/commands/origin)来：
 
-1. Navigate to the Auth0 login
-2. Select the **Continue with ...** button and sign in with social credentials
-3. Sign in and redirect back to the
-   [sample app](https://github.com/auth0-samples/auth0-react-samples/tree/d5848ed710db85d6ef060731b296603c0eca744b/Sample-01)
-4. Cache the results with [`cy.session()`](/api/commands/session)
+1. 导航到Auth0登录页
+2. 选择**继续使用...**按钮并使用社交凭证登录
+3. 登录后重定向回[示例应用](https://github.com/auth0-samples/auth0-react-samples/tree/d5848ed710db85d6ef060731b296603c0eca744b/Sample-01)
+4. 使用[`cy.session()`](/api/commands/session)缓存结果
 
-For demonstration, we'll have a function for each provider.
+为演示，我们为每个提供商编写一个函数。
 
-#### Facebook Login Function
+#### Facebook登录函数
 
 ```js title="cypress/support/commands.ts"
 import { domain as Auth0Domain } from '../../src/auth_config.json'
@@ -176,7 +133,7 @@ function logIntoFacebook(username: string, password: string, name: string) {
 }
 ```
 
-#### Google Login Function
+#### Google登录函数
 
 ```js title="cypress/support/commands.ts"
 import { domain as Auth0Domain } from '../../src/auth_config.json'
@@ -215,7 +172,7 @@ function logIntoGoogle(username: string, password: string, name: string) {
       cy.get('input[type="email"]').type(username, {
         log: false,
       })
-      // NOTE: The element exists on the original form but is hidden and gets rerendered, which leads to intermittent detached DOM issues
+      // 注意：元素存在于原始表单但被隐藏并重新渲染，可能导致间歇性DOM分离问题
       cy.contains('Next').click().wait(4000)
       cy.get('[type="password"]').type(password, {
         log: false,
@@ -228,7 +185,7 @@ function logIntoGoogle(username: string, password: string, name: string) {
 }
 ```
 
-#### Microsoft Login Function
+#### Microsoft登录函数
 
 ```js title="cypress/support/commands.ts"
 import { domain as Auth0Domain } from '../../src/auth_config.json'
@@ -265,9 +222,9 @@ function logIntoMicrosoft(username: string, password: string, name: string) {
 }
 ```
 
-#### Combined Login Command
+#### 组合登录命令
 
-We can wire these functions together in a single command, like so:
+我们可以将这些函数组合成单个命令：
 
 ```ts title="cypress/support/commands.ts"
 Cypress.Commands.add(
@@ -313,35 +270,30 @@ Cypress.Commands.add(
 )
 ```
 
-Now, we can use our `loginToAuth0ViaSocial` command in the test. Below is our
-test to login as a user via Auth0 and run a basic check.
+现在可以在测试中使用`loginToAuth0ViaSocial`命令。以下是通过Auth0登录用户并运行基本检查的测试：
 
 ```js title='auth.cy.js'
-describe('Social Logins Demo', () => {
+describe('社交登录演示', () => {
   beforeEach(() => {
-    // can provide facebook, google, or microsoft here
+    // 此处可提供facebook、google或microsoft
     cy.loginToAuth0ViaSocial('facebook')
     cy.visit('http://localhost:3000/')
   })
 
-  it('navigates to the app after navigation and displays the sample project header', () => {
-    cy.get('h1').should('contain', 'React.js Sample Project')
+  it('导航到应用后显示示例项目标题', () => {
+    cy.get('h1').should('contain', 'React.js示例项目')
   })
 })
 ```
 
-Here's a sample of what all 3 should look like in order.
+以下是三个提供商依次运行的示例：
 
 <DocsVideo
   src="https://vimeo.com/789093473"
-  title="Google, Microsoft, and Facebook social with cy.origin()"
+  title="使用cy.origin()测试Google、Microsoft和Facebook社交登录"
 />
 
-Lastly, we can refactor our login command to take advantage of
-[`cy.session()`](/api/commands/session) to store our logged in user so we don't
-have to reauthenticate before every test. This also largely cuts down on the
-likelihood your account is blocked for frequent authentication attempts. Feel
-free to DRY this up a bit!
+最后，我们可以重构登录命令，利用[`cy.session()`](/api/commands/session)存储已登录用户，避免每次测试前重新认证。这也大大降低了因频繁认证尝试导致账号被封的风险。可以适当优化代码！
 
 ```ts title="cypress/support/commands.ts"
 Cypress.Commands.add(
@@ -421,23 +373,17 @@ Cypress.Commands.add(
 
 <DocsVideo
   src="https://vimeo.com/789093516"
-  title="Facebook social with cy.session()"
+  title="使用cy.session()测试Facebook社交登录"
 />
 
-With the use of [`cy.session()`](/api/commands/session), our tests should now
-run quicker!
+通过使用[`cy.session()`](/api/commands/session)，我们的测试现在应该运行得更快！
 
-We hope this guide was able to get you up and running with
-[`cy.origin()`](/api/commands/origin) and
-[`cy.session()`](/api/commands/session). If you ran into any issues while
-following this guide, or have any feedback, please let us know and submit a
-[Github issue](https://github.com/cypress-io/cypress-documentation/issues/new/choose).
-Happy testing!
+希望本指南能帮助您顺利使用[`cy.origin()`](/api/commands/origin)和[`cy.session()`](/api/commands/session)。如果在遵循本指南时遇到任何问题或有任何反馈，请提交[Github issue](https://github.com/cypress-io/cypress-documentation/issues/new/choose)。祝测试愉快！
 
-## See also
+## 另请参阅
 
-- [Cross Origin Testing Guide](/app/guides/cross-origin-testing)
-- [AWS Cognito Authentication Guide](/app/guides/authentication-testing/amazon-cognito-authentication)
-- [Azure Active Directory Authentication Guide](/app/guides/authentication-testing/azure-active-directory-authentication)
+- [跨源测试指南](/app/guides/cross-origin-testing)
+- [AWS Cognito认证指南](/app/guides/authentication-testing/amazon-cognito-authentication)
+- [Azure Active Directory认证指南](/app/guides/authentication-testing/azure-active-directory-authentication)
 - [`cy.origin()`](/api/commands/origin)
 - [`cy.session()`](/api/commands/session)

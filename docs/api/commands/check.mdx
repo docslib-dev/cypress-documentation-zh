@@ -1,6 +1,6 @@
 ---
-title: 'check | Cypress Documentation'
-description: Check checkbox(es) or radio(s) in Cypress.
+title: 'check | Cypress 文档'
+description: 在 Cypress 中勾选复选框(checkbox)或单选按钮(radio)。
 sidebar_label: check
 slug: /api/commands/check
 ---
@@ -9,18 +9,17 @@ slug: /api/commands/check
 
 # check
 
-Check checkbox(es) or radio(s).
+勾选复选框(checkbox)或单选按钮(radio)。
 
-It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried) to
-chain further commands that rely on the subject after `.check()`.
+在 `.check()` 之后继续链式调用依赖于该元素的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
 :::caution
 
-This element must be an `<input>` with type `checkbox` or `radio`.
+该元素必须是类型为 `checkbox` 或 `radio` 的 `<input>` 元素。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .check()
@@ -31,83 +30,82 @@ This element must be an `<input>` with type `checkbox` or `radio`.
 .check(values, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('[type="checkbox"]').check() // Check checkbox element
-cy.get('[type="radio"]').first().check() // Check first radio element
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.check('[type="checkbox"]') // Errors, cannot be chained off 'cy'
-cy.get('p:first').check() // Errors, '.get()' does not yield checkbox or radio
+cy.get('[type="checkbox"]').check() // 勾选复选框元素
+cy.get('[type="radio"]').first().check() // 勾选第一个单选按钮元素
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
+
+```javascript
+cy.check('[type="checkbox"]') // 错误，不能直接从 'cy' 链式调用
+cy.get('p:first').check() // 错误，'.get()' 返回的不是复选框或单选按钮
+```
+
+### 参数
 
 <Icon name="angle-right" /> **value _(String)_**
 
-Value of checkbox or radio that should be checked.
+需要勾选的复选框或单选按钮的值。
 
 <Icon name="angle-right" /> **values _(Array)_**
 
-Values of checkboxes or radios that should be checked.
+需要勾选的多个复选框或单选按钮的值。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `.check()`.
+传入一个选项对象以改变 `.check()` 的默认行为。
 
-| Option                       | Default                                                                     | Description                                                                                                                                     |
+| 选项                       | 默认值                                                                     | 描述                                                                                                                                     |
 | ---------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `animationDistanceThreshold` | [`animationDistanceThreshold`](/app/references/configuration#Actionability) | The distance in pixels an element must exceed over time to be [considered animating](/app/core-concepts/interacting-with-elements#Animations).  |
-| `log`                        | `true`                                                                      | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log)                                                             |
-| `force`                      | `false`                                                                     | Forces the action, disables [waiting for actionability](#Assertions)                                                                            |
-| `scrollBehavior`             | [`scrollBehavior`](/app/references/configuration#Actionability)             | Viewport position to where an element [should be scrolled](/app/core-concepts/interacting-with-elements#Scrolling) before executing the command |
-| `timeout`                    | [`defaultCommandTimeout`](/app/references/configuration#Timeouts)           | Time to wait for `.check()` to resolve before [timing out](#Timeouts)                                                                           |
-| `waitForAnimations`          | [`waitForAnimations`](/app/references/configuration#Actionability)          | Whether to wait for elements to [finish animating](/app/core-concepts/interacting-with-elements#Animations) before executing the command.       |
+| `animationDistanceThreshold` | [`animationDistanceThreshold`](/app/references/configuration#Actionability) | 元素随时间移动超过的像素距离，才会被[视为动画](/app/core-concepts/interacting-with-elements#Animations)。  |
+| `log`                        | `true`                                                                      | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令                                                             |
+| `force`                      | `false`                                                                     | 强制执行操作，禁用[等待可操作性](#Assertions)                                                                            |
+| `scrollBehavior`             | [`scrollBehavior`](/app/references/configuration#Actionability)             | 执行命令前将元素[滚动到](/app/core-concepts/interacting-with-elements#Scrolling)的视口位置 |
+| `timeout`                    | [`defaultCommandTimeout`](/app/references/configuration#Timeouts)           | 等待 `.check()` 解析的[超时时间](#Timeouts)                                                                           |
+| `waitForAnimations`          | [`waitForAnimations`](/app/references/configuration#Actionability)          | 是否等待元素[完成动画](/app/core-concepts/interacting-with-elements#Animations)后再执行命令。       |
 
 <HeaderYields />
 
-- `.check()` yields the same subject it was given.
-- It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried)
-  to chain further commands that rely on the subject after `.check()`.
+- `.check()` 返回与传入时相同的元素。
+- 在 `.check()` 之后继续链式调用依赖于该元素的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Check all checkboxes
+#### 勾选所有复选框
 
 ```javascript
 cy.get('[type="checkbox"]').check()
 ```
 
-#### Select all radios
+#### 选择所有单选按钮
 
 ```javascript
 cy.get('[type="radio"]').check()
 ```
 
-#### Check the element with id of 'saveUserName'
+#### 勾选 id 为 'saveUserName' 的元素
 
 ```javascript
 cy.get('#saveUserName').check()
 ```
 
-### Value
+### 值
 
-#### Select the radio with the value of 'US'
+#### 选择值为 'US' 的单选按钮
 
 ```html
 <form>
   <input type="radio" id="ca-country" value="CA" />
-  <label for="ca-country">Canada</label>
+  <label for="ca-country">加拿大</label>
   <input type="radio" id="us-country" value="US" />
-  <label for="us-country">United States</label>
+  <label for="us-country">美国</label>
 </form>
 ```
 
@@ -115,16 +113,16 @@ cy.get('#saveUserName').check()
 cy.get('[type="radio"]').check('US')
 ```
 
-### Values
+### 多个值
 
-#### Check the checkboxes with the values 'subscribe' and 'accept'
+#### 勾选值为 'subscribe' 和 'accept' 的复选框
 
 ```html
 <form>
   <input type="checkbox" id="subscribe" value="subscribe" />
-  <label for="subscribe">Subscribe to newsletter?</label>
+  <label for="subscribe">订阅新闻通讯？</label>
   <input type="checkbox" id="acceptTerms" value="accept" />
-  <label for="acceptTerms">Accept terms and conditions.</label>
+  <label for="acceptTerms">接受条款和条件。</label>
 </form>
 ```
 
@@ -132,24 +130,22 @@ cy.get('[type="radio"]').check('US')
 cy.get('form input').check(['subscribe', 'accept'])
 ```
 
-### Options
+### 选项
 
-#### Check an invisible checkbox
+#### 勾选不可见的复选框
 
-You can ignore Cypress' default behavior of checking that the element is
-visible, clickable and not disabled by setting `force` to `true` in the options.
+通过将选项中的 `force` 设置为 `true`，可以忽略 Cypress 默认检查元素是否可见、可点击且未禁用的行为。
 
 ```javascript
 cy.get('.action-checkboxes')
-  .should('not.be.visible') // Passes
+  .should('not.be.visible') // 通过
   .check({ force: true })
-  .should('be.checked') // Passes
+  .should('be.checked') // 通过
 ```
 
-### Find checked option
+### 查找已选中的选项
 
-You can get the currently checked option using the jQuery's
-[:checked selector](https://api.jquery.com/checked-selector/).
+可以使用 jQuery 的 [:checked 选择器](https://api.jquery.com/checked-selector/)获取当前选中的选项。
 
 ```html
 <form id="pick-fruit">
@@ -163,59 +159,54 @@ You can get the currently checked option using the jQuery's
 cy.get('#pick-fruit :checked').should('be.checked').and('have.value', 'apple')
 ```
 
-## Notes
+## 注意事项
 
-### Actionability
+### 可操作性
 
-#### The element must first reach actionability
+#### 元素必须首先达到可操作状态
 
-`.check()` is an "action command" that follows all the rules of
-[Actionability](/app/core-concepts/interacting-with-elements).
+`.check()` 是一个“操作命令”，遵循[可操作性](/app/core-concepts/interacting-with-elements)的所有规则。
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.check()` requires being chained off a command that yields DOM element(s).
-- `.check()` requires the element to have type `checkbox` or `radio`.
+- `.check()` 需要链式调用返回 DOM 元素的命令。
+- `.check()` 要求元素类型为 `checkbox` 或 `radio`。
 
 <HeaderAssertions />
 
-- `.check()` will automatically wait for the element to reach an
-  [actionable state](/app/core-concepts/interacting-with-elements).
-- `.check()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed.
+- `.check()` 会自动等待元素达到[可操作状态](/app/core-concepts/interacting-with-elements)。
+- `.check()` 会自动[重试](/app/core-concepts/retry-ability)直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `.check()` can time out waiting for the element to reach an
-  [actionable state](/app/core-concepts/interacting-with-elements).
-- `.check()` can time out waiting for assertions you've added to pass.
+- `.check()` 可能会因等待元素达到[可操作状态](/app/core-concepts/interacting-with-elements)而超时。
+- `.check()` 可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_check the element with name of 'emailUser'_**
+**_勾选 name 为 'emailUser' 的元素_**
 
 ```javascript
 cy.get('form').find('[name="emailUser"]').check()
 ```
 
-The commands above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/check/check-checkbox-in-cypress.png"
-  alt="Command log for check"
+  alt="check 命令日志"
 />
 
-When clicking on `check` within the command log, the console outputs the
-following:
+当点击命令日志中的 `check` 时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/check/console-showing-events-on-check.png"
-  alt="console.log for check"
+  alt="check 的 console.log"
 />
 
-## See also
+## 另请参阅
 
 - [`.click()`](/api/commands/click)
 - [`.uncheck()`](/api/commands/uncheck)

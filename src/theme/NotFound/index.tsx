@@ -10,7 +10,7 @@ export default function NotFound() {
       <PageMetadata
         title={translate({
           id: 'theme.NotFound.title',
-          message: 'Page Not Found',
+          message: '页面未找到',
         })}
       />
       <Layout>
@@ -20,27 +20,27 @@ export default function NotFound() {
               <h1 className="hero__title">
                 <Translate
                   id="theme.NotFound.title"
-                  description="The title of the 404 page">
-                  404 Page Not Found
+                  description="404页面的标题">
+                  404 页面未找到
                 </Translate>
               </h1>
               <p className={s.content}>
                 <Translate
                   id="theme.NotFound.p1"
-                  description="The first paragraph of the 404 page">
-                  Well darn... we can't find the page you're looking for. One of these links might help.
+                  description="404页面的第一段内容">
+                  哎呀...我们找不到您要访问的页面。以下链接可能会对您有所帮助。
                 </Translate>
               </p>
               <div className={s.listWrapper}>
                 <ul>
                     <li>
-                      <a href="/app/core-concepts/introduction-to-cypress">Introduction to Cypress</a>
+                      <a href="/app/core-concepts/introduction-to-cypress">Cypress 简介</a>
                     </li>
                     <li>
-                      <a href="/api">The API Docs</a>
+                      <a href="/api">API 文档</a>
                     </li>
                     <li>
-                      <a href="/examples/tutorials">Tutorials</a>
+                      <a href="/examples/tutorials">教程</a>
                     </li>
                     <li>
                       <a href="/cloud/get-started/introduction">Cypress Cloud</a>
@@ -50,8 +50,8 @@ export default function NotFound() {
               <p className={s.ital}>
                 <Translate
                   id="theme.NotFound.p2"
-                  description="The 2nd paragraph of the 404 page">
-                  Try using our sweet custom search in the header above. 🔍
+                  description="404页面的第二段内容">
+                  试试使用顶部导航栏中的搜索功能吧。🔍
                 </Translate>
               </p>
             </div>

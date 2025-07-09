@@ -1,106 +1,87 @@
 ---
-title: 'Configuration API in Node Events'
-description: 'Modify configuration values and environment variables from your Cypress configuration.'
-sidebar_label: 'Configuration API'
+title: 'Node Events中的配置API'
+description: '从Cypress配置中动态修改配置值和环境变量。'
+sidebar_label: '配置API'
 ---
 
 <ProductHeading product="app" />
 
-# Configuration API
+# 配置API
 
-Cypress enables you to dynamically modify configuration values and environment
-variables from your Cypress configuration.
+Cypress允许您从配置中动态修改配置值和环境变量。
 
-## Usage
+## 使用方法
 
 <WarningSetupNodeEvents />
 
-To modify configuration, you return a config object from `setupNodeEvents`
-within this exported function.
+要修改配置，您需要从导出的`setupNodeEvents`函数中返回一个配置对象。
 
 :::cypress-config-plugin-example
 
 ```ts
-console.log(config) // see everything in here!
+console.log(config) // 查看所有配置内容！
 
-// modify config values
+// 修改配置值
 config.defaultCommandTimeout = 10000
 config.baseUrl = 'https://staging.acme.com'
 
-// modify env var value
+// 修改环境变量值
 config.env.ENVIRONMENT = 'staging'
 
-// IMPORTANT return the updated config object
+// 重要：返回更新后的配置对象
 return config
 ```
 
 :::
 
-Whenever you return an object from your `setupNodeEvents` function, Cypress will
-take this and "diff" it against the original configuration and automatically set
-the resolved values to point to what you returned.
+当您从`setupNodeEvents`函数返回一个对象时，Cypress会将其与原始配置进行"差异比较"，并自动将解析后的值设置为您返回的内容。
 
-If you don't return an object, then configuration will not be modified.
+如果不返回对象，则配置不会被修改。
 
 :::caution
 
-The `config` object also includes the following extra values that are not part
-of the standard configuration. **These values are read only and cannot be
-modified from the `setupNodeEvents` function in the Cypress configuration.**
+`config`对象还包含以下不属于标准配置的额外值。**这些值是只读的，无法通过Cypress配置中的`setupNodeEvents`函数修改。**
 
-- `configFile`: The absolute path to the Cypress configuration file. See the
-  [--config-file](/app/references/command-line#cypress-open) and
-  [configFile](/app/references/module-api) docs for more information on this
-  value.
-- `projectRoot`: The absolute path to the root of the project (e.g.
-  `/Users/me/dev/my-project`)
+- `configFile`: Cypress配置文件的绝对路径。有关此值的更多信息，请参阅[--config-file](/app/references/command-line#cypress-open)和[configFile](/app/references/module-api)文档。
+- `projectRoot`: 项目根目录的绝对路径（例如`/Users/me/dev/my-project`）
 
 :::
 
-Resolved values will show up in the "Settings" tab.
+解析后的值将显示在"Settings"选项卡中。
 
 <DocsImage
   src="/img/app/configuration/plugin-configuration.png"
-  alt="Resolved configuration in the Desktop app"
+  alt="桌面应用中解析后的配置"
 />
 
-### Promises
+### Promise支持
 
-Additionally, Cypress will respect and await promises you return. This enables
-you to perform asynchronous tasks and eventually resolve with the modified
-configuration object. See the
-[example on switching between multiple configuration files](#Switch-between-multiple-configuration-files)
-for a full example.
+此外，Cypress会尊重并等待您返回的Promise。这使您能够执行异步任务，并最终返回修改后的配置对象。完整示例请参阅[在多个配置文件之间切换](#Switch-between-multiple-configuration-files)。
 
-## Examples
+## 示例
 
-### Customize available browsers
+### 自定义可用浏览器
 
-The configuration includes the list of browsers found on your system that are
-available to Cypress. You can, for example, change or augment that list for
-different testing purposes.
+配置中包含系统上Cypress可用的浏览器列表。例如，您可以根据不同的测试目的更改或扩展该列表。
 
 :::info
 
-Read our full guide on [Launching Browsers](/app/references/launching-browsers)
-for more information on how this works.
+阅读我们关于[启动浏览器](/app/references/launching-browsers)的完整指南，了解更多信息。
 
 :::
 
-### Switch between multiple configuration files
+### 在多个配置文件之间切换
 
-This means you can do things like store multiple configuration files and switch
-between them like:
+这意味着您可以存储多个配置文件并按需切换，例如：
 
 - `cypress.qa.json`
 - `cypress.dev.json`
 - `cypress.prod.json`
 
-How you choose to organize your configuration and environment variables is up to
-you.
+如何组织配置和环境变量取决于您。
 
 ```javascript
-// promisified fs module
+// 使用promisified的fs模块
 const fs = require('fs-extra')
 const path = require('path')
 
@@ -110,16 +91,16 @@ function getConfigurationByFile(file) {
   return fs.readJson(pathToConfigFile)
 }
 
-// plugins file
+// 插件文件
 module.exports = (on, config) => {
-  // accept a configFile value or use development by default
+  // 接受configFile值或默认使用development
   const file = config.env.configFile || 'development'
 
   return getConfigurationByFile(file)
 }
 ```
 
-You could now swap out configuration + environment variables like so:
+您现在可以像这样切换配置和环境变量：
 
 ```shell
 cypress run
@@ -137,7 +118,7 @@ cypress run --env configFile=staging
 cypress run --env configFile=production
 ```
 
-Each of these environments would read in the configuration at these files:
+每个环境会读取对应路径的配置文件：
 
 ```text
 cypress/config/development.json
@@ -146,7 +127,7 @@ cypress/config/staging.json
 cypress/config/production.json
 ```
 
-This would enable you to do things like this:
+这使您能够实现如下配置：
 
 ```json
 // cypress/config/development.json
@@ -192,24 +173,16 @@ This would enable you to do things like this:
 }
 ```
 
-This is a less complicated example. Remember - you have the full power of Node
-at your disposal.
+这是一个较简单的示例。请记住，您可以充分利用Node的全部功能。
 
-How you choose to edit the configuration is up to you. You don't have to read
-off of the file system - you could store them all in memory inside of
-[setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin) if you wanted.
+如何编辑配置取决于您。您不必从文件系统读取——如果愿意，可以将所有配置存储在[setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin)的内存中。
 
-### Test Type-Specific Plugins
+### 测试类型特定插件
 
-You can access the type of tests running via the `config.testingType` property.
-The testing type is either `e2e` or `component` depending on if the
-[E2E Testing](/app/core-concepts/testing-types#What-is-E2E-Testing) or
-[Component Testing](/app/core-concepts/testing-types#What-is-Component-Testing)
-type was selected in the Cypress Launchpad. This allows you to configure test
-type-specific plugins.
+您可以通过`config.testingType`属性访问正在运行的测试类型。测试类型为`e2e`或`component`，具体取决于在Cypress Launchpad中选择的是[端到端测试](/app/core-concepts/testing-types#What-is-E2E-Testing)还是[组件测试](/app/core-concepts/testing-types#What-is-Component-Testing)。这允许您配置特定于测试类型的插件。
 
-## History
+## 历史记录
 
-| Version                            | Changes                                   |
-| ---------------------------------- | ----------------------------------------- |
-| [7.0.0](/app/references/changelog) | Added `testingType` property to `config`. |
+| 版本                              | 变更                                      |
+| --------------------------------- | ----------------------------------------- |
+| [7.0.0](/app/references/changelog) | 向`config`添加了`testingType`属性。       |

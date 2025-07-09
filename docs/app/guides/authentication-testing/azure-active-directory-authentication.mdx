@@ -1,72 +1,45 @@
 ---
-title: 'Azure Active Directory Authentication: Cypress Guide'
-sidebar_label: Azure Active Directory Authentication
-description: Learn how to set up Cypress to test against an Azure Active Directory web app and authenticate with Azure Active Directory using `cy.origin()`.
+title: 'Azure Active Directory 认证：Cypress 指南'
+sidebar_label: Azure Active Directory 认证
+description: 学习如何配置 Cypress 来测试 Azure Active Directory 网页应用，并使用 `cy.origin()` 进行 Azure Active Directory 认证。
 ---
 
 <ProductHeading product="app" />
 
-# Azure Active Directory Authentication
+# Azure Active Directory 认证
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to set up Cypress to test against an Azure Active Directory web app
-- How to authenticate with Azure Active Directory using `cy.origin()`
+- 如何配置 Cypress 来测试 Azure Active Directory 网页应用
+- 如何使用 `cy.origin()` 进行 Azure Active Directory 认证
 
 :::
 
-This guide is designed for testing against a Single Page Application (SPA) that
-uses
-[Azure Active Directory](https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis)
-(AAD) to authenticate users. For this guide, the Microsoft Authentication
-Library
-[`@azure/msal-browser`](https://www.npmjs.com/package/@azure/msal-browser)
-package is used by the web app to broker this authentication.
+本指南适用于测试使用 [Azure Active Directory](https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis) (AAD) 进行用户认证的单页应用 (SPA)。在本指南中，网页应用使用 Microsoft 认证库 [`@azure/msal-browser`](https://www.npmjs.com/package/@azure/msal-browser) 包来代理此认证。
 
-This guide can also serve as a foundation for testing other web apps with
-Cypress that use Azure Active Directory services with other frameworks, such as
-React, Angular, or Vue.
+本指南也可作为使用 Cypress 测试其他使用 Azure Active Directory 服务的网页应用的基础，例如使用 React、Angular 或 Vue 框架的应用。
 
-## Microsoft AAD Application Setup
+## Microsoft AAD 应用设置
 
-For this guide, we are mainly going to focus on setting up Cypress to test
-against an Azure Active Directory web app. Please clone the
-[Microsoft Identity JavaScript Tutorial](https://github.com/Azure-Samples/ms-identity-javascript-tutorial/tree/c1956b658efa331bb5df11a0038ad32d12dad3ce/1-Authentication/1-sign-in)
-and follow the steps to set up your application.
+在本指南中，我们主要关注如何配置 Cypress 来测试 Azure Active Directory 网页应用。请克隆 [Microsoft Identity JavaScript Tutorial](https://github.com/Azure-Samples/ms-identity-javascript-tutorial/tree/c1956b658efa331bb5df11a0038ad32d12dad3ce/1-Authentication/1-sign-in) 并按照步骤设置你的应用。
 
-Once set up, you'll need to modify a few things in the `App/index.html` file:
+设置完成后，你需要在 `App/index.html` 文件中进行一些修改：
 
-- Remove any
-  [`integrity`](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)
-  attributes inside `<script>` tags. This is to prevent any SRI attribute
-  mismatches, which can happen since Cypress must rewrite any
-  [framebusting code](/app/references/configuration#modifyObstructiveCode).
-  This is recommended only when an application is under test.
-- Uncomment the `authRedirect.js` `<script>` tag and comment out the
-  `authPopup.js` `<script>` tag. Authentication
-  [Pop ups](/app/references/trade-offs#Permanent-trade-offs) will not work
-  inside of Cypress.
+- 移除 `<script>` 标签中的所有 [`integrity`](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity) 属性。这是为了防止任何 SRI 属性不匹配，因为 Cypress 必须重写任何 [框架破坏代码](/app/references/configuration#modifyObstructiveCode)。这仅在测试应用时推荐。
+- 取消注释 `authRedirect.js` 的 `<script>` 标签并注释掉 `authPopup.js` 的 `<script>` 标签。认证 [弹窗](/app/references/trade-offs#Permanent-trade-offs) 在 Cypress 中无法工作。
 
-Inside `server.js`, you'll see a reference to `express-rate-limit`, which
-limits each window to 100 requests per 15 minutes. Under test, your application
-will likely exceed this as you will be reloading your application and making
-requests to broker/verify authentication. For this demo, you can either
+在 `server.js` 中，你会看到对 `express-rate-limit` 的引用，它限制每个窗口在 15 分钟内最多 100 个请求。在测试中，你的应用可能会超过这个限制，因为你将重新加载应用并向代理/验证认证发起请求。对于本演示，你可以：
 
-- Remove the rate limiting code (recommended for demo purposes only).
-- Implement a strategy to increase the rate limit under test.
+- 移除速率限制代码（仅推荐用于演示目的）。
+- 实施一个策略来增加测试时的速率限制。
 
-When finished, your SPA should be running on `http://localhost:3000` and be
-properly configured to run with Azure Active Directory and Cypress.
+完成后，你的 SPA 应该运行在 `http://localhost:3000` 上，并正确配置为与 Azure Active Directory 和 Cypress 一起运行。
 
-## Configuring Cypress to use Microsoft AAD
+## 配置 Cypress 使用 Microsoft AAD
 
-To have access to test user credentials within our tests, we need to configure
-Cypress to use the
-[Azure Active Directory](https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis)
-user credentials for a given user in your tenant. These user credentials should
-be set in the `cypress.env.json` file inside the root directory of your project.
+为了在测试中访问测试用户凭据，我们需要配置 Cypress 使用 [Azure Active Directory](https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis) 用户凭据，这些凭据应设置在项目根目录的 `cypress.env.json` 文件中。
 
 ```json title="cypress.env.json"
 {
@@ -76,10 +49,7 @@ be set in the `cypress.env.json` file inside the root directory of your project.
 }
 ```
 
-Also, to authenticate with Azure Active Directory, you'll need to enable the
-[`experimentalModifyObstructiveThirdPartyCode`](/app/guides/cross-origin-testing#Modifying-Obstructive-Third-Party-Code)
-configuration option in the e2e configuration. If not enabled, your
-authentication workflow will enter an infinite redirect loop.
+此外，为了与 Azure Active Directory 进行认证，你需要在 e2e 配置中启用 [`experimentalModifyObstructiveThirdPartyCode`](/app/guides/cross-origin-testing#Modifying-Obstructive-Third-Party-Code) 配置选项。如果不启用，你的认证流程将进入无限重定向循环。
 
 :::cypress-config-example
 
@@ -93,24 +63,21 @@ authentication workflow will enter an infinite redirect loop.
 
 :::
 
-## Login with [`cy.origin()`](/api/commands/origin)
+## 使用 [`cy.origin()`](/api/commands/origin) 登录
 
-Next, we'll write a custom command called `loginToAAD` to perform a login to
-[Azure Active Directory](https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis).
-This command will use [`cy.origin()`](/api/commands/origin) to
+接下来，我们将编写一个名为 `loginToAAD` 的自定义命令来执行 [Azure Active Directory](https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis) 登录。此命令将使用 [`cy.origin()`](/api/commands/origin) 来：
 
-1. Navigate to the Azure Active Directory login page on
-   `login.microsoftonline.com`
-2. Input user credentials
-3. Sign in and redirect back to the demo application
-4. Cache the results with [`cy.session()`](/api/commands/session)
+1. 导航到 `login.microsoftonline.com` 上的 Azure Active Directory 登录页面
+2. 输入用户凭据
+3. 登录并重定向回演示应用
+4. 使用 [`cy.session()`](/api/commands/session) 缓存结果
 
 ```js title="cypress/support/commands.ts"
 function loginViaAAD(username: string, password: string) {
   cy.visit('http://localhost:3000/')
   cy.get('button#signIn').click()
 
-  // Login to your AAD tenant.
+  // 登录到你的 AAD 租户。
   cy.origin(
     'login.microsoftonline.com',
     {
@@ -126,7 +93,7 @@ function loginViaAAD(username: string, password: string) {
     }
   )
 
-  // depending on the user and how they are registered with Microsoft, the origin may go to live.com
+  // 根据用户及其在 Microsoft 的注册方式，来源可能会转到 live.com
   cy.origin(
     'login.live.com',
     {
@@ -143,7 +110,7 @@ function loginViaAAD(username: string, password: string) {
     }
   )
 
-  // Ensure Microsoft has redirected us back to the sample app with our logged in user.
+  // 确保 Microsoft 已将我们重定向回示例应用，并已登录用户。
   cy.url().should('equal', 'http://localhost:3000/')
   cy.get('#welcome-div').should(
     'contain',
@@ -166,13 +133,12 @@ Cypress.Commands.add('loginToAAD', (username: string, password: string) => {
 })
 ```
 
-Now, we can use our `loginToAAD` command in the test. Below is our test to login
-as a user via Azure Active Directory and run a basic sanity check.
+现在，我们可以在测试中使用 `loginToAAD` 命令。以下是我们通过 Azure Active Directory 登录用户并运行基本健全性检查的测试。
 
 ```js title="auth.cy.js"
 describe('Azure Active Directory Authentication', () => {
   beforeEach(() => {
-    // log into Azure Active Directory through our sample SPA using our custom command
+    // 使用我们的自定义命令通过示例 SPA 登录到 Azure Active Directory
     cy.loginToAAD(Cypress.env('aad_username'), Cypress.env('aad_password'))
     cy.visit('http://localhost:3000')
   })
@@ -198,13 +164,9 @@ describe('Azure Active Directory Authentication', () => {
   title="Azure Active Directory authentication with cy.origin()"
 />
 
-We now have working authentication and tests! But we are logging in before every
-test, which is not only time consuming, but also can lead to API rate limiting
-due to the number of requests.
+我们现在有了可用的认证和测试！但我们在每个测试前都进行登录，这不仅耗时，还可能导致由于请求数量过多而触发 API 速率限制。
 
-For this, we can refactor our login command to take advantage of
-[`cy.session()`](/api/commands/session) to store our logged in user's tokens
-and/or cookies so we don't have to reauthenticate before every test.
+为此，我们可以重构我们的登录命令，利用 [`cy.session()`](/api/commands/session) 来存储我们登录用户的令牌和/或 cookie，这样我们就不必在每个测试前重新认证。
 
 ```ts title="cypress/support/commands.ts"
 Cypress.Commands.add('loginToAAD', (username: string, password: string) => {
@@ -227,8 +189,8 @@ Cypress.Commands.add('loginToAAD', (username: string, password: string) => {
     },
     {
       validate: () => {
-        // this is a very basic form of session validation for this demo.
-        // depending on your needs, something more verbose might be needed
+        // 这是本演示中非常基本的会话验证形式。
+        // 根据你的需求，可能需要更详细的验证
         cy.visit('http://localhost:3000')
         cy.get('#welcome-div').should(
           'contain',
@@ -245,20 +207,14 @@ Cypress.Commands.add('loginToAAD', (username: string, password: string) => {
   title="Azure Active Directory authentication with cy.session()"
 />
 
-With the use of [`cy.session()`](/api/commands/session), our tests should now
-run quicker!
+通过使用 [`cy.session()`](/api/commands/session)，我们的测试现在应该运行得更快！
 
-We hope this guide was able to get you up and running with
-[`cy.origin()`](/api/commands/origin) and
-[`cy.session()`](/api/commands/session). If you ran into any issues while
-following this guide, or have any feedback, please let us know and submit a
-[Github issue](https://github.com/cypress-io/cypress-documentation/issues/new/choose).
-Happy testing!
+我们希望本指南能帮助你开始使用 [`cy.origin()`](/api/commands/origin) 和 [`cy.session()`](/api/commands/session)。如果你在遵循本指南时遇到任何问题，或有任何反馈，请告诉我们并提交 [Github issue](https://github.com/cypress-io/cypress-documentation/issues/new/choose)。祝你测试愉快！
 
-## See also
+## 另请参阅
 
-- [Cross Origin Testing Guide](/app/guides/cross-origin-testing)
-- [AWS Cognito Authentication Guide](/app/guides/authentication-testing/amazon-cognito-authentication)
-- [Okta Authentication Guide](/app/guides/authentication-testing/okta-authentication)
+- [跨源测试指南](/app/guides/cross-origin-testing)
+- [AWS Cognito 认证指南](/app/guides/authentication-testing/amazon-cognito-authentication)
+- [Okta 认证指南](/app/guides/authentication-testing/okta-authentication)
 - [`cy.origin()`](/api/commands/origin)
 - [`cy.session()`](/api/commands/session)

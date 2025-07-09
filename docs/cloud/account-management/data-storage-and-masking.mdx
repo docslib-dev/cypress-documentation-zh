@@ -1,97 +1,97 @@
 ---
-title: 'Data Storage and Controls | Cypress Cloud'
-description: 'Learn how to mask and control test data that is sent to Cypress Cloud'
+title: '数据存储与控制 | Cypress Cloud'
+description: '了解如何屏蔽和控制发送到Cypress Cloud的测试数据'
 sidebar_position: 80
-sidebar_label: Data Storage and Controls
+sidebar_label: 数据存储与控制
 ---
 
 <ProductHeading product="cloud" />
 
-# Data Storage and Controls
+# 数据存储与控制
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学习到
 
-- What data is stored in Cypress Cloud and how it is used
-- How to control what data is sent to Cypress Cloud
-- How to mask data in screenshots and videos
-- How to control what is shown in the Cypress Command Log and network requests
+- Cypress Cloud存储了哪些数据以及如何使用这些数据
+- 如何控制发送到Cypress Cloud的数据
+- 如何在截图和视频中屏蔽数据
+- 如何控制在Cypress命令日志和网络请求中显示的内容
 
 :::
 
 :::caution
 
-Please refer to the [Cypress Cloud Terms of Use](https://cypress.io/terms-of-use) and our [Security & Compliance](https://on.cypress.io/security/) guide for more specifics around reasonable use of Cypress Cloud, data storage and security at Cypress.
+请参阅[Cypress Cloud使用条款](https://cypress.io/terms-of-use)和我们的[安全与合规](https://on.cypress.io/security/)指南，了解关于Cypress Cloud合理使用、数据存储和安全的详细信息。
 
 :::
 
-## Types of Data
+## 数据类型
 
-When you run Cypress via `cypress run` and pass the `--record` flag, the following data is stored in Cypress Cloud for every run:
+当您通过`cypress run`运行Cypress并传递`--record`标志时，以下数据会存储在Cypress Cloud中：
 
-- Standard output in the terminal
-- Test results
-- Test definitions
-- Cypress configuration (minus Cypress environment variables)
-- Screenshots
-- Videos
-- OS environment variables related to CI and git information
+- 终端标准输出
+- 测试结果
+- 测试定义
+- Cypress配置（不包括Cypress环境变量）
+- 截图
+- 视频
+- 与CI和git信息相关的操作系统环境变量
 
-When [Test Replay](/cloud/features/test-replay) capturing is enabled, the additional data outlined below will be sent to Cypress Cloud. [See our guide on disabling Test Replay.](/cloud/features/test-replay#Opt-out-of-Test-Replay)
+当启用[测试回放](/cloud/features/test-replay)捕获时，以下额外数据将被发送到Cypress Cloud。[查看禁用测试回放的指南](/cloud/features/test-replay#Opt-out-of-Test-Replay)
 
-- The rendered DOM and CSS styles for the application under test
-- Cypress commands and events represented in the Command Log
-- Network traffic within your application under test
-- Browser console logs
+- 被测应用的渲染DOM和CSS样式
+- 命令日志中显示的Cypress命令和事件
+- 被测应用内的网络流量
+- 浏览器控制台日志
 
-Cypress Cloud does not capture anything related to the code of your application under test or the code within any repositories that are associated with your project.
+Cypress Cloud不会捕获与被测应用代码或与项目关联的任何仓库代码相关的内容。
 
-When [Cloud AI](/cloud/faq#What-is-Cloud-AI) is enabled, test content may be shared with session-bound AI model to enhance your test management experience. Your data is not used to train AI models and will not be shared between customers.
+当启用[Cloud AI](/cloud/faq#What-is-Cloud-AI)时，测试内容可能会与会话绑定的AI模型共享以增强测试管理体验。您的数据不会用于训练AI模型，也不会在客户之间共享。
 
-You, the customer, own and are responsible for your test content. We trust that customers will make decisions about the appropriateness of data to use in testing and will avoid use of PII, PHI, or other types of protected information. Cypress makes commercially reasonable efforts to protect confidentiality of information that is provided to Cypress Cloud.
+您作为客户拥有并负责您的测试内容。我们相信客户会做出关于测试数据适当性的决策，并避免使用PII、PHI或其他类型的受保护信息。Cypress会采取商业上合理的努力来保护提供给Cypress Cloud的信息的机密性。
 
-## Data Controls
+## 数据控制
 
-We understand that controlling what data is sent to Cypress Cloud is important to our users. Cypress provides a number of ways to control what data is sent to Cypress Cloud.
+我们理解控制发送到Cypress Cloud的数据对用户很重要。Cypress提供了多种方式来控制发送到Cypress Cloud的数据。
 
-If you'd like more granular control over what data is sent to Cypress Cloud, please [contact us](https://www.cypress.io/contact/) to discuss your needs.
+如果您需要更精细地控制发送到Cypress Cloud的数据，请[联系我们](https://www.cypress.io/contact/)讨论您的需求。
 
-### Project access controls
+### 项目访问控制
 
-Cypress Cloud offers controls around the visibility of a project. You can set a project to be public or private. [See project access control settings.](/cloud/account-management/projects#Public-vs-Private)
+Cypress Cloud提供项目可见性控制。您可以将项目设置为公开或私有。[查看项目访问控制设置](/cloud/account-management/projects#Public-vs-Private)
 
-Setting a project to private means that only the users explicitly invited to the organization will have visibility into the project, its runs, and any data captured by Cypress.
+将项目设置为私有意味着只有明确邀请到组织的用户才能查看项目、其运行以及Cypress捕获的任何数据。
 
-### Test Replay controls
+### 测试回放控制
 
-#### Disable Test Replay
+#### 禁用测试回放
 
-You can disable capturing data in Test Replay per project by following [this guide](/cloud/features/test-replay#Opt-out-of-Test-Replay). This means Test Replay will not be available for viewing or debugging in the project. This will prevent Cypress Cloud from capturing the following data:
+您可以按照[本指南](/cloud/features/test-replay#Opt-out-of-Test-Replay)按项目禁用测试回放数据捕获。这意味着项目中无法查看或调试测试回放。这将阻止Cypress Cloud捕获以下数据：
 
-- The rendered DOM and CSS styles for the application under test
-- Cypress commands and events represented in the Command Log
-- Network traffic within your application under test
-- Browser console logs
+- 被测应用的渲染DOM和CSS样式
+- 命令日志中显示的Cypress命令和事件
+- 被测应用内的网络流量
+- 浏览器控制台日志
 
-### Screenshot controls
+### 截图控制
 
-#### Blackout elements in screenshots
+#### 在截图中屏蔽元素
 
-Cypress offers an option to black out (mask) an array of elements from screenshots. [See screenshot API docs.](/api/commands/screenshot#Arguments) This allows you to black out specific elements on screenshots so that they will not be visible in the locally saved screenshots or to any users that have access to the run in Cypress Cloud.
+Cypress提供选项来屏蔽截图中的一组元素。[查看截图API文档](/api/commands/screenshot#Arguments)这允许您屏蔽截图中的特定元素，使其不会在本地保存的截图或对Cypress Cloud运行有访问权限的用户中可见。
 
-Add a control to your [support file](/app/references/configuration#Testing-Type-Specific-Options) to set the default blackout options for all screenshots.
+在[支持文件](/app/references/configuration#Testing-Type-Specific-Options)中添加控制以设置所有截图的默认屏蔽选项。
 
 ```js
 before(() => {
   Cypress.Screenshot.defaults({
-    // blackout all elements with 'mask-cy' attribute
+    // 屏蔽所有带有'mask-cy'属性的元素
     blackout: ['mask-cy'],
   })
 })
 ```
 
-Add a control for a specific screenshot to blackout specific elements.
+为特定截图添加控制以屏蔽特定元素。
 
 ```js
 it('admin page loads', () => {
@@ -102,93 +102,93 @@ it('admin page loads', () => {
 })
 ```
 
-#### Remove Cypress Command Log from screenshots
+#### 从截图中移除Cypress命令日志
 
-Cypress offers an option to hide the Cypress Command Log from screenshots so that no information from that area will be captured in screenshots. See the [`cy.screenshot()`](/api/commands/screenshot#Arguments) command for more information.
+Cypress提供选项隐藏截图中的Cypress命令日志，使该区域的任何信息都不会被捕获在截图中。查看[`cy.screenshot()`](/api/commands/screenshot#Arguments)命令获取更多信息。
 
-Add a control to your [support file](/app/references/configuration#Testing-Type-Specific-Options) to set the default capture options for all screenshots.
+在[支持文件](/app/references/configuration#Testing-Type-Specific-Options)中添加控制以设置所有截图的默认捕获选项。
 
 ```js
 before(() => {
   Cypress.Screenshot.defaults({
-    capture: 'viewport', // or fullPage
+    capture: 'viewport', // 或 fullPage
   })
 })
 ```
 
-Add a control for a specific screenshot to only capture the application under test.
+为特定截图添加控制以仅捕获被测应用。
 
 ```js
 it('sign in page', () => {
   cy.visit('/sign-in')
   cy.screenshot({
-    capture: 'viewport', // or fullPage
+    capture: 'viewport', // 或 fullPage
   })
 })
 ```
 
-### Video controls
+### 视频控制
 
-#### Disable video upload
+#### 禁用视频上传
 
-You can delete videos that are recorded when you are passing `video: true` by following [this guide to control what is uploaded to Cypress Cloud](/app/guides/screenshots-and-videos#Control-which-videos-to-keep-and-upload-to-Cypress-Cloud).
+您可以通过[本指南](/app/guides/screenshots-and-videos#Control-which-videos-to-keep-and-upload-to-Cypress-Cloud)删除在传递`video: true`时录制的视频，以控制上传到Cypress Cloud的内容。
 
-### Cypress Command Log controls
+### Cypress命令日志控制
 
-#### Turn off Cypress Command Log rendering
+#### 关闭Cypress命令日志渲染
 
-You can disable showing the entirety of the Cypress Command Log as well as the Application under Test (AUT) controls in your tests to prevent all test content from being shown and recorded in any screenshot or video by passing `--no-runner-ui` via the CLI while running Cypress tests. See [Cypress Command Line options](/app/references/command-line#Options). This means that the AUT will be the only thing that is rendered while running tests, so the only thing that is captured in screenshots and videos.
+您可以通过在运行Cypress测试时通过CLI传递`--no-runner-ui`来禁用显示整个Cypress命令日志以及被测应用(AUT)控制，以防止所有测试内容显示并记录在任何截图或视频中。查看[Cypress命令行选项](/app/references/command-line#Options)。这意味着AUT将是运行测试时唯一渲染的内容，因此也是截图和视频中唯一捕获的内容。
 
-Note that when `--no-runner-ui` is set, data from the Cypress Command Log will still be sent to Cypress Cloud to be generated and displayed in Test Replay if it is enabled. See [Disable Test Replay](/cloud/features/test-replay#Opt-out-of-Test-Replay) for more information.
+请注意，当设置`--no-runner-ui`时，Cypress命令日志中的数据仍会发送到Cypress Cloud以生成并显示在测试回放中（如果启用）。查看[禁用测试回放](/cloud/features/test-replay#Opt-out-of-Test-Replay)获取更多信息。
 
-#### Mask data in the Cypress Command Log
+#### 在Cypress命令日志中屏蔽数据
 
-There are multiple ways to mask data in the Cypress Command Log. Note that when these strategies are used, data within test definitions will still be sent to Cypress Cloud.
+有多种方法可以在Cypress命令日志中屏蔽数据。请注意，当使用这些策略时，测试定义中的数据仍会发送到Cypress Cloud。
 
-##### `log: false` for Cypress commands
+##### 为Cypress命令设置`log: false`
 
-You can pass `log: false` as an option to Cypress-specific commands in your tests to prevent the data from being shown visibly in the Cypress Command Log and being shown in any captured screenshots or videos.
+您可以在测试中为Cypress特定命令传递`log: false`选项，以防止数据在Cypress命令日志中可见显示，并防止其显示在任何捕获的截图或视频中。
 
-##### Disable logging of XHR/Fetch requests
+##### 禁用XHR/Fetch请求日志记录
 
-By default, Cypress logs all requests that match any [`cy.intercept()`](/api/commands/intercept) in the Cypress Command Log, as well as all XMLHttpRequests and fetch requests. You can use `cy.intercept()` to disable these logs by passing `{ log: false }` in the second parameter. See the [`cy.intercept()`](/api/commands/intercept#Disabling-logs-for-a-request) command for more information.
+默认情况下，Cypress会记录与任何[`cy.intercept()`](/api/commands/intercept)匹配的所有请求，以及所有XMLHttpRequests和fetch请求。您可以使用`cy.intercept()`通过在第二个参数中传递`{ log: false }`来禁用这些日志。查看[`cy.intercept()`](/api/commands/intercept#Disabling-logs-for-a-request)命令获取更多信息。
 
 ```js
 before(() => {
-  // disable Cypress's default behavior of logging all XMLHttpRequests and fetches
+  // 禁用Cypress默认记录所有XMLHttpRequests和fetch请求的行为
   cy.intercept({ resourceType: /xhr|fetch/ }, { log: false })
 })
 ```
 
-##### Mask Cypress commands in the Cypress Command Log
+##### 在Cypress命令日志中屏蔽Cypress命令
 
-Users can mask passwords in the Cypress Command Log by using a custom command like the code below. [See our guide on masking the contents of the `.type()` command.](/api/cypress-api/custom-commands#Overwrite-type-command)
+用户可以通过使用如下自定义命令在Cypress命令日志中屏蔽密码。[查看我们关于屏蔽`.type()`命令内容的指南](/api/cypress-api/custom-commands#Overwrite-type-command)
 
 <DocsImage
   src="/img/api/custom-commands/custom-command-type-masked-password.png"
-  alt="Cypress command log showing masked password as asterisks within the type command"
+  alt="Cypress命令日志显示密码被屏蔽为星号的type命令"
 />
 
-### Network requests controls
+### 网络请求控制
 
-Cypress allows users to block requests from specified hosts. [See our blockHosts configuration guide.](/app/references/configuration#blockHosts)
+Cypress允许用户阻止来自指定主机的请求。[查看我们的blockHosts配置指南](/app/references/configuration#blockHosts)
 
 <DocsImage
   src="/img/app/references/v10/blocked-host.png"
-  alt="Network tab of dev tools showing blocked host"
+  alt="开发者工具网络标签显示被阻止的主机"
 />
 
-### Cloud AI controls
+### Cloud AI控制
 
-[Cloud AI](/cloud/faq#What-is-Cloud-AI) is enabled by default for all users on any Cloud plan.
+[Cloud AI](/cloud/faq#What-is-Cloud-AI)默认对所有Cloud计划的用户启用。
 
-Organization admins and owners can enable and disable the AI capabilities for their entire organization from the organization settings.
+组织管理员和所有者可以从组织设置中为整个组织启用和禁用AI功能。
 
 <DocsImage
   src="/img/faq/questions/cypress-ai-org-setting.png"
-  alt="Image showing the Cypress AI organization setting"
+  alt="显示Cypress AI组织设置的图片"
 />
 
-## See Also
+## 另请参阅
 
-- [Cypress Cloud FAQ](/cloud/faq)
+- [Cypress Cloud常见问题](/cloud/faq)

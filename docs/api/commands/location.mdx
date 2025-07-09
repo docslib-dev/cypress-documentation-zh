@@ -1,6 +1,6 @@
 ---
-title: 'location | Cypress Documentation'
-description: 'Get the global `window.location` object of the page that is currently active in Cypress.'
+title: 'location | Cypress 文档'
+description: '获取当前 Cypress 活动页面的全局 `window.location` 对象。'
 sidebar_label: location
 e2eSpecific: true
 slug: /api/commands/location
@@ -10,9 +10,9 @@ slug: /api/commands/location
 
 # location
 
-Get the global `window.location` object of the page that is currently active.
+获取当前活动页面的全局 `window.location` 对象。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.location()
@@ -21,39 +21,38 @@ cy.location(options)
 cy.location(key, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.location() // Get location object
-cy.location('host') // Get the host of the location object
-cy.location('port') // Get the port of the location object
+cy.location() // 获取 location 对象
+cy.location('host') // 获取 location 对象的 host
+cy.location('port') // 获取 location 对象的 port
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **key _(String)_**
 
-A key on the location object. Returns this value instead of the full location
-object.
+location 对象的一个键。返回该键对应的值而不是完整的 location 对象。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `cy.location()`.
+传入一个选项对象来改变 `cy.location()` 的默认行为。
 
-| Option    | Default                                                           | Description                                                                         |
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.location()` to resolve before [timing out](#Timeouts)          |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 在[超时](#Timeouts)前等待 `cy.location()` 解析的时间          |
 
 <HeaderYields />
 
-`cy.location()` is a query, and it is _safe_ to chain further commands.
+`cy.location()` 是一个查询命令，可以安全地链式调用其他命令。
 
-#### When not given a `key` argument:
+#### 当不传入 `key` 参数时：
 
-`cy.location()` yields the location object with the following properties:
+`cy.location()` 返回包含以下属性的 location 对象：
 
 - `hash`
 - `host`
@@ -66,15 +65,15 @@ Pass in an options object to change the default behavior of `cy.location()`.
 - `search`
 - `toString`
 
-#### When given a `key` argument:
+#### 当传入 `key` 参数时：
 
-- `cy.location()` yields the value of the location property as a string
+- `cy.location()` 返回 location 对象对应属性的字符串值
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Make assertions about every location property
+#### 对每个 location 属性进行断言
 
 ```javascript
 cy.visit('http://localhost:8000/app/index.html?q=dan#/users/123/edit')
@@ -97,10 +96,9 @@ cy.location().should((loc) => {
 })
 ```
 
-#### Check location for query params and pathname
+#### 检查 location 的查询参数和路径名
 
-We can yield the location object within a [`.should()`](/api/commands/should)
-command and work with it directly.
+我们可以在 [`.should()`](/api/commands/should) 命令中获取 location 对象并直接操作它。
 
 ```javascript
 cy.get('#search').type('niklas{enter}')
@@ -112,31 +110,26 @@ cy.location().should((loc) => {
 
 ### Key
 
-#### Assert that a redirect works
+#### 断言重定向是否生效
 
-Grab only the `pathname` and add an assertion.
+仅获取 `pathname` 并添加断言。
 
 ```javascript
 cy.visit('http://localhost:3000/admin')
 cy.location('pathname').should('eq', '/login')
 ```
 
-## Notes
+## 注意事项
 
-### Native Location
+### 原生 Location
 
-#### No need to use `window.location`
+#### 无需使用 `window.location`
 
-Cypress automatically normalizes the `cy.location()` command and strips out
-extraneous values and properties found in `window.location`. Also, the object
-literal yielded by `cy.location()` is a basic object literal, not the special
-`window.location` object.
+Cypress 会自动规范化 `cy.location()` 命令，并去除 `window.location` 中的额外值和属性。此外，`cy.location()` 返回的对象字面量是一个基本对象，而不是特殊的 `window.location` 对象。
 
-When changing properties on the real `window.location` object, it forces the
-browser to navigate away. In Cypress, the object yielded is a plain object, so
-changing its properties will have no effect on navigation.
+当改变真实 `window.location` 对象的属性时，会强制浏览器导航离开。在 Cypress 中，返回的是一个普通对象，改变其属性不会影响导航。
 
-#### Console output of `window.location`
+#### `window.location` 的控制台输出
 
 ```javascript
 cy.window().then((win) => {
@@ -146,10 +139,10 @@ cy.window().then((win) => {
 
 <DocsImage
   src="/img/api/location/window-location-object-printed-in-console-log.png"
-  alt="Console.log of window.location"
+  alt="Console.log 中的 window.location"
 />
 
-#### Console output of `.location()`
+#### `.location()` 的控制台输出
 
 ```javascript
 cy.location().then((loc) => {
@@ -159,28 +152,27 @@ cy.location().then((loc) => {
 
 <DocsImage
   src="/img/api/location/special-cypress-location-object-logged-in-console-output.png"
-  alt="Console Log of Cypress location command"
+  alt="Cypress location 命令的控制台输出"
 />
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.location()` requires being chained off of `cy`.
+- `cy.location()` 需要链式调用 `cy`。
 
 <HeaderAssertions />
 
-- `cy.location()` will automatically
-  [retry](/app/core-concepts/retry-ability) until all chained assertions have
-  passed
+- `cy.location()` 会自动
+  [重试](/app/core-concepts/retry-ability) 直到所有链式断言通过
 
 <HeaderTimeouts />
 
-- `cy.location()` can time out waiting for assertions you've added to pass.
+- `cy.location()` 可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Assert on the location's href_**
+**_对 location 的 href 进行断言_**
 
 ```javascript
 cy.location().should((loc) => {
@@ -188,22 +180,21 @@ cy.location().should((loc) => {
 })
 ```
 
-The commands above will display in the Command Log as:
+以上命令会在命令日志中显示为：
 
 <DocsImage
   src="/img/api/location/make-assertion-about-location-url-in-tests.png"
-  alt="Command Log of Cypress location command"
+  alt="Cypress location 命令的命令日志"
 />
 
-When clicking on `location` within the command log, the console outputs the
-following:
+当点击命令日志中的 `location` 时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/location/location-object-in-console-log.png"
-  alt="Console Log of Cypress location command"
+  alt="Cypress location 命令的控制台输出"
 />
 
-## See also
+## 另请参阅
 
 - [`cy.hash()`](/api/commands/hash)
 - [`cy.url()`](/api/commands/url)

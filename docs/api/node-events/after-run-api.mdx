@@ -1,30 +1,24 @@
 ---
-title: 'After Run Event | Cypress Node Events'
-description: 'The after:run event fires after a run is finished in Cypress.'
+title: 'After Run Event | Cypress 节点事件'
+description: 'after:run 事件在 Cypress 运行结束后触发。'
 sidebar_label: 'after:run'
 ---
 
 <ProductHeading product="app" />
 
-# After Run Event
+# After Run 事件
 
-The `after:run` event fires after a run is finished. When running cypress via
-`cypress open`, the event will fire when closing a project.
+`after:run` 事件在运行结束后触发。当通过 `cypress open` 运行 Cypress 时，该事件会在关闭项目时触发。
 
-When running via `cypress run`, the event will fire each time `cypress run`
-executes. As a result, if running your specs in
-[parallel](/cloud/features/smart-orchestration/parallelization), the event will
-fire once for each machine on which `cypress run` is called.
+当通过 `cypress run` 运行时，每次执行 `cypress run` 都会触发该事件。因此，如果在[并行模式](/cloud/features/smart-orchestration/parallelization)下运行测试用例，该事件会在每台调用 `cypress run` 的机器上各触发一次。
 
-## Syntax
+## 语法
 
 <WarningSetupNodeEvents />
 
 :::caution
 
-⚠️ When running via `cypress open`, the `after:run` event only fires if the
-[experimentalInteractiveRunEvents flag](/app/references/configuration#Experiments)
-is enabled.
+⚠️ 当通过 `cypress open` 运行时，`after:run` 事件仅在启用了 [experimentalInteractiveRunEvents 标志](/app/references/configuration#Experiments)时才会触发。
 
 :::
 
@@ -40,25 +34,21 @@ on('after:run', (results) => {
 
 <Icon name="angle-right" /> **results _(Object)_**
 
-Results of the run, including the total number of passes/failures/etc, the
-project config, and details about the browser and system. It is the same as the
-results object resolved by the [Module API](/app/references/module-api#Results).
+运行结果对象，包含通过/失败等总数统计、项目配置以及浏览器和系统详情。该对象与 [Module API](/app/references/module-api#Results) 返回的结果对象相同。
 
-Results are only provided when running via `cypress run`. When running via
-`cypress open`, the results will be undefined.
+结果对象仅在通过 `cypress run` 运行时提供。通过 `cypress open` 运行时，results 将为 undefined。
 
-## Usage
+## 用法
 
-You can return a promise from the `after:run` event handler and it will be
-awaited before Cypress proceeds running your specs.
+你可以从 `after:run` 事件处理函数中返回一个 Promise，Cypress 会等待该 Promise 完成后再继续执行测试用例。
 
-### Log the number of passed tests of a run
+### 记录运行通过的测试数量
 
 :::cypress-config-plugin-example
 
 ```ts
 on('after:run', (results) => {
-  // results will look something like this when run via `cypress run`:
+  // 通过 `cypress run` 运行时 results 对象示例：
   // {
   //   totalDuration: 81,
   //   totalSuites: 0,
@@ -77,13 +67,13 @@ on('after:run', (results) => {
   //     baseUrl: 'http://example.com',
   //     viewportWidth: 1000,
   //     viewportHeight: 660,
-  //     // ... more properties...
+  //     // ... 更多属性...
   //   }
-  //   // ... more properties...
+  //   // ... 更多属性...
   //   }
   // }
   if (results) {
-    // results will be undefined in interactive mode
+    // 在交互模式下 results 为 undefined
     console.log(results.totalPassed, 'out of', results.totalTests, 'passed')
   }
 })
@@ -91,10 +81,10 @@ on('after:run', (results) => {
 
 :::
 
-## See also
+## 相关链接
 
 - [Before Run API](/api/node-events/before-run-api)
 - [Before Spec API](/api/node-events/before-spec-api)
 - [After Spec API](/api/node-events/after-spec-api)
-- [How to use Plugins](/app/plugins/plugins-guide)
-- [Node Events Overview](/api/node-events/overview)
+- [如何使用插件](/app/plugins/plugins-guide)
+- [节点事件概览](/api/node-events/overview)

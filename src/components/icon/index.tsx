@@ -20,9 +20,9 @@ export default function Icon({ name, color, inline, url, callout, contentType, t
   if (callout) {
     content = callout;
   } else if (contentType === "lesson")  {
-    content = 'Get the completed code for this lesson on GitHub';
+    content = '在GitHub上获取本课程的完整代码';
   } else if (contentType === "rwa") {
-    content = 'Real World App (RWA)'
+    content = '真实世界应用(RWA)'
     url = 'https://github.com/cypress-io/cypress-realworld-app'
   } else {
     content = url;

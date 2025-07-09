@@ -1,198 +1,140 @@
 ---
 title: Cypress Cloud
 sidebar_position: 10
-sidebar_label: Introduction
+sidebar_label: 简介
 ---
 
 <ProductHeading product="cloud" />
 
-# Scale your testing with confidence on every release
+# 在每次发布时自信地扩展测试规模
 
-Cypress Cloud unlocks the full potential of Cypress test automation tools in your CI pipeline. Scale every facet of Cypress testing, and push your code with confidence every time.
+Cypress Cloud 在您的 CI 流水线中释放 Cypress 测试自动化工具的全部潜力。扩展 Cypress 测试的每个环节，每次推送代码都充满信心。
 
 <Btn
-  label="Sign up ➜"
+  label="立即注册 ➜"
   variant="indigo-dark"
   className="mr-1"
   href="https://cloud.cypress.io/signup"
 />
 <Btn
-  label="See a demo"
+  label="观看演示"
   icon="action-play-small"
   className="mr-1"
   href="https://www.youtube.com/watch?v=vFLShoCM8pA"
 />
 <Btn
-  label=" Explore an example project"
+  label=" 浏览示例项目"
   icon="technology-terminal-log"
   href="https://cloud.cypress.io/projects/7s5okt"
 />
 
 <DocsVideo
   src="https://vimeo.com/806005654"
-  title="View and debug past test results"
+  title="查看和调试历史测试结果"
 />
 
-## Benefits
+## 优势
 
-[Cypress Cloud](https://on.cypress.io/about-cypress-cloud?utm_medium=cloud-benefits&utm_source=docs.cypress.io&utm_term=&utm_content=Cypress+Cloud) is our enterprise-ready companion
-to the open-source Cypress app, allowing you to:
+[Cypress Cloud](https://on.cypress.io/about-cypress-cloud?utm_medium=cloud-benefits&utm_source=docs.cypress.io&utm_term=&utm_content=Cypress+Cloud) 是我们为企业准备的开源 Cypress 应用伴侣，让您能够：
 
-- [View and debug past test results](#View-and-debug-past-test-results) from your CI environment.
-- [Analyze and diagnose](#Analyze-and-diagnose-test-health) test health.
-- [Reduce test time and save money](#Reduce-test-time--CI-costs) by smartly
-  orchestrating future runs across multiple machines.
-- [Integrate with your favorite developer tools](#Integrate-with-your-favorite-tools)
-  to help streamline your workflows.
-- [View CI runs and test health](#Cypress-app-integration) directly from the
-  Cypress app.
-- [Configure Cypress Cloud how you want](#Flexible-enterprise-configuration-and-single-sign-on) and enable enterprise single sign on.
-- Add premium solutions like [UI Coverage](https://on.cypress.io/ui-coverage-trial?utm_medium=cloud-benefits&utm_source=docs.cypress.io&utm_term=&utm_content=UI+Coverage) and [Cypress Accessibility](http://on.cypress.io/accessibility-trial?utm_medium=cloud-benefits&utm_source=docs.cypress.io&utm_term=&utm_content=Cypress+Accessibility) to get new insights into test and application quality with no code, setup, or impact on your test runs.
+- [查看和调试历史测试结果](#View-and-debug-past-test-results) 来自您的 CI 环境。
+- [分析和诊断](#Analyze-and-diagnose-test-health) 测试健康状况。
+- [减少测试时间并节省成本](#Reduce-test-time--CI-costs) 通过智能编排多台机器的未来运行。
+- [与您喜爱的开发者工具集成](#Integrate-with-your-favorite-tools) 以帮助简化工作流程。
+- [直接在 Cypress 应用中查看 CI 运行和测试健康状况](#Cypress-app-integration)。
+- [按需配置 Cypress Cloud](#Flexible-enterprise-configuration-and-single-sign-on) 并启用企业单点登录。
+- 添加高级解决方案如 [UI Coverage](https://on.cypress.io/ui-coverage-trial?utm_medium=cloud-benefits&utm_source=docs.cypress.io&utm_term=&utm_content=UI+Coverage) 和 [Cypress Accessibility](http://on.cypress.io/accessibility-trial?utm_medium=cloud-benefits&utm_source=docs.cypress.io&utm_term=&utm_content=Cypress+Accessibility)，无需代码、设置或影响测试运行即可获得测试和应用质量的新洞察。
 
-### View and debug past test results
+### 查看和调试历史测试结果
 
-Each test run is stored in Cypress Cloud, where you can see past results and the
-current state of your app on the [Latest Runs](/cloud/features/recorded-runs) page.
+每次测试运行都存储在 Cypress Cloud 中，您可以在[最新运行](/cloud/features/recorded-runs)页面查看历史结果和应用的当前状态。
 
-Replay the test as it executed during the recorded run with full debug capability using [<Logo src="/img/cloud/features/test-replay/replay-icon.svg"  alt="Replay Icon"/> Test Replay](/cloud/features/test-replay).
+使用[<Logo src="/img/cloud/features/test-replay/replay-icon.svg"  alt="Replay Icon"/> 测试回放](/cloud/features/test-replay)功能，以完整调试能力回放测试执行过程。
 
-Or view each test's
-[command logs, screenshots, video replays, stack traces, and CI logs](/cloud/features/recorded-runs#Test-detail-sidebar).
-Quickly identifying a test failure in CI is just a click away.
+或查看每个测试的[命令日志、截图、视频回放、堆栈跟踪和 CI 日志](/cloud/features/recorded-runs#Test-detail-sidebar)。快速识别 CI 中的测试失败只需点击一下。
 
-### Analyze and diagnose test health
+### 分析和诊断测试健康状况
 
-View each [run's overview](/cloud/features/recorded-runs#Overview-tab) to see and compare
-past runs and analyze trends over time. You can quickly analyze changes in your
-setup that might introduce problematic trends as well as identify unreliable
-tests with [Flaky Test Management](/cloud/features/flaky-test-management).
+查看每次[运行的概览](/cloud/features/recorded-runs#Overview-tab)，比较历史运行并分析趋势。您可以快速分析设置中可能引入问题趋势的变化，并通过[不稳定测试管理](/cloud/features/flaky-test-management)识别不可靠的测试。
 
 <DocsVideo
   src="https://vimeo.com/806900039"
-  title="Analyze and diagnose test health"
+  title="分析和诊断测试健康状况"
 />
 
-The [analytics](/cloud/features/analytics/overview) capabilities show test metrics over time,
-helping determine the overall health of your test suite. Quickly see which tests
-are problematic, getting slower, or growing over time. Monitor your test health at both
-the project and organization level. Retrieve your test data through Cypress Cloud APIs.
+[分析](/cloud/features/analytics/overview)功能展示随时间变化的测试指标，帮助确定测试套件的整体健康状况。快速查看哪些测试有问题、变慢或随时间增长。在项目和组织级别监控测试健康状况。通过 Cypress Cloud API 获取测试数据。
 
 <DocsImage
   src="/img/cloud/features/analytics/analytics-runstatus.png"
-  alt="Analytics run status"
+  alt="分析运行状态"
 />
 
 <DocsImage
   src="/img/cloud/features/analytics/enterprise-reporting-usage-report.png"
-  alt="Analytics organization usage"
+  alt="分析组织使用情况"
 />
 
-### Reduce test time & CI costs
+### 减少测试时间和 CI 成本
 
-[Smart Orchestration](/cloud/features/smart-orchestration/overview) enables you to run
-tests across multiple machines simultaneously in your CI environment while
-Cypress Cloud coordinates runners and
-[balances test loads](/cloud/features/smart-orchestration/load-balancing#Balance-strategy) -
-no setup required! You can prioritize recently failed specs with
-[Spec Prioritization](/cloud/features/smart-orchestration/spec-prioritization) to
-surface problems earlier, and cancel whole test runs on failure with
-[Auto Cancellation](/cloud/features/smart-orchestration/run-cancellation) to save
-on resource usage. You can also
-[cancel in-progress runs](/cloud/features/recorded-runs#Run-cancellation) manually
-from Cypress Cloud if you need to.
+[智能编排](/cloud/features/smart-orchestration/overview)让您可以在 CI 环境中同时在多台机器上运行测试，而 Cypress Cloud 协调运行器并[平衡测试负载](/cloud/features/smart-orchestration/load-balancing#Balance-strategy) - 无需设置！您可以使用[规范优先级](/cloud/features/smart-orchestration/spec-prioritization)优先运行最近失败的规范，以更早发现问题，并通过[自动取消](/cloud/features/smart-orchestration/run-cancellation)在失败时取消整个测试运行以节省资源使用。如果需要，您还可以从 Cypress Cloud [手动取消进行中的运行](/cloud/features/recorded-runs#Run-cancellation)。
 
 <DocsImage
   src="/img/cloud/get-started/introduction/orchestration-diagram.png"
-  alt="Diagram comparing serial and parallel test configurations"
+  alt="串行和并行测试配置对比图"
 />
 
-Cypress Cloud's
-[Spec Prioritization](/cloud/features/smart-orchestration/spec-prioritization)
-lets you prioritize recently failed specs so they run faster on their next run.
-The [Auto Cancellation](/cloud/features/smart-orchestration/run-cancellation)
-feature will cancel a whole test run on failure, saving time and resource usage.
-You can also [cancel in-progress runs](/cloud/features/recorded-runs#Run-cancellation)
-manually from Cypress Cloud if you need to.
+Cypress Cloud 的[规范优先级](/cloud/features/smart-orchestration/spec-prioritization)让您优先运行最近失败的规范，使它们在下次运行时更快。[自动取消](/cloud/features/smart-orchestration/run-cancellation)功能会在失败时取消整个测试运行，节省时间和资源使用。如果需要，您还可以从 Cypress Cloud [手动取消进行中的运行](/cloud/features/recorded-runs#Run-cancellation)。
 
-### Integrate with your favorite tools
+### 与您喜爱的工具集成
 
-#### Source Control providers
+#### 源代码控制提供商
 
-Cypress Cloud integrates with [GitHub](/cloud/integrations/source-control/github),
-[GitLab](/cloud/integrations/source-control/gitlab), and
-[Bitbucket](/cloud/integrations/source-control/bitbucket) to provide rock-solid
-reliability by keeping failing code out of your main branch. Use status checks
-to block commits from being merged until your Cypress tests are green, and
-surface test results directly in your PRs with pull request comments that
-include test run statistics, specific failure details, and deep links to results
-in Cypress Cloud for fast debugging.
+Cypress Cloud 与 [GitHub](/cloud/integrations/source-control/github)、[GitLab](/cloud/integrations/source-control/gitlab) 和 [Bitbucket](/cloud/integrations/source-control/bitbucket) 集成，通过阻止失败代码进入主分支提供坚如磐石的可靠性。使用状态检查阻止提交合并，直到您的 Cypress 测试通过，并通过拉取请求评论直接在 PR 中展示测试结果，包括测试运行统计、具体失败详情和 Cypress Cloud 结果的深度链接以便快速调试。
 
-[Business and Enterprise plans](https://www.cypress.io/pricing/) include secure
-integration with self-managed
-[GitHub](https://docs.github.com/en/enterprise-server@3.5/admin/overview/about-github-enterprise-server)
-and [GitLab](https://docs.gitlab.com/ee/subscriptions/self_managed/) instances
-too.
+[商业和企业计划](https://www.cypress.io/pricing/)还包括与自托管的 [GitHub](https://docs.github.com/en/enterprise-server@3.5/admin/overview/about-github-enterprise-server) 和 [GitLab](https://docs.gitlab.com/ee/subscriptions/self_managed/) 实例的安全集成。
 
 <DocsImage
   src="/img/cloud/integrations/github/status-checks-per-spec.jpg"
-  alt="Status checks per spec"
+  alt="每个规范的状态检查"
 />
 
-#### Team Communication
+#### 团队沟通
 
-Get notified on test progress directly in your team's
-[Slack](/cloud/integrations/slack) or
-[Microsoft Teams](/cloud/integrations/teams) channels.
+直接在团队的 [Slack](/cloud/integrations/slack) 或 [Microsoft Teams](/cloud/integrations/teams) 频道中获取测试进度通知。
 
 <DocsImage
   src="/img/cloud/integrations/slack/cypress-slack-integration-channel-feed.jpg"
-  alt="Cypress notification feed in Slack channel"
+  alt="Slack 频道中的 Cypress 通知流"
   width={560}
 />
 
-#### Issue Management
+#### 问题管理
 
-Keep the whole team up-to-date with [Jira](/cloud/integrations/jira)
-integration. You can
-[create bidirectionally linked Jira tickets](/cloud/integrations/jira#Creating-a-Jira-issue-for-a-test-case)
-directly from specific test failures.
+通过 [Jira](/cloud/integrations/jira) 集成让整个团队保持最新状态。您可以直接从特定测试失败[创建双向链接的 Jira 工单](/cloud/integrations/jira#Creating-a-Jira-issue-for-a-test-case)。
 
-### Cypress app integration
+### Cypress 应用集成
 
-The [Cypress app](/cloud/features/recorded-runs#Cypress-App) integrates directly with
-Cypress Cloud to provide developers with the latest test results without having
-to switch tools. This provides notifications about new failing tests in CI, so you can then
-re-run them immediately in your local environment to debug.
+[Cypress 应用](/cloud/features/recorded-runs#Cypress-App)直接与 Cypress Cloud 集成，为开发者提供最新的测试结果而无需切换工具。这提供了关于 CI 中新失败测试的通知，然后您可以在本地环境中立即重新运行它们进行调试。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/debug-page.png"
-  alt="Debug page showing test results and failure details in the Cypress App"
+  alt="Cypress 应用中显示测试结果和失败详情的调试页面"
 />
 
-### Flexible enterprise configuration and single sign on
+### 灵活的企业配置和单点登录
 
-You can use our flexible administrative functions to configure Cypress Cloud however you want, grouping
-[projects](/cloud/account-management/projects) into multiple
-[organizations](/cloud/account-management/organizations) if you have a
-lot, checking [usage](/cloud/account-management/billing-and-usage), and
-administering
-[users and permissions](/cloud/account-management/users#User-roles).
+您可以使用我们灵活的管理功能按需配置 Cypress Cloud，将[项目](/cloud/account-management/projects)分组到多个[组织](/cloud/account-management/organizations)（如果有大量项目），检查[使用情况](/cloud/account-management/billing-and-usage)，并管理[用户和权限](/cloud/account-management/users#User-roles)。
 
-We also provide [SSO integration](/cloud/account-management/enterprise-sso)
-for teams on [Business or Enterprise plans](https://www.cypress.io/pricing/).
+我们还为[商业或企业计划](https://www.cypress.io/pricing/)的团队提供 [SSO 集成](/cloud/account-management/enterprise-sso)。
 
-## Example project
+## 示例项目
 
-The Cypress
-[Real World App (RWA)](https://github.com/cypress-io/cypress-realworld-app)
-leverages [Cypress Cloud in CI](https://cloud.cypress.io/projects/7s5okt) to
-test over 300 test cases in parallel across 25 machines, multiple browsers,
-multiple device sizes and multiple operating systems.
+Cypress [真实世界应用 (RWA)](https://github.com/cypress-io/cypress-realworld-app) 利用 [CI 中的 Cypress Cloud](https://cloud.cypress.io/projects/7s5okt) 在 25 台机器上并行测试超过 300 个测试用例，涵盖多种浏览器、设备尺寸和操作系统。
 
 :::info
 
-<strong>Have a question you don't see answered here?</strong>
+<strong>有问题在这里找不到答案？</strong>
 
-[We have answered some common questions about Cypress Cloud in our FAQ](/cloud/faq).
+[我们在常见问题解答中回答了一些关于 Cypress Cloud 的常见问题](/cloud/faq)。
 
 :::

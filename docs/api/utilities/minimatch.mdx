@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.minimatch | Cypress Documentation'
-description: Cypress automatically includes minimatch and exposes it as `Cypress.minimatch`.
+title: 'Cypress.minimatch | Cypress 文档'
+description: Cypress 自动包含 minimatch 并将其暴露为 `Cypress.minimatch`。
 sidebar_label: Cypress.minimatch
 ---
 
@@ -8,20 +8,19 @@ sidebar_label: Cypress.minimatch
 
 # Cypress.minimatch
 
-Cypress automatically includes [minimatch](https://github.com/isaacs/minimatch)
-and exposes it as `Cypress.minimatch`.
+Cypress 自动包含 [minimatch](https://github.com/isaacs/minimatch) 并将其暴露为 `Cypress.minimatch`。
 
-Use `Cypress.minimatch` to test out glob patterns against strings.
+使用 `Cypress.minimatch` 可以测试字符串是否符合 glob 模式。
 
-## Syntax
+## 语法
 
 ```javascript
 Cypress.minimatch(target: string, pattern: string, options?: MinimatchOptions);
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 Cypress.minimatch('/users/1/comments/2', '/users/*/comments', {
@@ -29,54 +28,52 @@ Cypress.minimatch('/users/1/comments/2', '/users/*/comments', {
 })
 ```
 
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
 ```javascript
-cy.minimatch() // Errors, cannot be chained off 'cy'
+cy.minimatch() // 错误，不能链式调用 'cy'
 ```
 
-## Examples
+## 示例
 
-By default Cypress uses `minimatch` to test glob patterns against request URLs.
+默认情况下，Cypress 使用 `minimatch` 来测试请求 URL 是否符合 glob 模式。
 
-If you're struggling with writing the correct pattern you can iterate much
-faster by testing directly in your Developer Tools console.
+如果你在编写正确的模式时遇到困难，可以直接在开发者工具控制台中进行测试以加快迭代速度。
 
 ```javascript
-// test that the glob you're writing matches the request's url
+// 测试你编写的 glob 是否匹配请求的 url
 
-// returns true
+// 返回 true
 Cypress.minimatch('/users/1/comments', '/users/*/comments', {
   matchBase: true,
 })
 
-// returns false
+// 返回 false
 Cypress.minimatch('/users/1/comments/2', '/users/*/comments', {
   matchBase: true,
 })
 ```
 
-We're adding the `{ matchBase: true }` option because under the hood Cypress
-actually uses that option by default.
+我们添加了 `{ matchBase: true }` 选项，因为 Cypress 在底层默认使用该选项。
 
-Now let's test out `**` support.
+现在让我们测试 `**` 的支持情况。
 
 ```javascript
-// ** matches against all downstream path segments
+// ** 匹配所有后续路径段
 
-// returns true
+// 返回 true
 Cypress.minimatch('/foo/bar/baz/123/quux?a=b&c=2', '/foo/**', {
   matchBase: true,
 })
 
-// whereas * matches only the next path segment
+// 而 * 只匹配下一个路径段
 
-// returns false
+// 返回 false
 Cypress.minimatch('/foo/bar/baz/123/quux?a=b&c=2', '/foo/*', {
   matchBase: false,
 })
 ```
 
-## See also
+## 另请参阅
 
-- [Bundled Libraries](/app/references/bundled-libraries)
+- [捆绑库](/app/references/bundled-libraries)

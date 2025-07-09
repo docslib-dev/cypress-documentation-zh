@@ -1,7 +1,7 @@
 ---
-title: 'session | Cypress Documentation'
-description: Cache and restore cookies, localStorage, and sessionStorage in order to recreate a consistent browser context between tests in Cypress.
-sidebar_label: session
+title: 'session | Cypress 文档'
+description: '缓存并恢复 cookies、localStorage 和 sessionStorage，以便在 Cypress 测试之间重建一致的浏览器上下文。'
+sidebar_label: 'session'
 e2eSpecific: true
 ---
 
@@ -9,31 +9,27 @@ e2eSpecific: true
 
 # session
 
-Cache and restore [cookies](/api/cypress-api/cookies),
-[`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage),
-and
+缓存并恢复 [cookies](/api/cypress-api/cookies)、
+[`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) 和
 [`sessionStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
-(i.e. session data) in order to recreate a consistent browser context between
-tests.
+（即会话数据），以便在测试之间重建一致的浏览器上下文。
 
-The `cy.session()` command will inherit the
-[`testIsolation`](/app/core-concepts/writing-and-organizing-tests#Test-Isolation)
-value to determine whether or not the page is cleared when caching and restoring
-the browser context.
+`cy.session()` 命令会继承 [`testIsolation`](/app/core-concepts/writing-and-organizing-tests#Test-Isolation) 
+值来决定在缓存和恢复浏览器上下文时是否清除页面。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.session(id, setup)
 cy.session(id, setup, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-// Caching session when logging in via page visit
+// 通过页面访问登录时缓存会话
 cy.session(name, () => {
   cy.visit('/login')
   cy.get('[data-test=name]').type(name)
@@ -42,7 +38,7 @@ cy.session(name, () => {
   cy.url().should('contain', '/login-successful')
 })
 
-// Caching session when logging in via API
+// 通过 API 登录时缓存会话
 cy.session(username, () => {
   cy.request({
     method: 'POST',
@@ -54,87 +50,66 @@ cy.session(username, () => {
 })
 ```
 
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
 ```javascript
-// visiting before calling cy.session() is redundant, it needs to
-// be done inside the setup function
+// 在调用 cy.session() 之前访问是多余的，需要在 setup 函数内部完成
 cy.visit('/login')
 cy.session(name, () => {
-  // need to call cy.visit() here because the page is blank when
-  // the setup function runs
+  // 需要在这里调用 cy.visit()，因为 setup 函数运行时页面是空白的
   cy.get('[data-test=name]').type(name)
   cy.get('[data-test=password]').type('s3cr3t')
   cy.get('form').contains('Log In').click()
-  // should assert that login was successful here to guarantee the
-  // login process completes before it is cached
+  // 应该在这里断言登录成功，以确保登录过程在缓存前完成
 })
-// should have asserted this inside the cy.session() setup
-// function because the page is blank here
+// 应该在 cy.session() 的 setup 函数内部断言，因为这里的页面是空白的
 cy.url().should('contain', '/login-successful')
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **id _(String, Array, Object)_**
 
-A unique identifier that will be used to cache and restore a given session. In
-simple cases, a `String` value is sufficient. In order to simplify generation of
-more complex ids, if you pass an `Array` or `Object`, Cypress will generate an
-id for you by deterministically stringifying the value you pass in. For example,
-if you pass `['Jane', '123', 'admin']`, an id of `["Jane","123","admin"]` will
-be generated for you.
+用于缓存和恢复给定会话的唯一标识符。简单情况下，`String` 值足够。为了简化更复杂 id 的生成，如果传递 `Array` 或 `Object`，Cypress 会通过确定性字符串化你传递的值来生成 id。例如，如果传递 `['Jane', '123', 'admin']`，将为你生成 `["Jane","123","admin"]` 的 id。
 
 :::info
 
-See the
-[choosing the correct id to cache a session](#Choosing-the-correct-id-to-cache-a-session)
-section for a more thorough explanation with examples.
+查看 [选择正确的 id 来缓存会话](#Choosing-the-correct-id-to-cache-a-session) 部分获取更详细的解释和示例。
 
 :::
 
 :::caution
 
-Note that large or cyclical data structures may be slow or difficult to
-serialize into an identifier, so exercise care with the data you specify.
+注意，大型或循环数据结构可能会变慢或难以序列化为标识符，因此要小心处理你指定的数据。
 
 :::
 
 <Icon name="angle-right" /> **setup _(Function)_**
 
-This function is called whenever a session for the given `id` hasn't yet been
-cached, or if it's no longer valid (see the `validate` option). After `setup`
-and `validate` runs for the first time, Cypress will preserve all cookies,
-`sessionStorage`, and `localStorage`, so that subsequent calls to `cy.session()`
-with the same `id` will bypass setup and just restore and validate the cached
-session data.
+当给定 `id` 的会话尚未缓存或不再有效时调用此函数（参见 `validate` 选项）。在 `setup` 和 `validate` 第一次运行后，Cypress 会保留所有 cookies、`sessionStorage` 和 `localStorage`，以便后续使用相同 `id` 调用 `cy.session()` 时绕过 setup，仅恢复和验证缓存的会话数据。
 
-The page is cleared before `setup` when `testIsolation` is enabled and is not
-cleared when `testIsolation` is disabled.
+当 `testIsolation` 启用时，`setup` 前会清除页面；禁用时不会清除。
 
-Cookies, local storage and session storage in all domains are always cleared
-before `setup` runs, regardless of the `testIsolation` configuration.
+无论 `testIsolation` 配置如何，所有域的 cookies、local storage 和 session storage 在 `setup` 运行前总是会被清除。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-| Option             | Default     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| ------------------ | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `validate`         | `undefined` | Validates the newly-created or restored session. Function to run immediately after the session is created and `setup` function runs or after a session is restored and the page is cleared. If it throws an exception, contains any failing Cypress command, returns a Promise which rejects or resolves to `false`, or the last Cypress command yielded `false`, the session is considered invalid.<br/><br/>- If validation fails immediately after `setup`, the test will fail.<br/>- If validation fails after restoring a session, `setup` will re-run. |
-| `cacheAcrossSpecs` | `false`     | When enabled, the newly created session is considered "global" and can be restored in any spec during the test execution in the same Cypress run on the same machine. Use this option for a session that will be used multiple times, across many specs.                                                                                                                                                                                                                                                                                                     |
+| 选项                | 默认值       | 描述                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `validate`          | `undefined` | 验证新创建或恢复的会话。在会话创建后和 `setup` 函数运行后，或会话恢复后页面清除后立即运行的函数。如果抛出异常、包含任何失败的 Cypress 命令、返回一个拒绝或解析为 `false` 的 Promise，或最后一个 Cypress 命令产生 `false`，会话被视为无效。<br/><br/>- 如果在 `setup` 后立即验证失败，测试将失败。<br/>- 如果在恢复会话后验证失败，`setup` 将重新运行。 |
+| `cacheAcrossSpecs`  | `false`     | 启用后，新创建的会话被视为“全局”会话，可以在同一台机器上同一 Cypress 运行的任何 spec 中恢复。将此选项用于将在多个 spec 中多次使用的会话。                                                                                                                                                                                                                                                                                                                                                                                                             |
 
 <HeaderYields />
 
-- `cy.session()` yields `null`.
+- `cy.session()` 产生 `null`。
 
-## Examples
+## 示例
 
-### Updating an existing login custom command
+### 更新现有的登录自定义命令
 
-You can add session caching to your login
-[custom command](/api/cypress-api/custom-commands). Wrap the inside of the
-command with a call to `cy.session()`.
+你可以将会话缓存添加到你的登录 [自定义命令](/api/cypress-api/custom-commands)。用 `cy.session()` 调用包装命令内部。
 
-**Before**
+**之前**
 
 ```javascript
 Cypress.Commands.add('login', (username, password) => {
@@ -146,7 +121,7 @@ Cypress.Commands.add('login', (username, password) => {
 })
 ```
 
-**After**
+**之后**
 
 ```javascript
 Cypress.Commands.add('login', (username, password) => {
@@ -160,7 +135,7 @@ Cypress.Commands.add('login', (username, password) => {
 })
 ```
 
-**With session validation**
+**带会话验证**
 
 ```javascript
 Cypress.Commands.add('login', (username, password) => {
@@ -182,12 +157,11 @@ Cypress.Commands.add('login', (username, password) => {
 })
 ```
 
-### Updating an existing login helper function
+### 更新现有的登录辅助函数
 
-You can add session caching to a login helper function by wrapping the inside of
-the function with a call to `cy.session()`.
+你可以通过用 `cy.session()` 调用包装函数内部来添加会话缓存到登录辅助函数。
 
-**Before**
+**之前**
 
 ```javascript
 const login = (name, password) => {
@@ -199,7 +173,7 @@ const login = (name, password) => {
 }
 ```
 
-**After**
+**之后**
 
 ```javascript
 const login = (name, password) => {
@@ -213,7 +187,7 @@ const login = (name, password) => {
 }
 ```
 
-**With session validation**
+**带会话验证**
 
 ```javascript
 const login = (name, password) => {
@@ -228,8 +202,8 @@ const login = (name, password) => {
     },
     {
       validate() {
-        // Protected URLs should return a 40x http code if user is unauthorized,
-        // and by default this will cause cy.visit() to fail
+        // 受保护的 URL 在用户未授权时应返回 40x http 代码，
+        // 默认情况下这会导致 cy.visit() 失败
         cy.visit('/account-details')
       },
     }
@@ -237,12 +211,9 @@ const login = (name, password) => {
 }
 ```
 
-### Switching sessions inside tests
+### 在测试中切换会话
 
-Because `cy.session()` clears the page and all session data before running
-`setup`, you can use it to easily switch between sessions without first needing
-to log the previous user out. This allows tests to more accurately represent
-real-world scenarios and helps keep test run times short.
+因为 `cy.session()` 在运行 `setup` 前会清除页面和所有会话数据，你可以用它轻松切换会话而无需先登出前一个用户。这使得测试更准确地模拟真实场景并有助于保持测试运行时间短。
 
 ```jsx
 const login = (name) => {
@@ -269,44 +240,40 @@ it('should transfer money between users', () => {
 })
 ```
 
-### Validating the session
+### 验证会话
 
-The `validate` function is used to ensure the session has been correctly
-established. This is especially helpful when a cached session is being restored,
-because if the session is not valid, `cy.session()` will recreate the session by
-re-running `setup`.
+`validate` 函数用于确保会话已正确建立。这在恢复缓存会话时特别有用，因为如果会话无效，`cy.session()` 会通过重新运行 `setup` 来重新创建会话。
 
-The following scenarios will mark the session as invalid:
+以下情况会标记会话为无效：
 
-- the `validate` function throws an exception
-- the `validate` function returns a Promise that resolves to `false` or rejects
-- the `validate` function contains failing Cypress command
-- the last Cypress command in the `validate` function yielded `false`
+- `validate` 函数抛出异常
+- `validate` 函数返回一个解析为 `false` 或拒绝的 Promise
+- `validate` 函数包含失败的 Cypress 命令
+- `validate` 函数中最后一个 Cypress 命令产生 `false`
 
-Here are a few `validate` examples:
+以下是几个 `validate` 示例：
 
 ```javascript
-// Attempt to visit a page that only a logged-in user can see
+// 尝试访问只有登录用户才能看到的页面
 function validate() {
   cy.visit('/private')
 }
 
-// Make an API request that returns a 200 only when logged in
+// 发出一个仅在登录时返回 200 的 API 请求
 function validate() {
   cy.request('/api/user').its('status').should('eq', 200)
 }
 
-// Run any Cypress command that fails if the user is not logged in
+// 运行任何在用户未登录时会失败的 Cypress 命令
 function validate() {
   cy.visit('/account', { failOnStatusCode: false })
   cy.url().should('match', /^/account/)
 }
 ```
 
-### Modifying session data before caching
+### 在缓存前修改会话数据
 
-If you want to change which session data is cached, you can modify cookies,
-`localStorage`, `sessionStorage` as-necessary in `setup`.
+如果你想更改缓存的会话数据，可以在 `setup` 中根据需要修改 cookies、`localStorage`、`sessionStorage`。
 
 ```javascript
 cy.session('user', () => {
@@ -315,21 +282,19 @@ cy.session('user', () => {
   cy.get('password').type('p4ssw0rd123')
   cy.get('#submit').click()
   cy.url().should('contain', '/home')
-  // Remove session data we don't want to cache
+  // 移除我们不想缓存的会话数据
   cy.clearCookie('authId')
   cy.window().then((win) => {
     win.localStorage.removeItem('authToken')
   })
-  // Add session data we do want to cache
+  // 添加我们想缓存的会话数据
   cy.setCookie('session_id', '189jd09sufh33aaiidhf99d09')
 })
 ```
 
-### Caching session data across specs
+### 跨 spec 缓存会话数据
 
-If you want to use the same session across multiple specs in the same Cypress
-run on the same machine, add `cacheAcrossSpecs=true` to the session options to
-leverage the session through the run.
+如果你想在同一台机器上的同一 Cypress 运行中的多个 spec 中使用相同的会话，添加 `cacheAcrossSpecs=true` 到会话选项以在整个运行中利用会话。
 
 ```js
 const login = (name = 'user1') => {
@@ -365,20 +330,11 @@ it('can create a blog post', () => {
 })
 ```
 
-### Multiple login commands
+### 多个登录命令
 
-A more complex app may require multiple login commands, which may require
-multiple uses of `cy.session()`. However, because the `id` value is used as a
-unique identifier to save and restore sessions, it's very important that it's
-actually unique per session.
+更复杂的应用可能需要多个登录命令，这可能需要多次使用 `cy.session()`。然而，因为 `id` 值用作保存和恢复会话的唯一标识符，确保它实际上是每个会话唯一的非常重要。
 
-In the following example, if the resulting session data that `loginByForm` and
-`loginByApi` create is different _in any way_, it would be a mistake to specify
-`[name, password]` as the `id` for both, because there would be no way to
-distinguish between the sessions created by `loginByForm("user", "p4ssw0rd")`
-and `loginByApi("user", "p4ssw0rd")`. Instead, you can modify the `id` to
-differentiate its value between both login functions, so that each will always
-be cached uniquely.
+在以下示例中，如果 `loginByForm` 和 `loginByApi` 创建的会话数据在任何方面不同，将 `[name, password]` 作为两者的 `id` 是错误的，因为无法区分 `loginByForm("user", "p4ssw0rd")` 和 `loginByApi("user", "p4ssw0rd")` 创建的会话。相反，你可以修改 `id` 以区分两者的值，确保每个会话总是被唯一缓存。
 
 ```javascript
 const loginByForm = (name, password) => {
@@ -404,12 +360,9 @@ const loginByApi = (name, password) => {
 }
 ```
 
-### Where to call `cy.visit()`
+### 在哪里调用 `cy.visit()`
 
-Intuitively it seems that you should call [`cy.visit()`](/api/commands/visit)
-immediately after `cy.session()` in your login function or custom command, so it
-behaves (from the point of view of the subsequent test) exactly the same as a
-login function without `cy.session()`.
+直觉上似乎应该在登录函数或自定义命令中的 `cy.session()` 后立即调用 [`cy.visit()`](/api/commands/visit)，使其行为（从后续测试的角度看）与没有 `cy.session()` 的登录函数完全相同。
 
 ```javascript
 const login = (name) => {
@@ -428,34 +381,26 @@ beforeEach(() => {
 })
 
 it('should test something on the /home page', () => {
-  // assertions
+  // 断言
 })
 
 it('should test something else on the /home page', () => {
-  // assertions
+  // 断言
 })
 ```
 
-However, if you want to test something on a different page, you will need to
-call `cy.visit()` at the beginning of that test, which means you will be calling
-`cy.visit()` a **second** time in your test. Since `cy.visit()` waits for the
-visited page to become active before continuing, this could add up to an
-unacceptable waste of time.
+然而，如果你想测试不同页面的内容，你需要在测试开始时调用 `cy.visit()`，这意味着你将在测试中 **第二次** 调用 `cy.visit()`。因为 `cy.visit()` 会等待访问的页面变为活动状态后才继续，这可能会浪费不可接受的时间。
 
 ```javascript
-// ...continued...
+// ...继续...
 
 it('should test something on the /other page', () => {
   cy.visit('/other')
-  // assertions
+  // 断言
 })
 ```
 
-Tests will obviously be faster if you call `cy.visit()` only when necessary.
-This can be easily realised by
-[organizing tests into suites](/app/core-concepts/writing-and-organizing-tests#Test-Structure)
-and calling `cy.visit()` **after** logging in, inside a
-[`beforeEach`](/app/core-concepts/writing-and-organizing-tests#Hooks) hook.
+如果仅在必要时调用 `cy.visit()`，测试显然会更快。这可以通过 [将测试组织成套件](/app/core-concepts/writing-and-organizing-tests#Test-Structure) 和在 [`beforeEach`](/app/core-concepts/writing-and-organizing-tests#Hooks) 钩子中登录后调用 `cy.visit()` 轻松实现。
 
 ```javascript
 const login = (name) => {
@@ -466,7 +411,7 @@ const login = (name) => {
     cy.get('#submit').click()
     cy.url().should('contain', '/home')
   })
-  // no visit here
+  // 这里不访问
 }
 
 describe('home page tests', () => {
@@ -476,11 +421,11 @@ describe('home page tests', () => {
   })
 
   it('should test something on the /home page', () => {
-    // assertions
+    // 断言
   })
 
   it('should test something else on the /home page', () => {
-    // assertions
+    // 断言
   })
 })
 
@@ -491,18 +436,16 @@ describe('other page tests', () => {
   })
 
   it('should test something on the /other page', () => {
-    // assertions
+    // 断言
   })
 })
 ```
 
-### Updating a login function that returns a value
+### 更新返回值的登录函数
 
-If your custom login command returns a value that you use to assert in a test,
-wrapping it with `cy.session()` will break that test. However, it's usually easy
-to solve this by refactoring the login code to assert directly inside `setup`.
+如果你的自定义登录命令返回一个用于测试中断言的值，用 `cy.session()` 包装它会破坏该测试。然而，通常可以通过重构登录代码在 `setup` 内部直接断言来解决。
 
-**Before**
+**之前**
 
 ```javascript
 Cypress.Commands.add('loginByApi', (username, password) => {
@@ -519,7 +462,7 @@ it('should return the correct value', () => {
 })
 ```
 
-**After**
+**之后**
 
 ```javascript
 Cypress.Commands.add('loginByApi', (username, password) => {
@@ -534,14 +477,13 @@ Cypress.Commands.add('loginByApi', (username, password) => {
 })
 
 it('is a redundant test', () => {
-  /* which you can now delete! */
+  /* 现在你可以删除它了！ */
 })
 ```
 
-### Cross-domain sessions
+### 跨域会话
 
-It's possible to switch domains while caching sessions, just be sure to
-explicitly visit the domain in your login command before calling `cy.session()`.
+可以在缓存会话时切换域，只需确保在登录命令中显式访问域后再调用 `cy.session()`。
 
 ```jsx
 const login = (name) => {
@@ -550,7 +492,7 @@ const login = (name) => {
   }
   cy.session(name, () => {
     cy.visit('/login')
-    // etc
+    // 等等
   }, {
     validate() {
       cy.request('/whoami', {
@@ -563,133 +505,100 @@ const login = (name) => {
 
 it('t1', () => {
   login('bob')
-  // do things on cypress.io
+  // 在 cypress.io 上操作
 })
 
 it('t2', () => {
   cy.visit('http://www.cypress-dx.com')
-  // do things on anotherexample.com
+  // 在 anotherexample.com 上操作
 })
 
 it('t3', () => {
   login('bob')
-  // do things on cypress.io
+  // 在 cypress.io 上操作
 })
 ```
 
-## Notes
+## 注意事项
 
-### When the page and session data are cleared
+### 页面和会话数据何时清除
 
-### Test Isolation Enabled
+### 测试隔离启用
 
-The page is cleared and cookies, local storage and session storage (session
-data) in all domains are cleared automatically when `cy.session()` runs and test
-isolation is enabled with `testIsolation=true` (default in Cypress 12), This
-guarantees consistent behavior whether a session is being created or restored
-and allows you to switch sessions without first having to explicitly log out.
+当 `cy.session()` 运行且测试隔离启用 `testIsolation=true`（Cypress 12 默认）时，页面会被清除，所有域的 cookies、local storage 和 session storage（会话数据）会自动清除。这保证了无论会话是创建还是恢复时行为一致，并允许你无需先显式登出即可切换会话。
 
-| When cleared?              |            Page cleared (test)             |            Session data cleared            |
-| -------------------------- | :----------------------------------------: | :----------------------------------------: |
-| Before `setup`             | <Icon name="check-circle" color="green" /> | <Icon name="check-circle" color="green" /> |
-| Before `cy.session()` ends | <Icon name="check-circle" color="green" /> |                                            |
+| 何时清除？              |            页面清除（测试）            |            会话数据清除            |
+| ----------------------- | :-----------------------------------: | :--------------------------------: |
+| `setup` 前              | <Icon name="check-circle" color="green" /> | <Icon name="check-circle" color="green" /> |
+| `cy.session()` 结束前    | <Icon name="check-circle" color="green" /> |                                    |
 
-Note: [`cy.visit()`](/api/commands/visit) must be explicitly called afterwards
-to ensure the page to test is loaded.
+注意：之后必须显式调用 [`cy.visit()`](/api/commands/visit) 以确保加载测试页面。
 
-### Test Isolation Disabled
+### 测试隔离禁用
 
-When test isolation is disabled with `testIsolation=false`, the page will not
-clear, however, the session data will clear when `cy.session()` runs.
+当测试隔离禁用 `testIsolation=false` 时，页面不会清除，但会话数据会在 `cy.session()` 运行时清除。
 
-| When cleared               | Page cleared (test) |            Session data cleared            |
-| -------------------------- | :-----------------: | :----------------------------------------: |
-| Before `setup`             |                     | <Icon name="check-circle" color="green" /> |
-| Before `cy.session()` ends |                     |                                            |
+| 何时清除               | 页面清除（测试） |            会话数据清除            |
+| ---------------------- | :--------------: | :--------------------------------: |
+| `setup` 前             |                  | <Icon name="check-circle" color="green" /> |
+| `cy.session()` 结束前  |                  |                                    |
 
-[`cy.visit()`](/api/commands/visit) does not need to be called afterwards to
-ensure the page to test is loaded.
+之后无需调用 [`cy.visit()`](/api/commands/visit) 以确保加载测试页面。
 
-NOTE: Disabling test isolation may improve performance of end-to-end tests,
-however, previous tests could impact the browser state of the next test and
-cause inconsistency when using .only(). Be mindful to write isolated tests when
-test isolation is disabled.
+注意：禁用测试隔离可能会提高端到端测试的性能，但之前的测试可能会影响下一个测试的浏览器状态，并在使用 .only() 时导致不一致。禁用测试隔离时要小心编写隔离测试。
 
-When test isolation is disabled, it is encouraged to setup your session in a
-before hook or in the first test to ensure a clean setup.
+当测试隔离禁用时，鼓励在 before 钩子或第一个测试中设置会话以确保干净的设置。
 
-### Session caching
+### 会话缓存
 
-Once created, a session for a given `id` is cached for the duration of the spec
-file. You can't modify a stored session after it has been cached, but you can
-always create a new session with a different `id`.
+一旦创建，给定 `id` 的会话会在 spec 文件期间缓存。你无法在缓存后修改存储的会话，但总是可以使用不同的 `id` 创建新会话。
 
-In order to reduce development time, when running Cypress in "open" mode,
-sessions will be cached _for spec file reruns_.
+为了减少开发时间，当 Cypress 在“打开”模式下运行时，会话会在 _spec 文件重新运行时_ 缓存。
 
-To persist a session across multiple specs, use the option
-`cacheAcrossSpecs=true`.
+要在多个 spec 中持久化会话，使用选项 `cacheAcrossSpecs=true`。
 
-### Explicitly clearing sessions
+### 显式清除会话
 
-When running Cypress in "open" mode, you can explicitly clear all spec and
-global sessions and re-run the spec file by clicking the "Clear All Sessions"
-button in the [Instrument Panel](#The-Instrument-Panel).
+当 Cypress 在“打开”模式下运行时，你可以通过点击 [仪表盘](#The-Instrument-Panel) 中的“Clear All Sessions”按钮显式清除所有 spec 和全局会话并重新运行 spec 文件。
 
 <DocsImage
   src="/img/api/session/sessions-panel.png"
-  alt="Sessions Instrument Panel"
+  alt="会话仪表盘"
 />
 
-For debugging purposes, all spec and global sessions can be cleared with the
-[`Cypress.session.clearAllSavedSessions()`](/api/cypress-api/session) method.
+出于调试目的，可以使用 [`Cypress.session.clearAllSavedSessions()`](/api/cypress-api/session) 方法清除所有 spec 和全局会话。
 
-### Where to call `cy.session()`
+### 在哪里调用 `cy.session()`
 
-While it is possible to call `cy.session()` explicitly inside a test or
-`beforeEach`, it is considered a best practice to call `cy.session()` inside a
-login [custom command](/api/cypress-api/custom-commands) or reusable wrapper
-function. See the
-[Updating an existing login custom command](#Updating-an-existing-login-custom-command)
-and
-[Updating an existing login helper function](#Updating-an-existing-login-helper-function)
-examples for more details.
+虽然可以在测试或 `beforeEach` 中显式调用 `cy.session()`，但最佳实践是在登录 [自定义命令](/api/cypress-api/custom-commands) 或可重用包装函数中调用 `cy.session()`。参见 [更新现有的登录自定义命令](#Updating-an-existing-login-custom-command) 和 [更新现有的登录辅助函数](#Updating-an-existing-login-helper-function) 示例获取更多细节。
 
-### Choosing the correct id to cache a session
+### 选择正确的 id 来缓存会话
 
-In order for sessions to be cached uniquely, the [`id` argument](#Arguments)
-must be unique for each new session created. The `id` provided to `cy.session()`
-will display in the reporter, thus we do not recommend using sensitive data like
-passwords or tokens as unique identifiers.
+为了唯一缓存会话，[`id` 参数](#Arguments) 必须对每个新创建的会话唯一。提供给 `cy.session()` 的 `id` 会在报告器中显示，因此我们不建议使用敏感数据如密码或令牌作为唯一标识符。
 
 ```javascript
-// If your session setup code uses a string variable, pass in the
-// string as the id
+// 如果你的会话设置代码使用字符串变量，将字符串作为 id 传递
 const login = (name) => {
   cy.session(name, () => {
     loginWith(name)
   })
 }
 
-// If your session setup code uses a single object, pass in the
-// object as the id and it will be serialized into an identifier
+// 如果你的会话设置代码使用单个对象，将对象作为 id 传递，它会被序列化为标识符
 const login = (params = {}) => {
   cy.session(params, () => {
     loginWith(params)
   })
 }
 
-// If your session setup code uses multiple variables, pass in an
-// array of those variables and it will be serialized into an
-// identifier
+// 如果你的会话设置代码使用多个变量，传递这些变量的数组，它会被序列化为标识符
 const login = (name, email, params = {}) => {
   cy.session([name, email, params], () => {
     loginWith(name, email, params)
   })
 }
 
-// If your session setup code uses external constants, they don't
-// need to be included in the id, since they will never change
+// 如果你的会话设置代码使用外部常量，它们不需要包含在 id 中，因为它们永远不会改变
 const API_KEY = 'I_AM_AN_API_KEY'
 const login = (name, email) => {
   cy.session([name, email], () => {
@@ -698,11 +607,9 @@ const login = (name, email) => {
 }
 ```
 
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
-If you have custom `login` code that uses multiple parameters (in this example,
-a name, a token, and a password), in order to be able to log in many different
-users, but the `id` only included one of them (in this example, `name`):
+如果你的自定义 `login` 代码使用多个参数（本例中为 name、token 和 password）来登录许多不同用户，但 `id` 只包含其中一个（本例中为 `name`）：
 
 ```js
 const login = (name, token, password) => {
@@ -716,32 +623,23 @@ const login = (name, token, password) => {
 }
 ```
 
-If you ran this, `user1` would be logged in with `token1` and `p4ssw0rd`, and a
-session would be created and cached using `"user1"` as the `id`.
+如果你运行这个，`user1` 会用 `token1` 和 `p4ssw0rd` 登录，并使用 `"user1"` 作为 `id` 创建和缓存会话。
 
 ```js
 login('user1', 'token1', 'p4ssw0rd')
 ```
 
-Now let's say you wanted to try to log in the same user, but with a different
-token and/or password, and expect a different session to be created and cached.
-You run this, but because `cy.session()` is only being passed `name` as its
-`id`, it won't create a new session, but will instead load the saved session for
-`"user1"`.
+现在假设你想尝试用不同的 token 和/或密码登录同一用户，并期望创建和缓存不同的会话。你运行这个，但因为 `cy.session()` 只传递 `name` 作为 `id`，它不会创建新会话，而是加载 `"user1"` 的保存会话。
 
 ```js
 login('user1', 'different-token', 'p4ssw0rd')
 ```
 
-In summary, you need to ensure that the `id` is unique. Create it from all the
-parameters used inside the `setup` function that may change, otherwise `id`
-values may collide and create unexpected results.
+总之，你需要确保 `id` 是唯一的。从 `setup` 函数内部使用的所有可能变化的参数创建它，否则 `id` 值可能会冲突并产生意外结果。
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
-In this example, setting the `id` to `[name, uniqueKey]` guarantees that calling
-`login()` with different `name`, `token` and `password` values will create and
-cache unique sessions.
+在本例中，将 `id` 设置为 `[name, uniqueKey]` 确保用不同的 `name`、`token` 和 `password` 值调用 `login()` 会创建和缓存唯一会话。
 
 ```js
 const login = (name, token, password, uniqueKey) => {
@@ -755,110 +653,86 @@ const login = (name, token, password, uniqueKey) => {
 }
 ```
 
-The [`uuid`](https://www.npmjs.com/package/uuid) npm package can be used to
-generate random unique ids if an arbitrary name-space does not meet your needs.
+[`uuid`](https://www.npmjs.com/package/uuid) npm 包可用于生成随机唯一 id，如果任意命名空间不满足你的需求。
 
-### Common Questions
+### 常见问题
 
-#### Why are all my Cypress commands failing after calling `cy.session()`?
+#### 为什么调用 `cy.session()` 后所有 Cypress 命令都失败？
 
-When
-[`testIsolation`](/app/core-concepts/writing-and-organizing-tests#Test-Isolation)
-is enabled, ensure that you're calling [`cy.visit()`](/api/commands/visit) after
-calling `cy.session()`, otherwise your tests will be running on a blank page.
+当 [测试隔离](/app/core-concepts/writing-and-organizing-tests#Test-Isolation) 启用时，确保在调用 `cy.session()` 后调用 [`cy.visit()`](/api/commands/visit)，否则你的测试会在空白页上运行。
 
-#### Why am I seeing `401` errors after calling `cy.session()`?
+#### 为什么调用 `cy.session()` 后看到 `401` 错误？
 
-It's possible that your session is not valid or was not fully established before
-the session was saved and the command ended. Be sure to specify a `validate`
-function so that `cy.session()` can validate and recreate the session if
-necessary.
+可能你的会话无效或在会话保存和命令结束前未完全建立。确保指定 `validate` 函数，以便 `cy.session()` 可以在必要时验证和重新创建会话。
 
-## Command Log
+## 命令日志
 
-### The Instrument Panel
+### 仪表盘
 
-{/* GA TODO: update /app/core-concepts/open-mode#Instrument-Panel */}
+{/* GA TODO: 更新 /app/core-concepts/open-mode#Instrument-Panel */}
 
-Whenever a session is created or restored inside a test, an extra instrument
-panel is displayed at the top of the test to give more information about the
-state of your sessions.
+每当在测试中创建或恢复会话时，会在测试顶部显示一个额外的仪表盘，提供有关会话状态的更多信息。
 
-Clicking any session `id` in the panel will print that session's details to the
-console, and clicking the "Clear All Sessions" button will clear all saved spec
-and global sessions and re-run the spec file (see
-[Session caching](#Session-caching) for more details).
+点击仪表盘中的任何会话 `id` 会将该会话的详细信息打印到控制台，点击“Clear All Sessions”按钮会清除所有保存的 spec 和全局会话并重新运行 spec 文件（参见 [会话缓存](#Session-caching) 获取更多细节）。
 
 <DocsImage
   src="/img/api/session/sessions-panel.png"
-  alt="Sessions Instrument Panel"
+  alt="会话仪表盘"
 />
 
-Whenever `cy.session()` is called, the command log will show one of the
-following lines, which includes the status of the session call along with the
-session `id` value:
+每当调用 `cy.session()` 时，命令日志会显示以下行之一，包括会话调用的状态和会话 `id` 值：
 
-- No saved session was found, so a new session was created and saved:
+- 未找到保存的会话，因此创建并保存了新会话：
 
   <DocsImage
     src="/img/api/session/session-collapsed-new.png"
-    alt="New session (collapsed)"
+    alt="新会话（折叠）"
   />
 
-- A saved session was found, and used:
+- 找到并使用了保存的会话：
 
   <DocsImage
     src="/img/api/session/session-collapsed-restored.png"
-    alt="Saved session (collapsed)"
+    alt="保存的会话（折叠）"
   />
 
-- A saved session was found, but the `validate` function failed, so the session
-  was recreated and saved:
+- 找到保存的会话，但 `validate` 函数失败，因此重新创建并保存了会话：
   <DocsImage
     src="/img/api/session/session-collapsed-recreated.png"
-    alt="Recreated session (collapsed)"
+    alt="重新创建的会话（折叠）"
   />
 
-Note that in cases where the `validate` function fails immediately after `setup`
-creates the session, the test will fail with an error.
+注意，如果 `validate` 函数在 `setup` 创建会话后立即失败，测试会失败并报错。
 
-Expanding the session group in the command log will show all of the commands
-that were run when creating and/or validating the session.
+展开命令日志中的会话组会显示创建和/或验证会话时运行的所有命令。
 
-In this image, a saved session is restored, but when `/personal` is visited in
-the `validate` function, the app redirects to `/signin`, which invalidates the
-session. A new session is created by visiting `/signin` where the user is logged
-in, after which, validation succeeds, and the session is available for the
-remainder of the test.
+在此图像中，恢复了一个保存的会话，但当在 `validate` 函数中访问 `/personal` 时，应用重定向到 `/signin`，这使会话无效。通过访问 `/signin` 创建新会话，用户登录后，验证成功，会话可用于测试的其余部分。
 
 <DocsImage
   src="/img/api/session/session-expanded.png"
-  alt="Recreated session (expanded)"
+  alt="重新创建的会话（展开）"
 />
 
-Clicking a session `id` in the Instrument Panel or clicking the first line under
-an expanded session group in the command log will print that session's details
-to the console. This information contains the `id` along with any cached session
-data, including cookies, `localStorage` and `sessionStorage`.
+点击仪表盘中的会话 `id` 或命令日志中展开的会话组下的第一行会将该会话的详细信息打印到控制台。此信息包含 `id` 以及任何缓存的会话数据，包括 cookies、`localStorage` 和 `sessionStorage`。
 
 <DocsImage
   src="/img/api/session/print-session-to-console.png"
-  alt="Session console output"
+  alt="会话控制台输出"
 />
 
-## History
+## 历史
 
-| Version                                    | Changes                                                                                    |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| [12.0.0](/app/references/changelog#12-0-0) | Removed `experimentalSessionAndOrigin` and made the command available by default.          |
-| [11.0.0](/app/references/changelog#11-0-0) | The `setup` option is now required.                                                        |
-| [10.9.0](/app/references/changelog#10-9-0) | Added `cacheAcrossSpecs` property.                                                         |
-| [9.6.0](/app/references/changelog#9-6-0)   | Added support for `experimentalSessionAndOrigin` and removed `experimentalSessionSupport`. |
-| [8.2.0](/app/references/changelog#8-2-0)   | `cy.session()` command added and can be used when `experimentalSessionSupport` is enabled. |
+| 版本                                       | 变更                                                                                     |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [12.0.0](/app/references/changelog#12-0-0) | 移除 `experimentalSessionAndOrigin` 并使命令默认可用。                                   |
+| [11.0.0](/app/references/changelog#11-0-0) | `setup` 选项现在必需。                                                                   |
+| [10.9.0](/app/references/changelog#10-9-0) | 添加 `cacheAcrossSpecs` 属性。                                                           |
+| [9.6.0](/app/references/changelog#9-6-0)   | 添加对 `experimentalSessionAndOrigin` 的支持并移除 `experimentalSessionSupport`。         |
+| [8.2.0](/app/references/changelog#8-2-0)   | 添加 `cy.session()` 命令，当 `experimentalSessionSupport` 启用时可用。                    |
 
-## See also
+## 另请参阅
 
-- [Authenticate faster in tests with the cy.session command](https://cypress.io/blog/2021/08/04/authenticate-faster-in-tests-cy-session-command/)
-- [Custom Commands](/api/cypress-api/custom-commands)
+- [使用 cy.session 命令在测试中更快地认证](https://cypress.io/blog/2021/08/04/authenticate-faster-in-tests-cy-session-command/)
+- [自定义命令](/api/cypress-api/custom-commands)
 - [`Cypress.session`](/api/cypress-api/session)
 - [`cy.visit()`](/api/commands/visit)

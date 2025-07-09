@@ -1,232 +1,226 @@
 ---
-title: Branch Review
-description: Branch Review in Cypress Cloud surfaces the impact of Pull Requests on your test suite. Compare test results between branches and learn best practices for grouping test runs.
+title: 分支审查
+description: Cypress Cloud中的分支审查功能可展示Pull Request对测试套件的影响。比较分支间的测试结果，并了解测试运行分组的最佳实践。
 sidebar_position: 50
 ---
 
 <ProductHeading product="cloud" />
 
-# Branch Review
+# 分支审查
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to compare test results between branches in Cypress Cloud
-- How Branch Review surfaces the impact of Pull Requests on your test suite
-- How to compare **any** two runs, if not using a Pull Request workflow
-- Best practices for grouping test runs
+- 如何在Cypress Cloud中比较分支间的测试结果
+- 分支审查如何展示Pull Request对测试套件的影响
+- 如果不使用Pull Request工作流，如何比较**任意**两次运行
+- 测试运行分组的最佳实践
 
 :::
 
-Cypress Branch Review allows you to quickly identify the different impacts a Pull Request might have on your test suite in a single view.
-Compare which tests are failing, flaky, pending, added, or modified between the source and base branches. If enabled on your account,
-UI Coverage or Cypress Accessibility changes between runs will also appear here.
+Cypress分支审查功能让你能在一个视图中快速识别Pull Request可能对测试套件产生的不同影响。比较源分支与基础分支之间哪些测试失败、不稳定、待处理、新增或修改。如果你的账户启用了相关功能，运行间的UI覆盖率或Cypress无障碍测试变更也会在此显示。
 
-Branch Review is useful even if you do not have a Pull Request workflow, because it allows you to compare any two runs of your choice.
-These might might represent different builds of the application, changes in test code, or results from nightly runs. This page will use
-the example of a Pull Request made using the GitHub integration, but this integration is not required in order to use Branch Review.
+即使你没有使用Pull Request工作流，分支审查仍然很有用，因为它允许你比较任意选择的两次运行。这些可能代表应用程序的不同构建版本、测试代码的变更或夜间运行的结果。本页将使用GitHub集成创建的Pull Request为例，但使用分支审查并不需要此集成。
 
-A common scenario throughout the software development lifecycle (SDLC) is an engineer's **feature** branch that will be merged into the
-repo's **develop** or **main** branch. Here's how this scenario appears in Branch Review:
+在软件开发生命周期(SDLC)中，一个常见场景是工程师的**功能**分支将被合并到代码库的**develop**或**main**分支。以下是该场景在分支审查中的展示：
 
 <DocsImage
   src="/img/cloud/features/branch-review/branch-review.png"
-  alt="Cypress Branch Review"
+  alt="Cypress分支审查"
 />
 
-Without Branch Review, pinpointing changes in your test suite's results requires a manual side-by-side comparison between your newly-introduced branch's test runs and your base branch's test runs. This sub-optimal workflow often fails to answer the fundamental questions, _what changed_ and _why?_ You might be left wondering if the same tests are flaky between branches, when new failures were introduced, or if you added sufficient test coverage to your new branch.
+没有分支审查时，要确定测试套件结果的变化需要手动并排比较新引入分支的测试运行与基础分支的测试运行。这种次优的工作流程往往无法回答基本问题：_发生了什么变化_和_为什么？_ 你可能会困惑于相同测试在不同分支间是否不稳定、新失败是何时引入的，或者你是否为新分支添加了足够的测试覆盖率。
 
-## Getting Started
+## 开始使用
 
-The key to the Branch Review area is a comparison between a **Base** run and a **Changed** run.
-The Changed run is the main subject of the comparison, often associated with an incoming Pull Request. The Base run is the starting point for comparison.
+分支审查区域的核心是**基础**运行与**变更**运行之间的比较。变更运行是比较的主要对象，通常与传入的Pull Request相关联。基础运行是比较的起点。
 
-### Accessing Branch Review
+### 访问分支审查
 
-There are a number of ways to get to Branch Review depending on where you are looking at your Cypress results. In all cases, once you've picked Changed run, you can adjust the automatically-selected Base run to any branch or run in the project to dial in the comparison you are most interested in.
+根据查看Cypress结果的位置，有多种方式可以进入分支审查。在所有情况下，一旦选择了变更运行，你可以将自动选择的基础运行调整为项目中的任何分支或运行，以聚焦你最关心的比较。
 
-### From the project list
+### 从项目列表
 
-The project card shows three active branches for the project. You can click through to any of these to enter Branch Review focused on that branch.
+项目卡片显示项目的三个活跃分支。你可以点击其中任何一个进入以该分支为中心的分支审查。
 
 <DocsImage
   src="/img/accessibility/core-concepts/branch-review-project-card.png"
   width="40%"
-  alt="A card showing the name of an example project and related branches to choose."
+  alt="显示示例项目名称和相关分支选择的卡片。"
 />
 
-### From the main navigation
+### 从主导航
 
-When a project is open, select "Branches" in the main navigation to see a full, filterable list of available branches and choose one to set as the source of the Changed run.
+当项目打开时，在主导航中选择"Branches"以查看完整的、可筛选的可用分支列表，并选择其中一个作为变更运行的来源。
 
 <DocsImage
   src="/img/accessibility/core-concepts/branch-review-side-nav.png"
   width="40%"
-  alt="The main Cypress Cloud navigation showing Latest Runs, Branches, and Analytics menu items. An arrow points to Branches."
+  alt="Cypress Cloud主导航显示Latest Runs、Branches和Analytics菜单项。箭头指向Branches。"
 />
 
-### From the run overview page
+### 从运行概览页面
 
-Click the branch name associated with the run. This will take you to Branch Review with that run pre-selected as the Changed run. This is a great way to investigate a specific run with an unexpected outcome in the tests.
+点击与运行关联的分支名称。这将带你进入分支审查，并预选该运行作为变更运行。这是调查测试结果异常的特定运行的好方法。
 
 <DocsImage
   src="/img/accessibility/core-concepts/branch-review-run-card.png"
-  alt="Two cards showing various details about Cypress test runs, including pass/fail counts and metadata. An arrow points to the branch name."
+  alt="两张卡片显示Cypress测试运行的各种详细信息，包括通过/失败计数和元数据。箭头指向分支名称。"
 />
 
-### From a Pull Request
+### 从Pull Request
 
-Click the "View all changes introduced in this branch" link at the bottom of the Test Results table. You will enter branch review with the current PR's branch and latest run pre-selected as the Changed run.
+点击测试结果表格底部的"View all changes introduced in this branch"链接。你将进入分支审查，当前PR的分支和最新运行已预选为变更运行。
 
 <DocsImage
   src="/img/accessibility/core-concepts/branch-review-pull-request.png"
-  alt="A Pull Request comment from Cypress with an arrow pointing to the 'View all changes introduced in this branch' link. Test results and some accessibility score and violation information is also visible in the comment. The project has an 86.86% accessibility score, with  9 failed elements. Failed rule counts are 1 critical, 1 serious, 3 moderate, and 0 minor."
+  alt="来自Cypress的Pull Request评论，箭头指向'View all changes introduced in this branch'链接。评论中还可见测试结果和一些无障碍评分及违规信息。项目无障碍评分为86.86%，有9个失败元素。失败规则计数为1个严重、1个重要、3个中等和0个轻微。"
 />
 
-## Integrating with Pull Requests
+## 与Pull Request集成
 
-Pull Requests in Branch Review work by leveraging the Cypress Cloud GitHub integration to query the GitHub API for branches with Pull Requests. Your project will first need to be connected to a GitHub repository. If you haven't already, follow the steps in [Install the Cypress GitHub app](/cloud/integrations/source-control/github#Install-the-Cypress-GitHub-app) to connect your project to GitHub.
+分支审查中的Pull Request通过利用Cypress Cloud的GitHub集成查询GitHub API获取带有Pull Request的分支来工作。你的项目首先需要连接到GitHub仓库。如果尚未连接，请按照[安装Cypress GitHub应用](/cloud/integrations/source-control/github#Install-the-Cypress-GitHub-app)中的步骤将项目连接到GitHub。
 
-When Pull Requests are connected, you will be able to select runs by the associated PR:
+当Pull Request连接后，你将能够通过关联的PR选择运行：
 
 <DocsImage
   src="/img/cloud/features/branch-review/pr-in-branch-review.png"
   width="40%"
-  alt="A list of latest pull requests in the Changed run dropdown menu"
+  alt="变更运行下拉菜单中最新pull request的列表"
   className="mb-1"
 />
 
 :::info
 
-**Note:** If you do not see PR # tags associated with a branch, you may need to [pass PR numbers](/app/continuous-integration/overview#CI-Build-Information) to runs as environment variables. This helps ensure Cypress Cloud can map PR data correctly.
+**注意：** 如果没有看到与分支关联的PR #标签，你可能需要[传递PR编号](/app/continuous-integration/overview#CI-Build-Information)作为环境变量给运行。这有助于确保Cypress Cloud能正确映射PR数据。
 
 :::
 
-#### Latest Runs
+#### 最新运行
 
-If the selected branch has a PR associated and a PR # passed via CI, there is an additional callout on the top of the overview tab of the **Latest runs** page which directs to the Branch Review.
+如果所选分支有关联的PR且通过CI传递了PR #，**Latest runs**页面概览标签顶部会有一个额外的标注，指向分支审查。
 
 <DocsImage
   src="/img/cloud/features/branch-review/branch-review-available.png"
-  alt="Branch Review available banner"
+  alt="分支审查可用横幅"
 />
 
-## Branch Details
+## 分支详情
 
-### Review Header
+### 审查头部
 
-The header includes the Git commit message, PR selector, PR status, and base and feature branch labels with the Cypress Cloud test run ID number (#).
+头部包括Git提交消息、PR选择器、PR状态以及带有Cypress Cloud测试运行ID编号(#)的基础和功能分支标签。
 
-If there are multiple Pull Requests open for the same branch, you can select the Pull Request you want to review from the dropdown to the right of the commit message.
+如果同一分支有多个Pull Request打开，你可以从提交消息右侧的下拉菜单中选择要审查的Pull Request。
 
-Clicking the branch label will link you directly to the appropriate [run overview](/cloud/features/recorded-runs#Overview-tab) and hovering on these elements exposes additional run meta data.
+点击分支标签将直接链接到相应的[运行概览](/cloud/features/recorded-runs#Overview-tab)，悬停在这些元素上会显示额外的运行元数据。
 
 <DocsImage
   src="/img/cloud/features/branch-review/branch-review-header.png"
-  alt="Branch Review Header"
+  alt="分支审查头部"
 />
 
-### Review Test Status
+### 审查测试状态
 
 :::info
 
-**Note:** Recording exactly one run for every commit is the best way to ensure complete and accurate comparisons. See our [best practices](/cloud/features/branch-review#Best-Practices) on grouping multiple `cypress run` calls under one run.
+**注意：** 为每个提交准确记录一次运行是确保完整和准确比较的最佳方式。有关将多个`cypress run`调用分组到一个运行下的最佳实践，请参阅我们的[最佳实践](/cloud/features/branch-review#Best-Practices)。
 
 :::
 
-When on the review screen, you will see the Failures, Flaky, Pending, Added, and Modified tabs. Each tab will show you the specs that fall into that category. You can click on a test to view the test details.
+在审查屏幕上，你将看到失败、不稳定、待处理、新增和修改标签。每个标签将显示属于该类别的规格。你可以点击测试查看测试详情。
 
 <DocsImage
   src="/img/cloud/features/branch-review/branch-review-details.png"
-  alt="Branch Review Details"
+  alt="分支审查详情"
 />
 
 :::note
 
-**Review Test Status**
+**审查测试状态**
 
-1. Details of which branches and runs are compared. If a Pull Request is detected, Pull Request details will be here.
-1. Links to key differences in test information like new failures and flaky tests. Note that all numbers and scores refer to the Changed run.
-1. [UI Coverage](https://on.cypress.io/ui-coverage-trial?utm_medium=cloud-br&utm_source=docs.cypress.io&utm_term=&utm_content=UI+Coverage) changes.
-1. [Cypress Accessibility](http://on.cypress.io/accessibility-trial?utm_medium=cloud-br&utm_source=docs.cypress.io&utm_term=&utm_content=Cypress+Accessibility) changes.
-1. See what has changed in the specific status you have opened, for example:
+1. 比较的分支和运行的详细信息。如果检测到Pull Request，Pull Request详情将显示在此。
+1. 指向测试信息关键差异的链接，如新失败和不稳定测试。注意所有数字和评分均指变更运行。
+1. [UI覆盖率](https://on.cypress.io/ui-coverage-trial?utm_medium=cloud-br&utm_source=docs.cypress.io&utm_term=&utm_content=UI+Coverage)变更。
+1. [Cypress无障碍测试](http://on.cypress.io/accessibility-trial?utm_medium=cloud-br&utm_source=docs.cypress.io&utm_term=&utm_content=Cypress+Accessibility)变更。
+1. 查看你打开的特定状态中的变化，例如：
    - <img
        className="br-ui inline-block"
        src="/img/cloud/features/branch-review/test-status-up.png"
-       alt="up arrow and number 3 marked in red colored text"
-     /> total number introduced in your branch
+       alt="红色文本标记的上箭头和数字3"
+     /> 在你的分支中引入的总数
    - <img
        className="br-ui inline-block"
        src="/img/cloud/features/branch-review/test-status-down.png"
-       alt="down arrow and number 4 marked in green colored text"
-     /> total number decreased or resolved in your branch
+       alt="绿色文本标记的下箭头和数字4"
+     /> 在你的分支中减少或解决的总数
    - <img
        className="br-ui inline-block"
        src="/img/cloud/features/branch-review/test-status-total.png"
-       alt="number 4 marked in gray colored text"
-     /> total count, for example, _3 new and 1 existing_
-1. The test state (failed, flaky, pending) is also indicated at the spec level
-   - _new_ = the state was <u>not</u> previously captured, but now <u>is</u> captured<br />(newly pending tests can imply an `it.skip()` was not removed)
-   - _existing_ = the state <u>was</u> previously captured and now <u>is still</u> captured
-   - _resolved_ = the state <u>was</u> previously captured but now is <u>no longer</u> captured
+       alt="灰色文本标记的数字4"
+     /> 总数，例如_3个新和1个现有_
+1. 测试状态（失败、不稳定、待处理）也在规格级别指示
+   - _new_ = 状态之前<u>未</u>捕获，但现在<u>已</u>捕获<br />（新待处理的测试可能意味着未移除`it.skip()`）
+   - _existing_ = 状态之前<u>已</u>捕获且现在<u>仍</u>捕获
+   - _resolved_ = 状态之前<u>已</u>捕获但现在<u>不再</u>捕获
 
 :::
 
-### Review Test Comparison
+### 审查测试比较
 
-Navigating into the test detail view reveals a side-by-side comparison of the test results on both branches, as well as, artifacts so you can compare before vs. after your PR. This can help narrow the focus on changes introduced or resolved on either branch and elevate the source of flake within tests throughout different attempts. Review the test definition panel for diff snapshots to help quickly determine changes in test code.
+进入测试详情视图会显示两个分支上测试结果的并排比较，以及工件，因此你可以比较PR前后的情况。这有助于聚焦于任一分支上引入或解决的变更，并提升不同尝试中测试内不稳定的来源。查看测试定义面板的差异快照，以帮助快速确定测试代码的变化。
 
 <DocsImage
   src="/img/cloud/features/branch-review/test-comparison.png"
-  alt="Test Comparison View"
+  alt="测试比较视图"
 />
 
 :::note
 
-**Review Test Comparison**
+**审查测试比较**
 
-1. Base branch results
+1. 基础分支结果
 
-2. Feature branch results
+2. 功能分支结果
 
-3. Test Replay and artifacts
+3. 测试回放和工件
 
-4. Test attempts (descending order)
+4. 测试尝试（降序）
 
-5. Code change diffs
+5. 代码变更差异
 
 :::
 
-## Troubleshooting
+## 故障排除
 
-### Note on Available Data for Pull Requests
+### 关于Pull Request可用数据的说明
 
-Branch Review is a powerful tool to compare two branches with recorded runs to Cypress Cloud. There are factors that can impact what is available to review between a feature and base branch. For example, whether or not a branch at a particular commit has a run recorded to Cypress Cloud will affect what is displayed.
+分支审查是一个强大的工具，用于比较两个有记录运行到Cypress Cloud的分支。有些因素会影响功能分支和基础分支之间可审查的内容。例如，特定提交的分支是否有运行记录到Cypress Cloud将影响显示的内容。
 
-The following captures this scenario across both branches:
+以下场景涵盖了两种分支的情况：
 
-|              Base Branch              |            Feature Branch             | What Branch Review Displays                          |
-| :-----------------------------------: | :-----------------------------------: | ---------------------------------------------------- |
-| <Badge type="success">has run</Badge> | <Badge type="success">has run</Badge> | Comparison data using both found runs                |
-| <Badge type="success">has run</Badge> |  <Badge type="danger">no run</Badge>  | Comparison data using last run on feature branch     |
-|  <Badge type="danger">no run</Badge>  | <Badge type="success">has run</Badge> | Non-comparison data with found feature run           |
-|  <Badge type="danger">no run</Badge>  |  <Badge type="danger">no run</Badge>  | Non-comparison data using last run on feature branch |
+|              基础分支              |             功能分支             | 分支审查显示内容                          |
+| :--------------------------------: | :------------------------------: | ----------------------------------------- |
+| <Badge type="success">有运行</Badge> | <Badge type="success">有运行</Badge> | 使用两个找到的运行进行比较数据            |
+| <Badge type="success">有运行</Badge> |  <Badge type="danger">无运行</Badge>  | 使用功能分支上最后一次运行进行比较数据    |
+|  <Badge type="danger">无运行</Badge>  | <Badge type="success">有运行</Badge> | 非比较数据，带有找到的功能运行            |
+|  <Badge type="danger">无运行</Badge>  |  <Badge type="danger">无运行</Badge>  | 非比较数据，使用功能分支上最后一次运行    |
 
-If the required runs for comparison are not available, you can use the manual selection dropdowns to compare two suitable runs, if they exist in Cypress Cloud.
+如果比较所需的运行不可用，你可以使用手动选择下拉菜单比较两个合适的运行，前提是它们在Cypress Cloud中存在。
 
-## Best Practices
+## 最佳实践
 
-### Grouping Test Runs
+### 测试运行分组
 
-Cypress Cloud allows for [grouping recorded tests](/cloud/features/smart-orchestration/parallelization#Grouping-test-runs) together under a single run. This means multiple `cypress run` calls can be labeled and associated to a single run in Cypress Cloud.
+Cypress Cloud允许[将记录的测试分组](/cloud/features/smart-orchestration/parallelization#Grouping-test-runs)到一个运行下。这意味着多个`cypress run`调用可以被标记并关联到Cypress Cloud中的单个运行。
 
-Recording multiple test runs per commit without grouping will cause issues, as Branch Review relies on the _latest_ run. Therefore, recording one run per commit and utilizing grouping is essential to improving effectiveness and ensure an accurate comparison between branches.
+不分组而记录每个提交的多个测试运行会导致问题，因为分支审查依赖于_最新_运行。因此，记录每个提交的一个运行并利用分组对于提高有效性并确保分支间准确比较至关重要。
 
-### Missing Runs in Pull Request Comparisons
+### Pull Request比较中缺失运行
 
-If a run is missing on either the merge base or feature commit of the PR, a banner is displayed specifying which commit is missing the run with a link to it on GitHub.
+如果PR的合并基础或功能提交上缺少运行，将显示一个横幅，指定哪个提交缺少运行，并带有指向GitHub上该提交的链接。
 
-## See Also
+## 另请参阅
 
-- Read about [multi-repo implementation](/cloud/account-management/projects#Multi-repo-Implementation) best practices in Cypress Cloud. Even if your test code and application code are not colocated, you maybe be able to connect your test runs to specific commits and pull requests in your application.
+- 阅读Cypress Cloud中[多仓库实现](/cloud/account-management/projects#Multi-repo-Implementation)的最佳实践。即使你的测试代码和应用代码不在同一位置，你也可能能够将测试运行连接到应用中的特定提交和pull request。

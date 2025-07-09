@@ -1,6 +1,6 @@
 ---
-title: 'spread | Cypress Documentation'
-description: Expand an array into multiple arguments in Cypress.
+title: 'spread | Cypress 文档'
+description: 在Cypress中将数组展开为多个参数。
 sidebar_label: spread
 ---
 
@@ -8,64 +8,61 @@ sidebar_label: spread
 
 # spread
 
-Expand an array into multiple arguments.
+将数组展开为多个参数。
 
 :::info
 
-Identical to [`.then()`](/api/commands/then), but always expects an array-like
-structure as its subject.
+与 [`.then()`](/api/commands/then) 功能相同，但始终要求其主体为类数组结构。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .spread(callbackFn)
 .spread(options, callbackFn)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.getCookies().spread(() => {}) // Yield all cookies
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.spread(() => {}) // Errors, cannot be chained off 'cy'
-cy.clock().spread() // Errors, 'clock' does not yield an array
+cy.getCookies().spread(() => {}) // 获取所有cookie
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
-<Icon name="angle-right" /> **fn _(Function)_**
+```javascript
+cy.spread(() => {}) // 错误，不能直接链式调用'cy'
+cy.clock().spread() // 错误，'clock'不返回数组
+```
 
-Pass a function that expands the array into its arguments.
+### 参数
 
-<Icon name="angle-right" /> **options _(Object)_**
+<Icon name="angle-right" /> **fn _(函数)_**
 
-Pass in an options object to change the default behavior of `.spread()`.
+传入一个将数组展开为其参数的回调函数。
 
-| Option    | Default                                                           | Description                                                            |
+<Icon name="angle-right" /> **options _(对象)_**
+
+传入一个选项对象以改变`.spread()`的默认行为。
+
+| 选项      | 默认值                                                           | 描述                                                             |
 | --------- | ----------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.spread()` to resolve before [timing out](#Timeouts) |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 在[超时](#Timeouts)前等待`.spread()`解析的时间 |
 
 <HeaderYields />
 
-- `.spread()` yields the return value of your callback function.
-- `.spread()` wlll not change the subject if `null` or `undefined` is returned.
-- If the returned values are DOM elements, it is
-  [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried) to
-  chain further commands that rely on the subject after `.spread()`.
+- `.spread()`返回回调函数的返回值。
+- 如果返回`null`或`undefined`，`.spread()`不会改变主体。
+- 如果返回值是DOM元素，在`.spread()`后继续链式调用依赖主体的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Examples
+## 示例
 
-### Aliased Routes
+### 别名路由
 
-#### Expand the array of aliased routes
+#### 展开别名路由数组
 
 ```javascript
 cy.intercept('/users/*').as('getUsers')
@@ -73,49 +70,47 @@ cy.intercept('/activities/*').as('getActivities')
 cy.intercept('/comments/*').as('getComments')
 cy.wait(['@getUsers', '@getActivities', '@getComments']).spread(
   (getUsers, getActivities, getComments) => {
-    // each interception is now an individual argument
+    // 每个拦截请求现在都是独立的参数
   }
 )
 ```
 
-### Cookies
+### Cookie
 
-#### Expand the array of cookies
+#### 展开cookie数组
 
 ```javascript
 cy.getCookies().spread((cookie1, cookie2, cookie3) => {
-  // each cookie is now an individual argument
+  // 每个cookie现在都是独立的参数
 })
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.spread()` requires being chained off a previous command.
-- `.spread()` requires being chained off a command that yields an array-like
-  structure.
+- `.spread()`需要链式调用在前一个命令之后。
+- `.spread()`需要链式调用在返回类数组结构的命令之后。
 
 <HeaderAssertions />
 
-- `.spread()` will only run assertions you have chained once, and will not
-  [retry](/app/core-concepts/retry-ability).
+- `.spread()`只会运行一次你链式调用的断言，不会[重试](/app/core-concepts/retry-ability)。
 
 <HeaderTimeouts />
 
-- `.spread()` can time out waiting for a promise you've returned to resolve.
+- `.spread()`可能会因等待你返回的promise解析而超时。
 
-## Command Log
+## 命令日志
 
-- `.spread()` does _not_ log in the Command Log
+- `.spread()`_不会_在命令日志中记录
 
-## History
+## 历史
 
-| Version                                  | Changes                   |
+| 版本                                  | 变更                   |
 | ---------------------------------------- | ------------------------- |
-| [0.5.9](/app/references/changelog#0-5-9) | `.spread()` command added |
+| [0.5.9](/app/references/changelog#0-5-9) | 添加`.spread()`命令 |
 
-## See also
+## 另请参阅
 
 - [`.each()`](/api/commands/each)
 - [`.then()`](/api/commands/then)

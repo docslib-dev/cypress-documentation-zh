@@ -1,42 +1,42 @@
 ---
-title: 'Cypress Accessibility | How it works'
-description: 'Accessibility checks are powered by Axe Core® from Deque Systems based on common accessibility standards.'
-sidebar_label: 'How it works'
+title: 'Cypress 无障碍测试 | 工作原理'
+description: '无障碍测试基于Deque Systems的Axe Core®技术，遵循通用无障碍标准。'
+sidebar_label: '工作原理'
 sidebar_position: 50
 ---
 
 <ProductHeading product="accessibility" />
 
-# How it works
+# 工作原理
 
-Cypress Accessibility seamlessly integrates accessibility testing into your development pipeline. Below are the stages of the Cypress Accessibility process:
+Cypress Accessibility 将无障碍测试无缝集成到您的开发流程中。以下是其工作阶段：
 
-1. **Recording and uploading**: As your test run is recorded, specs are uploaded to Cypress Cloud. Accessibility checks begin based on incoming [Test Replay](/cloud/features/test-replay) data on Cypress Cloud servers.
-1. **Processing**: When your run completes, the final specs are processed for accessibility checks. Earlier specs have already entered processing and are likely completed by the end of the run.
-1. **Organizing Views**: Cypress Cloud groups Views (pages and components) rendered during the run, merging and deduplicating across tests. This ensures page-level results and live DOM snapshots are organized effectively.
-1. **Generating reports**: A combined "rule-level" report is created, summarizing all detected accessibility violations.
-1. **Displaying results**: Results are displayed in Cypress Cloud in the run details area as well as in [Branch Review](/accessibility/core-concepts/compare-reports) for comparing runs. Accessibility is also flagged in integrations (e.g., Slack, GitHub/GitLab comments), and accessible via the [Results API](/accessibility/results-api) for optional CI pipeline actions (e.g., failing builds based on unmet standards).
+1. **记录与上传**：测试运行时，测试规范会上传至Cypress Cloud。基于Cypress Cloud服务器接收的[测试回放](/cloud/features/test-replay)数据，无障碍检查随即启动。
+1. **处理阶段**：运行结束后，最终测试规范会进行无障碍检查处理。较早的测试规范已进入处理流程，通常在运行结束前即可完成。
+1. **视图组织**：Cypress Cloud对运行期间渲染的视图（页面和组件）进行分组，跨测试合并去重。这确保页面级结果和实时DOM快照得到有效组织。
+1. **生成报告**：创建综合的"规则级"报告，汇总所有检测到的无障碍违规项。
+1. **结果展示**：结果会显示在Cypress Cloud的运行详情区域，以及用于比对的[分支评审](/accessibility/core-concepts/compare-reports)中。集成环境（如Slack、GitHub/GitLab评论）也会标记无障碍问题，并可通过[结果API](/accessibility/results-api)获取，支持自定义CI流程操作（例如根据未达标情况使构建失败）。
 
-## About Axe Core®
+## 关于Axe Core®
 
-Axe Core® is an open-source library by Deque Systems, widely recognized for detecting accessibility violations. With over a billion downloads on npm, it is used in numerous tools at multiple stages of the software development cycle. If you are already using other Axe Core®-based tools, Cypress Accessibility's configuration can be easily aligned with your existing accessibility standards across different teams and platforms.
+Axe Core®是Deque Systems开发的开源库，被广泛用于检测无障碍违规问题。它在npm上的下载量超过10亿次，应用于软件开发周期多个阶段的众多工具中。如果您已使用其他基于Axe Core®的工具，Cypress Accessibility的配置可以轻松与您现有的跨团队、跨平台无障碍标准保持一致。
 
-Axe Core® checks for accessibility violations in your website's user interface, based on common accessibility standards. A violation detected by Axe usually indicates that some users with disabilities would have a problem using or perceiving a feature. An example of a violation would be an image without alternative text provided in the markup, which means the content is not perceivable to visually-impaired users. [Learn more about Axe.](https://github.com/dequelabs/axe-core)
+Axe Core®基于通用无障碍标准检查网站用户界面的违规情况。检测到的违规通常意味着残障用户在使用或感知某些功能时会遇到问题。例如标记中未提供替代文本的图像，这会导致视障用户无法感知内容。[了解更多Axe信息](https://github.com/dequelabs/axe-core)
 
-While this process reaches a high standard for automated testing, it cannot test every possible aspect of compliance, especially for heavily custom interfaces or aspects requiring human judgment.
+虽然该流程达到了自动化测试的高标准，但仍无法覆盖所有合规性方面，特别是高度定制化的界面或需要人工判断的部分。
 
-This means that a 100% axe score does not mean all possible accessibility errors have been ruled out. Deque reports that [Axe Core® can detect up to 57% of the issues that would appear in a manual accessibility audit](https://www.deque.com/blog/automated-testing-study-identifies-57-percent-of-digital-accessibility-issues/).
+这意味着100%的Axe评分并不代表排除了所有潜在的无障碍问题。Deque报告显示[Axe Core®能检测出人工无障碍审计中57%的问题](https://www.deque.com/blog/automated-testing-study-identifies-57-percent-of-digital-accessibility-issues/)。
 
-The value of this form of testing in Cypress Accessibility is to give you fast, reliable, easy-to-understand feedback about common accessibility mistakes that are found in most projects. Providing these results automatically as part of your test run means that you can find and fix these issues with minimal friction, shifting accessibility left in your software development lifecycle.
+Cypress Accessibility中此类测试的价值在于：针对大多数项目中常见的无障碍错误，提供快速、可靠且易于理解的反馈。将结果作为测试运行的自动组成部分，意味着您可以用最小阻力发现并修复这些问题，从而在软件开发生命周期中左移无障碍测试。
 
-## Axe Core® updates
+## Axe Core®更新机制
 
-Axe Core® is regularly updated, with Cypress following a controlled adoption process:
+Axe Core®会定期更新，Cypress采用受控的更新策略：
 
-- Update Policy: Cypress Cloud integrates new Axe Core® versions at least 30 days after their release. This provides teams time to review the Axe Core® [changelog](https://github.com/dequelabs/axe-core/blob/develop/CHANGELOG.md) so you can make any necessary adjustments to your process in advance of Cypress Cloud bumping the version.
-- Changelog Tracking: Updates are documented in the Cypress Accessibility [changelog](https://github.com/dequelabs/axe-core/blob/develop/CHANGELOG.md), starting December 1, 2024.
-- Critical Exceptions: In cases like critical security patches, updates may occur sooner, with notifications provided to affected customers.
+- 更新政策：Cypress Cloud在新版Axe Core®发布至少30天后集成，为团队留出时间审查[变更日志](https://github.com/dequelabs/axe-core/blob/develop/CHANGELOG.md)，以便在版本升级前调整流程。
+- 变更追踪：自2024年12月1日起，更新会记录在Cypress Accessibility[变更日志](https://github.com/dequelabs/axe-core/blob/develop/CHANGELOG.md)中。
+- 紧急例外：如遇关键安全补丁等情况，可能提前更新，并向受影响客户发送通知。
 
-## Powered by Test Replay
+## 基于测试回放技术
 
-Cypress Accessibility leverages data captured through Test Replay, ensuring comprehensive analysis while being subject to its limitations. Read [How Test Replay Works](/cloud/features/test-replay#How-Test-Replay-Works) to discover which data is captured and which browsers are supported.
+Cypress Accessibility利用测试回放捕获的数据进行分析，同时受其功能限制约束。阅读[测试回放工作原理](/cloud/features/test-replay#How-Test-Replay-Works)了解支持的数据类型和浏览器范围。

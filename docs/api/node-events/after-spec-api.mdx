@@ -1,25 +1,22 @@
 ---
-title: 'After Spec Event | Cypress Node Events'
-description: 'The after:spec event fires after a spec file is run in Cypress.'
+title: 'After Spec 事件 | Cypress 节点事件'
+description: '在 Cypress 中运行完 spec 文件后会触发 after:spec 事件。'
 sidebar_label: 'after:spec'
 ---
 
 <ProductHeading product="app" />
 
-# After Spec Event
+# After Spec 事件
 
-The `after:spec` event fires after a spec file is run. When running cypress via
-`cypress open`, the event will fire when the browser closes.
+`after:spec` 事件会在运行完一个 spec 文件后触发。当通过 `cypress open` 运行 Cypress 时，该事件会在浏览器关闭时触发。
 
-## Syntax
+## 语法
 
 <WarningSetupNodeEvents />
 
 :::caution
 
-⚠️ When running via `cypress open`, the `after:spec` event only fires if the
-[experimentalInteractiveRunEvents flag](/app/references/configuration#Experiments)
-is enabled.
+⚠️ 通过 `cypress open` 运行时，只有在启用了 [experimentalInteractiveRunEvents 标志](/app/references/configuration#Experiments) 时才会触发 `after:spec` 事件。
 
 :::
 
@@ -33,43 +30,39 @@ on('after:spec', (spec, results) => {
 
 :::
 
-<Icon name="angle-right" /> **spec _(Object)_**
+<Icon name="angle-right" /> **spec _(对象)_**
 
-Details of the spec file, including the following properties:
+spec 文件的详细信息，包含以下属性：
 
-| Property   | Description                                                                                |
+| 属性       | 描述                                                                                       |
 | ---------- | ------------------------------------------------------------------------------------------ |
-| `name`     | The base name of the spec file (e.g. `login.cy.js`)                                        |
-| `relative` | The path to the spec file, relative to the project root (e.g. `cypress/e2e/login.cy.js`)   |
-| `absolute` | The absolute path to the spec file (e.g. `/Users/janelane/my-app/cypress/e2e/login.cy.js`) |
+| `name`     | spec 文件的基本名称（例如 `login.cy.js`）                                                  |
+| `relative` | spec 文件相对于项目根目录的路径（例如 `cypress/e2e/login.cy.js`）                          |
+| `absolute` | spec 文件的绝对路径（例如 `/Users/janelane/my-app/cypress/e2e/login.cy.js`）               |
 
-<Icon name="angle-right" /> **results _(Object)_**
+<Icon name="angle-right" /> **results _(对象)_**
 
-Details of the spec file's results, including numbers of passes/failures/etc and
-details on the tests themselves.
+spec 文件结果的详细信息，包括通过/失败等的数量以及测试本身的详细信息。
 
-Results are only provided when running via `cypress run`. When running via
-`cypress open`, the results will be undefined.
+只有在通过 `cypress run` 运行时才会提供结果。通过 `cypress open` 运行时，结果将为 undefined。
 
-## Usage
+## 用法
 
-You can return a promise from the `after:spec` event handler and it will be
-awaited before Cypress proceeds with processing the spec's video or moving on to
-further specs if there are any.
+你可以从 `after:spec` 事件处理程序中返回一个 promise，Cypress 会等待该 promise 完成后再继续处理 spec 的视频或继续运行其他 spec（如果有的话）。
 
-### Log the relative spec path to stdout after the spec is run
+### 在 spec 运行完成后将相对路径记录到 stdout
 
 :::cypress-config-plugin-example
 
 ```javascript
 on('after:spec', (spec, results) => {
-  // spec will look something like this:
+  // spec 对象类似这样：
   // {
   //   name: 'login.cy.js',
   //   relative: 'cypress/e2e/login.cy.js',
   //   absolute: '/Users/janelane/my-app/cypress/e2e/login.cy.js',
   // }
-  // results will look something like this:
+  // results 对象类似这样：
   // {
   //   stats: {
   //     suites: 0,
@@ -78,20 +71,20 @@ on('after:spec', (spec, results) => {
   //     pending: 0,
   //     skipped: 0,
   //     failures: 0,
-  //     // ...more properties
+  //     // ...更多属性
   //   }
   //   reporter: 'spec',
   //   tests: [
   //     {
   //       title: ['login', 'logs user in'],
   //       state: 'passed',
-  //       // ...more properties...
+  //       // ...更多属性...
   //     }
   //   ],
   //   error: null,
   //   video: '/Users/janelane/my-app/cypress/videos/login.cy.js.mp4',
   //   screenshots: [],
-  //   // ...more properties...
+  //   // ...更多属性...
   // }
   console.log('Finished running', spec.relative)
 })
@@ -99,16 +92,13 @@ on('after:spec', (spec, results) => {
 
 :::
 
-## Examples
+## 示例
 
-### Delete the recorded video if the spec passed
+### 如果 spec 通过则删除录制的视频
 
-You can delete the recorded video for a spec when certain conditions are met.
-This will skip the compression and uploading of the video when recording to
-Cypress Cloud.
+当满足某些条件时，你可以删除 spec 的录制视频。这将跳过视频的压缩和上传到 Cypress Cloud 的过程。
 
-The example below shows how to delete the recorded video for specs with no
-failing tests.
+下面的示例展示了如何删除没有失败测试的 spec 的录制视频。
 
 :::cypress-config-plugin-example
 
@@ -120,9 +110,9 @@ import fs from 'fs'
 on(
   'after:spec',
   (spec: Cypress.Spec, results: CypressCommandLine.RunResult) => {
-    // Do we have failures?
+    // 是否有失败？
     if (results && results.video && results.stats.failures === 0) {
-      // delete the video if the spec passed
+      // 如果 spec 通过则删除视频
       fs.unlinkSync(results.video)
     }
   }
@@ -131,14 +121,11 @@ on(
 
 :::
 
-### Delete the recorded video if no tests retried
+### 如果没有测试重试则删除录制的视频
 
-You can delete the recorded video for a spec when certain conditions are met.
-This will skip the compression and uploading of the video when recording to
-Cypress Cloud.
+当满足某些条件时，你可以删除 spec 的录制视频。这将跳过视频的压缩和上传到 Cypress Cloud 的过程。
 
-The example below shows how to delete the recorded video for specs that had no
-retry attempts when using Cypress [test retries](/app/guides/test-retries).
+下面的示例展示了如何在使用 Cypress [测试重试](/app/guides/test-retries) 时删除没有重试尝试的 spec 的录制视频。
 
 :::cypress-config-plugin-example
 
@@ -151,12 +138,12 @@ on(
   'after:spec',
   (spec: Cypress.Spec, results: CypressCommandLine.RunResult) => {
     if (results && results.video) {
-      // Do we have failures for any retry attempts?
+      // 是否有任何重试尝试失败？
       const failures = results.tests.some((test) =>
         test.attempts.some((attempt) => attempt.state === 'failed')
       )
       if (!failures) {
-        // delete the video if the spec passed and no tests retried
+        // 如果 spec 通过且没有测试重试则删除视频
         fs.unlinkSync(results.video)
       }
     }
@@ -166,10 +153,10 @@ on(
 
 :::
 
-## See also
+## 另请参阅
 
 - [Before Spec API](/api/node-events/before-spec-api)
 - [Before Run API](/api/node-events/before-run-api)
 - [After Run API](/api/node-events/after-run-api)
-- [How to use Plugins](/app/plugins/plugins-guide)
-- [Node Events Overview](/api/node-events/overview)
+- [如何使用插件](/app/plugins/plugins-guide)
+- [节点事件概述](/api/node-events/overview)

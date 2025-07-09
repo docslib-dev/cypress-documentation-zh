@@ -1,46 +1,43 @@
 ---
-title: 'Run Cypress tests in Bitbucket Pipelines: Step-by-Step Guide'
-description: Run Cypress tests in Bitbucket Pipelines with Docker images, caching, parallelization, and Cypress Cloud.
+title: '在Bitbucket Pipelines中运行Cypress测试：分步指南'
+description: 使用Docker镜像、缓存、并行化和Cypress Cloud在Bitbucket Pipelines中运行Cypress测试。
 sidebar_label: Bitbucket Pipelines
 ---
 
 <ProductHeading product="app" />
 
-# Run Cypress in Bitbucket Pipelines
+# 在Bitbucket Pipelines中运行Cypress
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 您将学习到
 
-- How to set up Bitbucket Pipelines to run Cypress tests
-- How to cache dependencies and build artifacts
-- How to parallelize Cypress tests with Bitbucket Pipelines
-- How to use Cypress Cloud with Bitbucket Pipelines
+- 如何设置Bitbucket Pipelines来运行Cypress测试
+- 如何缓存依赖项和构建产物
+- 如何在Bitbucket Pipelines中并行化Cypress测试
+- 如何在Bitbucket Pipelines中使用Cypress Cloud
 
 :::
 
-## Basic Setup
+## 基础设置
 
-Detailed documentation is available in the
-[Bitbucket Pipelines Documentation](https://support.atlassian.com/bitbucket-cloud/docs/get-started-with-bitbucket-pipelines/).
+详细文档请参考
+[Bitbucket Pipelines文档](https://support.atlassian.com/bitbucket-cloud/docs/get-started-with-bitbucket-pipelines/)。
 
-Bitbucket runs most builds in Docker containers as described in [Docker image options](https://support.atlassian.com/bitbucket-cloud/docs/docker-image-options/).
+Bitbucket大多数构建都在Docker容器中运行，如[Docker镜像选项](https://support.atlassian.com/bitbucket-cloud/docs/docker-image-options/)所述。
 
-If you use the currently available default Bitbucket / Atlassian Linux images listed in the
-"Default build environment" of the Bitbucket Cloud documentation
-[Use Docker images as build environments](https://support.atlassian.com/bitbucket-cloud/docs/use-docker-images-as-build-environments/) you must additionally install [Cypress Linux prerequisites](/app/get-started/install-cypress#Linux-Prerequisites).
+如果您使用Bitbucket Cloud文档"默认构建环境"中列出的当前可用的默认Bitbucket/Atlassian Linux镜像
+[使用Docker镜像作为构建环境](https://support.atlassian.com/bitbucket-cloud/docs/use-docker-images-as-build-environments/)，则必须额外安装[Cypress Linux先决条件](/app/get-started/install-cypress#Linux-Prerequisites)。
 
-For a simpler setup, use a Cypress Docker image, as described in the following section.
+为了简化设置，请使用Cypress Docker镜像，如下一节所述。
 
-## Testing with Cypress Docker Images
+## 使用Cypress Docker镜像进行测试
 
-The Cypress team maintains the official
-[Docker Images](https://github.com/cypress-io/cypress-docker-images) for running
-Cypress locally and in CI, with some images including Chrome, Firefox and Edge. For
-example, this allows us to run the tests in Firefox by passing the
-`--browser firefox` attribute to `cypress run`.
+Cypress团队维护官方
+[Docker镜像](https://github.com/cypress-io/cypress-docker-images)用于在
+本地和CI中运行Cypress，部分镜像包含Chrome、Firefox和Edge。例如，这允许我们通过向`cypress run`传递`--browser firefox`属性在Firefox中运行测试。
 
-Read about [Cypress Docker variants](/app/continuous-integration/overview#Cypress-Docker-variants) to decide which image is best for your project.
+阅读[Cypress Docker变体](/app/continuous-integration/overview#Cypress-Docker-variants)以决定哪种镜像最适合您的项目。
 
 ```yaml title="bitbucket-pipelines.yml"
 image: cypress/browsers:22.15.0
@@ -49,37 +46,32 @@ pipelines:
   default:
     - step:
         script:
-          # install dependencies
+          # 安装依赖
           - npm ci
-          # start the server in the background
+          # 在后台启动服务器
           - npm run start &
-          # run Cypress tests in Firefox
+          # 在Firefox中运行Cypress测试
           - npx cypress run --browser firefox
 ```
 
-**How this `bitbucket-pipelines.yml` works:**
+**这个`bitbucket-pipelines.yml`的工作原理：**
 
-- On _push_ to this repository, this job will provision and start Bitbucket
-  Pipelines using the Cypress Docker image. It will run the pipelines defined in the
-  `pipelines` section of the configuration.
-- The code is checked out from the Bitbucket repository.
-- Finally, our scripts will:
-  - Install npm dependencies
-  - Start the project web server (`npm start`)
-  - Run the Cypress tests within the Bitbucket repository using Firefox
+- 当_推送_到此仓库时，此作业将使用Cypress Docker镜像配置并启动Bitbucket Pipelines。它将运行配置文件中`pipelines`部分定义的管道。
+- 代码从Bitbucket仓库检出。
+- 最后，我们的脚本将：
+  - 安装npm依赖
+  - 启动项目Web服务器（`npm start`）
+  - 在Bitbucket仓库中使用Firefox运行Cypress测试
 
-## Caching Dependencies and Build Artifacts
+## 缓存依赖项和构建产物
 
-Per the
-[Caches documentation](https://support.atlassian.com/bitbucket-cloud/docs/cache-dependencies/),
-Bitbucket offers options for caching dependencies and
-build artifacts across many different workflows.
+根据
+[缓存文档](https://support.atlassian.com/bitbucket-cloud/docs/cache-dependencies/)，
+Bitbucket提供了跨多种工作流缓存依赖项和构建产物的选项。
 
-To cache `node_modules`, the npm cache across builds, the `cache` attribute and
-configuration has been added below.
+要缓存`node_modules`和npm缓存跨构建，添加了`cache`属性和配置如下。
 
-Artifacts from a job can be defined by providing paths to the `artifacts`
-attribute.
+作业的产物可以通过向`artifacts`属性提供路径来定义。
 
 ```yaml title="bitbucket-pipelines.yml"
 image: cypress/browsers:22.15.0
@@ -90,21 +82,21 @@ pipelines:
         caches:
           - node
         script:
-          # install dependencies
+          # 安装依赖
           - npm ci
-          # start the server in the background
+          # 在后台启动服务器
           - npm run start &
-          # run Cypress tests in Firefox
+          # 在Firefox中运行Cypress测试
           - npx cypress run --browser firefox
         artifacts:
-          # store any generates images and videos as artifacts
+          # 将生成的图片和视频存储为产物
           - cypress/screenshots/**
           - cypress/videos/**
 ```
 
-Using the
-[definitions](https://support.atlassian.com/bitbucket-cloud/docs/configure-bitbucket-pipelinesyml/#Global-configuration-options)
-block we can define additional caches for npm and Cypress.
+使用
+[定义](https://support.atlassian.com/bitbucket-cloud/docs/configure-bitbucket-pipelinesyml/#Global-configuration-options)
+块我们可以为npm和Cypress定义额外的缓存。
 
 ```yaml title="bitbucket-pipelines.yml"
 definitions:
@@ -113,44 +105,39 @@ definitions:
     cypress: $HOME/.cache/Cypress
 ```
 
-## Parallelization
+## 并行化
 
-[Cypress Cloud](/cloud/get-started/introduction) offers the ability to
-[parallelize and group test runs](/cloud/features/smart-orchestration/parallelization)
-along with additional insights and [analytics](/cloud/features/analytics/overview) for
-Cypress tests.
+[Cypress Cloud](/cloud/get-started/introduction)提供了
+[并行化和分组测试运行](/cloud/features/smart-orchestration/parallelization)
+的能力，以及Cypress测试的额外洞察和[分析](/cloud/features/analytics/overview)。
 
-Before diving into an example of a parallelization setup, it is important to
-understand the two different types of jobs that we will declare:
+在深入并行化设置示例之前，了解我们将声明的两种不同类型的作业很重要：
 
-- **Install Job**: A job that installs and caches dependencies that will be used
-  by subsequent jobs later in the Bitbucket Pipelines workflow.
-- **Worker Job**: A job that handles execution of Cypress tests and depends on
-  the _install job_.
+- **安装作业**：安装并缓存依赖项的作业，这些依赖项将在Bitbucket Pipelines工作流的后续作业中使用。
+- **工作作业**：处理Cypress测试执行的作业，依赖于_安装作业_。
 
-### Install Job
+### 安装作业
 
-The separation of installation from test running is necessary when running
-parallel jobs. It allows for reuse of various build steps aided by caching.
+将安装与测试运行分离在运行并行作业时是必要的。它允许通过缓存辅助重用各种构建步骤。
 
-First, we break the pipeline up into reusable chunks of configuration using a
-[YAML anchor](https://support.atlassian.com/bitbucket-cloud/docs/yaml-anchors/),
-`&e2e`. This will be used by the worker jobs.
+首先，我们使用
+[YAML锚点](https://support.atlassian.com/bitbucket-cloud/docs/yaml-anchors/)，
+`&e2e`将管道分解为可重用的配置块。这将由工作作业使用。
 
 :::info
 
-The following configuration using the `--parallel` and `--record` flags to
-[cypress run](/app/references/command-line#cypress-run) requires setting up
-recording test results to [Cypress Cloud](/cloud/get-started/introduction).
+以下配置使用`--parallel`和`--record`标志到
+[cypress run](/app/references/command-line#cypress-run)需要设置
+将测试结果记录到[Cypress Cloud](/cloud/get-started/introduction)。
 
 :::
 
 ```yaml title="bitbucket-pipelines.yml"
 image: cypress/base:22.15.0
 
-## job definition for running E2E tests in parallel
+## 并行运行E2E测试的作业定义
 e2e: &e2e
-  name: E2E tests
+  name: E2E测试
   caches:
     - node
     - cypress
@@ -158,30 +145,27 @@ e2e: &e2e
     - npm run start &
     - npm run e2e:record -- --parallel --group UI-Chrome --ci-build-id $BITBUCKET_BUILD_NUMBER
   artifacts:
-    # store any generates images and videos as artifacts
+    # 将生成的图片和视频存储为产物
     - cypress/screenshots/**
     - cypress/videos/**
 ```
 
-### Worker Jobs
+### 工作作业
 
-Next, the worker jobs under `pipelines` that will run Cypress tests with Chrome
-in parallel.
+接下来，`pipelines`下的工作作业将并行运行带有Chrome的Cypress测试。
 
-We can use the `e2e`
-[YAML anchor](https://support.atlassian.com/bitbucket-cloud/docs/yaml-anchors/)
-in our definition of the pipeline to execute parallel jobs using the `parallel`
-attribute. This will allow us to run multiples instances of Cypress at same
-time.
+我们可以在管道定义中使用`e2e`
+[YAML锚点](https://support.atlassian.com/bitbucket-cloud/docs/yaml-anchors/)
+使用`parallel`属性执行并行作业。这将允许我们同时运行多个Cypress实例。
 
 ```yaml title="bitbucket-pipelines.yml"
-## job definition for running E2E tests in parallel
+## 并行运行E2E测试的作业定义
 ## ...
 
 pipelines:
   default:
     - step:
-        name: Install dependencies
+        name: 安装依赖
         caches:
           - npm
           - cypress
@@ -189,7 +173,7 @@ pipelines:
         script:
           - npm ci
     - parallel:
-      # run N steps in parallel
+      # 并行运行N个步骤
       - step:
           <<: *e2e
       - step:
@@ -202,14 +186,14 @@ definitions:
     cypress: $HOME/.cache/Cypress
 ```
 
-The complete `bitbucket-pipelines.yml` is below:
+完整的`bitbucket-pipelines.yml`如下：
 
 ```yaml title="bitbucket-pipelines.yml"
 image: cypress/base:22.15.0
 
-## job definition for running E2E tests in parallel
+## 并行运行E2E测试的作业定义
 e2e: &e2e
-  name: E2E tests
+  name: E2E测试
   caches:
     - node
     - cypress
@@ -217,14 +201,14 @@ e2e: &e2e
     - npm run start &
     - npm run e2e:record -- --parallel --group UI-Chrome --ci-build-id $BITBUCKET_BUILD_NUMBER
   artifacts:
-    # store any generates images and videos as artifacts
+    # 将生成的图片和视频存储为产物
     - cypress/screenshots/**
     - cypress/videos/**
 
 pipelines:
   default:
     - step:
-        name: Install dependencies
+        name: 安装依赖
         caches:
           - npm
           - cypress
@@ -232,7 +216,7 @@ pipelines:
         script:
           - npm ci
     - parallel:
-        # run N steps in parallel
+        # 并行运行N个步骤
         - step:
             <<: *e2e
         - step:
@@ -245,10 +229,9 @@ definitions:
     cypress: $HOME/.cache/Cypress
 ```
 
-## Using Cypress Cloud with Bitbucket Pipelines
+## 在Bitbucket Pipelines中使用Cypress Cloud
 
-In the Bitbucket Pipelines configuration we have defined in the previous
-section, we are leveraging three useful features of
-[Cypress Cloud](/cloud/get-started/introduction):
+在上一节定义的Bitbucket Pipelines配置中，我们利用了
+[Cypress Cloud](/cloud/get-started/introduction)的三个有用功能：
 
 <CiProviderCloudSteps />

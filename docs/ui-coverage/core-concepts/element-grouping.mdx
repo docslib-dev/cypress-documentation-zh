@@ -1,32 +1,32 @@
 ---
-title: 'Group related elements | Cypress UI Coverage'
-description: 'UI Coverage groups elements that are related to one another through structural or behavioral hints, but this is configurable.'
-sidebar_label: Element Grouping
+title: '元素分组 | Cypress UI覆盖率工具'
+description: 'UI覆盖率工具会通过结构或行为提示将相关元素分组，但这是可配置的。'
+sidebar_label: 元素分组
 sidebar_position: 20
 ---
 
 <ProductHeading product="ui-coverage" />
 
-# Element Grouping
+# 元素分组
 
-Testing every element on a page is not always necessary when multiple elements share the same behavior. UI Coverage simplifies this by grouping related elements, allowing interactions with any element in the group to count as testing the entire group. This reduces redundancy and ensures efficient and accurate coverage. For example, options in a dropdown menu can be grouped if interacting with one option verifies the behavior of the entire set.
+当多个元素具有相同行为时，测试页面上的每个元素并非总是必要。UI覆盖率工具通过将相关元素分组来简化这一过程，与组内任一元素的交互都将视为测试了整个组。这减少了冗余，确保高效且准确的覆盖率。例如，下拉菜单中的选项可以被分组，因为与一个选项的交互即可验证整组行为。
 
-## How element grouping works
+## 元素分组原理
 
-UI Coverage groups elements using structural and behavioral hints, along with user-defined configurations. When grouped, interacting with one element is considered equivalent to testing all elements in the group.
+UI覆盖率工具使用结构和行为提示以及用户定义的配置来分组元素。当元素被分组后，与其中一个元素的交互将被视为测试了组内所有元素。
 
-## Grouping Rules
+## 分组规则
 
-- **User-Defined Groups**: Elements are grouped by [Element Groups](/ui-coverage/configuration/elementgroups) configuration if specified.
-- **Labels and Form Elements**: `label` elements are automatically grouped with the form elements they are associated with.
-- **Table Row Grouping**: Elements within table rows are grouped with elements sharing common attributes or the same position across rows.
-- **Repeated Elements**: Duplicate elements in the DOM with shared attributes are grouped.
-- **Parent-Shared Attributes**: Duplicate elements with parents that share common attributes are grouped.
-- **Dynamic Links**: Links with similar `href` patterns are resolved into [views](/ui-coverage/configuration/views) and grouped by their `href` pattern.
+- **用户定义分组**: 如果指定了[元素分组](/ui-coverage/configuration/elementgroups)配置，则按该配置分组。
+- **标签与表单元素**: `label`元素会自动与其关联的表单元素分组。
+- **表格行分组**: 表格行内的元素会与具有共同属性或跨行相同位置的元素分组。
+- **重复元素**: DOM中具有共享属性的重复元素会被分组。
+- **父级共享属性**: 具有共同父级属性的重复元素会被分组。
+- **动态链接**: 具有相似`href`模式的链接会被解析为[视图](/ui-coverage/configuration/views)并按`href`模式分组。
 
-### Example
+### 示例
 
-Consider a table where each row contains a delete button:
+考虑一个每行都包含删除按钮的表格：
 
 ```html
 <table>
@@ -45,8 +45,8 @@ Consider a table where each row contains a delete button:
 </table>
 ```
 
-In this case, UI Coverage groups the delete buttons together in accordance with our grouping rules. Interacting with one delete button is equivalent to testing all delete buttons in the table.
+在此情况下，UI覆盖率工具会根据分组规则将删除按钮归为一组。与一个删除按钮的交互等同于测试表格中所有删除按钮。
 
-## Customizing element grouping
+## 自定义元素分组
 
-You can customize element grouping to suit your application's structure and behavior. Refer to the [Element Groups](/ui-coverage/configuration/elementgroups) configuration guide to learn how to define custom groups and group elements based on specific attributes or selectors.
+您可以根据应用程序的结构和行为自定义元素分组。参考[元素分组](/ui-coverage/configuration/elementgroups)配置指南，了解如何基于特定属性或选择器定义自定义分组。

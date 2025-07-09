@@ -1,6 +1,6 @@
 ---
-title: 'not | Cypress Documentation'
-description: Filter DOM element(s) from a set of DOM elements in Cypress.
+title: 'not | Cypress 文档'
+description: 从一组DOM元素中过滤出不符合条件的DOM元素。
 sidebar_label: not
 slug: /api/commands/not
 ---
@@ -9,126 +9,123 @@ slug: /api/commands/not
 
 # not
 
-Filter DOM element(s) from a set of DOM elements.
+从一组DOM元素中过滤出不符合条件的元素。
 
 :::info
 
-Opposite of [`.filter()`](/api/commands/filter)
+与 [`.filter()`](/api/commands/filter) 功能相反
 
 :::
 
 :::info
 
-The querying behavior of this command matches exactly how
-[`.not()`](http://api.jquery.com/not) works in jQuery.
+该命令的查询行为与jQuery中的
+[`.not()`](http://api.jquery.com/not) 完全一致。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .not(selector)
 .not(selector, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('input').not('.required') // Yield all inputs without class '.required'
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.not('.icon') // Errors, cannot be chained off 'cy'
-cy.clock().not() // Errors, 'clock' does not yield DOM elements
+cy.get('input').not('.required') // 获取所有不包含'.required'类的input元素
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
-<Icon name="angle-right" /> **selector _(String selector)_**
+```javascript
+cy.not('.icon') // 错误，不能直接在'cy'上调用
+cy.clock().not() // 错误，'clock'不返回DOM元素
+```
 
-A selector used to remove matching DOM elements.
+### 参数
 
-<Icon name="angle-right" /> **options _(Object)_**
+<Icon name="angle-right" /> **selector _(字符串选择器)_**
 
-Pass in an options object to change the default behavior of `.not()`.
+用于排除匹配DOM元素的选择器。
 
-| Option    | Default                                                           | Description                                                                         |
+<Icon name="angle-right" /> **options _(对象)_**
+
+传入选项对象以修改`.not()`的默认行为。
+
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.not()` to resolve before [timing out](#Timeouts)                 |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 等待`.not()`解析的超时时间，超过则[超时](#Timeouts)                 |
 
 <HeaderYields />
 
-- `.not()` yields the new DOM element(s) it found.
-- `.not()` is a query, and it is _safe_ to chain further commands.
+- `.not()`返回它找到的新DOM元素集合。
+- `.not()`是一个查询命令，可以安全地继续链式调用其他命令。
 
-## Examples
+## 示例
 
-### Selector
+### 选择器
 
-#### Yield the elements that do not have class `active`
+#### 获取不包含`active`类的元素
 
 ```html
 <ul>
-  <li>Home</li>
-  <li class="active">About</li>
-  <li>Services</li>
-  <li>Pricing</li>
-  <li>Contact</li>
+  <li>首页</li>
+  <li class="active">关于</li>
+  <li>服务</li>
+  <li>定价</li>
+  <li>联系</li>
 </ul>
 ```
 
 ```javascript
-cy.get('ul>li').not('.active').should('have.length', 4) // true
+cy.get('ul>li').not('.active').should('have.length', 4) // 结果为true
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.not()` requires being chained off a command that yields DOM element(s).
+- `.not()`必须链式调用在返回DOM元素的命令之后。
 
 <HeaderAssertions />
 
-- `.not()` will automatically [retry](/app/core-concepts/retry-ability) until
-  the element(s)
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.not()` will automatically [retry](/app/core-concepts/retry-ability) until
-  all chained assertions have passed.
+- `.not()`会自动[重试](/app/core-concepts/retry-ability)直到
+  元素[存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)。
+- `.not()`会自动[重试](/app/core-concepts/retry-ability)直到
+  所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `.not()` can time out waiting for the element(s) to
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.not()` can time out waiting for assertions you've added to pass.
+- `.not()`可能因等待元素[存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)而超时。
+- `.not()`可能因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Find all buttons that are not of type submit_**
+**_查找所有不是提交类型的按钮_**
 
 ```javascript
 cy.get('form').find('button').not('[type="submit"]')
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/not/filter-elements-with-not-and-optional-selector.png"
-  alt="Command Log not"
+  alt="命令日志 not"
 />
 
-When clicking on `not` within the command log, the console outputs the
-following:
+当点击命令日志中的`not`时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/not/log-elements-found-when-using-cy-not.png"
-  alt="Console Log not"
+  alt="控制台日志 not"
 />
 
-## See also
+## 另请参阅
 
 - [`.filter()`](/api/commands/filter)

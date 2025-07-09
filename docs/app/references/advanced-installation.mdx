@@ -1,80 +1,74 @@
 ---
-title: 'Advanced Installation Instructions for Cypress'
-description: 'Learn how to install Cypress with a custom binary, skip the installation of the Cypress binary, change the Cypress binary cache location or download URL and more'
-sidebar_label: 'Advanced Installation'
+title: 'Cypress 高级安装指南'
+description: '学习如何通过自定义二进制文件安装Cypress、跳过Cypress二进制文件安装、更改Cypress二进制缓存位置或下载URL等'
+sidebar_label: '高级安装'
 ---
 
 <ProductHeading product="app" />
 
-# Advanced Installation
+# 高级安装
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to install Cypress with a custom binary
-- How to skip the installation of the Cypress binary
-- How to change the Cypress binary cache location or download URL
-- How to use a custom certificate authority (CA)
-- How to opt out of sending exception data to Cypress
+- 如何通过自定义二进制文件安装Cypress
+- 如何跳过Cypress二进制文件安装
+- 如何更改Cypress二进制缓存位置或下载URL
+- 如何使用自定义证书颁发机构(CA)
+- 如何选择不向Cypress发送异常数据
 
 :::
 
-## Environment variables
+## 环境变量
 
-| Name                              | Description                                                                                    |
+| 名称                              | 描述                                                                                    |
 | --------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `CYPRESS_INSTALL_BINARY`          | [Destination of Cypress binary that's downloaded and installed](#Install-binary)               |
-| `CYPRESS_CONNECT_RETRY_THRESHOLD` | Overrides the maximum number of retries when connecting to a browser. The default value is 62. |
-| `CYPRESS_DOWNLOAD_MIRROR`         | [Downloads the Cypress binary through a mirror server](#Mirroring)                             |
-| `CYPRESS_DOWNLOAD_PATH_TEMPLATE`  | [Allows generating a custom URL to download the Cypress binary from](#Download-path-template)  |
-| `CYPRESS_CACHE_FOLDER`            | [Changes the Cypress binary cache location](#Binary-cache)                                     |
-| `CYPRESS_RUN_BINARY`              | [Location of Cypress binary at run-time](#Run-binary)                                          |
-| `CYPRESS_VERIFY_TIMEOUT`          | Overrides the timeout duration for the `verify` command. The default value is 30000.           |
-| `CYPRESS_SKIP_VERIFY`             | Skips the [`verify` command](command-line#cypress-verify) when `true`                          |
-| ~~CYPRESS_SKIP_BINARY_INSTALL~~   | <Badge type="danger">removed</Badge> use `CYPRESS_INSTALL_BINARY=0` instead                    |
-| ~~CYPRESS_BINARY_VERSION~~        | <Badge type="danger">removed</Badge> use `CYPRESS_INSTALL_BINARY` instead                      |
+| `CYPRESS_INSTALL_BINARY`          | [指定下载和安装的Cypress二进制文件目标位置](#Install-binary)               |
+| `CYPRESS_CONNECT_RETRY_THRESHOLD` | 覆盖连接浏览器时的最大重试次数。默认值为62。 |
+| `CYPRESS_DOWNLOAD_MIRROR`         | [通过镜像服务器下载Cypress二进制文件](#Mirroring)                             |
+| `CYPRESS_DOWNLOAD_PATH_TEMPLATE`  | [允许生成自定义URL来下载Cypress二进制文件](#Download-path-template)  |
+| `CYPRESS_CACHE_FOLDER`            | [更改Cypress二进制缓存位置](#Binary-cache)                                     |
+| `CYPRESS_RUN_BINARY`              | [运行时Cypress二进制文件的位置](#Run-binary)                                          |
+| `CYPRESS_VERIFY_TIMEOUT`          | 覆盖`verify`命令的超时时间。默认值为30000。           |
+| `CYPRESS_SKIP_VERIFY`             | 当值为`true`时跳过[`verify`命令](command-line#cypress-verify)                          |
+| ~~CYPRESS_SKIP_BINARY_INSTALL~~   | <Badge type="danger">已移除</Badge> 改用`CYPRESS_INSTALL_BINARY=0`                    |
+| ~~CYPRESS_BINARY_VERSION~~        | <Badge type="danger">已移除</Badge> 改用`CYPRESS_INSTALL_BINARY`                      |
 
-## Install binary
+## 安装二进制文件
 
-Using the `CYPRESS_INSTALL_BINARY` environment variable, you can control how
-Cypress is installed. To override what is installed, you set
-`CYPRESS_INSTALL_BINARY` alongside the `npm install` command.
+使用`CYPRESS_INSTALL_BINARY`环境变量，你可以控制Cypress的安装方式。要覆盖默认安装内容，可以在`npm install`命令旁设置`CYPRESS_INSTALL_BINARY`。
 
-**This is helpful if you want to:**
+**这在以下情况下很有用：**
 
-- Install a version different than the default npm package.
+- 安装与默认npm包不同的版本。
   ```shell
   CYPRESS_INSTALL_BINARY=13.7.0 npm install cypress@13.7.1
   ```
-- Specify an external URL (to bypass a corporate firewall).
+- 指定外部URL（绕过企业防火墙）。
   ```shell
   CYPRESS_INSTALL_BINARY=https://company.domain.com/cypress.zip npm install cypress
   ```
-- Specify a file to install locally instead of using the internet.
+- 指定本地文件而非从互联网安装。
   ```shell
   CYPRESS_INSTALL_BINARY=/local/path/to/cypress.zip npm install cypress
   ```
 
-In all cases, the fact that the binary was installed from a custom location _is
-not saved in your `package.json` file_. Every repeated installation needs to use
-the same environment variable to install the same binary.
+在所有情况下，从自定义位置安装二进制文件的事实_不会保存在你的`package.json`文件中_。每次重复安装都需要使用相同的环境变量来安装相同的二进制文件。
 
-### Skipping installation
+### 跳过安装
 
-You can also force Cypress to skip the installation of the binary application by
-setting `CYPRESS_INSTALL_BINARY=0`. This could be useful if you want to prevent
-Cypress from downloading the Cypress binary at the time of `npm install`.
+你也可以通过设置`CYPRESS_INSTALL_BINARY=0`强制Cypress跳过二进制应用程序的安装。这在你想阻止Cypress在`npm install`时下载Cypress二进制文件的情况下很有用。
 
 ```shell
 CYPRESS_INSTALL_BINARY=0 npm install
 ```
 
-Now Cypress will skip its install phase once the npm module is installed.
+现在Cypress将在npm模块安装完成后跳过其安装阶段。
 
-### Troubleshoot installation
+### 安装问题排查
 
-The Cypress [Life Cycle script](https://docs.npmjs.com/cli/using-npm/scripts) `postinstall` installs the Cypress binary after the [Cypress npm module](https://www.npmjs.com/package/cypress) has been installed. Package managers however execute the `postinstall` step in the background by default which hides the debug output. Execute `cypress install` separately with [debug logging](./troubleshooting#Log-sources) enabled to view the debug logs.
+Cypress的[生命周期脚本](https://docs.npmjs.com/cli/using-npm/scripts)`postinstall`会在[Cypress npm模块](https://www.npmjs.com/package/cypress)安装后安装Cypress二进制文件。然而，包管理器默认在后台执行`postinstall`步骤，这会隐藏调试输出。单独执行`cypress install`并启用[调试日志](./troubleshooting#Log-sources)以查看调试日志。
 
 <Tabs groupId="package-manager"
   defaultValue="npm"
@@ -109,9 +103,9 @@ DEBUG=cypress:cli* pnpm cypress install
   </TabItem>
 </Tabs>
 
-To set environment variables `CYPRESS_INSTALL_BINARY` and `DEBUG` in Windows CMD or PowerShell terminals, refer to examples in [Print DEBUG Logs](./troubleshooting#Print-DEBUG-logs).
+要在Windows CMD或PowerShell终端中设置环境变量`CYPRESS_INSTALL_BINARY`和`DEBUG`，请参考[打印DEBUG日志](./troubleshooting#Print-DEBUG-logs)中的示例。
 
-In Continuous Integration (CI) use the following commands to display debug logs from the Cypress binary installation:
+在持续集成(CI)环境中，使用以下命令显示Cypress二进制文件安装的调试日志：
 
 <Tabs groupId="package-manager"
   defaultValue="npm"
@@ -130,7 +124,7 @@ DEBUG=cypress:cli* npm ci --foreground-scripts
   <TabItem value="yarn">
 
 ```shell
-yarn install --frozen-lockfile --ignore-scripts # Yarn v1 Classic only
+yarn install --frozen-lockfile --ignore-scripts # 仅限Yarn v1 Classic
 DEBUG=cypress:cli* yarn cypress install
 ```
 
@@ -145,18 +139,15 @@ DEBUG=cypress:cli* pnpm cypress install
   </TabItem>
 </Tabs>
 
-## Binary cache
+## 二进制缓存
 
-Cypress downloads the matching Cypress binary to the global
-system cache, so that the binary can be shared between projects. By default,
-global cache folders are:
+Cypress将匹配的Cypress二进制文件下载到全局系统缓存中，以便在项目之间共享二进制文件。默认的全局缓存文件夹为：
 
 - **MacOS**: `~/Library/Caches/Cypress`
 - **Linux**: `~/.cache/Cypress`
 - **Windows**: `/AppData/Local/Cypress/Cache`
 
-To override the default cache folder, set the environment variable
-`CYPRESS_CACHE_FOLDER`.
+要覆盖默认缓存文件夹，请设置环境变量`CYPRESS_CACHE_FOLDER`。
 
 ```shell
 CYPRESS_CACHE_FOLDER=~/Desktop/cypress_cache npm install
@@ -166,45 +157,32 @@ CYPRESS_CACHE_FOLDER=~/Desktop/cypress_cache npm install
 CYPRESS_CACHE_FOLDER=~/Desktop/cypress_cache npm run test
 ```
 
-Cypress will automatically replace the `~` with the user's home directory. So
-you can pass `CYPRESS_CACHE_FOLDER` as a string from CI configuration files, for
-example:
+Cypress会自动将`~`替换为用户的主目录。因此你可以从CI配置文件中传递`CYPRESS_CACHE_FOLDER`作为字符串，例如：
 
 ```yml
 environment:
   CYPRESS_CACHE_FOLDER: '~/.cache/Cypress'
 ```
 
-See also
-[Continuous Integration - Caching](/app/continuous-integration/overview#Caching)
-section in the documentation.
+另请参阅文档中的[持续集成 - 缓存](/app/continuous-integration/overview#Caching)部分。
 
 :::caution
 
-`CYPRESS_CACHE_FOLDER` will need to exist every time cypress is launched. To
-ensure this, consider exporting this environment variable. For example, in a
-`.bash_profile` (MacOS, Linux), or using `RegEdit` (Windows).
+每次启动Cypress时，`CYPRESS_CACHE_FOLDER`必须存在。为确保这一点，请考虑导出此环境变量。例如，在`.bash_profile`（MacOS、Linux）中或使用`RegEdit`（Windows）。
 
 :::
 
-## Run binary
+## 运行二进制文件
 
-Setting the environment variable `CYPRESS_RUN_BINARY` overrides where the npm
-module finds the Cypress binary.
+设置环境变量`CYPRESS_RUN_BINARY`可以覆盖npm模块查找Cypress二进制文件的位置。
 
-`CYPRESS_RUN_BINARY` should be a path to an already unzipped Cypress binary executable.
-The Cypress commands [open](./command-line#cypress-open), [run](./command-line#cypress-run) and [verify](command-line#cypress-verify)
-will then launch the provided binary.
+`CYPRESS_RUN_BINARY`应指向已解压的Cypress二进制可执行文件的路径。Cypress命令[open](./command-line#cypress-open)、[run](./command-line#cypress-run)和[verify](command-line#cypress-verify)将随后启动提供的二进制文件。
 
-The following example [cypress run](./command-line#cypress-run) commands assume that you have first
-downloaded the Cypress binary to the default `Downloads` directory of your operating system.
+以下[cypress run](./command-line#cypress-run)命令示例假设你已先将Cypress二进制文件下载到操作系统的默认`Downloads`目录。
 
-Depending on how you then unzip the downloaded Cypress binary `cypress.zip` file,
-using a CLI command or alternatively a GUI interface,
-the directory structure may include one additional top-level directory named `cypress`,
-which you may need to add to the path defined by `CYPRESS_RUN_BINARY`.
+根据你随后解压下载的Cypress二进制文件`cypress.zip`的方式（使用CLI命令或GUI界面），目录结构可能包含一个额外的顶级目录`cypress`，你可能需要将其添加到`CYPRESS_RUN_BINARY`定义的路径中。
 
-If available, use the following to avoid the additional top-level directory level:
+如果可用，请使用以下命令以避免额外的顶级目录级别：
 
 ```shell
 unzip -q cypress
@@ -212,9 +190,9 @@ unzip -q cypress
 
 :::note
 
-The examples below are for npm.
-If you are using Yarn or pnpm as package manager, replace `npx` with `yarn` or `pnpm` as appropriate.
-See [How to run commands](./command-line.mdx#How-to-run-commands).
+以下示例适用于npm。
+如果你使用Yarn或pnpm作为包管理器，请将`npx`替换为`yarn`或`pnpm`。
+参见[如何运行命令](./command-line.mdx#How-to-run-commands)。
 
 :::
 
@@ -238,216 +216,177 @@ CYPRESS_RUN_BINARY=~/Downloads/Cypress/Cypress.exe npx cypress run
 
 :::tip
 
-Cypress assumes that `CYPRESS_RUN_BINARY` points to a writeable directory structure so that it can save and re-use
-the results of verifying the Cypress binary.
-If you encounter a `permission denied` failure message from [cypress verify](./command-line.mdx#cypress-verify),
-you may be able to work around the failure by setting the environment variable `CYPRESS_SKIP_VERIFY` to `true`.
+Cypress假设`CYPRESS_RUN_BINARY`指向一个可写的目录结构，以便它可以保存并重复使用验证Cypress二进制文件的结果。
+如果你遇到[cypress verify](./command-line.mdx#cypress-verify)的`permission denied`失败消息，你可以通过将环境变量`CYPRESS_SKIP_VERIFY`设置为`true`来绕过此失败。
 
 :::
 
-## Download URLs
+## 下载URL
 
-If you want to download a specific Cypress version for a given platform
-(Operating System), you can get it from our CDN.
+如果你想为特定平台（操作系统）下载特定版本的Cypress，可以从我们的CDN获取。
 
-The download server URL is `https://download.cypress.io`.
+下载服务器URL为`https://download.cypress.io`。
 
-We currently have the following downloads available:
+目前我们提供以下下载：
 
-- Windows 64-bit (`?platform=win32&arch=x64`)
-- Linux 64-bit (`?platform=linux`)
-- macOS 64-bit (`?platform=darwin`)
+- Windows 64位 (`?platform=win32&arch=x64`)
+- Linux 64位 (`?platform=linux`)
+- macOS 64位 (`?platform=darwin`)
 
-Here are the available download URLs:
+以下是可用的下载URL：
 
-See
-[https://download.cypress.io/desktop.json](https://download.cypress.io/desktop.json)
-for all available platforms.
+查看[https://download.cypress.io/desktop.json](https://download.cypress.io/desktop.json)获取所有可用平台。
 
-| Method | URL                                   | Description                                                                |
+| 方法 | URL                                   | 描述                                                                |
 | ------ | ------------------------------------- | -------------------------------------------------------------------------- |
-| `GET`  | `/desktop`                            | Download Cypress at latest version (platform auto-detected)                |
-| `GET`  | `/desktop.json`                       | Returns JSON containing latest available CDN destinations                  |
-| `GET`  | `/desktop?platform=p&arch=a`          | Download Cypress for a specific platform and/or architecture               |
-| `GET`  | `/desktop/:version`                   | Download Cypress with a specified version                                  |
-| `GET`  | `/desktop/:version?platform=p&arch=a` | Download Cypress with a specified version and platform and/or architecture |
+| `GET`  | `/desktop`                            | 下载最新版本的Cypress（平台自动检测）                |
+| `GET`  | `/desktop.json`                       | 返回包含最新可用CDN目标的JSON                  |
+| `GET`  | `/desktop?platform=p&arch=a`          | 下载特定平台和/或架构的Cypress               |
+| `GET`  | `/desktop/:version`                   | 下载指定版本的Cypress                                  |
+| `GET`  | `/desktop/:version?platform=p&arch=a` | 下载指定版本、平台和/或架构的Cypress |
 
-**Example of downloading Cypress `12.17.4` for Windows 64-bit:**
+**下载Windows 64位Cypress `12.17.4`的示例：**
 
 ```text
 https://download.cypress.io/desktop/12.17.4?platform=win32&arch=x64
 ```
 
-## Mirroring
+## 镜像
 
-If you choose to mirror the entire Cypress download site, you can specify
-`CYPRESS_DOWNLOAD_MIRROR` to set the download server URL from
-`https://download.cypress.io` to your own mirror.
+如果你选择镜像整个Cypress下载站点，可以指定`CYPRESS_DOWNLOAD_MIRROR`将下载服务器URL从`https://download.cypress.io`更改为你自己的镜像。
 
-For example:
+例如：
 
 ```shell
 CYPRESS_DOWNLOAD_MIRROR="https://www.example.com" cypress install
 ```
 
-Cypress will then attempt to download a binary with this format:
+Cypress随后将尝试以下格式下载二进制文件：
 `https://www.example.com/desktop/:version?platform=p`
 
-## Download path template
+## 下载路径模板
 
-Starting with Cypress 9.3.0, you can use the `CYPRESS_DOWNLOAD_PATH_TEMPLATE`
-environment variable to download the Cypress binary from a custom URL that's
-generated based on endpoint, version, platform and architecture.
+从Cypress 9.3.0开始，你可以使用`CYPRESS_DOWNLOAD_PATH_TEMPLATE`环境变量根据端点、版本、平台和架构从自定义URL下载Cypress二进制文件。
 
-**The following replacements are supported:**
+**支持以下替换：**
 
-- `${endpoint}` is replaced with `https://download.cypress.io/desktop/:version`.
-  If `CYPRESS_DOWNLOAD_MIRROR` is set, its value is used instead of
-  `https://download.cypress.io` (note that the `/desktop` remains!)
-- `${platform}` is replaced with the platform the installation is running on
-  (e.g. `win32`, `linux`, `darwin`)
-- `${arch}` is replaced with the architecture the installation is running on
-  (e.g. `x64`, `arm64`)
-- Starting with Cypress 10.6.0, `${version}` is replaced with the version number
-  that's being installed (e.g. `10.11.0`)
+- `${endpoint}`替换为`https://download.cypress.io/desktop/:version`。
+  如果设置了`CYPRESS_DOWNLOAD_MIRROR`，则使用其值代替`https://download.cypress.io`（注意`/desktop`保留！）
+- `${platform}`替换为运行安装的平台（例如`win32`、`linux`、`darwin`）
+- `${arch}`替换为运行安装的架构（例如`x64`、`arm64`）
+- 从Cypress 10.6.0开始，`${version}`替换为正在安装的版本号（例如`10.11.0`）
 
-**Examples:**
+**示例：**
 
-To install the binary from a download mirror that matches the exact file
-structure of `https://cdn.cypress.io` (works for Cypress 9.3.0 or newer):
+要从与`https://cdn.cypress.io`完全相同的文件结构的下载镜像安装二进制文件（适用于Cypress 9.3.0或更高版本）：
 
 ```shell
 export CYPRESS_DOWNLOAD_MIRROR=https://cypress-download.local
 export CYPRESS_DOWNLOAD_PATH_TEMPLATE='${endpoint}/${platform}-${arch}/cypress.zip'
-# Example of a resulting URL: https://cypress-download.local/desktop/10.11.0/linux-x64/cypress.zip
+# 示例结果URL: https://cypress-download.local/desktop/10.11.0/linux-x64/cypress.zip
 ```
 
-To install the binary from a download server with a custom file structure (works
-for Cypress 10.6.0 or newer):
+要从具有自定义文件结构的下载服务器安装二进制文件（适用于Cypress 10.6.0或更高版本）：
 
 ```shell
 export CYPRESS_DOWNLOAD_PATH_TEMPLATE='https://software.local/cypress/${platform}/${arch}/${version}/cypress.zip'
-# Example of a resulting URL: https://software.local/cypress/linux/x64/10.11.0/cypress.zip
+# 示例结果URL: https://software.local/cypress/linux/x64/10.11.0/cypress.zip
 ```
 
-To define `CYPRESS_DOWNLOAD_PATH_TEMPLATE` in `.npmrc`, put a backslash before
-every `$` (works for Cypress 9.5.3 or newer):
+要在`.npmrc`中定义`CYPRESS_DOWNLOAD_PATH_TEMPLATE`，请在每个`$`前加上反斜杠（适用于Cypress 9.5.3或更高版本）：
 
 ```ini
 CYPRESS_DOWNLOAD_PATH_TEMPLATE=\${endpoint}/\${platform}-\${arch}/cypress.zip
 ```
 
-## Using a custom certificate authority (CA)
+## 使用自定义证书颁发机构(CA)
 
-Cypress can be configured to use the `ca` and `cafile` options from your npm
-config file to download the Cypress binary.
+Cypress可以配置为使用npm配置文件中的`ca`和`cafile`选项来下载Cypress二进制文件。
 
-For example, to use the CA at `/home/person/certs/ca.crt` when downloading
-Cypress, add the following to your `.npmrc`:
+例如，要在下载Cypress时使用位于`/home/person/certs/ca.crt`的CA，请将以下内容添加到你的`.npmrc`：
 
 ```shell
 cafile=/home/person/certs/ca.crt
 ```
 
-If neither `cafile` nor `ca` are set, Cypress looks at the system environment
-variable `NODE_EXTRA_CA_CERTS` and uses the corresponding certificate(s) as an
-extension for the trusted certificate authority when downloading the Cypress
-binary.
+如果既未设置`cafile`也未设置`ca`，Cypress会查看系统环境变量`NODE_EXTRA_CA_CERTS`，并在下载Cypress二进制文件时使用相应的证书作为受信任证书颁发机构的扩展。
 
-Note that the npm config is used as a replacement, and the node environment
-variable is used as an extension.
+请注意，npm配置用作替换，而node环境变量用作扩展。
 
-## Opt out of sending exception data to Cypress
+## 选择不向Cypress发送异常数据
 
-When an exception is thrown regarding Cypress, we send along the exception data
-to `https://api.cypress.io`. We solely use this information to help develop a
-better product.
+当抛出与Cypress相关的异常时，我们会将异常数据发送到`https://api.cypress.io`。我们仅使用此信息来帮助开发更好的产品。
 
-If you would like to opt out of sending any exception data to Cypress, you can
-do so by setting `CYPRESS_CRASH_REPORTS=0` in your system environment variables.
+如果你想选择不向Cypress发送任何异常数据，可以通过在系统环境变量中设置`CYPRESS_CRASH_REPORTS=0`来实现。
 
-### Opt out on Linux or macOS
+### 在Linux或macOS上选择退出
 
-To opt out of sending exception data on Linux or macOS, run the following
-command in a terminal before installing Cypress:
+要在Linux或macOS上选择不发送异常数据，请在安装Cypress之前在终端中运行以下命令：
 
 ```shell
 export CYPRESS_CRASH_REPORTS=0
 ```
 
-To make these changes permanent, you can add this command to your shell's
-`~/.profile` (`~/.zsh_profile`, `~/.bash_profile`, etc.) to run them on every
-login.
+要使这些更改永久生效，可以将此命令添加到shell的`~/.profile`（`~/.zsh_profile`、`~/.bash_profile`等）中，以便在每次登录时运行。
 
-### Opt out on Windows
+### 在Windows上选择退出
 
-To opt out of sending exception data on Windows, run the following command in
-the Command Prompt before installing Cypress:
+要在Windows上选择不发送异常数据，请在安装Cypress之前在命令提示符中运行以下命令：
 
 ```shell
 set CYPRESS_CRASH_REPORTS=0
 ```
 
-To accomplish the same thing in PowerShell:
+要在PowerShell中实现相同的目的：
 
 ```shell
 $env:CYPRESS_CRASH_REPORTS = "0"
 ```
 
-To save the `CYPRESS_CRASH_REPORTS` variable for use in all new shells, use
-`setx`:
+要保存`CYPRESS_CRASH_REPORTS`变量以供所有新shell使用，请使用`setx`：
 
 ```shell
 setx CYPRESS_CRASH_REPORTS 0
 ```
 
-## Opt out of Cypress commercial messaging
+## 选择退出Cypress商业消息
 
-Cypress may occasionally display messages in your CI logs related to our
-commercial offerings and how they could benefit you during your workflows.
+Cypress可能会偶尔在你的CI日志中显示与我们商业产品相关的消息，以及它们如何在工作流程中为你带来好处。
 
-If you would like to opt out of all commercial messaging, you can do so by
-setting `CYPRESS_COMMERCIAL_RECOMMENDATIONS=0` in your system environment
-variables.
+如果你想选择退出所有商业消息，可以通过在系统环境变量中设置`CYPRESS_COMMERCIAL_RECOMMENDATIONS=0`来实现。
 
-## Install pre-release version
+## 安装预发布版本
 
-If you would like to install a pre-release version of Cypress to test out
-functionality that has not yet been released, here is how:
+如果你想安装Cypress的预发布版本以测试尚未发布的功能，方法如下：
 
-1. Open up the list of commits to `develop` on the Cypress repo:
+1. 打开Cypress仓库的`develop`分支提交列表：
    [https://github.com/cypress-io/cypress/commits/develop](https://github.com/cypress-io/cypress/commits/develop)
-2. Find the commit that you would like to install the pre-release version of.
-   Click the comment icon (highlighted in red below):
+2. 找到你想安装预发布版本的提交。点击评论图标（下方红色高亮部分）：
    <DocsImage
      src="/img/app/install/develop-commit-comment-link.png"
-     alt="Example of a commit for which pre-releases are available. Comment link highlighted in red."
+     alt="预发布可用的提交示例。评论链接以红色高亮显示。"
    />
-3. You should see several comments from the `cypress-bot` user with instructions
-   for installing Cypress pre-releases. Pick the one that corresponds to your
-   operating system and CPU architecture, and follow the instructions there to
-   install the pre-release.
+3. 你应该会看到来自`cypress-bot`用户的多条评论，其中包含安装Cypress预发布版本的说明。选择与你的操作系统和CPU架构相对应的那条，并按照那里的说明安装预发布版本。
 
-Cypress pre-releases are only available for 60 days after they are built. Do not
-rely on these being available past 60 days.
+Cypress预发布版本仅在构建后的60天内可用。不要依赖这些版本在60天后仍然可用。
 
-## Windows Subsystem for Linux
+## Windows子系统Linux
 
-Cypress requires an [X-server](https://en.wikipedia.org/wiki/X.Org_Server) (X11) to display the Cypress UI from a Windows Subsystem for Linux installation. This requirement is met by current versions of Windows Subsystem for Linux (WSL2) with X11 support being included through Windows Subsystem for Linux GUI (WSLg).
+Cypress需要[X-server](https://en.wikipedia.org/wiki/X.Org_Server)(X11)来从Windows子系统Linux安装中显示Cypress UI。当前版本的Windows子系统Linux(WSL2)通过Windows子系统Linux GUI(WSLg)包含X11支持来满足此要求。
 
-Refer to [GitHub: Windows Subsystem for Linux GUI (WSLg)](https://github.com/microsoft/wslg) for installation instructions on Ubuntu and install the [prerequisite Linux packages](/app/get-started/install-cypress#Linux-Prerequisites) before running Cypress.
+参考[GitHub: Windows Subsystem for Linux GUI (WSLg)](https://github.com/microsoft/wslg)获取在Ubuntu上的安装说明，并在运行Cypress之前安装[先决Linux软件包](/app/get-started/install-cypress#Linux-Prerequisites)。
 
-Refer to Microsoft Learn [Windows Subsystem for Linux Documentation](https://learn.microsoft.com/en-us/windows/wsl/) for additional information.
+参考Microsoft Learn[Windows Subsystem for Linux Documentation](https://learn.microsoft.com/en-us/windows/wsl/)获取更多信息。
 
 :::info
 
-Cypress.io does not specifically support the use of Cypress under Windows Subsystem for Linux (WSL). If you want to report an issue, please ensure that you can reproduce it without using WSL on one of the Cypress [supported operating systems](/app/get-started/install-cypress#Operating-System).
+Cypress.io并不专门支持在Windows子系统Linux(WSL)下使用Cypress。如果你想报告问题，请确保你可以在不使用WSL的情况下在Cypress[支持的操作系统](/app/get-started/install-cypress#Operating-System)上重现该问题。
 
 :::
 
-## Uninstall Cypress
+## 卸载Cypress
 
-To uninstall Cypress from a project, use the same package manager you used to [install Cypress](/app/get-started/install-cypress):
+要从项目中卸载Cypress，请使用与[安装Cypress](/app/get-started/install-cypress)相同的包管理器：
 
 <Tabs groupId="package-manager"
   defaultValue="npm"
@@ -479,13 +418,12 @@ pnpm remove cypress
   </TabItem>
 </Tabs>
 
-To uninstall all cached Cypress binary versions, use the [cypress cache clear](./command-line#cypress-cache-clear) command with the appropriate package manager prefix described in [How to run commands](./command-line#How-to-run-commands).
-Alternatively, delete the [Cypress binary cache](#Binary-cache) (see above) manually.
+要卸载所有缓存的Cypress二进制版本，请使用[cypress cache clear](./command-line#cypress-cache-clear)命令，并按照[如何运行命令](./command-line#How-to-run-commands)中描述的适当包管理器前缀。或者，手动删除[Cypress二进制缓存](#Binary-cache)（见上文）。
 
-To delete cached [Cypress App Data](./troubleshooting#Clear-App-Data), manually delete the following directories / folders:
+要删除缓存的[Cypress应用数据](./troubleshooting#Clear-App-Data)，请手动删除以下目录/文件夹：
 
 - macOS: `~/Library/Application Support/Cypress`
 - Linux: `~/.config/Cypress`
-- Windows: `$APPDATA/Cypress` (POSIX-syntax) or `%APPDATA%\Cypress` (Windows-syntax)
+- Windows: `$APPDATA/Cypress` (POSIX语法) 或 `%APPDATA%\Cypress` (Windows语法)
 
-Refer to your package manager documentation for details of package manager `cache clean` commands to remove other packages cached by npm, Yarn or pnpm.
+参考你的包管理器文档以了解包管理器`cache clean`命令的详细信息，以删除npm、Yarn或pnpm缓存的其他包。

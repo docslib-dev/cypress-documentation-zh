@@ -1,6 +1,6 @@
 ---
-title: 'task | Cypress Documentation'
-description: Execute code in Node.js via the task plugin event in Cypress.
+title: 'task | Cypress 文档'
+description: 通过Cypress中的`task`插件事件在Node.js中执行代码。
 sidebar_label: task
 ---
 
@@ -8,18 +8,17 @@ sidebar_label: task
 
 # task
 
-Execute code in [Node](https://nodejs.org) via the `task` plugin event.
+通过`task`插件事件在[Node](https://nodejs.org)中执行代码。
 
 :::caution
 
-<strong>Anti-Pattern</strong>
+<strong>反模式</strong>
 
-We do not recommend starting a web server using `cy.task()`. Read about
-[best practices](/app/core-concepts/best-practices#Web-Servers) here.
+我们不建议使用`cy.task()`启动web服务器。请阅读[最佳实践](/app/core-concepts/best-practices#Web-Servers)。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 cy.task(event)
@@ -27,13 +26,13 @@ cy.task(event, arg)
 cy.task(event, arg, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-// in test
-cy.task('log', 'This will be output to the terminal')
+// 在测试中
+cy.task('log', '这将在终端输出')
 ```
 
 :::cypress-config-plugin-example
@@ -50,41 +49,32 @@ on('task', {
 
 :::
 
-The `task` plugin event handler can return a value or a promise. The command
-will fail if `undefined` is returned or if the promise is resolved with
-`undefined`. This helps catch typos or cases where the task event is not
-handled.
+`task`插件事件处理程序可以返回一个值或Promise。如果返回`undefined`或Promise解析为`undefined`，命令将失败。这有助于捕获拼写错误或未处理任务事件的情况。
 
-If you do not need to return a value, explicitly return `null` to signal that
-the given event has been handled.
+如果不需要返回值，请显式返回`null`以表示给定事件已处理。
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **event _(String)_**
 
-An event name to be handled via the `task` event in the
-[setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin) function.
+要通过[setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin)函数中的`task`事件处理的事件名称。
 
 <Icon name="angle-right" /> **arg _(Object)_**
 
-An argument to send along with the event. This can be any value that can be
-serialized by
-[JSON.stringify()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify).
-Unserializable types such as functions, regular expressions, or symbols will be
-omitted to `null`.
+随事件发送的参数。可以是任何能被[JSON.stringify()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)序列化的值。不可序列化的类型（如函数、正则表达式或符号）将被省略为`null`。
 
-If you need to pass multiple arguments, use an object
+如果需要传递多个参数，请使用对象：
 
 ```javascript
-// in test
-cy.task('hello', { greeting: 'Hello', name: 'World' })
+// 在测试中
+cy.task('hello', { greeting: '你好', name: '世界' })
 ```
 
 :::cypress-config-plugin-example
 
 ```ts
 on('task', {
-  // deconstruct the individual properties
+  // 解构各个属性
   hello({ greeting, name }) {
     console.log('%s, %s', greeting, name)
 
@@ -97,37 +87,32 @@ on('task', {
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `cy.task()`.
+传入选项对象以更改`cy.task()`的默认行为。
 
-| Option    | Default                                                 | Description                                                                         |
-| --------- | ------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                  | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`taskTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.task()` to resolve before [timing out](#Timeouts)              |
+| 选项      | 默认值                                                 | 描述                                                                         |
+| --------- | ------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `log`     | `true`                                                  | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示命令              |
+| `timeout` | [`taskTimeout`](/app/references/configuration#Timeouts) | 等待`cy.task()`解析的时长，超时后将[超时](#Timeouts)                          |
 
 <HeaderYields />
 
-`cy.task()` yields the value returned or resolved by the `task` event in
-[setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin).
+`cy.task()`返回[setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin)中`task`事件返回或解析的值。
 
-## Examples
+## 示例
 
-`cy.task()` provides an escape hatch for running arbitrary Node code, so you can
-take actions necessary for your tests outside of the scope of Cypress. This is
-great for:
+`cy.task()`为运行任意Node代码提供了逃生舱，因此您可以在Cypress范围之外执行测试所需的操作。这适用于：
 
-- Seeding your test database.
-- Storing state in Node that you want persisted between spec files.
-- Performing parallel tasks, like making multiple http requests outside of
-  Cypress.
-- Running an external process.
+- 为测试数据库播种。
+- 在Node中存储状态，以便在规范文件之间持久化。
+- 执行并行任务，如在Cypress之外发起多个HTTP请求。
+- 运行外部进程。
 
-### Read a file that might not exist
+### 读取可能不存在的文件
 
-Command [cy.readFile()](/api/commands/readfile) assumes the file exists. If you
-need to read a file that might not exist, use `cy.task`.
+命令[cy.readFile()](/api/commands/readfile)假定文件存在。如果需要读取可能不存在的文件，请使用`cy.task`。
 
 ```javascript
-// in test
+// 在测试中
 cy.task('readFileMaybe', 'my-file.txt').then((textOrNull) => { ... })
 ```
 
@@ -151,10 +136,10 @@ on('task', {
 
 :::
 
-### Return number of files in the folder
+### 返回文件夹中的文件数量
 
 ```javascript
-// in test
+// 在测试中
 cy.task('countFiles', 'cypress/downloads').then((count) => { ... })
 ```
 
@@ -182,17 +167,17 @@ on('task', {
 
 :::
 
-### Seed a database
+### 为数据库播种
 
 ```js
-// in test
+// 在测试中
 describe('e2e', () => {
   beforeEach(() => {
     cy.task('defaults:db')
     cy.visit('/')
   })
 
-  it('displays article values', () => {
+  it('显示文章值', () => {
     cy.get('.article-list').should('have.length', 10)
   })
 })
@@ -201,8 +186,7 @@ describe('e2e', () => {
 :::cypress-config-plugin-example
 
 ```ts
-// we require some code in our app that
-// is responsible for seeding our database
+// 我们应用中需要一些负责为数据库播种的代码
 import db from '../../server/src/db'
 ```
 
@@ -216,10 +200,10 @@ on('task', {
 
 :::
 
-### Return a Promise from an asynchronous task
+### 从异步任务返回Promise
 
 ```javascript
-// in test
+// 在测试中
 cy.task('pause', 1000)
 ```
 
@@ -229,7 +213,7 @@ cy.task('pause', 1000)
 on('task', {
   pause(ms) {
     return new Promise((resolve) => {
-      // tasks should not resolve with undefined
+      // 任务不应解析为undefined
       setTimeout(() => resolve(null), ms)
     })
   },
@@ -238,33 +222,29 @@ on('task', {
 
 :::
 
-### Save a variable across non same-origin URL visits
+### 跨非同源URL访问保存变量
 
-When visiting non same-origin URL, Cypress will
-[change the hosted URL to the new URL](/app/guides/cross-origin-testing), wiping the
-state of any local variables. We want to save a variable across visiting non
-same-origin URLs.
+访问非同源URL时，Cypress会[将托管URL更改为新URL](/app/guides/cross-origin-testing)，清除任何局部变量的状态。我们希望跨访问非同源URL保存变量。
 
-We can save the variable and retrieve the saved variable outside of the test
-using `cy.task()` as shown below.
+我们可以使用`cy.task()`保存变量并在测试外部检索保存的变量，如下所示。
 
 ```javascript
-// in test
-describe('Href visit', () => {
-  it('captures href', () => {
+// 在测试中
+describe('Href访问', () => {
+  it('捕获href', () => {
     cy.visit('https://example.cypress.io')
     cy.get('a')
       .invoke('attr', 'href')
       .then((href) => {
-        // href is not same-origin as current url
-        // like https://www.cypress-dx.com
+        // href与当前URL非同源
+        // 如https://www.cypress-dx.com
         cy.task('setHref', href)
       })
   })
 
-  it('visit href', () => {
+  it('访问href', () => {
     cy.task('getHref').then((href) => {
-      // visit non same-origin url https://www.cypress-dx.com
+      // 访问非同源URL https://www.cypress-dx.com
       cy.visit(href)
     })
   })
@@ -290,42 +270,36 @@ on('task', {
 
 :::
 
-### Command options
+### 命令选项
 
-#### Change the timeout
+#### 更改超时时间
 
-You can increase the time allowed to execute the task, although _we do not
-recommend executing tasks that take a long time to exit_.
+您可以增加执行任务的时间，尽管_我们不建议执行需要很长时间才能退出的任务_。
 
-Cypress will _not_ continue running any other commands until `cy.task()` has
-finished, so a long-running command will drastically slow down your test runs.
+Cypress在`cy.task()`完成之前_不会_继续运行任何其他命令，因此长时间运行的任务会大大减慢测试运行速度。
 
 ```javascript
-// will fail if seeding the database takes longer than 20 seconds to finish
+// 如果数据库播种超过20秒，将失败
 cy.task('seedDatabase', null, { timeout: 20000 })
 ```
 
-## Notes
+## 注意事项
 
-### Tasks must end
+### 任务必须结束
 
-#### Tasks that do not end are not supported
+#### 不支持不结束的任务
 
-`cy.task()` does not support tasks that do not end, such as:
+`cy.task()`不支持不结束的任务，例如：
 
-- Starting a server.
-- A task that watches for file changes.
-- Any process that needs to be manually interrupted to stop.
+- 启动服务器。
+- 监视文件更改的任务。
+- 任何需要手动中断才能停止的进程。
 
-A task must end within the `taskTimeout` or Cypress will fail the current test.
+任务必须在`taskTimeout`内结束，否则Cypress将使当前测试失败。
 
-### Tasks are merged automatically
+### 任务自动合并
 
-Sometimes you might be using plugins that export their tasks for registration.
-Cypress automatically merges `on('task')` objects for you. For example if you
-are using
-[cypress-skip-and-only-ui](https://github.com/bahmutov/cypress-skip-and-only-ui)
-plugin and want to install your own task to read a file that might not exist:
+有时您可能使用导出其任务以供注册的插件。Cypress会自动为您合并`on('task')`对象。例如，如果您使用[cypress-skip-and-only-ui](https://github.com/bahmutov/cypress-skip-and-only-ui)插件并希望安装自己的任务来读取可能不存在的文件：
 
 :::cypress-config-plugin-example
 
@@ -344,54 +318,46 @@ const myTask = {
 ```
 
 ```ts
-// register plugin's task
+// 注册插件的任务
 on('task', skipAndOnlyTask)
-// and register my own task
+// 并注册我自己的任务
 on('task', myTask)
 ```
 
 :::
 
-See [#2284](https://github.com/cypress-io/cypress/issues/2284) for
-implementation.
+有关实现，请参见[#2284](https://github.com/cypress-io/cypress/issues/2284)。
 
 :::caution
 
-<strong>Duplicate task keys</strong>
+<strong>重复的任务键</strong>
 
-If multiple task objects use the same key, the later registration will overwrite
-that particular key, similar to how merging multiple objects with duplicate keys
-will overwrite the first one.
+如果多个任务对象使用相同的键，后注册的将覆盖该特定键，类似于合并具有重复键的多个对象时将覆盖第一个对象。
 
 :::
 
-### Reset timeout via `Cypress.config()`
+### 通过`Cypress.config()`重置超时
 
-You can change the timeout of `cy.task()` for the remainder of the tests by
-setting the new values for `taskTimeout` within
-[Cypress.config()](/api/cypress-api/config).
+您可以通过在[Cypress.config()](/api/cypress-api/config)中为`taskTimeout`设置新值来更改`cy.task()`的剩余测试超时时间。
 
 ```js
 Cypress.config('taskTimeout', 30000)
 Cypress.config('taskTimeout') // => 30000
 ```
 
-### Set timeout in the test configuration
+### 在测试配置中设置超时
 
-You can configure the `cy.task()` timeout within a suite or test by passing the
-new configuration value within the
-[test configuration](/app/references/configuration#Test-Configuration).
+您可以在套件或测试中通过[测试配置](/app/references/configuration#Test-Configuration)传递新的配置值来配置`cy.task()`超时。
 
-This will set the timeout throughout the duration of the tests, then return it
-to the default `taskTimeout` when complete.
+这将在测试期间设置超时，完成后将其返回到默认的`taskTimeout`。
 
 ```js
-describe('has data available from database', { taskTimeout: 90000 }, () => {
+describe('数据库中有可用数据', { taskTimeout: 90000 }, () => {
   before(() => {
     cy.task('seedDatabase')
   })
 
-  // tests
+  // 测试
 
   after(() => {
     cy.task('resetDatabase')
@@ -399,16 +365,12 @@ describe('has data available from database', { taskTimeout: 90000 }, () => {
 })
 ```
 
-### Allows a single argument only
+### 仅允许单个参数
 
-The syntax `cy.task(name, arg, options)` only has place for a single argument to
-be passed from the test code to the plugins code. In the situations where you
-would like to pass multiple arguments, place them into an object to be
-destructured inside the task code. For example, if you would like to execute a
-database query and pass the database profile name you could do:
+语法`cy.task(name, arg, options)`仅支持从测试代码向插件代码传递单个参数。在需要传递多个参数的情况下，将它们放入一个对象中，以便在任务代码中解构。例如，如果要执行数据库查询并传递数据库配置文件名称，可以这样做：
 
 ```javascript
-// in test
+// 在测试中
 const dbName = 'stagingA'
 const query = 'SELECT * FROM users'
 
@@ -419,8 +381,7 @@ cy.task('queryDatabase', { dbName, query })
 
 ```ts
 import mysql from 'mysql'
-// the connection strings for different databases could
-// come from the Cypress configuration or from environment variables
+// 不同数据库的连接字符串可以来自Cypress配置或环境变量
 const connections = {
   stagingA: {
     host: 'staging.my.co',
@@ -436,7 +397,7 @@ const connections = {
   },
 }
 
-// querying the database from Node
+// 从Node查询数据库
 function queryDB(connectionInfo, query) {
   const connection = mysql.createConnection(connectionInfo)
 
@@ -458,12 +419,12 @@ function queryDB(connectionInfo, query) {
 
 ```ts
 on('task', {
-  // destructure the argument into the individual fields
+  // 将参数解构为各个字段
   queryDatabase({ dbName, query }) {
     const connectionInfo = connections[dbName]
 
     if (!connectionInfo) {
-      throw new Error(`Do not have DB connection under name ${dbName}`)
+      throw new Error(`没有名为${dbName}的数据库连接`)
     }
 
     return queryDB(connectionInfo, query)
@@ -473,19 +434,15 @@ on('task', {
 
 :::
 
-### Argument should be serializable
+### 参数应可序列化
 
-The argument `arg` sent via `cy.task(name, arg)` should be serializable; it
-cannot have circular dependencies (issue
-[#5539](https://github.com/cypress-io/cypress/issues/5539)). If there are any
-special fields like `Date`, you are responsible for their conversion (issue
-[#4980](https://github.com/cypress-io/cypress/issues/4980)):
+通过`cy.task(name, arg)`发送的参数`arg`应可序列化；不能有循环依赖（问题[#5539](https://github.com/cypress-io/cypress/issues/5539)）。如果有任何特殊字段如`Date`，您需要负责它们的转换（问题[#4980](https://github.com/cypress-io/cypress/issues/4980)）：
 
 ```javascript
-// in test
+// 在测试中
 cy.task('date', new Date()).then((s) => {
-  // the yielded result is a string
-  // we need to convert it to Date object
+  // 产生的结果是字符串
+  // 我们需要将其转换为Date对象
   const result = new Date(s)
 })
 ```
@@ -495,11 +452,11 @@ cy.task('date', new Date()).then((s) => {
 ```javascript
 on('task', {
   date(s) {
-    // s is a string, so convert it to Date
+    // s是字符串，因此将其转换为Date
     const d = new Date(s)
 
-    // do something with the date
-    // and return it back
+    // 对日期进行操作
+    // 并将其返回
     return d
   },
 })
@@ -507,55 +464,51 @@ on('task', {
 
 :::
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.task()` requires being chained off of `cy`.
-- `cy.task()` requires the task to eventually end.
+- `cy.task()`需要链接到`cy`。
+- `cy.task()`要求任务最终结束。
 
 <HeaderAssertions />
 
-- `cy.task()` will only run assertions you have chained once, and will not
-  [retry](/app/core-concepts/retry-ability).
+- `cy.task()`仅运行一次您链接的断言，不会[重试](/app/core-concepts/retry-ability)。
 
 <HeaderTimeouts />
 
-- `cy.task()` can time out waiting for the task to end.
+- `cy.task()`可能会因等待任务结束而超时。
 
-## Command Log
+## 命令日志
 
-This example uses the
-[Return number of files in the folder](#Return-number-of-files-in-the-folder)
-task defined above.
+此示例使用上面定义的[返回文件夹中的文件数量](#Return-number-of-files-in-the-folder)任务。
 
 ```javascript
 cy.task('countFiles', 'cypress/e2e')
 ```
 
-The command above will display in the Command Log as:
+上面的命令将在命令日志中显示为：
 
-<!-- Code to reproduce screenshot:
-configure the countFiles task in the Cypress configuration and call it in a spec file as shown in above example
+<!-- 用于重现截图的代码：
+在Cypress配置中配置countFiles任务，并在规范文件中调用，如上例所示
 -->
 
-<DocsImage src="/img/api/task/task-count-files.png" alt="Command Log task" />
+<DocsImage src="/img/api/task/task-count-files.png" alt="命令日志任务" />
 
-When clicking on the `task` command within the command log, the console outputs
-the following:
+当点击命令日志中的`task`命令时，控制台输出以下内容：
 
 <DocsImage
   src="/img/api/task/console-shows-task-result.png"
-  alt="Console Log task"
+  alt="控制台日志任务"
 />
 
-## History
+## 历史
 
-| Version                                  | Changes                   |
-| ---------------------------------------- | ------------------------- |
-| [3.0.0](/app/references/changelog#3-0-0) | `cy.task()` command added |
+| 版本                                   | 变更                      |
+| ------------------------------------- | ------------------------- |
+| [3.0.0](/app/references/changelog#3-0-0) | 添加了`cy.task()`命令      |
 
-## See also
+## 另请参阅
 
 - [`cy.exec()`](/api/commands/exec)
 - [`cy.fixture()`](/api/commands/fixture)

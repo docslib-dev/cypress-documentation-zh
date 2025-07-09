@@ -1,113 +1,88 @@
 ---
-title: Auto Cancellation
-description: Cancel entire test runs upon the first failure with Cypress Cloud's Auto Cancellation feature.
+title: 自动取消
+description: 使用Cypress Cloud的自动取消功能，在首次失败时取消整个测试运行。
 sidebar_position: 50
 ---
 
 <ProductHeading product="cloud" plan="business" />
 
-# Auto Cancellation
+# 自动取消
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to enable Auto Cancellation in Cypress Cloud
-- How to save time by canceling test runs upon the first failure
-- How to reduce CI costs by using Auto Cancellation with Spec Prioritization
+- 如何在Cypress Cloud中启用自动取消
+- 如何通过在首次失败时取消测试运行来节省时间
+- 如何通过结合使用自动取消和测试规范优先级来降低CI成本
 
 :::
 
-Continuous Integration (CI) pipelines are typically costly processes that can
-demand significant compute time. **When a test failure occurs in CI, it often
-does not make sense to continue running the remainder of a test suite** since
-the process has to start again upon merging of subsequent fixes and other code
-changes. When Auto Cancellation is enabled, once the number of failed tests goes
-over a preset threshold, the entire test run is canceled. Note that any
-in-progress specs will continue to run to completion.
+持续集成(CI)管道通常是成本高昂的过程，需要大量计算时间。**当CI中出现测试失败时，继续运行剩余的测试套件通常没有意义**，因为在后续修复和其他代码变更合并后，该过程必须重新开始。启用自动取消后，一旦失败的测试数量超过预设阈值，整个测试运行将被取消。请注意，任何进行中的测试规范将继续运行直至完成。
 
 <AutoCancellationBenefits />
 
-### Activate Auto Cancellation in Cypress Cloud
+### 在Cypress Cloud中激活自动取消
 
 :::tip
 
-**Auto Cancellation** is a _Smart Orchestration_ feature available to users with
-a [Business or Enterprise tier Cypress Cloud plan](https://cypress.io/pricing).
-Wondering if upgrading your Team tier subscription is worth it? Check out the
-[recommendations](/cloud/features/recorded-runs#Recommendations) on the run
-overview page to see how much time we predict these features would save you.
+**自动取消**是[Business或Enterprise层级Cypress Cloud计划](https://cypress.io/pricing)用户可用的_智能编排_功能。想知道是否值得升级您的Team层级订阅？查看运行概览页面上的[推荐](/cloud/features/recorded-runs#Recommendations)，了解我们预测这些功能能为您节省多少时间。
 
 :::
 
-Auto Cancellation is a _Smart Orchestration_ feature that is managed within a
-project's settings.
+自动取消是一项_智能编排_功能，可在项目设置中进行管理。
 
 :::info
 
-<strong>Consideration for Teams</strong>
+<strong>团队注意事项</strong>
 
-If your development, testing, or QA teams operate in a highly collaborative
-workflow where multiple people are working on various test failures at the same
-time, it may make sense to increase the failures threshold to surface more failures on each test run.
+如果您的开发、测试或QA团队在高度协作的工作流程中运作，多人同时处理各种测试失败，可能需要增加失败阈值，以便在每次测试运行中暴露更多失败。
 
 :::
 
-**To enable or disable this feature at the Project level (must be an admin user):**
+**在项目级别启用或禁用此功能（需管理员权限）：**
 
-1. Select the desired project within **Projects** view to visit Cypress Cloud.
-2. Click **Project Settings** with the right-hand sidebar.
-3. Scroll to the Smart Orchestration section within Project Settings page.
-4. Toggle **Auto Cancellation**.
-5. Set the **failures before auto canceling** threshold (or just leave it at the
-   default value of 1).
+1. 在**项目**视图中选择所需项目以访问Cypress Cloud。
+2. 点击右侧边栏中的**项目设置**。
+3. 在项目设置页面滚动至智能编排部分。
+4. 切换**自动取消**。
+5. 设置**自动取消前的失败次数**阈值（或保留默认值1）。
 
 <DocsImage
   src="/img/cloud/features/smart-orchestration/auto-cancellation-active.png"
-  alt="Enable Auto Cancellation"
+  alt="启用自动取消"
 />
 
 :::info
 
-<strong>CI Tip: Save Time</strong>
+<strong>CI小贴士：节省时间</strong>
 
-In addition to Auto Cancellation, consider reducing CI costs further by enabling
-[Spec Prioritization](/cloud/features/smart-orchestration/spec-prioritization) to
-surface test failures earlier in the run, and reduce the time it takes to fix
-issues and deploy changes.
+除了自动取消，还可以考虑启用[测试规范优先级](/cloud/features/smart-orchestration/spec-prioritization)来进一步降低CI成本，该功能可以让测试失败更早地在运行中暴露，并减少修复问题和部署变更所需的时间。
 
 :::
 
-### Specifying failures before auto canceling in the CLI
+### 在CLI中指定自动取消前的失败次数
 
-With the Cypress CLI, you can specify the number of test failures to execute
-before canceling the run via a command flag. This allows more granular control
-of Auto Cancellation on a per-run basis.
+通过Cypress CLI，您可以通过命令标志指定测试失败次数，超过该次数后将取消运行。这允许在每个运行基础上更精细地控制自动取消。
 
-**Some common use cases for doing so might be:**
+**一些常见的用例可能包括：**
 
-- Setting a lower-than-normal value on dev environments to fail a test suite
-  early for faster feedback
-- Disabling Auto Cancellation on important branches that need the full test
-  suite to run every time
-- Overriding the project value on a case-by-case basis
+- 在开发环境中设置比正常值更低的阈值，以便更快地使测试套件失败以获得快速反馈
+- 在需要每次完整运行测试套件的重要分支上禁用自动取消
+- 根据具体情况覆盖项目设置
 
-Specifying the flag will override the project setting in Cypress Cloud, and not
-specifying it will default to the value in the project settings.
+指定该标志将覆盖Cypress Cloud中的项目设置，不指定则默认使用项目设置中的值。
 
-To set it, pass the `--auto-cancel-after-failures` flag to the `cypress run`
-command, and give it a numeric value:
+要设置它，请将`--auto-cancel-after-failures`标志传递给`cypress run`命令，并赋予一个数值：
 
 ```shell
 npx cypress run --record --key <<your_record_key>> --auto-cancel-after-failures 1
 ```
 
-You can also specify `false` for the value to disable Auto Cancellation for the
-run:
+您也可以指定`false`值来为该次运行禁用自动取消：
 
 ```shell
 npx cypress run --record --key <<your_record_key>> --auto-cancel-after-failures false
 ```
 
-For more info on passing CLI flags, see our guide on the
-[Cypress Command Line](/app/references/command-line).
+有关传递CLI标志的更多信息，请参阅我们的[Cypress命令行](/app/references/command-line)指南。

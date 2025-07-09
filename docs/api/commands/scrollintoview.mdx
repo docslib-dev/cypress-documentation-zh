@@ -1,6 +1,6 @@
 ---
-title: 'scrollIntoView | Cypress Documentation'
-description: Scroll an element into view in Cypress.
+title: 'scrollIntoView | Cypress 文档'
+description: 在 Cypress 中将元素滚动到可视区域。
 sidebar_label: scrollIntoView
 ---
 
@@ -8,132 +8,123 @@ sidebar_label: scrollIntoView
 
 # scrollIntoView
 
-Scroll an element into view.
+将元素滚动到可视区域。
 
-It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried) to
-chain further commands that rely on the subject after `.scrollIntoView()`.
+在 `.scrollIntoView()` 之后继续链式调用依赖于该目标元素的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Syntax
+## 语法
 
 ```javascript
 .scrollIntoView()
 .scrollIntoView(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('footer').scrollIntoView() // Scrolls 'footer' into view
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.scrollIntoView('footer') // Errors, cannot be chained off 'cy'
-cy.window().scrollIntoView() // Errors, 'window' does not yield DOM element
+cy.get('footer').scrollIntoView() // 将 'footer' 滚动到可视区域
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
+
+```javascript
+cy.scrollIntoView('footer') // 错误，不能从 'cy' 链式调用
+cy.window().scrollIntoView() // 错误，'window' 不是 DOM 元素
+```
+
+### 参数
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `.scrollIntoView()`.
+传入一个选项对象来改变 `.scrollIntoView()` 的默认行为。
 
-| Option     | Default                                                           | Description                                                                         |
-| ---------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `duration` | `0`                                                               | Scrolls over the duration (in ms)                                                   |
-| `easing`   | `swing`                                                           | Will scroll with the easing animation                                               |
-| `log`      | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `offset`   | `{top: 0, left: 0}`                                               | Amount to scroll after the element has been scrolled into view                      |
-| `timeout`  | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.scrollIntoView()` to resolve before [timing out](#Timeouts)      |
+| 选项       | 默认值                                                           | 描述                                                                         |
+| ---------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `duration` | `0`                                                               | 滚动的持续时间（毫秒）                                                      |
+| `easing`   | `swing`                                                           | 使用缓动动画进行滚动                                                       |
+| `log`      | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令          |
+| `offset`   | `{top: 0, left: 0}`                                               | 元素滚动到可视区域后，再额外滚动的距离                                      |
+| `timeout`  | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 在[超时](#Timeouts)前等待 `.scrollIntoView()` 解析的时间                    |
 
 <HeaderYields />
 
-- `.scrollIntoView()` yields the same subject it was given.
-- It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried)
-  to chain further commands that rely on the subject after `.scrollIntoView()`.
+- `.scrollIntoView()` 返回与传入时相同的目标元素。
+- 在 `.scrollIntoView()` 之后继续链式调用依赖于该目标元素的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Examples
+## 示例
 
-### Scrolling
+### 滚动
 
 ```javascript
 cy.get('button#checkout').scrollIntoView().should('be.visible')
 ```
 
-### Options
+### 选项
 
-#### Use linear easing animation to scroll
+#### 使用线性缓动动画进行滚动
 
 ```javascript
 cy.get('.next-page').scrollIntoView({ easing: 'linear' })
 ```
 
-#### Scroll to element over 2000ms
+#### 在 2000 毫秒内滚动到元素
 
 ```javascript
 cy.get('footer').scrollIntoView({ duration: 2000 })
 ```
 
-#### Scroll 150px below an element
+#### 滚动到元素下方 150px 处
 
 ```js
 cy.get('#nav').scrollIntoView({ offset: { top: 150, left: 0 } })
 ```
 
-## Notes
+## 注意事项
 
-### Snapshots
+### 快照
 
-#### Snapshots do not reflect scroll behavior
+#### 快照不反映滚动行为
 
-_Cypress does not reflect the accurate scroll positions of any elements within
-snapshots._ If you want to see the actual scrolling behavior in action, we
-recommend using [`.pause()`](/api/commands/pause) to walk through each command
-or
-[watching the video of the test run](/app/guides/screenshots-and-videos#Videos).
+_Cypress 不会在快照中准确反映任何元素的滚动位置。_ 如果你想查看实际的滚动行为，我们建议使用 [`.pause()`](/api/commands/pause) 逐步执行每个命令，或者[观看测试运行的视频](/app/guides/screenshots-and-videos#Videos)。
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.scrollIntoView()` requires being chained off a command that yields DOM
-  element(s).
+- `.scrollIntoView()` 需要链式调用一个返回 DOM 元素的命令。
 
 <HeaderAssertions />
 
-- `.scrollIntoView()` will automatically wait for assertions you have chained to
-  pass
+- `.scrollIntoView()` 会自动等待链式断言通过。
 
 <HeaderTimeouts />
 
-- `.scrollIntoView()` can time out waiting for assertions you've added to pass.
+- `.scrollIntoView()` 可能会在等待添加的断言通过时超时。
 
-## Command Log
+## 命令日志
 
-**_Assert element is visible after scrolling it into view_**
+**_断言元素滚动到可视区域后可见_**
 
 ```javascript
 cy.get('#scroll-horizontal button').scrollIntoView().should('be.visible')
 ```
 
-The commands above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/scrollintoview/command-log-for-scrollintoview.png"
-  alt="command log scrollintoview"
+  alt="命令日志 scrollintoview"
 />
 
-When clicking on the `scrollintoview` command within the command log, the
-console outputs the following:
+当点击命令日志中的 `scrollintoview` 命令时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/scrollintoview/console-log-for-scrollintoview.png"
   alt="console.log scrollintoview"
 />
 
-## See also
+## 另请参阅
 
 - [`cy.scrollTo()`](/api/commands/scrollto)

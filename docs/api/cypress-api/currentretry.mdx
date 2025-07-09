@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.currentRetry | Cypress Documentation'
-description: Cypress.currentRetry is a number representing the current test retry count.
+title: 'Cypress.currentRetry | Cypress 文档'
+description: Cypress.currentRetry 是一个表示当前测试重试次数的数字。
 sidebar_label: currentRetry
 sidebar_position: 80
 ---
@@ -9,26 +9,26 @@ sidebar_position: 80
 
 # Cypress.currentRetry
 
-`Cypress.currentRetry` is a number representing the current
-[test retry](/app/guides/test-retries) count.
+`Cypress.currentRetry` 是一个表示当前
+[测试重试](/app/guides/test-retries) 次数的数字。
 
 :::caution
 
-Note that `Cypress.currentRetry` may only be used inside tests and
-[test hooks](/app/core-concepts/writing-and-organizing-tests#Hooks), and will
-be `null` outside of tests and test hooks.
+请注意 `Cypress.currentRetry` 只能在测试和
+[测试钩子](/app/core-concepts/writing-and-organizing-tests#Hooks) 内部使用，
+在测试和测试钩子外部使用时其值为 `null`。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 Cypress.currentRetry
 ```
 
-## Examples
+## 示例
 
-### Get current test retry
+### 获取当前测试重试次数
 
 ```javascript
 it('example', () => {
@@ -36,8 +36,8 @@ it('example', () => {
 })
 ```
 
-## History
+## 历史版本
 
-| Version                                    | Changes                      |
+| 版本                                       | 变更                       |
 | ------------------------------------------ | ---------------------------- |
-| [12.3.0](/app/references/changelog#12-3-0) | Added `Cypress.currentRetry` |
+| [12.3.0](/app/references/changelog#12-3-0) | 新增 `Cypress.currentRetry` |

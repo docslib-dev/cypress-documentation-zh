@@ -1,6 +1,6 @@
 ---
-title: 'go | Cypress Documentation'
-description: Navigate back or forward to the previous or next URL in the browser's history in Cypress.
+title: 'go | Cypress 文档'
+description: 在 Cypress 中导航返回或前进到浏览器历史记录中的上一个或下一个 URL。
 sidebar_label: go
 e2eSpecific: true
 ---
@@ -9,130 +9,124 @@ e2eSpecific: true
 
 # go
 
-Navigate back or forward to the previous or next URL in the browser's history.
+导航返回或前进到浏览器历史记录中的上一个或下一个 URL。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.go(direction)
 cy.go(direction, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 cy.go('back')
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **direction _(String, Number)_**
 
-The direction to navigate.
+导航方向。
 
-You can use `back` or `forward` to go one step back or forward. You could also
-navigate to a specific history position (`-1` goes back one page, `1` goes
-forward one page, etc).
+可以使用 `back` 或 `forward` 来后退或前进一步。也可以导航到特定的历史位置（`-1` 表示后退一页，`1` 表示前进一页，以此类推）。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `cy.go()`.
+传入一个选项对象来改变 `cy.go()` 的默认行为。
 
-| Option    | Default                                                     | Description                                                                         |
+| 选项      | 默认值                                                     | 描述                                                                         |
 | --------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                      | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`pageLoadTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.go()` to resolve before [timing out](#Timeouts)                |
+| `log`     | `true`                                                      | 在 [命令日志](/app/core-concepts/open-mode#Command-Log) 中显示该命令 |
+| `timeout` | [`pageLoadTimeout`](/app/references/configuration#Timeouts) | 在 [超时](#Timeouts) 前等待 `cy.go()` 解析的时间                |
 
 <HeaderYields />
 
-- `cy.go()` yields the `window` object after the page finishes loading.
-- It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried)
-  to chain further commands that rely on the yielded `window` after `cy.go()`.
+- `cy.go()` 在页面加载完成后返回 `window` 对象。
+- 在 `cy.go()` 之后继续链接依赖于返回的 `window` 对象的命令是 [不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Examples
+## 示例
 
-### Direction
+### 方向
 
-#### Go back in browser's history
-
-```javascript
-cy.go('back') // equivalent to clicking back button
-```
-
-#### Go forward in browser's history
+#### 返回浏览器历史记录
 
 ```javascript
-cy.go('forward') // equivalent to clicking forward button
+cy.go('back') // 等同于点击后退按钮
 ```
 
-### Number
-
-#### Go back in browser's history
+#### 前进浏览器历史记录
 
 ```javascript
-cy.go(-1) // equivalent to clicking back button
+cy.go('forward') // 等同于点击前进按钮
 ```
 
-#### Go forward in browser's history
+### 数字
+
+#### 返回浏览器历史记录
 
 ```javascript
-cy.go(1) // equivalent to clicking forward button
+cy.go(-1) // 等同于点击后退按钮
 ```
 
-## Notes
+#### 前进浏览器历史记录
 
-### Refreshing and loading the page
+```javascript
+cy.go(1) // 等同于点击前进按钮
+```
 
-If going forward or back causes a full page refresh, Cypress will wait for the
-new page to load before moving on to new commands.
+## 注意事项
 
-Cypress additionally handles situations where a page load was not caused (such
-as hash routing) and will resolve immediately.
+### 刷新和加载页面
 
-## Rules
+如果前进或后退导致页面完全刷新，Cypress 会等待新页面加载完成后再执行后续命令。
+
+Cypress 还会处理未导致页面加载的情况（例如哈希路由），并立即解析。
+
+## 规则
 
 <HeaderRequirements />
 
-- `cy.go()` requires being chained off of `cy`.
-- `cy.go()` requires the response to be `content-type: text/html`.
-- `cy.go()` requires the response code to be `2xx` after following redirects.
-- `cy.go()` requires the load `load` event to eventually fire.
+- `cy.go()` 必须链接在 `cy` 之后。
+- `cy.go()` 要求响应为 `content-type: text/html`。
+- `cy.go()` 要求在重定向后响应码为 `2xx`。
+- `cy.go()` 要求最终触发 `load` 事件。
 
 <HeaderAssertions />
 
-- `cy.go()` will automatically wait for assertions you have chained to pass.
+- `cy.go()` 会自动等待链接的断言通过。
 
 <HeaderTimeouts />
 
-- `cy.go()` can time out waiting for the page to fire its `load` event.
-- `cy.go()` can time out waiting for assertions you've added to pass.
+- `cy.go()` 可能会因等待页面触发 `load` 事件而超时。
+- `cy.go()` 可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Go back in browser's history_**
+**_返回浏览器历史记录_**
 
 ```javascript
 cy.visit('http://localhost:8000/folders').go('back')
 ```
 
-The commands above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/go/test-showing-go-back-browser-button.png"
-  alt="Command Log go"
+  alt="命令日志 go"
 />
 
-When clicking on the `go` command within the command log, the console outputs
-the following:
+当点击命令日志中的 `go` 命令时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/go/window-is-logged-when-go-back-in-browser-history.png"
-  alt="console Log go"
+  alt="控制台日志 go"
 />
 
-## See also
+## 另请参阅
 
 - [`cy.reload()`](/api/commands/reload)
 - [`cy.visit()`](/api/commands/visit)

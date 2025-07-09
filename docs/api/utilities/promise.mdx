@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.Promise | Cypress Documentation'
-description: Cypress automatically includes Bluebird and exposes it as Cypress.Promise.
+title: 'Cypress.Promise | Cypress 文档'
+description: Cypress 自动包含 Bluebird 并将其暴露为 Cypress.Promise。
 sidebar_label: Cypress.Promise
 ---
 
@@ -8,70 +8,66 @@ sidebar_label: Cypress.Promise
 
 # Cypress.Promise
 
-Cypress automatically includes
-[Bluebird](https://github.com/petkaantonov/bluebird) and exposes it as
-`Cypress.Promise`.
+Cypress 自动包含 [Bluebird](https://github.com/petkaantonov/bluebird) 并将其暴露为 `Cypress.Promise`。
 
-Instantiate a new bluebird promise.
+用于实例化一个新的 bluebird promise。
 
-## Syntax
+## 语法
 
 ```javascript
 new Cypress.Promise(fn)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 new Cypress.Promise((resolve, reject) => { ... })
 ```
 
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
 ```javascript
-new cy.Promise(...)  // Errors, cannot be chained off 'cy'
+new cy.Promise(...)  // 错误，不能链式调用 'cy'
 ```
 
-## Examples
+## 示例
 
-Use `Cypress.Promise` to create promises. Cypress is promise aware so if you
-return a promise from inside of commands like [`.then()`](/api/commands/then),
-Cypress will not continue until those promises resolve.
+使用 `Cypress.Promise` 创建 promises。Cypress 能识别 promise，如果你从 [`.then()`](/api/commands/then) 等命令中返回一个 promise，Cypress 会等待这些 promises 解析后再继续执行。
 
-### Basic Promise
+### 基础 Promise
 
 ```javascript
 cy.get('button').then(($button) => {
   return new Cypress.Promise((resolve, reject) => {
-    // do something custom here
+    // 在这里执行自定义操作
   })
 })
 ```
 
-### Waiting for Promises
+### 等待 Promises
 
 ```javascript
-it('waits for promises to resolve', () => {
+it('等待 promises 解析', () => {
   let waited = false
 
   function waitOneSecond() {
-    // return a promise that resolves after 1 second
+    // 返回一个在 1 秒后解析的 promise
     return new Cypress.Promise((resolve, reject) => {
       setTimeout(() => {
-        // set waited to true
+        // 将 waited 设为 true
         waited = true
 
-        // resolve with 'foo' string
+        // 用 'foo' 字符串解析
         resolve('foo')
       }, 1000)
     })
   }
 
   cy.wrap(null).then(() => {
-    // return a promise to cy.then() that
-    // is awaited until it resolves
+    // 向 cy.then() 返回一个 promise，
+    // 会等待其解析
     return waitOneSecond().then((str) => {
       expect(str).to.eq('foo')
       expect(waited).to.be.true
@@ -80,16 +76,13 @@ it('waits for promises to resolve', () => {
 })
 ```
 
-## Notes
+## 注意事项
 
-### Rejected test promises do not fail tests
+### 被拒绝的测试 promises 不会导致测试失败
 
-If the test code has an unhandled rejected promise, it does not automatically
-fail the test. If you do want to fail the test if there is an unhandled rejected
-promise in the test code you have to do one of two things:
+如果测试代码中有未处理的被拒绝的 promise，它不会自动导致测试失败。如果你确实希望在测试代码中存在未处理的被拒绝的 promise 时让测试失败，你需要执行以下两种操作之一：
 
-If you use `Cypress.Promise` in your test code, register a callback using
-Bluebird's API
+如果在测试代码中使用 `Cypress.Promise`，可以使用 Bluebird 的 API 注册回调：
 
 ```javascript
 Cypress.Promise.onPossiblyUnhandledRejection((error, promise) => {
@@ -97,8 +90,7 @@ Cypress.Promise.onPossiblyUnhandledRejection((error, promise) => {
 })
 ```
 
-If you use native built-in promises in your test code, register an event
-listener on the test `window` object:
+如果在测试代码中使用原生内置的 promises，可以在测试的 `window` 对象上注册事件监听器：
 
 ```javascript
 window.addEventListener('unhandledrejection', (event) => {
@@ -106,11 +98,9 @@ window.addEventListener('unhandledrejection', (event) => {
 })
 ```
 
-**Note:** because this is the test `window` object, such listeners are NOT reset
-before every test. You can register such listeners once using the `before` hook
-in the spec file.
+**注意：** 因为这是测试的 `window` 对象，所以这样的监听器不会在每次测试前重置。你可以在 spec 文件中使用 `before` 钩子一次性注册这些监听器。
 
-## See also
+## 另请参阅
 
-- [Bundled Libraries](/app/references/bundled-libraries)
-- The recipe [Handling errors](/app/references/recipes#Fundamentals)
+- [捆绑的库](/app/references/bundled-libraries)
+- 配方 [处理错误](/app/references/recipes#Fundamentals)

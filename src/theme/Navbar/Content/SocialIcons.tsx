@@ -15,7 +15,7 @@ export const SocialIcons = ({ className }: { className?: string }) => (
       href="https://github.com/cypress-io/cypress-documentation"
       className="!px-[12px] !py-[4px]"
     >
-      <span className="sr-only">Cypress GitHub repository</span>
+      <span className="sr-only">Cypress GitHub 仓库</span>
       <IconSocialGithubSolid />
     </a>
     <a href="https://on.cypress.io/discord" className="!px-[12px] !py-[4px]">

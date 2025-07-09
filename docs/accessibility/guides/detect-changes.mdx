@@ -1,106 +1,106 @@
 ---
-sidebar_label: Detect and manage changes
-title: 'Detect changes | Cypress Accessibility Documentation'
-description: 'Monitor accessibility issues in production by running scheduled Cypress tests against live environments, capturing dynamic content changes, and generating automated reports for a comprehensive accessibility overview.'
+sidebar_label: 检测和管理变更
+title: '检测变更 | Cypress无障碍文档'
+description: '通过针对实时环境运行定期Cypress测试、捕获动态内容变更并生成自动化报告，监控生产环境中的无障碍问题，全面掌握无障碍状况。'
 sidebar_position: 70
 ---
 
 <ProductHeading product="accessibility" />
 
-# Detect and manage changes
+# 检测和管理变更
 
-Cypress Accessibility supports three main paths to observing and acting on changes in the accessibility report for your projects:
+Cypress Accessibility支持三种主要途径来观察和处理项目无障碍报告中的变更：
 
-- Run comparisons with [Branch Review](/accessibility/core-concepts/compare-reports)
-- The [Results API](/accessibility/results-api) to fail builds or trigger alerts when results don't meet your standards
-- [Analytics](/cloud/features/analytics/enterprise-reporting#Cypress-Accessibility) for high-level trend-spotting and analysis
+- 使用[分支评审](/accessibility/core-concepts/compare-reports)进行比较
+- 通过[结果API](/accessibility/results-api)在结果不符合标准时使构建失败或触发警报
+- 使用[分析功能](/cloud/features/analytics/enterprise-reporting#Cypress-Accessibility)进行高层趋势发现和分析
 
-In this guide we'll discuss how these work and some common situations where we might use them together.
+本指南将讨论这些功能的工作原理以及一些常见的组合使用场景。
 
-## Branch Review
+## 分支评审
 
-Branch Review helps you spot new issues quickly by comparing accessibility results from two Cypress runs.
+分支评审通过比较两次Cypress运行的无障碍结果，帮助您快速发现新问题。
 
-- Pinpoint when and where problems have been introduced
-- Understand and debug easily with fully rendered page snapshots
-- Share links to specific new issues with all the context needed to dive in
+- 精确定位问题引入的时间和位置
+- 通过完全渲染的页面快照轻松理解和调试
+- 分享包含所有上下文信息的特定新问题链接
 
-### Branch Review use cases
+### 分支评审使用场景
 
-#### Speed up code reviews and deployments
+#### 加速代码审查和部署
 
-Use Branch review when reviewing a pull request made by another developer or before you create one of your own. You can compare the report from your changed branch with the equivalent report on the main branch. The comparison allows you to see any issues that your changes have improved or fixed completely, as well as net-new issues introduced, and any new instances of existing failures.
+在审查其他开发人员提交的拉取请求或自己创建拉取请求前使用分支评审。您可以比较变更分支的报告与主分支的等效报告。这种比较能显示您的变更改善或完全修复的问题，以及新引入的问题和现有失败的新实例。
 
-Since this reduces the amount of violations to review to just what was affected by the PR code changes, you won't spend any time looking for what's relevant -- and if there is no difference, you'll know your PR does not affect the accessibility score and is safe to merge.
+由于这将被审查的违规数量减少到仅受PR代码变更影响的部分，您无需浪费时间寻找相关内容——如果没有差异，您就知道PR不影响无障碍评分，可以安全合并。
 
-See the main [Accessibility Branch Review docs](/accessibility/core-concepts/compare-reports) for a video demo of this workflow.
+查看主[无障碍分支评审文档](/accessibility/core-concepts/compare-reports)获取此工作流程的视频演示。
 
-#### Compare reports during local development (without waiting for CI)
+#### 本地开发时比较报告（无需等待CI）
 
-You might expect that every Cypress Accessibility report requires a full standard Cypress test run in your Continuous Integration (CI) pipeline.
+您可能认为每次Cypress Accessibility报告都需要在持续集成(CI)流水线中运行完整的标准Cypress测试。
 
-A common accessibility workflow is to [create small Cypress Cloud recordings from your local development environment](/accessibility/guides/local-development) to preview the effects of any code changes. This allows for fast analysis of just a single test or two, or as much as you need to have confidence your changes are working -- especially if you are actively remediating accessibility issues.
+常见的无障碍工作流程是[从本地开发环境创建小型Cypress Cloud记录](/accessibility/guides/local-development)来预览代码变更的效果。这允许快速分析单个或少量测试，尤其是当您正在积极修复无障碍问题时。
 
-To get a high-quality comparison for a small set of tests, record the tests locally from your main branch, and then on the branch with changes. In Cypress Cloud, you will be able to compare these two runs knowing they cover exactly the same scope.
+要获得高质量的少量测试比较，请从主分支本地记录测试，然后在变更分支上记录。在Cypress Cloud中，您可以比较这两次运行，知道它们覆盖完全相同的范围。
 
-This completely sidesteps the usual "push, build, run tests, report" cycle you might be used to, and is great when you need fast feedback.
+这完全绕过了您可能习惯的"推送、构建、运行测试、报告"周期，在需要快速反馈时非常有用。
 
-#### See what's changing between scheduled runs
+#### 查看计划运行间的变更
 
-Many teams have some Cypress projects that run on a schedule and target a QA, staging, or production environment. These runs produce Cypress Accessibility reports but are not connected to specific pull requests with code changes. Branch Review works perfectly in these situations, even if all runs are on the same branch.
+许多团队有一些Cypress项目按计划运行并针对QA、预发布或生产环境。这些运行生成Cypress Accessibility报告，但与特定代码变更的拉取请求无关。分支评审在这些情况下同样适用，即使所有运行都在同一分支上。
 
-Comparing reports on a regular schedule can let you see if accessibility issues have been introduced between this week and last week, for example, and then find the specific run where the changes happened. That "diff report" can can be forwarded to engineering or product teams as the basis of a ticket.
+定期比较报告可以让您查看例如本周与上周之间是否引入了无障碍问题，然后找到变更发生的具体运行。这个"差异报告"可以作为工单基础转发给工程或产品团队。
 
-### Note
+### 注意
 
-Comparing two runs in detail with Branch Review requires a good understanding of the runs themselves. The comparison is most useful if the runs are testing the same pages and workflows, and if each run fully passed all tests. This means that Cypress saw all the same states and variations of the application in both contexts. Your runs will likely never be 100% perfectly matching, but the closer they are, the better.
+使用分支评审详细比较两次运行需要对运行本身有很好的理解。如果运行测试相同的页面和工作流，并且每次运行都完全通过所有测试，比较最为有用。这意味着Cypress在两种上下文中看到了应用程序的所有相同状态和变体。您的运行可能永远不会100%完美匹配，但越接近越好。
 
-## Results API
+## 结果API
 
-Cypress Accessibility's [Results API](/accessibility/results-api) provides rich data related to the outcome of any accessibility report for a Cypress run. It supports adding a step in CI to block pull requests or trigger other side effects. To use the Results API, you'll need to [add a step in your CI process](/accessibility/results-api#Installation). This comes with a helper function which will automatically match your CI build with the related run in Cypress Cloud.
+Cypress Accessibility的[结果API](/accessibility/results-api)提供与任何Cypress运行的无障碍报告结果相关的丰富数据。它支持在CI中添加步骤以阻止拉取请求或触发其他副作用。要使用结果API，您需要[在CI流程中添加步骤](/accessibility/results-api#Installation)。这附带一个辅助函数，将自动匹配您的CI构建与Cypress Cloud中的相关运行。
 
-Once you receive the results, you can perform any action you need to. Below are some of the common ones customers have told us about, where the results are compared with expectations.
+一旦收到结果，您可以执行任何需要的操作。以下是客户告诉我们的一些常见操作，其中结果与预期进行比较。
 
-### Results API use cases
+### 结果API使用场景
 
-#### Fail a build based on new failed accessibility rules
+#### 基于新失败的无障碍规则使构建失败
 
-The Results API provides a combined report with all the failing rules included. This means you can easily prepare a list of known, permitted failing rules to compare with the results from any run, and choose to fail only if a previously passing rule has started to fail. This is described in detail in the guide related to [blocking pull requests and setting policies](/accessibility/guides/block-pull-requests).
+结果API提供包含所有失败规则的合并报告。这意味着您可以轻松准备已知允许的失败规则列表与任何运行的结果进行比较，并仅在先前通过的规则开始失败时选择使构建失败。这在[阻止拉取请求和设置策略](/accessibility/guides/block-pull-requests)指南中有详细描述。
 
-This concept is simple but powerful because it provides extremely high confidence that any failed build is related to a specific recent code, content, or testing change. Especially if there are a high number of existing failures, the actual number of failed elements detected can vary from run-to-run, especially if existing broken components are reused in new ways.
+这个概念简单但强大，因为它提供了极高的信心，任何失败的构建都与特定的最近代码、内容或测试变更相关。特别是如果存在大量现有失败，检测到的实际失败元素数量可能在运行间变化，尤其是现有损坏组件以新方式重用时。
 
-Rules that are fully passing do not have any of these problems, and for an extreme action like failing a pipeline, it's important to have high confidence that a problem is actually a new issues and can be traced to a specific build. With this confidence in place, the existing failed rules can be addressed one by one to get fully passing.
+完全通过的规则没有这些问题，对于像使流水线失败这样的极端操作，重要的是高度确信问题实际上是新问题，并且可以追溯到特定构建。有了这种信心，可以逐个解决现有失败规则以达到完全通过。
 
-#### Fail a build based on deviation from a desired score
+#### 基于偏离期望分数的构建失败
 
-The Results API includes the specific failed element count and accessibility percentage score for the accessibility report. This makes it easy to set a score threshold and fail a build if the score falls below that expectation. This is especially useful when taking a monitoring approach, or wanting a broader, less specific standard than one based on specific rules.
+结果API包括无障碍报告的具体失败元素计数和无障碍百分比分数。这使得设置分数阈值并在分数低于预期时使构建失败变得容易。这在采取监控方法或想要比基于特定规则更广泛、更不具体的标准时特别有用。
 
-Changes in percentage score are directly related to changes in the number of elements detected failing accessibility rules throughout the run. Alerting or failing a pipeline for scores going down is a great way to know when you need to jump into Branch Review to understand the underlying causes of the change in score.
+百分比分数的变化与运行中检测到的违反无障碍规则的元素数量变化直接相关。当分数下降时发出警报或使流水线失败是了解何时需要进入分支评审以理解分数变化根本原因的好方法。
 
-#### Alert specific teams about failures they own
+#### 向负责的特定团队发出失败警报
 
-In addition to the consolidated accessibility report, accessibility failures are listed per View in the results API. A View is always related to a specific URL pattern or component test, which means in many projects it is possible to connect accessibility issues in the Results API with the team responsible for solving issues in that part of the application.
+除了合并的无障碍报告外，结果API中按视图列出无障碍失败。视图始终与特定的URL模式或组件测试相关，这意味着在许多项目中可以将结果API中的无障碍问题与负责解决应用程序该部分问题的团队联系起来。
 
-As an example, customers can use this functionality to trigger Slack webhooks that notify a particular channel of the issues in specific areas. The Results API provides direct links to the Views and to each failed rule within that View, making it easy to forward useful links to the correct places, or jump right into debugging from the CI output.
+例如，客户可以使用此功能触发Slack webhook，通知特定频道有关特定区域的问题。结果API提供直接链接到视图和该视图中每个失败规则的链接，便于将有用链接转发到正确位置，或直接从CI输出进入调试。
 
-## Analytics
+## 分析功能
 
-Analytics are located within the [Cypress Accessibility tab of Enterprise Reporting](/cloud/features/analytics/enterprise-reporting#Cypress-Accessibility) of Cypress Cloud. This provides an overview of accessibility trends across projects, and also supports filtering down to a single project and branch to see where scores have changed over time.
+分析功能位于Cypress Cloud的[企业报告的无障碍标签页](/cloud/features/analytics/enterprise-reporting#Cypress-Accessibility)中。这提供了跨项目的无障碍趋势概览，并支持筛选到单个项目和分支以查看分数随时间的变化。
 
-### Analytics use cases
+### 分析功能使用场景
 
-#### Track progress and spot trends
+#### 跟踪进展和发现趋势
 
-This level of reporting is ideal for documenting progress and spotting unexpected trends. When you see a project's score dropping over the long term, you can explore further with Branch Review to understand what changes are driving the score. You can compare reports before and after any shifts in scores to determine which accessibility issues were introduced.
+这种级别的报告非常适合记录进展和发现意外趋势。当您看到项目分数长期下降时，可以通过分支评审进一步探索以了解驱动分数的变更。您可以比较分数变化前后的报告以确定引入了哪些无障碍问题。
 
-#### Set goals and minimum standards
+#### 设定目标和最低标准
 
-Seeing all projects in one place gives a good sense of each project's relative level and helps inform what values you might want to use for comparison when implementing a policy using the Results API.
+在一个地方查看所有项目可以很好地了解每个项目的相对水平，并帮助确定在使用结果API实施策略时可能想要用于比较的值。
 
-This also provides useful planning insights, because you can see your historical pace of improvements. If some projects are improving faster than others, you will be able to recognize this and understand how to replicate that success, or create realistic OKRs on a project basis.
+这也提供了有用的规划洞察，因为您可以看到改进的历史速度。如果某些项目比其他项目改进更快，您将能够认识到这一点并了解如何复制这种成功，或基于项目创建现实的OKR。
 
-## Combine approaches
+## 组合方法
 
-As you can see above, there are times you may want to move between multiple systems to track down an issue. For example, if the Results API signals that a build on a feature branch has failed your accessibility standard, you might click through to the run itself, and then compare it with the main branch in Branch Review. That might be the end of the journey, but if the main branch is _also_ failing your policy, you can use high-level analytics to see when the score originally changed, and find the specific cause by comparing two runs from around that time. This helps detect where code was force merged, or when content served in the application had accessibility regression unrelated to code changes.
+如上所述，有时您可能需要在多个系统之间移动以追踪问题。例如，如果结果API发出信号表明功能分支上的构建未通过您的无障碍标准，您可能会点击进入运行本身，然后在分支评审中将其与主分支进行比较。这可能是旅程的终点，但如果主分支也未通过您的策略，您可以使用高层分析查看分数最初何时变化，并通过比较该时间前后的两次运行找到具体原因。这有助于检测代码被强制合并的位置，或应用程序中提供的内容何时出现与代码变更无关的无障碍回归。
 
-As you use these tools, remember to hit the "Submit Feedback" button any time you see something that could be improved to help you understand what's important and what's changing.
+在使用这些工具时，请记住点击"提交反馈"按钮，任何时候看到可以改进的地方以帮助您理解什么是重要的以及发生了什么变化。

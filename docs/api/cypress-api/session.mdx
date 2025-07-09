@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.session | Cypress Documentation'
-description: 'A collection of async session-related helper methods intended to be used alongside the cy.session() command.'
+title: 'Cypress.session | Cypress 文档'
+description: '一组异步会话相关的辅助方法，旨在与 cy.session() 命令配合使用。'
 sidebar_label: session
 ---
 
@@ -8,78 +8,72 @@ sidebar_label: session
 
 # Cypress.session
 
-`Cypress.session` is a collection of async session-related helper methods
-intended to be used alongside the [`cy.session()`](/api/commands/session)
-command.
+`Cypress.session` 是一组异步会话相关的辅助方法，
+旨在与 [`cy.session()`](/api/commands/session) 命令配合使用。
 
-## Syntax
+## 语法
 
 ```javascript
-// Clear all sessions saved on the backend, including cached global sessions.
+// 清除后端保存的所有会话，包括缓存的全局会话。
 Cypress.session.clearAllSavedSessions()
-// Clear all storage and cookie date across all origins associated with the current session.
+// 清除当前会话关联的所有源的存储和cookie数据。
 Cypress.session.clearCurrentSessionData()
-// Get all storage and cookie data across all origins associated with the current session.
+// 获取当前会话关联的所有源的存储和cookie数据。
 Cypress.session.getCurrentSessionData()
-// Get all storage and cookie data saved on the backend associated with the provided session id.
+// 获取后端保存的与指定会话ID关联的所有存储和cookie数据。
 Cypress.session.getSession(id)
 ```
 
-Clearing all session and automatically re-running the spec
-`Cypress.session.clearAllSavedSessions()` can also be done by clicking the
-"Clear All Sessions" button in the
-[Sessions Instrument Panel](/api/commands/session#The-Instrument-Panel).
+清除所有会话并自动重新运行测试
+`Cypress.session.clearAllSavedSessions()` 也可以通过点击
+[会话仪表盘](/api/commands/session#The-Instrument-Panel)中的
+"Clear All Sessions" 按钮完成。
 
 <DocsImage
   src="/img/api/session/sessions-panel.png"
-  alt="Sessions Instrument Panel"
+  alt="会话仪表盘"
 />
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **id _(String)_**
 
-The name of the session used to retrieve data storage and cookie data.
+用于检索存储和cookie数据的会话名称。
 
-## Examples
+## 示例
 
-### Clearing the all session data
+### 清除所有会话数据
 
-By default, Cypress will clear the current session data **before** each test
-when `testIsolation` is enabled. You can also remove all cached session data
-with `Cypress.session.clearAllSavedSessions()`.
+默认情况下，当启用 `testIsolation` 时，Cypress 会在**每个测试前**清除当前会话数据。
+你也可以使用 `Cypress.session.clearAllSavedSessions()` 移除所有缓存的会话数据。
 
 ```js
 Cypress.session.clearAllSavedSessions()
 ```
 
-### Clearing the current session data when testIsolation is disabled
+### 当 testIsolation 禁用时清除当前会话数据
 
-By default, Cypress will clear the current session data **before** each test
-when `testIsolation` is enabled. If you have disabled `testIsolation` for a
-suite, it can be helpful to clear the current session data in a `before()` block
-to ensure the suite started in a clean test slate.
+默认情况下，当启用 `testIsolation` 时，Cypress 会在**每个测试前**清除当前会话数据。
+如果你为测试套件禁用了 `testIsolation`，可以在 `before()` 块中清除当前会话数据，
+以确保套件从一个干净的测试状态开始。
 
 ```js
 describe('Dashboard', { testIsolation: false }, () => {
   before(() => {
-    // ensure clean test slate for these tests
+    // 确保这些测试从一个干净的状态开始
     cy.then(Cypress.session.clearCurrentSessionData)
   })
 })
 ```
 
-### Verified the Applied Session Data
+### 验证应用的会话数据
 
-To check all cookies, localStorage and sessionStorage that was applied after
-`cy.session()` completes, you can use `Cypress.session.getCurrentSessionData()`.
-This can be helpful for quickly analyzing the current browser context while
-writing your `cy.session()` command.
+要检查 `cy.session()` 完成后应用的所有 cookies、localStorage 和 sessionStorage，
+可以使用 `Cypress.session.getCurrentSessionData()`。
+这在编写 `cy.session()` 命令时快速分析当前浏览器上下文非常有用。
 
-Since this is an all-in-one helper of the `cy.getAllCookies()`,
-`cy.getAllLocalStorage()` and `cy.getAllSessionStorage()` commands, we generally
-recommend leveraging these commands for asserting the correct session data has
-been applied in the session validation block.
+由于这是 `cy.getAllCookies()`、`cy.getAllLocalStorage()` 和 `cy.getAllSessionStorage()` 
+命令的一体化辅助方法，我们通常建议在会话验证块中使用这些命令来断言正确的会话数据是否已应用。
 
 ```js
 it('debug session', () => {
@@ -93,14 +87,11 @@ it('debug session', () => {
 })
 ```
 
-### Debugging Cached Session Data
+### 调试缓存的会话数据
 
-If your session seems to be recreated more than expected, or doesn't seem to be
-applying the cookies, `localStorage` or `sessionStorage` data that you'd expect,
-you can use `Cypress.session.getSession(id)` to view what session data has been
-cached by `cy.session()`. If you are missing any data, your setup and/or
-validate function may not be waiting long enough for all attributes to be
-applied to there page before the `cy.session()` command saves and finishes.
+如果你的会话似乎比预期更频繁地重建，或者没有应用你预期的 cookies、`localStorage` 或 `sessionStorage` 数据，
+可以使用 `Cypress.session.getSession(id)` 查看 `cy.session()` 缓存了哪些会话数据。
+如果缺少任何数据，你的设置和/或验证函数可能没有等待足够长的时间让所有属性在 `cy.session()` 命令保存并完成之前应用到页面。
 
 ```js
 it('debug session', () => {
@@ -114,6 +105,6 @@ it('debug session', () => {
 })
 ```
 
-## See also
+## 另请参阅
 
 - [`cy.session()`](/api/commands/session)

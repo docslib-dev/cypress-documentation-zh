@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.Cookies | Cypress Documentation'
-description: Generate logs to the console whenever any cookies are modified in Cypress.
+title: 'Cypress.Cookies | Cypress 文档'
+description: 当 Cypress 中任何 cookie 被修改时，在控制台生成日志。
 sidebar_label: Cookies
 sidebar_position: 70
 ---
@@ -9,42 +9,38 @@ sidebar_position: 70
 
 # Cypress.Cookies
 
-`Cookies.debug()` enables you to generate logs to the console whenever any
-cookies are modified.
+`Cookies.debug()` 允许你在任何 cookie 被修改时在控制台生成日志。
 
-## Syntax
+## 语法
 
 ```javascript
 Cypress.Cookies.debug(enable, options)
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **enable _(Boolean)_**
 
-Whether cookie debugging should be enabled.
+是否启用 cookie 调试功能。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to control the behavior of `Cookies.debug()`.
+传入一个选项对象来控制 `Cookies.debug()` 的行为。
 
-| option  | description                                         | default |
-| ------- | --------------------------------------------------- | ------- |
-| verbose | Whether or not to display the entire cookie object. | true    |
+| 选项     | 描述                                          | 默认值  |
+| -------- | --------------------------------------------- | ------- |
+| verbose  | 是否显示完整的 cookie 对象。                  | true    |
 
-## Examples
+## 示例
 
-### Debug
+### 调试
 
-#### Log when cookie values are created, modified or deleted
+#### 当 cookie 值被创建、修改或删除时记录日志
 
-By turning on debugging, Cypress will automatically generate logs to the console
-when it _sets_ or _clears_ cookie values. This is useful to help you understand
-how Cypress clears cookies before each test, and is useful to visualize how to
-handle preserving cookies in between tests.
+通过启用调试功能，Cypress 在 _设置_ 或 _清除_ cookie 值时会自动在控制台生成日志。这有助于你理解 Cypress 如何在每个测试前清除 cookie，并可视化如何在测试之间保留 cookie。
 
 ```javascript
-Cypress.Cookies.debug(true) // now Cypress will log when it alters cookies
+Cypress.Cookies.debug(true) // 现在 Cypress 会在操作 cookie 时记录日志
 
 cy.clearCookie('foo')
 cy.setCookie('foo', 'bar')
@@ -52,44 +48,42 @@ cy.setCookie('foo', 'bar')
 
 <DocsImage
   src="/img/api/cookies/cookies-in-console-log.png"
-  alt="Console log when debugging cookies"
+  alt="调试 cookie 时的控制台日志"
 />
 
-#### Turn off verbose debugging output
+#### 关闭详细调试输出
 
-By default Cypress will log the cookie object which allows you to inspect all of
-its properties. However you may not need that level of detail and you can turn
-this off.
+默认情况下，Cypress 会记录完整的 cookie 对象，以便你可以检查其所有属性。但你可能不需要这么详细的信息，可以关闭此功能。
 
 ```javascript
 Cypress.Cookies.debug(true, { verbose: false })
 ```
 
-Now when Cypress logs cookies they will only include the `name` and `value`.
+现在，Cypress 在记录 cookie 时只会包含 `name` 和 `value`。
 
 <DocsImage
   src="/img/api/cookies/debugger-console-log-of-cookies.png"
-  alt="Console log cookies with debug"
+  alt="使用调试功能记录 cookie 的控制台日志"
 />
 
-Debugging will be turned on until you explicitly turn it off.
+调试功能会一直保持启用状态，直到你显式关闭它。
 
 ```javascript
-Cypress.Cookies.debug(false) // now debugging is turned off
+Cypress.Cookies.debug(false) // 现在调试功能已关闭
 ```
 
-## History
+## 历史版本
 
-| Version                                    | Changes                                                                                       |
-| ------------------------------------------ | --------------------------------------------------------------------------------------------- |
-| [11.0.0](/app/references/changelog#11-0-0) | Removed `preserveOnce` and `defaults`                                                         |
-| [9.7.0](/app/references/changelog#9-7-0)   | Deprecated `preserveOnce` and `defaults`                                                      |
-| [5.0.0](/app/references/changelog#5-0-0)   | Renamed `whitelist` option to `preserve`                                                      |
-| [0.16.1](/app/references/changelog#0-16-1) | `{verbose: false}` option added                                                               |
-| [0.16.0](/app/references/changelog#0-16-0) | Removed support for `Cypress.Cookies.get`, `Cypress.Cookies.set` and `Cypress.Cookies.remove` |
-| [0.12.4](/app/references/changelog#0-12-4) | `Cypress.Cookies` API added                                                                   |
+| 版本                                     | 变更                                                                                       |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------- |
+| [11.0.0](/app/references/changelog#11-0-0) | 移除了 `preserveOnce` 和 `defaults`                                                       |
+| [9.7.0](/app/references/changelog#9-7-0)   | 弃用了 `preserveOnce` 和 `defaults`                                                      |
+| [5.0.0](/app/references/changelog#5-0-0)   | 将 `whitelist` 选项重命名为 `preserve`                                                   |
+| [0.16.1](/app/references/changelog#0-16-1) | 新增 `{verbose: false}` 选项                                                             |
+| [0.16.0](/app/references/changelog#0-16-0) | 移除了对 `Cypress.Cookies.get`、`Cypress.Cookies.set` 和 `Cypress.Cookies.remove` 的支持 |
+| [0.12.4](/app/references/changelog#0-12-4) | 新增 `Cypress.Cookies` API                                                               |
 
-## See also
+## 另请参阅
 
 - [`cy.clearCookie()`](/api/commands/clearcookie)
 - [`cy.clearCookies()`](/api/commands/clearcookies)

@@ -1,192 +1,163 @@
 ---
-title: 'Slack Integration for Cypress | Cypress Documentation'
-description: 'Setup Slack notifications on failed runs, passed runs, and flaky tests for your Cypress Cloud organization and projects.'
+title: 'Cypress的Slack集成 | Cypress文档'
+description: '为您的Cypress Cloud组织和项目设置失败运行、通过运行和不稳定测试的Slack通知'
 sidebar_position: 40
 sidebar_label: Slack
 ---
 
 <ProductHeading product="cloud" />
 
-# Slack Integration
+# Slack集成
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 您将学习到
 
-- How to install the Cypress integration for Slack
-- How to configure Slack notifications on failed runs, passed runs, and flaky tests
-- How to manage Slack notifications at the organization and project level
+- 如何安装Cypress的Slack集成
+- 如何配置失败运行、通过运行和不稳定测试的Slack通知
+- 如何在组织和项目级别管理Slack通知
 
 :::
 
-Cypress's Slack integration provides real-time results for your Cypress tests, all in one place - improving remote
-collaboration and giving wider visibility into test failures and flake, [UI Coverage](/ui-coverage/get-started/introduction),
-and [Cypress Accessibility](/accessibility/get-started/introduction) results.
+Cypress的Slack集成提供Cypress测试的实时结果，所有信息集中在一处 - 提升远程协作效率，并让测试失败、不稳定测试、[UI覆盖率](/ui-coverage/get-started/introduction)和[Cypress无障碍测试](/accessibility/get-started/introduction)结果获得更广泛的可见性。
 
-The Cypress integration for Slack allows you to:
+Cypress的Slack集成允许您：
 
-- Improve cross-team collaboration by instantly surfacing Cypress results to the teams that need visibility
-- Confirm that key tests pass prior to launching new products or features
-- Reduce the time it takes to catch failed tests
+- 通过即时向需要可见性的团队展示Cypress结果，改善跨团队协作
+- 在发布新产品或功能前确认关键测试已通过
+- 减少发现失败测试所需的时间
 
 <DocsVideo
   src="https://www.youtube.com/embed/hnDPz7dognY?si=PRRy4f5n6f1jzfVJ"
-  title="Cypress app for Slack"
+  title="Slack上的Cypress应用"
 />
 
-## Getting Started
+## 开始使用
 
-**You need three things to get started:**
+**您需要准备以下三件事：**
 
-- A Cypress Cloud account
-- The ability to configure Cypress Cloud integrations - you must be an **admin** or the **owner** of your Cypress Cloud organization.
-- The ability to authorize Slack apps - by default, Slack allows **any workspace member** to authorize apps,
-  however workspace owners may require app approvals before installation. See this [Slack help article](https://slack.com/help/articles/202035138-Add-apps-to-your-Slack-workspace) for more details.
+- 一个Cypress Cloud账户
+- 配置Cypress Cloud集成的权限 - 您必须是Cypress Cloud组织的**管理员**或**所有者**
+- 授权Slack应用的权限 - 默认情况下，Slack允许**任何工作区成员**授权应用，但工作区所有者可能要求在安装前审批应用。详情请参阅[Slack帮助文章](https://slack.com/help/articles/202035138-Add-apps-to-your-Slack-workspace)
 
-## Install the Cypress app for Slack
+## 安装Slack上的Cypress应用
 
-1. In the Cypress Cloud, visit the **Integrations** page for the organization you wish to integrate with Slack.
-2. Click the **Enable** button in the **Slack** section.
-3. A popup window will be displayed requesting permission for Cypress to access the
-   workspace.
-4. After you approve the app permissions, you can choose your Slack **workspace** and **channel** to
-   associate with the installation.
+1. 在Cypress Cloud中，访问您希望与Slack集成的组织的**集成**页面
+2. 点击**Slack**部分的**启用**按钮
+3. 将显示一个弹出窗口，请求Cypress访问工作区的权限
+4. 批准应用权限后，您可以选择Slack**工作区**和**频道**与安装关联
 
-Now Cypress will post run results for all projects in your organization to the specified Slack channel.
+现在Cypress会将您组织中所有项目的运行结果发布到指定的Slack频道。
 
-## Slack configuration
+## Slack配置
 
-The Slack messages can be tailored to match your teams' needs. A few options include:
+Slack消息可以根据团队需求进行定制。一些选项包括：
 
-- Sending results to one or more public or private Slack channels or directly to a specific user.
-- Set notification preferences for when and where run results should be posted.
-- Configure at the organization-level and/or project-level to support multiple teams working on separate projects.
+- 将结果发送到一个或多个公开或私有的Slack频道，或直接发送给特定用户
+- 设置运行结果发布的时间和位置的通知偏好
+- 在组织级别和/或项目级别配置，以支持多个团队在单独项目上工作
 
-### Per-Organization vs per-project configuration
+### 组织级与项目级配置
 
-The following describes where to go to configure Slack for an organization and a project.
+以下描述如何为组织和项目配置Slack。
 
-#### Organization settings
+#### 组织设置
 
-Configure Slack for the organization:
+为组织配置Slack：
 
-1. Navigate to the **Integrations** page for the organization you wish to configure.
-2. Within the **Slack** integration, click **Configure**.
-3. Configure the app.
+1. 导航到您希望配置的组织的**集成**页面
+2. 在**Slack**集成中，点击**配置**
+3. 配置应用
 
-#### Project settings
+#### 项目设置
 
-Configurate Slack for a project:
+为项目配置Slack：
 
-1. Navigate to the **Project Settings** page for the project you wish to configure.
-2. Click on the **Integrations** tab within the **Project Settings** page.
-3. Configure the app with the **Slack Integration** section.
+1. 导航到您希望配置的项目的**项目设置**页面
+2. 在**项目设置**页面中点击**集成**标签
+3. 在**Slack集成**部分配置应用
 
-### Slack channels
+### Slack频道
 
-You can have Cypress Cloud post run results to specific channels. To add a
-channel:
+您可以让Cypress Cloud将运行结果发布到特定频道。添加频道：
 
-1. Navigate to the **Slack** configuration page.
-2. Click **Add Slack Channel**.
-3. You'll see a popup window that allows you to choose the channel or individual to associate with the organization.
-4. Search for and selecting the channel messages should post to.
+1. 导航到**Slack**配置页面
+2. 点击**添加Slack频道**
+3. 您将看到一个弹出窗口，允许您选择与组织关联的频道或个人
+4. 搜索并选择消息应发布到的频道
 
-Cypress Cloud will begin to post run results to the channel.
+Cypress Cloud将开始将运行结果发布到该频道。
 
-### Direct messages
+### 直接消息
 
-You can have Cypress Cloud post run results as a direct message to a single user. To post to a direct message:
+您可以让Cypress Cloud将运行结果作为直接消息发送给单个用户。发送直接消息：
 
-1. Navigate to the **Slack** configuration page
-2. Click **Add Slack Channel**.
-3. You'll see a popup window that allows you to choose the channel or individual to associate
-   with the organization.
-4. Search for and select the user that messages should be sent to.
+1. 导航到**Slack**配置页面
+2. 点击**添加Slack频道**
+3. 您将看到一个弹出窗口，允许您选择与组织关联的频道或个人
+4. 搜索并选择消息应发送到的用户
 
-Cypress Cloud will begin to send run results to this user.
+Cypress Cloud将开始向该用户发送运行结果。
 
-## Notification preferences
+## 通知偏好
 
-By default, Cypress Cloud will post a Slack message to each configured channel
-only for failing runs. However, you can select any combination of the followings preferences:
+默认情况下，Cypress Cloud仅针对失败的运行向每个配置的频道发布Slack消息。但您可以选择以下任意组合的偏好：
 
-- **Failed runs**: will notify on runs with a _failed_ status.
-- **Passed runs**: will notify on runs with a _passed_ status.
-- **Flaky tests**: will notify on runs that have an identified _flaky_ test.
+- **失败的运行**：将通知状态为_失败_的运行
+- **通过的运行**：将通知状态为_通过_的运行
+- **不稳定的测试**：将通知识别出_不稳定_测试的运行
 
-To set notification preferences:
+设置通知偏好：
 
-1. Navigate to Slack configuration page
-2. Select the notification preferences for each channel
+1. 导航到Slack配置页面
+2. 为每个频道选择通知偏好
 
-### Filter notifications by tag or run group
+### 按标签或运行组过滤通知
 
-When configuring at the project-level, you can filter notifications posted to Slack based on a
-[tag](/app/references/command-line#cypress-run-tag-lt-tag-gt) or
-[group](/app/references/command-line#cypress-run-group-lt-name-gt) the run was
-recorded with. This can be helpful to only post notifications on certain runs,
-like those to a staging or release environment.
+在项目级别配置时，您可以根据运行记录时使用的[标签](/app/references/command-line#cypress-run-tag-lt-tag-gt)或[组](/app/references/command-line#cypress-run-group-lt-name-gt)过滤发布到Slack的通知。这有助于仅针对某些运行（如预发布或发布环境）发布通知。
 
-1. Navigate to the **Slack** configuration page
-2. Under **Tags**, select the **Tag** dropdown for the desired integration and
-   select which tag(s) to filter. If more than one tag is selected the Slack message will be sent
-   if any of the tags were associated with the run.
-3. Under **Run Groups**, select the **Run Group** dropdown for the desired integration and
-   select which run group(s) to filter. If more than one run group is selected the Slack message will be
-   sent if any of the run groups were associated with the run.
+1. 导航到**Slack**配置页面
+2. 在**标签**下，为所需集成选择**标签**下拉菜单，并选择要过滤的标签。如果选择多个标签，只要运行关联了任一标签，就会发送Slack消息
+3. 在**运行组**下，为所需集成选择**运行组**下拉菜单，并选择要过滤的运行组。如果选择多个运行组，只要运行关联了任一运行组，就会发送Slack消息
 
-If both a tag and run group are selected, only a run associated with both criteria will
-trigger a message to be sent to Slack.
+如果同时选择了标签和运行组，只有同时满足这两个条件的运行才会触发向Slack发送消息。
 
-### Mute a channel
+### 静音频道
 
-If you want Cypress Cloud to temporarily stop posting Slack messages to a
-certain channel, you can **Mute** that channel. This allows you to easily pause
-and resume notifications for a specific channel without losing the configuration
-you've put in place.
+如果您希望Cypress Cloud暂时停止向某个频道发布Slack消息，可以**静音**该频道。这允许您轻松暂停和恢复特定频道的通知，而不会丢失已配置的设置。
 
-1. Navigate to the **Slack** configuration page
-2. Toggle the **Active** selector for each Slack channel you want muted.
+1. 导航到**Slack**配置页面
+2. 切换每个要静音的Slack频道的**活跃**选择器
 
-### Remove a Slack channel
+### 移除Slack频道
 
-You can have Cypress Cloud stop posting notifications to a channel. You can
-remove all Slack channels if you'd prefer to disable global notifications
-altogether in favor of per-project notifications.
+您可以让Cypress Cloud停止向某个频道发布通知。您也可以移除所有Slack频道，以完全禁用全局通知，转而使用项目级通知。
 
-1. Navigate to the **Slack** configuration page
-2. Under **Actions**, select **Delete** for each Slack channel you want
-   deleted.
+1. 导航到**Slack**配置页面
+2. 在**操作**下，为每个要删除的Slack频道选择**删除**
 
-## Remove the integration
+## 移除集成
 
-You can completely remove the Cypress integration for Slack from your workspace.
-This will remove the `@cypress` bot from your workspace and will delete all of the
-Slack configurations you've set in Cypress Cloud. **You cannot undo this**, but you
-will be able to install the Cypress integration for Slack again in the future.
+您可以从工作区完全移除Cypress的Slack集成。这将从您的工作区移除`@cypress`机器人，并删除您在Cypress Cloud中设置的所有Slack配置。**此操作不可撤销**，但未来您可以重新安装Cypress的Slack集成。
 
-1. Navigate to the **Integrations** page for the organization with the installed
-   integration.
-2. Within the **Slack Integration**, click **Configure**.
-3. Click **Uninstall Slack Integration** to uninstall the Cypress integration
-   for Slack.
+1. 导航到已安装集成的组织的**集成**页面
+2. 在**Slack集成**中，点击**配置**
+3. 点击**卸载Slack集成**以卸载Cypress的Slack集成
 
-## Security and compliance
+## 安全与合规
 
-Review our [Privacy Policy](https://on.cypress.io/privacy-policy) for information about how the Cypress app for Slack collects and
-manages your information.
+请查阅我们的[隐私政策](https://on.cypress.io/privacy-policy)，了解Slack上的Cypress应用如何收集和管理您的信息。
 
-### Authorizations
+### 授权
 
-When authorized, Cypress can:
+授权后，Cypress可以：
 
-- View information about a user's identity
-- Post messages to specific channels in Slack & direct message conversations
-- Show previews of cloud.cypress.io URLs in messages
-- View URLs from cloud.cypress.io
+- 查看用户身份信息
+- 向Slack中的特定频道和直接消息对话发布消息
+- 在消息中显示cloud.cypress.io URL的预览
+- 查看来自cloud.cypress.io的URL
 
-### App scopes
+### 应用权限范围
 
-- User token scopes: [`links:read`](https://api.slack.com/scopes/links:read), [`links:write`](https://api.slack.com/scopes/links:write)
-- Bot token scopes: [`chat:write`](https://api.slack.com/scopes/chat:write), [`incoming-webhook`](https://api.slack.com/scopes/incoming-webhook), [`links:read`](https://api.slack.com/scopes/links:read), [`links:write`](https://api.slack.com/scopes/links:write)
+- 用户令牌范围：[`links:read`](https://api.slack.com/scopes/links:read), [`links:write`](https://api.slack.com/scopes/links:write)
+- 机器人令牌范围：[`chat:write`](https://api.slack.com/scopes/chat:write), [`incoming-webhook`](https://api.slack.com/scopes/incoming-webhook), [`links:read`](https://api.slack.com/scopes/links:read), [`links:write`](https://api.slack.com/scopes/links:write)

@@ -1,5 +1,5 @@
 // @ts-check
-// Note: type annotations allow type checking and IDEs autocompletion
+// 注意：类型注解允许类型检查和IDE自动补全
 
 const darkCodeTheme = require('./src/theme/prism-material-oceanic')
 const { default: remarkDirective } = require('remark-directive')
@@ -15,19 +15,17 @@ const prettierConfig = JSON.parse(fs.readFileSync('./.prettierrc', 'utf-8'))
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Cypress Documentation',
-  tagline:
-    'Fast, easy and reliable testing for anything that runs in a browser.',
-  url: 'https://docs.cypress.io',
+  title: 'Cypress 官方文档中文版',
+  tagline: '为浏览器中运行的任何内容提供快速、简单且可靠的测试。',
+  url: 'https://cypress.docslib.dev',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenAnchors: 'throw',
   onBrokenMarkdownLinks: 'throw',
   favicon: undefined,
 
-  // Even if you don't use internalization, you can use this field to set useful
-  // metadata like html lang. For example, if your site is Chinese, you may want
-  // to replace "en" with "zh-Hans".
+  // 即使不使用国际化，也可以使用此字段设置有用的元数据，如html lang。
+  // 例如，如果您的站点是中文的，您可能希望将"en"替换为"zh-Hans"。
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -100,7 +98,7 @@ const config = {
       return {
         name: 'docusaurus-tailwindcss',
         configurePostCss(postcssOptions) {
-          // Appends TailwindCSS and AutoPrefixer.
+          // 追加TailwindCSS和AutoPrefixer。
           postcssOptions.plugins.push(require('tailwindcss'))
           postcssOptions.plugins.push(require('autoprefixer'))
           return postcssOptions
@@ -116,14 +114,14 @@ const config = {
         style: 'dark',
         logo: {
           href: '/app/get-started/why-cypress',
-          alt: 'Cypress Logo',
+          alt: 'Cypress 标志',
           src: '/img/logo/cypress-logo-light.svg',
           srcDark: '/img/logo/cypress-logo-dark.svg',
         },
         items: [
           {
             to: '/app/get-started/why-cypress',
-            label: 'App',
+            label: '应用',
             activeBasePath: 'app',
           },
           {
@@ -133,66 +131,66 @@ const config = {
           },
           {
             to: '/cloud/get-started/introduction',
-            label: 'Cloud',
+            label: '云服务',
             activeBasePath: 'cloud',
           },
           {
             to: '/ui-coverage/get-started/introduction',
-            label: 'UI Coverage',
+            label: 'UI覆盖率',
             activeBasePath: 'ui-coverage',
           },
           {
             to: '/accessibility/get-started/introduction',
-            label: 'Accessibility',
+            label: '无障碍性',
             activeBasePath: 'accessibility',
           },
           {
             to: 'https://learn.cypress.io?utm_medium=nav&utm_source=docs.cypress.io&utm_content=Learn',
-            label: 'Learn',
+            label: '学习',
           },
         ],
       },
-      // optional, can be commented out
-      // Styles for this are controlled in src/css/announcement-bar.scss
+      // 可选，可以注释掉
+      // 样式在src/css/announcement-bar.scss中控制
       announcementBar: {
-        //give id a unique value to get a new announcement bar to appear
+        //给id一个唯一值以使新的公告栏出现
         id: 'ga-ui-cov-a11y',
-        content: `📢 NEW! Improve app quality with instant insights using <a href="https://www.cypress.io/accessibility?utm_medium=accouncement-banner&utm_source=docs.cypress.io&utm_content=Cypress Accessibility">Cypress Accessibility</a> or <a href="https://www.cypress.io/ui-coverage?utm_medium=announcement-banner&utm_source=docs.cypress.io&utm_content=UI Coverage">UI Coverage</a>.`,
+        content: `📢 新功能！使用<a href="https://www.cypress.io/accessibility?utm_medium=accouncement-banner&utm_source=docs.cypress.io&utm_content=Cypress Accessibility">Cypress 无障碍性</a>或<a href="https://www.cypress.io/ui-coverage?utm_medium=announcement-banner&utm_source=docs.cypress.io&utm_content=UI Coverage">UI覆盖率</a>即时洞察提升应用质量。`,
         isCloseable: true,
       },
       footer: {
         style: 'dark',
         links: [
            {
-            title: 'Solutions',
+            title: '解决方案',
             items: [
               {
-                label: 'Cypress App',
+                label: 'Cypress 应用',
                 href: 'https://www.cypress.io/features?utm_medium=footer&utm_source=docs.cypress.io&utm_content=Cypress App',
               },
               {
-                label: 'Cypress Cloud',
+                label: 'Cypress 云服务',
                 href: 'https://www.cypress.io/cloud?utm_medium=footer&utm_source=docs.cypress.io&utm_content=Cypress Cloud',
               },
               {
-                label: 'UI Coverage',
+                label: 'UI覆盖率',
                 href: 'https://www.cypress.io/ui-coverage?utm_medium=footer&utm_source=docs.cypress.io&utm_content=UI Coverage',
               },
               {
-                label: 'Cypress Accessibility',
+                label: 'Cypress 无障碍性',
                 href: 'https://www.cypress.io/accessibility?utm_medium=footer&utm_source=docs.cypress.io&utm_content=Cypress Accessibility',
               },
             ],
           },
           {
-            title: 'Learn',
+            title: '学习',
             items: [
               {
-                label: 'Real World App',
+                label: '真实世界应用',
                 href: 'https://github.com/cypress-io/cypress-realworld-app',
               },
               {
-                label: 'Real World Testing',
+                label: '真实世界测试',
                 href: 'https://learn.cypress.io',
               },
               {
@@ -202,7 +200,7 @@ const config = {
             ],
           },
           {
-            title: 'Community',
+            title: '社区',
             items: [
               {
                 label: 'Discord',
@@ -213,69 +211,70 @@ const config = {
                 href: 'https://twitter.com/Cypress_io',
               },
               {
-                label: 'GitHub Discussions',
+                label: 'GitHub 讨论',
                 href: 'https://github.com/cypress-io/cypress/discussions',
               },
             ],
           },
           {
-            title: 'Company',
+            title: '公司',
             items: [
               {
-                label: 'About',
+                label: '关于我们',
                 href: 'https://www.cypress.io/about-us?utm_medium=footer&utm_source=docs.cypress.io&utm_content=About',
               },
               {
-                label: 'Cypress Blog',
+                label: 'Cypress 博客',
                 href: 'https://www.cypress.io/blog?utm_medium=footer&utm_source=docs.cypress.io&utm_content=Cypress Blog',
               },
               {
-                label: 'Careers',
+                label: '职业',
                 href: 'https://www.cypress.io/careers?utm_medium=footer&utm_source=docs.cypress.io&utm_content=Careers',
               },
               {
-                label: 'Support',
+                label: '支持',
                 href: 'https://www.cypress.io/support?utm_medium=footer&utm_source=docs.cypress.io&utm_content=Support',
               },
             ],
           },
         ],
-        copyright: `© ${new Date().getFullYear()} Cypress.io. All rights reserved.`,
+        copyright: `© ${new Date().getFullYear()} Cypress.io。保留所有权利。`,
       },
       algolia: {
-        // The application ID provided by Algolia
+        // Algolia提供的应用ID
         appId: 'R9KDA5FMJB',
 
-        // Public API key: it is safe to commit it
+        // 公共API密钥：可以安全提交
         apiKey: 'b4af59e23bc2fa05281af7dcf13fcae5',
 
         indexName: 'cypress_docs',
 
-        // Optional: see doc section below
+        // 可选：见下文文档部分
         contextualSearch: false,
 
-        // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
+        // 可选：指定应通过window.location而不是history.push进行导航的域。
+        // 当我们的Algolia配置爬取多个文档站点并希望通过window.location.href导航到它们时很有用。
         // externalUrlRegex: "external\\.com|domain\\.com",
 
-        // Optional: Algolia search parameters
+        // 可选：Algolia搜索参数
         // searchParameters: {},
 
-        // Optional: path for search page that enabled by default (`false` to disable it)
+        // 可选：默认启用的搜索页面路径（`false`禁用）
         // searchPagePath: "search",
 
-        //... other Algolia params
+        //... 其他Algolia参数
       },
       prism: {
         theme: darkCodeTheme,
         darkTheme: darkCodeTheme,
       },
       zoom: {
-        selector: ':not(.mediaImage, .navbar__logo img, .logo, .br-ui)', // don't zoom these images
+        selector: ':not(.mediaImage, .navbar__logo img, .logo, .br-ui)', // 不缩放这些图像
         background: {
           light: 'rgb(50, 50, 50)',
           dark: 'rgb(50, 50, 50)',
         },
-        // options you can specify via https://github.com/francoischalifour/medium-zoom#usage
+        // 可以通过https://github.com/francoischalifour/medium-zoom#usage指定的选项
         config: {
           scrollOffset: 60,
           margin: 100,

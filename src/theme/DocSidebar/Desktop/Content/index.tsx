@@ -40,8 +40,8 @@ export default function DocSidebarDesktopContent({
     <nav
       aria-label={translate({
         id: 'theme.docs.sidebar.navAriaLabel',
-        message: 'Docs sidebar',
-        description: 'The ARIA label for the sidebar navigation',
+        message: '文档侧边栏',
+        description: '侧边栏导航的ARIA标签',
       })}
       className={clsx(
         'menu thin-scrollbar',

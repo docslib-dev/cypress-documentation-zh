@@ -1,113 +1,113 @@
 ---
-title: 'Changelog | Cypress Accessibility'
-description: 'Stay up to date with the latest features, improvements, and bug fixes for Cypress Accessibility.'
-sidebar_label: Changelog
+title: '更新日志 | Cypress 无障碍测试'
+description: '了解 Cypress 无障碍测试的最新功能、改进和错误修复。'
+sidebar_label: 更新日志
 sidebar_position: 200
 ---
 
 <ProductHeading product="accessibility" />
 
-# Changelog
+# 更新日志
 
-## Week of 3/24/2025
+## 2025年3月24日当周
 
-- Cypress Accessibility results are now included in the [Data Extract API](/cloud/integrations/data-extract-api) so that you can retrieve data over time.
+- Cypress 无障碍测试结果现已包含在[数据提取API](/cloud/integrations/data-extract-api)中，以便您获取历史数据。
 
-## Week of 3/10/2025
+## 2025年3月10日当周
 
-- The [Cypress Accessibility Results API](/accessibility/results-api) has been updated with additional details about accessibility scores and failed element counts at the run level. Also, view-level reporting has been added, breaking out accessibility report data by the pages and components covered in the report. These improvements support more advanced workflows based on the accessibility data in the API, such as alerting a specific team about violations in a part of the app they own, or implementing different standards for different parts of the application.
+- [Cypress 无障碍测试结果API](/accessibility/results-api)已更新，增加了运行级别的无障碍评分和失败元素计数的详细信息。此外，新增了视图级别的报告功能，按报告中涵盖的页面和组件细分无障碍报告数据。这些改进支持基于API中无障碍数据的更高级工作流，例如向特定团队通知其负责的应用部分中的违规情况，或为应用程序的不同部分实施不同的标准。
 
-## Week of 3/03/2025
+## 2025年3月3日当周
 
-- We've upgraded our axe-core version to [4.10.2](https://docs.deque.com/axe-release-impact/4.10.2/en/release-notes).
-- The axe-core version used to generate a report can now be viewed in the Run Properties tab.
+- 我们已将axe-core版本升级至[4.10.2](https://docs.deque.com/axe-release-impact/4.10.2/en/release-notes)。
+- 现在可以在运行属性选项卡中查看生成报告时使用的axe-core版本。
 
-## Week of 2/24/2025
+## 2025年2月24日当周
 
-- [Cypress Accessibility Branch Review](/accessibility/core-concepts/compare-reports) has entered beta. Read the docs to learn how to compare runs and automatically spot newly introduced issues.
+- [Cypress 无障碍测试分支审查](/accessibility/core-concepts/compare-reports)进入测试阶段。阅读文档了解如何比较运行并自动发现新引入的问题。
 
-## Week of 1/13/2025
+## 2025年1月13日当周
 
-- Cypress Accessibility results are now included in the Enterprise Reporting area of Cypress Cloud. Filter by project and branch and see trends over time.
+- Cypress 无障碍测试结果现已包含在Cypress Cloud的企业报告区域中。可按项目和分支筛选并查看趋势变化。
 
-## Week of 11/11/2024
+## 2024年11月11日当周
 
-- A "Share Issue" button has been added to the element details section for each reported rule violation. This allows for easily copying the key details and related links for a particular issue into your clipboard to add to a message or to a ticket in your issue tracking system.
+- 在每个报告的规则违规的元素详情部分新增了"分享问题"按钮。这可以轻松复制特定问题的关键详情和相关链接到剪贴板，以便添加到消息或问题跟踪系统的工单中。
 
-## Week of 10/28/2024
+## 2024年10月28日当周
 
-- Our [Axe Core® versioning policy](/accessibility/core-concepts/how-it-works#Axe-Core-updates) has been published, providing a 30-day buffer between any Axe Core® releases and the adoption of those releases in Cypress Cloud.
+- 我们发布了[Axe Core®版本更新策略](/accessibility/core-concepts/how-it-works#Axe-Core-updates)，在Axe Core®发布和Cypress Cloud采用这些版本之间提供30天的缓冲期。
 
-## Week of 9/30/2024
+## 2024年9月30日当周
 
-- Cypress Accessibility results are now included in Slack messages alongside test results. [Learn more about our Slack integration here](/cloud/integrations/slack).
+- Cypress 无障碍测试结果现在与测试结果一起包含在Slack消息中。[点击此处了解我们的Slack集成详情](/cloud/integrations/slack)。
 
-## Week of 9/20/2024
+## 2024年9月20日当周
 
-- A minor bugfix was released for score calculations, to fix a scenario where some snapshots could be counted more than once if they appeared in multiple tests. This may result in a small difference in the total score for runs before and after the change.
-- Documentation updates to reflect recently released features and capabilities.
+- 发布了一个关于评分计算的小错误修复，修复了某些快照在多个测试中出现时可能被重复计算的情况。这可能导致变更前后运行总分有微小差异。
+- 文档更新以反映最近发布的功能和能力。
 
-## Week of 9/9/2024
+## 2024年9月9日当周
 
-- We have introduced the new "Rules" tab for all users. This allows you to more easily review the outcome of all the rules that were tested for, across the entire run, and see which rules have the most failing elements. This also helps you understand the exact effect of any underlying configuration on rule outcomes.
-- We have introduced new element statuses, beyond just failures. This allows Cypress Accessibility to surface any inconclusive or "manual review" items from Axe Core, as well as track and display elements whose results were explicitly ignored. Learn more in the [run-level reports](/accessibility/core-concepts/run-level-reports) [Elements section](/accessibility/core-concepts/run-level-reports#Elements).
-- Elements ignored by configuration will have results captured, but these results will not affect your score. This ensures you can use filters to peek behind the curtain and understand exactly what is being excluded from a given run's results.
-- The Detail View that displays failing elements will now also display inconclusive and (optionally) ignored elements for each rule. Inconclusive and ignored elements have distinct orange and gray icons and highlights respectively.
+- 我们为所有用户引入了新的"规则"选项卡。这使您可以更轻松地查看整个运行中所有测试规则的执行结果，并查看哪些规则有最多的失败元素。这也有助于您了解任何底层配置对规则结果的确切影响。
+- 我们引入了新的元素状态，不仅仅是失败。这使Cypress 无障碍测试能够展示来自Axe Core的任何不确定或"需手动审查"的项目，以及跟踪和显示明确忽略的元素结果。了解更多请查看[运行级别报告](/accessibility/core-concepts/run-level-reports)的[元素部分](/accessibility/core-concepts/run-level-reports#Elements)。
+- 被配置忽略的元素将捕获结果，但这些结果不会影响您的评分。这确保您可以使用过滤器查看幕后情况，准确了解哪些内容被排除在给定运行结果之外。
+- 显示失败元素的详情视图现在还将显示每个规则的不确定和（可选）忽略元素。不确定和忽略元素分别有独特的橙色和灰色图标及高亮显示。
 
-## Week of 8/19/2024
+## 2024年8月19日当周
 
-- iFrames are now supported for accessibility checks. iFrame processing is _opt-in_ for existing customers, but new customers will begin with iFrames enabled and can choose to opt out instead. This is to avoid disrupting existing pipelines, especially because iFrame content is not _always_ something you want to include in your reports.
-- Cypress Accessibility results will now appear in [GitHub](/cloud/integrations/source-control/github), [GitLab](/cloud/integrations/source-control/gitlab) and [Bitbucket](/cloud/integrations/source-control/bitbucket) pull request and merge request comments alongside test results. Integrations can be installed and comments can be enabled in Project Settings.
+- 现在支持对iFrame进行无障碍检查。iFrame处理对现有客户是_选择加入_的，但新客户将默认启用iFrame并可选择退出。这是为了避免干扰现有流程，特别是因为iFrame内容并不总是您想要包含在报告中的内容。
+- Cypress 无障碍测试结果现在将出现在[GitHub](/cloud/integrations/source-control/github)、[GitLab](/cloud/integrations/source-control/gitlab)和[Bitbucket](/cloud/integrations/source-control/bitbucket)的拉取请求和合并请求评论中，与测试结果一起。集成可以在项目设置中安装，评论可以启用。
 
-## Week of 8/5/2024
+## 2024年8月5日当周
 
-- We now support fetching Accessibility results from CircleCI workflows with the [Results API](/accessibility/results-api).
+- 我们现在支持通过[结果API](/accessibility/results-api)从CircleCI工作流中获取无障碍测试结果。
 
-## Week of 7/29/2024
+## 2024年7月29日当周
 
-- Fetching results in Azure and Jenkins is now supported in the new [Results API](/accessibility/results-api), which enables you to programmatically fetch your run's Accessibility results in a CI environment.
+- 现在支持在新的[结果API](/accessibility/results-api)中从Azure和Jenkins获取结果，这使您可以在CI环境中以编程方式获取运行的无障碍测试结果。
 
-## Week of 7/15/2024
+## 2024年7月15日当周
 
-- The new [Results API](/accessibility/results-api), which enables you to programmatically fetch your run's Accessibility results in a CI environment, now supports fetching results in GitLab CI workflows.
+- 新的[结果API](/accessibility/results-api)现在支持从GitLab CI工作流中获取结果，这使您可以在CI环境中以编程方式获取运行的无障碍测试结果。
 
-## Week of 6/24/2024
+## 2024年6月24日当周
 
-- We have added the new [Results API](/accessibility/results-api) which enables you to programmatically fetch your run's Accessibility results in a CI environment. This allows you to review the results within CI and to determine if the results are acceptable or need to be addressed before code changes can merge.
-- View [configuration information for each run](/accessibility/configuration/overview#Viewing-Configuration-for-a-Run) in the properties tab. There, you'll find the configuration set for the project at the start of the run. This will help you understand what factors might be driving a score change. This helps distinguish config criteria changes from other factors such as changes to your application, tests, Cypress versions, and more.
+- 我们新增了[结果API](/accessibility/results-api)，使您可以在CI环境中以编程方式获取运行的无障碍测试结果。这允许您在CI中审查结果，并确定结果是否可以接受或需要在代码变更合并前解决。
+- 在属性选项卡中查看[每次运行的配置信息](/accessibility/configuration/overview#Viewing-Configuration-for-a-Run)。在那里，您将找到运行开始时为项目设置的配置。这将帮助您理解可能驱动评分变化的因素。这有助于区分配置标准变更与其他因素，如应用程序变更、测试变更、Cypress版本变更等。
 
-## Week of 5/20/2024
+## 2024年5月20日当周
 
-- Shadow DOM elements are now visible and highlighted in A11y report snapshots. By highlighting shadow DOM elements in snapshots, developers can identify and address all accessibility violations, including those within encapsulated components, thus enhancing the overall accessibility of the web application.
-- You can now click directly into the accessibility report from any respective run from the "Latest Runs" page in Cypress Cloud. This improvement streamlines access and navigation to accessibility reports, saving you time and reducing the number of steps needed to view the details.
-- We've added the ability to configure and customize your Accessibility report in Project Settings. You can set configuration through our editor equipped with linting and IntelliSense code completion. Control what should be tested or ignored in your score calculations to ensure your team is capturing what's relevant to your organization's goals.
+- Shadow DOM元素现在在无障碍报告快照中可见并高亮显示。通过在快照中高亮显示Shadow DOM元素，开发人员可以识别并解决所有无障碍违规，包括封装组件内的违规，从而提升Web应用程序的整体无障碍性。
+- 您现在可以直接从Cypress Cloud的"最新运行"页面点击进入任何相应运行的无障碍报告。这一改进简化了访问和导航到无障碍报告的流程，节省时间并减少查看详情所需的步骤。
+- 我们新增了在项目设置中配置和自定义无障碍报告的能力。您可以通过配备有linting和IntelliSense代码完成的编辑器设置配置。控制应在评分计算中测试或忽略的内容，以确保您的团队捕获与组织目标相关的内容。
 
-## Week of 4/15/2024
+## 2024年4月15日当周
 
-- We've added full depth axe-core® details for each element flagged with an accessibility violation, providing comprehensive context to help developers accurately identify and resolve issues.
+- 我们为每个标记有无障碍违规的元素添加了完整的axe-core®详情，提供全面的上下文以帮助开发人员准确识别和解决问题。
 
-## Week of 3/25/2024
+## 2024年3月25日当周
 
-- The new Violation Severity Breakdown displays a small bar graph indicating the severity level of accessibility violations across the entire run, or on the level of individual pages or components. This gives users more information at a glance about what pages have the most severe problems, and the overall makeup of their accessibility report. Pages with more severe problems will now be more obvious when scanning the report, helping users decide what pages need more investigation or which pages have the fewest problems.
+- 新的违规严重性细分显示一个小条形图，指示整个运行或单个页面或组件级别的无障碍违规严重程度。这为用户提供了更多一目了然的信息，了解哪些页面有最严重的问题，以及无障碍报告的整体构成。扫描报告时，有更严重问题的页面现在更加明显，帮助用户决定哪些页面需要更多调查或哪些页面问题最少。
 
-## Week of 3/18/2024
+## 2024年3月18日当周
 
-- You can now refine your Views list by severity or specific rule sets. For instance, isolate pages featuring "Critical" violations only, or focus solely on WCAG 2.1 A violations. If your project has varying levels of accessibility, filtering pages or components with specific types of violations can serve as an initial step to comprehend and prioritize areas with the most severe issues.
-- Cypress will now conduct accessibility checks within the Shadow DOM on all runs, expanding the accessibility testing scope.
+- 您现在可以按严重性或特定规则集细化视图列表。例如，仅隔离具有"严重"违规的页面，或仅关注WCAG 2.1 A违规。如果您的项目具有不同级别的无障碍性，筛选具有特定类型违规的页面或组件可以作为理解和优先处理问题最严重区域的初步步骤。
+- Cypress现在将在所有运行中对Shadow DOM进行无障碍检查，扩展无障碍测试范围。
 
-## Week of 2/25/2024
+## 2024年2月25日当周
 
-- We've introduced text filtering so that users can filter the "Views" list by name, making it effortless to search and locate specific items.
-- To improve clarity and context, we've also implemented a tooltip-style feature that displays the position of the highlighted elements. This means that when an accessibility violation is reported and is associated with a specific element on the screen, it's a lot easier to locate.
+- 我们引入了文本筛选功能，使用户可以按名称筛选"视图"列表，轻松搜索和定位特定项目。
+- 为了提高清晰度和上下文，我们还实现了一个工具提示式功能，显示高亮元素的位置。这意味着当报告无障碍违规并与屏幕上的特定元素关联时，定位起来会容易得多。
 
-## Week of 1/15/2024
+## 2024年1月15日当周
 
-- We've introduced a new feature that streamlines accessibility management - the aggregation of all violations into a single comprehensive report. Look for the "View all" link next to the violations count at the top of the accessibility tab. This will show you all violations detected across an entire run, regardless of what page or component they are detected on.
+- 我们引入了一个新功能，简化无障碍管理 - 将所有违规汇总到一个综合报告中。在无障碍选项卡顶部的违规计数旁边查找"查看全部"链接。这将显示在整个运行中检测到的所有违规，无论它们是在哪个页面或组件上检测到的。
 
-## Week of 12/31/2023
+## 2023年12月31日当周
 
-- Users can now discover and address accessibility violations swiftly by utilizing the newly integrated "Print Elements to Console" button within your browser's developer tools.
+- 用户现在可以通过浏览器开发者工具中新集成的"打印元素到控制台"按钮快速发现和解决无障碍违规。
 
-## Week of 12/17/2023
+## 2023年12月17日当周
 
-- Users can now view a detailed breakdown of the total number of Views (pages and/or components) and Violations detected during a specific run.
+- 用户现在可以查看特定运行中检测到的视图（页面和/或组件）和违规总数的详细细分。

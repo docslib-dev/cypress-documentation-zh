@@ -1,23 +1,22 @@
-By default, every URL visited within a test run is included in reports. However, not all URLs are relevant for your analysis. The `viewFilters` property allows you to specify patterns for URLs that should be excluded, ensuring your reports focus on meaningful parts of your application.
+默认情况下，测试运行中访问的每个URL都会包含在报告中。但并非所有URL都与您的分析相关。`viewFilters`属性允许您指定需要排除的URL模式，确保报告聚焦于应用程序的关键部分。
 
-In UI Coverage, excluding a URL excludes all application snapshots from that URL from the reports, and **also** excludes all links pointing to that URL from being counted towards coverage scores.
+在UI覆盖率分析中，排除某个URL会同时从报告中移除该URL下的所有应用快照，**并且**排除指向该URL的所有链接对覆盖率分数的贡献。
 
-## Why use view filters?
+## 为什么使用视图过滤器？
 
-- **Exclude Third-Party URLs**: If your application integrates with third-party services, you might want to exclude their URLs from analysis.
-- **Exclude Admin Pages**: URLs that are not part of the user-facing application, such as admin pages, could be excluded from reports.
-- **Reduce Noise**: Certain URLs visited during tests (e.g., error pages or redirects) may not represent meaningful user flows. Exclude these to clean up your reports.
-- **Optimize Performance**: Filtering out irrelevant URLs reduces the amount of data processed, speeding up analysis and improving report readability.
+- **排除第三方URL**：如果您的应用集成了第三方服务，可能需要排除其URL
+- **排除管理页面**：非用户界面的URL（如管理后台）可从报告中移除
+- **减少干扰**：测试中访问的某些URL（如错误页或重定向页）可能不代表有效用户流程
+- **优化性能**：过滤无关URL可减少数据处理量，加速分析并提升报告可读性
 
-## Scope
+## 作用范围
 
 :::info
-**Note:** setting `viewFilters` impacts both Accessibility and UI Coverage reports.
-Nesting this property under an `accessibility` or `uiCoverage` key is
-supported, if you need to split them up.
+**注意：**设置`viewFilters`会同时影响无障碍测试和UI覆盖率报告。
+如需分别配置，可将该属性嵌套在`accessibility`或`uiCoverage`键下。
 :::
 
-## Syntax
+## 语法
 
 ```json
 {
@@ -30,20 +29,20 @@ supported, if you need to split them up.
 }
 ```
 
-### Options
+### 选项
 
-For every URL visited and link element found, the first `viewFilters` rule for which the `pattern` matches the URL is used to either include or exclude the URL based on the `include` value. URLs that do not match any rules are included by default.
+对于每个访问的URL和发现的链接元素，系统会应用第一个匹配`pattern`的`viewFilters`规则，根据`include`值决定是否包含该URL。未匹配任何规则的URL默认会被包含。
 
-| Option    | Required | Default | Description                                                                                                                  |
-| --------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `pattern` | Required |         | A string that matches URLs using [URL Pattern API](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API) syntax. |
-| `include` | Optional | `true`  | A boolean that determines whether matching URLs should be included in the report.                                            |
+| 选项       | 必填     | 默认值  | 描述                                                                                                                       |
+| ---------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `pattern`  | 是       |         | 使用[URL Pattern API](https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API)语法匹配URL的字符串                  |
+| `include`  | 否       | `true`  | 布尔值，决定匹配的URL是否应包含在报告中                                                                                   |
 
-## Examples
+## 示例
 
-### Excluding URLs by hostname
+### 按主机名排除URL
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -56,7 +55,7 @@ For every URL visited and link element found, the first `viewFilters` rule for w
 }
 ```
 
-#### Visited URLs
+#### 访问的URL
 
 ```
 https://app.okta.com/login
@@ -64,7 +63,7 @@ https://cypress.io/home
 https://cypress.io/about
 ```
 
-#### Views shown in UI
+#### 界面显示的视图
 
 ```
 https://cypress.io/home
@@ -73,9 +72,9 @@ https://cypress.io/about
 
 ---
 
-### Including only specific URLs
+### 仅包含特定URL
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -92,7 +91,7 @@ https://cypress.io/about
 }
 ```
 
-#### Visited URLs
+#### 访问的URL
 
 ```
 https://cypress.io/dashboards
@@ -102,16 +101,16 @@ https://cypress.io/home
 https://cypress.io/login
 ```
 
-#### Views shown in UI
+#### 界面显示的视图
 
 ```
 https://cypress.io/dashboards
 https://cypress.io/dashboards/*
 ```
 
-### Excluding error pages
+### 排除错误页面
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -128,7 +127,7 @@ https://cypress.io/dashboards/*
 }
 ```
 
-#### Visited URLs
+#### 访问的URL
 
 ```
 https://cypress.io/home
@@ -136,7 +135,7 @@ https://cypress.io/404
 https://cypress.io/error/500
 ```
 
-#### Views shown in UI
+#### 界面显示的视图
 
 ```
 https://cypress.io/home

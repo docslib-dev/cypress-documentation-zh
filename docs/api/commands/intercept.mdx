@@ -1,6 +1,6 @@
 ---
-title: 'intercept | Cypress Documentation'
-description: Spy and stub network requests and responses.
+title: 'intercept | Cypress 文档'
+description: 监控和存根网络请求与响应。
 sidebar_label: intercept
 ---
 
@@ -8,60 +8,59 @@ sidebar_label: intercept
 
 # intercept
 
-Spy and stub network requests and responses.
+监控和存根网络请求与响应。
 
 :::info
 
-**Tip**: We recommend you read the
-[Network Requests](/app/guides/network-requests) guide first.
+**提示**：建议先阅读[网络请求指南](/app/guides/network-requests)。
 
 :::
 
 :::caution
 
-All intercepts are automatically cleared before every test.
+所有拦截器在每个测试前会自动清除。
 
 :::
 
-## Syntax
+## 语法
 
 ```js
-// spying only
+// 仅监控
 cy.intercept(url)
 cy.intercept(method, url)
 cy.intercept(routeMatcher)
 ```
 
-See arguments [url](#url-String-Glob-RegExp),
-[method](#method-String) and
+参数参见 [url](#url-String-Glob-RegExp)、
+[method](#method-String) 和 
 [routeMatcher](#routeMatcher-RouteMatcher)
 
 ```js
-// spying and response stubbing
+// 监控并存根响应
 cy.intercept(url, staticResponse)
 cy.intercept(method, url, staticResponse)
 cy.intercept(routeMatcher, staticResponse)
 cy.intercept(url, routeMatcher, staticResponse)
 ```
 
-See
+参见
 [staticResponse](#staticResponse-StaticResponse)
-argument
+参数
 
 ```js
-// spying, dynamic stubbing, request modification, etc.
+// 监控、动态存根、请求修改等
 cy.intercept(url, routeHandler)
 cy.intercept(method, url, routeHandler)
 cy.intercept(routeMatcher, routeHandler)
 cy.intercept(url, routeMatcher, routeHandler)
 ```
 
-See
+参见
 [routeHandler](#routeHandler-Function)
-argument
+参数
 
 ```typescript
-// Specifying request and response types
+// 指定请求和响应类型
 type CustomRequest = {
   kind: 'custom_request'
 }
@@ -69,19 +68,19 @@ type CustomResponse = {
   kind: 'custom_response'
 }
 cy.intercept<CustomRequest, CustomResponse>(url, (req) => {
-  req.body // .body of request will be of type CustomRequest
+  req.body // 请求的.body将是CustomRequest类型
   req.continue((res) => {
-    res.body // .body of request will be of type CustomResponse
+    res.body // 响应的.body将是CustomResponse类型
   })
 })
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```js
-// spying
+// 监控
 cy.intercept('/users/**')
 cy.intercept('GET', '/users*')
 cy.intercept({
@@ -90,7 +89,7 @@ cy.intercept({
   hostname: 'localhost',
 })
 
-// spying and response stubbing
+// 监控并存根响应
 cy.intercept('POST', '/users*', {
   statusCode: 201,
   body: {
@@ -98,158 +97,127 @@ cy.intercept('POST', '/users*', {
   },
 })
 
-// spying, dynamic stubbing, request modification, etc.
+// 监控、动态存根、请求修改等
 cy.intercept('/users*', { hostname: 'localhost' }, (req) => {
-  /* do something with request and/or response */
+  /* 对请求和/或响应进行操作 */
 })
 ```
 
-### Arguments
+### 参数
 
 #### <Icon name="angle-right" /> **method _(String)_**
 
-Match the route to a specific
-[HTTP method](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) (`GET`,
-`POST`, `PUT`, etc).
+匹配特定的[HTTP方法](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)（`GET`、
+`POST`、`PUT`等）。
 
 :::note
 
-If no method is defined Cypress will match all requests by default.
+如果未定义方法，Cypress默认会匹配所有请求。
 
 :::
 
 #### <Icon name="angle-right" /> **url _(String, Glob, RegExp)_**
 
-Specify the URL to match. See [Matching `url`][match-url] for examples.
+指定要匹配的URL。示例参见[匹配`url`][match-url]。
 
-Alternatively, specify the URL via the [`routeMatcher`][arg-routematcher]
-argument (below).
+或者，通过[`routeMatcher`][arg-routematcher]参数指定URL。
 
 #### <Icon name="angle-right" /> **routeMatcher _(`RouteMatcher`)_**
 
-`routeMatcher` is an object used to match the incoming HTTP requests with this
-intercepted route.
+`routeMatcher`是一个对象，用于将传入的HTTP请求与拦截的路由匹配。
 
-All properties are optional but all those that are set must match for the
-request to be intercepted. If a `string` is passed to any property, it will be
-glob-matched against the request using
-[`Cypress.minimatch`](/api/utilities/minimatch) with the `{ matchBase: true }`
-minimatch option applied.
+所有属性都是可选的，但设置的属性必须全部匹配才能拦截请求。如果向任何属性传递`string`，它将使用[`Cypress.minimatch`](/api/utilities/minimatch)和`{ matchBase: true }`选项进行全局匹配。
 
-| Option                                                | Description                                                                                                                                       |
+| 选项                                                | 描述                                                                                                                                       |
 | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| auth                                                  | HTTP Basic Authentication (`object` with keys `username` and `password`)                                                                          |
-| headers                                               | HTTP request headers (`object`)                                                                                                                   |
-| hostname                                              | HTTP request hostname                                                                                                                             |
-| https                                                 | `true`: only secure (https://) requests, `false`: only insecure (http://) requests                                                                |
-| method                                                | HTTP request method (matches any method by default)                                                                                               |
-| middleware                                            | `true`: match route first and in defined order, `false`: match route in reverse order (default)                                                   |
-| path                                                  | HTTP request path after the hostname, including query parameters                                                                                  |
-| pathname                                              | Like `path`, but without query parameters                                                                                                         |
-| port                                                  | HTTP request port(s) (`number` or `Array`)                                                                                                        |
-| query                                                 | Parsed query string (`object`)                                                                                                                    |
-| resourceType <Badge type="caution">deprecated</Badge> | The resource type of the request. See ["Request object properties"](#Request-object-properties) for a list of possible values for `resourceType`. |
-| times                                                 | Maximum number of times to match (`number`)                                                                                                       |
-| url                                                   | Full HTTP request URL                                                                                                                             |
+| auth                                                  | HTTP基本认证（包含`username`和`password`键的对象）                                                                          |
+| headers                                               | HTTP请求头（对象）                                                                                                                   |
+| hostname                                              | HTTP请求主机名                                                                                                                             |
+| https                                                 | `true`：仅匹配安全(https://)请求，`false`：仅匹配非安全(http://)请求                                                                |
+| method                                                | HTTP请求方法（默认匹配任何方法）                                                                                               |
+| middleware                                            | `true`：按定义顺序优先匹配路由，`false`：反向匹配路由（默认）                                                   |
+| path                                                  | HTTP请求路径（主机名后，包含查询参数）                                                                                  |
+| pathname                                              | 类似`path`，但不包含查询参数                                                                                                         |
+| port                                                  | HTTP请求端口（数字或数组）                                                                                                        |
+| query                                                 | 解析后的查询字符串（对象）                                                                                                                    |
+| resourceType <Badge type="caution">已弃用</Badge> | 请求的资源类型。`resourceType`可能值列表参见["请求对象属性"](#Request-object-properties)。 |
+| times                                                 | 最大匹配次数（数字）                                                                                                       |
+| url                                                   | 完整的HTTP请求URL                                                                                                                             |
 
-See [examples](#With-RouteMatcher) below.
+示例参见下文[使用RouteMatcher](#With-RouteMatcher)。
 
 #### <Icon name="angle-right" /> staticResponse (<code>[StaticResponse][staticresponse]</code>)
 
-By passing in a `StaticResponse` as the last argument, you can
-[statically define (stub) a response](#Stubbing-a-response) for matched
-requests. See [`StaticResponse` object](#StaticResponse-objects) for the list of
-properties.
+通过传递`StaticResponse`作为最后一个参数，可以为匹配的请求[静态定义（存根）响应](#Stubbing-a-response)。属性列表参见[`StaticResponse`对象](#StaticResponse-objects)。
 
-Additionally, you can pass `{ log: false }` with your `StaticResponse` to
-disable command logs for this intercept. See
-["Disabling logs for a request"](#Disabling-logs-for-a-request).
+此外，可以在`StaticResponse`中传递`{ log: false }`来禁用此拦截的命令日志。参见[禁用请求日志](#Disabling-logs-for-a-request)。
 
-See
-[Stubbing a response with a `StaticResponse` object](#With-a-StaticResponse-object)
-for an example.
+示例参见[使用`StaticResponse`对象存根响应](#With-a-StaticResponse-object)。
 
 #### <Icon name="angle-right" /> routeHandler (`Function`)
 
-The `routeHandler` function is called whenever a request is matched, with the
-first argument being the request object. From inside the callback, you have
-access to the entire request-response where you can modify the outgoing request,
-send a response, access the real response, and more.
+每当请求匹配时，会调用`routeHandler`函数，第一个参数是请求对象。在回调中，可以访问整个请求-响应周期，修改传出请求、发送响应、访问真实响应等。
 
-See ["Intercepted requests"][req] and
-[Request/Response Modification with `routeHandler`](#RequestResponse-Modification-with-routeHandler).
+参见["拦截的请求"][req]和[使用`routeHandler`修改请求/响应](#RequestResponse-Modification-with-routeHandler)。
 
 <HeaderYields />
 
-- `cy.intercept()` yields `null`, but can be aliased.
-- Waiting on an aliased `cy.intercept()` route using
-  [cy.wait()](/api/commands/wait) will yield an object that contains information
-  about the matching request/response cycle. See
-  [Using the yielded object](#Using-the-yielded-object) for examples of how to
-  use this object.
+- `cy.intercept()`返回`null`，但可以设置别名。
+- 使用[cy.wait()](/api/commands/wait)等待别名的`cy.intercept()`路由会返回一个包含匹配请求/响应周期信息的对象。示例参见[使用返回的对象](#Using-the-yielded-object)。
 
-## Examples
+## 示例
 
 :::info
 
-`cy.intercept` can be used solely for spying: to passively listen for matching
-routes and apply [aliases](#Aliasing-an-intercepted-route) to them without manipulating the
-request or its response in any way. This alone is powerful as it allows you to
-[wait](#Waiting-on-a-request) for these requests, resulting in more reliable
-tests.
+`cy.intercept`可以仅用于监控：被动监听匹配的路由并应用[别名](#Aliasing-an-intercepted-route)，而不以任何方式操作请求或其响应。这本身就很强大，因为它允许你[等待](#Waiting-on-a-request)这些请求，从而使测试更可靠。
 
 :::
 
-### Matching `url`
+### 匹配`url`
 
-You can provide the exact [URL](#Arguments) to match or use pattern-matching to
-match many URLs at once, either with globs or with regex. See
-[Glob Pattern Matching URLs](#Glob-Pattern-Matching-URLs).
+可以提供精确的[URL](#Arguments)进行匹配，或使用模式匹配一次匹配多个URL，可以是glob或正则表达式。参见[URL的Glob模式匹配](#Glob-Pattern-Matching-URLs)。
 
 ```js
-// match any request that exactly matches the URL
+// 匹配完全符合URL的任何请求
 cy.intercept('https://prod.cypress.io/users')
 
-// match any request that satisfies a glob pattern
+// 匹配满足glob模式的任何请求
 cy.intercept('/users?_limit=*')
 
-// match any request that satisfies a regex pattern
+// 匹配满足正则模式的任何请求
 cy.intercept(/\/users\?_limit=(3|5)$/)
 ```
 
-### Matching `method`
+### 匹配`method`
 
 :::caution
 
-If you don't pass in a [`method` argument][arg-method], then all HTTP methods
-(`GET`, `POST`, `PUT`, `PATCH`, `DELETE`, etc.) will match.
+如果不传递[`method`参数][arg-method]，则会匹配所有HTTP方法（`GET`、`POST`、`PUT`、`PATCH`、`DELETE`等）。
 
 :::
 
 ```js
 cy.intercept('/users')
-// matches this: GET http://localhost/users
-// ...and this, too: POST http://localhost/users
+// 匹配: GET http://localhost/users
+// 也匹配: POST http://localhost/users
 
 cy.intercept('GET', '/users')
-// matches this: GET http://localhost/users
-// ...but not this: POST http://localhost/users
+// 匹配: GET http://localhost/users
+// 但不匹配: POST http://localhost/users
 ```
 
-### Matching with [RouteMatcher](#routeMatcher-RouteMatcher)
+### 使用[RouteMatcher](#routeMatcher-RouteMatcher)匹配
 
-Specifying a `method` and `url` to match can also be acheived by passing the
-`routeMatcher` object into `cy.intercept` instead:
+通过向`cy.intercept`传递`routeMatcher`对象，也可以实现指定`method`和`url`进行匹配：
 
 ```js
-// These both yield the same result:
+// 两者结果相同:
 cy.intercept({ method: 'GET', url: '**/users' })
 cy.intercept('GET', '**/users')
 ```
 
 ```js
-// Match any type of request with the pathname `/search`
-// and the query parameter 'q=some+terms'
+// 匹配路径名为`/search`且查询参数为'q=some+terms'的任何类型请求
 cy.intercept({
   pathname: '/search',
   query: {
@@ -261,64 +229,56 @@ cy.intercept({
 ```js
 cy.intercept(
   {
-    // this RegExp matches any URL beginning with
-    // 'http://api.example.com/' and ending with '/edit' or '/save'
+    // 此正则匹配任何以'http://api.example.com/'开头并以'/edit'或'/save'结尾的URL
     url: /^http:\/\/api\.example\.com\/.*\/(edit|save)/,
-    // matching requests must also contain this header
+    // 匹配的请求还必须包含此请求头
     headers: {
       'x-requested-with': 'exampleClient',
     },
   }
-})
+)
 ```
 
 ```js
-// this example will cause 1 request to `/temporary-error`
-// to receive a network error and subsequent requests will
-// not match this `RouteMatcher`
+// 此示例将使1次对`/temporary-error`的请求收到网络错误，后续请求将不匹配此`RouteMatcher`
 cy.intercept({ url: '/temporary-error', times: 1 }, { forceNetworkError: true })
 ```
 
-### Pattern Matching
+### 模式匹配
 
 ```js
-// match updates to the `/users` endpoint using glob matching
+// 使用glob匹配更新`/users`端点
 cy.intercept({
   method: '+(PUT|PATCH)',
   url: '**/users/*',
 })
-// matches:
+// 匹配:
 //   PUT /users/1
 //   PATCH /users/1
 //
-// doesn't match:
+// 不匹配:
 //   GET /users
 //   GET /users/1
 
-// same as above, but using regex
+// 同上，但使用正则
 cy.intercept({
   method: '/PUT|PATCH/',
   url: '**/users/*',
 })
 ```
 
-### Aliasing an intercepted route
+### 为拦截的路由设置别名
 
-While `cy.intercept` doesn't yield anything, you can chain
-[`.as`](/api/commands/as) to it to create an
-[alias](/app/core-concepts/variables-and-aliases#Aliases) which can be used
-to [wait on a request](#Waiting-on-a-request).
+虽然`cy.intercept`不返回任何内容，但可以链式调用[`.as`](/api/commands/as)创建[别名](/app/core-concepts/variables-and-aliases#Aliases)，用于[等待请求](#Waiting-on-a-request)。
 
 ```js
 cy.intercept('GET', '/users').as('getAllUsers')
 cy.intercept('POST', '/users').as('createUser')
 ```
 
-### Aliasing individual requests
+### 为单个请求设置别名
 
-Aliases can be set on a per-request basis by setting the `alias` property of the
-intercepted request. This is especially useful when intercepting GraphQL
-requests:
+可以通过设置拦截请求的`alias`属性为每个请求设置别名。这在拦截GraphQL请求时特别有用：
 
 ```js
 cy.intercept('POST', '/graphql', (req) => {
@@ -327,33 +287,30 @@ cy.intercept('POST', '/graphql', (req) => {
   }
 })
 
-// assert that a matching request has been made
+// 断言已发出匹配的请求
 cy.wait('@gqlMutation')
 ```
 
 :::info
 
-For more guidance around aliasing requests with GraphQL, see
-[Working with GraphQL](/app/guides/network-requests#Working-with-GraphQL).
+有关GraphQL请求别名的更多指导，参见[使用GraphQL](/app/guides/network-requests#Working-with-GraphQL)。
 
 :::
 
-### Waiting on a request
+### 等待请求
 
-Use [cy.wait()](/api/commands/wait) with
-[aliasing an intercepted route](#Aliasing-an-intercepted-route) to wait for the
-request/response cycle to complete.
+使用[cy.wait()](/api/commands/wait)和[为拦截的路由设置别名](#Aliasing-an-intercepted-route)等待请求/响应周期完成。
 
-#### With URL
+#### 使用URL
 
 ```js
 cy.intercept('http://example.com/settings').as('getSettings')
 
-// once a request to get settings responds, 'cy.wait' will resolve
+// 一旦对获取设置的请求响应，'cy.wait'将解析
 cy.wait('@getSettings')
 ```
 
-#### With [RouteMatcher](#routeMatcher-RouteMatcher)
+#### 使用[RouteMatcher](#routeMatcher-RouteMatcher)
 
 ```js
 cy.intercept({
@@ -361,85 +318,73 @@ cy.intercept({
   query: { q: 'expected terms' },
 }).as('search')
 
-// once any type of request to search with a querystring
-// containing 'q=expected+terms' responds, 'cy.wait' will resolve
+// 一旦任何类型的搜索请求（查询字符串包含'q=expected+terms'）响应，'cy.wait'将解析
 cy.wait('@search')
 ```
 
-#### Using the yielded object
+#### 使用返回的对象
 
-Using [cy.wait()](/api/commands/wait) on a `cy.intercept()` route alias yields
-an interception object which represents the request/response cycle:
+在`cy.intercept()`路由别名上使用[cy.wait()](/api/commands/wait)会返回一个表示请求/响应周期的拦截对象：
 
 ```js
 cy.wait('@someRoute').then((interception) => {
-  // 'interception' is an object with properties
-  // 'id', 'request' and 'response'
+  // 'interception'是一个包含'id'、'request'和'response'属性的对象
 })
 ```
 
-You can chain [`.its()`](/api/commands/its) and
-[`.should()`](/api/commands/should) to assert against request/response cycles:
+可以链式调用[`.its()`](/api/commands/its)和[`.should()`](/api/commands/should)对请求/响应周期进行断言：
 
 ```js
-// assert that a request to this route
-// was made with a body that included 'user'
+// 断言对此路由的请求体包含'user'
 cy.wait('@someRoute').its('request.body').should('include', 'user')
 
-// assert that a request to this route
-// received a response with HTTP status 500
+// 断言对此路由的请求收到HTTP状态码500的响应
 cy.wait('@someRoute').its('response.statusCode').should('eq', 500)
 
-// assert that a request to this route
-// received a response body that includes 'id'
+// 断言对此路由的请求收到包含'id'的响应体
 cy.wait('@someRoute').its('response.body').should('include', 'id')
 ```
 
-#### Waiting on errors
+#### 等待错误
 
-You can use [cy.wait()](/api/commands/wait) to wait on requests that end with
-network errors:
+可以使用[cy.wait()](/api/commands/wait)等待以网络错误结束的请求：
 
 ```js
 cy.intercept('GET', '/should-err', { forceNetworkError: true }).as('err')
 
-// assert that this request happened
-// and that it ended in an error
+// 断言此请求发生并以错误结束
 cy.wait('@err').should('have.property', 'error')
 ```
 
-### Stubbing a response
+### 存根响应
 
-#### With a string
+#### 使用字符串
 
 ```js
-// requests to '/update' will be fulfilled
-// with a body of "success"
+// 对'/update'的请求将以"success"作为响应体完成
 cy.intercept('/update', 'success')
 ```
 
-#### With a fixture
+#### 使用fixture
 
 ```js
-// requests to '/users.json' will be fulfilled
-// with the contents of the "users.json" fixture
+// 对'/users.json'的请求将以"users.json" fixture的内容完成
 cy.intercept('/users.json', { fixture: 'users.json' })
 ```
 
-#### With a `StaticResponse` object
+#### 使用`StaticResponse`对象
 
-A [`StaticResponse`][staticresponse] object represents a response to an HTTP
-request, and can be used to stub routes:
+[`StaticResponse`][staticresponse]对象表示对HTTP请求的响应，可用于存根路由：
 
 ```js
 const staticResponse = {
-  /* some StaticResponse properties here... */
+  /* 此处为一些StaticResponse属性... */
 }
 
 cy.intercept('/projects', staticResponse)
 ```
 
-Stub a response with a JSON body:
+使用JSON体存根响应：
 
 ```js
 cy.intercept('/projects', {
@@ -447,7 +392,7 @@ cy.intercept('/projects', {
 })
 ```
 
-Stub headers, status code, and body all at once:
+同时存根头、状态码和体：
 
 ```js
 cy.intercept('/not-found', {
@@ -459,7 +404,7 @@ cy.intercept('/not-found', {
 })
 ```
 
-Stub response with a fixture that is read as a Buffer:
+使用读取为Buffer的fixture存根响应：
 
 ```js
 cy.intercept('/not-found', {
@@ -467,34 +412,27 @@ cy.intercept('/not-found', {
 })
 ```
 
-See also [`StaticResponse` object][staticresponse].
+另见[`StaticResponse`对象][staticresponse]。
 
-### Using the **`routeHandler`** function
+### 使用**`routeHandler`**函数
 
-By specifying a [`routeHandler`][arg-routehandler] function as the last argument
-to `cy.intercept`, you'll have access to the entire request-response session,
-enabling you to modify the outgoing request, manipulate the real response, make
-assertions, etc.
+通过向`cy.intercept`的最后一个参数指定[`routeHandler`][arg-routehandler]函数，可以访问整个请求-响应会话，从而能够修改传出请求、操作真实响应、进行断言等。
 
-The `routeHandler` takes the incoming HTTP request (`IncomingHTTPRequest`) as
-the first argument.
+`routeHandler`将传入的HTTP请求（`IncomingHTTPRequest`）作为第一个参数。
 
 ```js
 cy.intercept('/users*', (req) => {
-  /* do something with request and/or response */
+  /* 对请求和/或响应进行操作 */
 })
 ```
 
 :::info
 
-Throughout these examples we will refer to the incoming HTTP request as `req`.
-Those of you with [Express.js](https://expressjs.com/)
-[middleware](https://expressjs.com/en/guide/writing-middleware.html) experience
-should be familiar with this syntax.
+在这些示例中，我们将传入的HTTP请求称为`req`。熟悉[Express.js](https://expressjs.com/)[中间件](https://expressjs.com/en/guide/writing-middleware.html)语法的用户应该对此语法感到熟悉。
 
 :::
 
-#### Asserting on a request
+#### 对请求进行断言
 
 ```js
 cy.intercept('POST', '/organization', (req) => {
@@ -502,27 +440,25 @@ cy.intercept('POST', '/organization', (req) => {
 })
 ```
 
-#### Modifying an outgoing request
+#### 修改传出请求
 
-You can use the request handler callback to modify the [intercepted request
-object][req] before it is sent.
+可以使用请求处理程序回调在发送之前修改[拦截的请求对象][req]。
 
 ```js
-// set the request body to something different
-// before it's sent to the destination
+// 在发送到目标之前将请求体设置为不同的内容
 cy.intercept('POST', '/login', (req) => {
   req.body = 'username=janelane&password=secret123'
 })
 
-// dynamically set the alias
+// 动态设置别名
 cy.intercept('POST', '/login', (req) => {
   req.alias = 'login'
 })
 ```
 
-#### Adding a header to an outgoing request
+#### 向传出请求添加头
 
-You can add a header to an outgoing request, or modify an existing header
+可以向传出请求添加头，或修改现有头
 
 ```js
 cy.intercept('/req-headers', (req) => {
@@ -530,146 +466,121 @@ cy.intercept('/req-headers', (req) => {
 })
 ```
 
-**Note:** the new header will NOT be shown in the browser's Network tab, as the
-request has already left the browser. You can still confirm the header was added
-by waiting on the intercept as shown below:
+**注意**：新头不会显示在浏览器的网络标签中，因为请求已经离开浏览器。仍然可以通过如下等待拦截来确认头已添加：
 
-#### Waiting on the intercept
+#### 等待拦截
 
 ```js
 cy.intercept('/req-headers', (req) => {
   req.headers['x-custom-headers'] = 'added by cy.intercept'
 }).as('headers')
 
-// the application makes the call ...
-// confirm the custom header was added
+// 应用程序发出调用...
+// 确认自定义头已添加
 cy.wait('@headers')
   .its('request.headers')
   .should('have.property', 'x-custom-headers', 'added by cy.intercept')
 ```
 
-#### Add, modify or delete a header to all outgoing requests
+#### 向所有传出请求添加、修改或删除头
 
-You can add, modify or delete a header to all outgoing requests using a
-`beforeEach()` in the
-[supportFile](/app/core-concepts/writing-and-organizing-tests#Support-file).
+可以使用[supportFile](/app/core-concepts/writing-and-organizing-tests#Support-file)中的`beforeEach()`向所有传出请求添加、修改或删除头。
 
 ```js
 beforeEach(() => {
   cy.intercept(
     { url: 'http://localhost:3001/**', middleware: true },
-    // Delete 'if-none-match' header from all outgoing requests
+    // 从所有传出请求中删除'if-none-match'头
     (req) => delete req.headers['if-none-match']
   )
 })
 ```
 
-#### Dynamically stubbing a response
+#### 动态存根响应
 
-You can use the [`req.reply()`][req-reply] function to dynamically control the
-response to a request.
+可以使用[`req.reply()`][req-reply]函数动态控制对请求的响应。
 
 ```js
 cy.intercept('/billing', (req) => {
-  // functions on 'req' can be used to
-  // dynamically respond to a request here
+  // 'req'上的函数可用于在此动态响应请求
 
-  // send the request to the destination server
+  // 将请求发送到目标服务器
   req.reply()
 
-  // respond to the request with a JSON object
+  // 用JSON对象响应请求
   req.reply({ plan: 'starter' })
 
-  // send the request to the destination server
-  // and intercept the response
+  // 将请求发送到目标服务器并拦截响应
   req.continue((res) => {
-    // 'res' represents the real destination's response
-    // See "Intercepting a response" for more details and examples
+    // 'res'表示真实目标的响应
+    // 更多详情和示例参见"拦截响应"
   })
 })
 ```
 
-See ["Intercepted requests"][req] for more information on the `req` object and
-its properties and methods.
+更多关于`req`对象及其属性和方法的信息，参见["拦截的请求"][req]。
 
-#### Returning a Promise
+#### 返回Promise
 
-If a Promise is returned from the route callback, it will be awaited before
-continuing with the request.
+如果从路由回调返回Promise，它将在继续请求之前被等待。
 
 ```js
 cy.intercept('POST', '/login', (req) => {
-  // you could asynchronously fetch test data...
+  // 可以异步获取测试数据...
   return getLoginCredentials().then((credentials) => {
-    // ...and then, use it to supplement the outgoing request
+    // ...然后使用它补充传出请求
     req.headers['authorization'] = credentials
   })
 })
 ```
 
-#### Passing a request to the next request handler
+#### 将请求传递给下一个请求处理程序
 
-If [`req.reply()`][req-reply] or [`req.continue()`][req-continue] is not
-explicitly called inside of a request handler, requests will pass to the next
-request handler until none are left.
+如果在请求处理程序中没有显式调用[`req.reply()`][req-reply]或[`req.continue()`][req-continue]，请求将传递给下一个请求处理程序，直到没有剩余。
 
 ```js
-// you could have a top-level middleware handler that
-// sets an auth token on all requests
-// but remember setting `middleware: true` will
-// cause this to always be called first
+// 可以有一个顶层的中间件处理程序，在所有请求上设置认证令牌
+// 但记住设置`middleware: true`会导致它总是首先被调用
 cy.intercept('http://api.company.com/', { middleware: true }, (req) => {
   req.headers['authorization'] = `token ${token}`
 })
 
-// and then have another handler that
-// more narrowly asserts on certain requests
+// 然后有另一个更窄地断言某些请求的处理程序
 cy.intercept('POST', 'http://api.company.com/widgets', (req) => {
   expect(req.body).to.include('analytics')
 })
 
-// a POST request to http://api.company.com/widgets would hit both
-// of those callbacks, middleware first, then the request would be
-// sent out with the modified request headers to the
-// real destination
+// 对http://api.company.com/widgets的POST请求会触发这两个回调，中间件优先，然后请求会带着修改后的请求头发送到真实目标
 ```
 
-### Disabling logs for a request
+### 禁用请求的日志
 
-By default, Cypress logs all requests that match any `cy.intercept()`, as well
-as all `XMLHttpRequest`s and `fetch` requests. You can use `cy.intercept()` to
-disable these logs by passing `{ log: false }` in the second parameter:
+默认情况下，Cypress会记录匹配任何`cy.intercept()`的所有请求，以及所有`XMLHttpRequest`和`fetch`请求。可以通过在第二个参数中传递`{ log: false }`来使用`cy.intercept()`禁用这些日志：
 
 ```js
-// disable Cypress's default behavior of logging all XMLHttpRequests and fetches
+// 禁用Cypress默认记录所有XMLHttpRequest和fetch的行为
 cy.intercept({ resourceType: /xhr|fetch/ }, { log: false })
 ```
 
-Note: Currently, you can only enable/disable a request's logs when defining the
-`cy.intercept()`, not inside of an `intercept` callback. See
-[#26069](https://github.com/cypress-io/cypress/issues/26069).
+注意：目前只能在定义`cy.intercept()`时启用/禁用请求的日志，不能在`intercept`回调中。参见[#26069](https://github.com/cypress-io/cypress/issues/26069)。
 
-### Intercepting a response
+### 拦截响应
 
-Inside of a callback passed to `req.continue()`, you can access the destination
-server's real response.
+在传递给`req.continue()`的回调中，可以访问目标服务器的真实响应。
 
 ```js
 cy.intercept('/integrations', (req) => {
-  // req.continue() with a callback will send the request to
-  // the destination server
+  // 带回调的req.continue()会将请求发送到目标服务器
   req.continue((res) => {
-    // 'res' represents the real destination response
-    // you can manipulate 'res' before it's sent to the browser
+    // 'res'表示真实目标的响应
+    // 可以在发送到浏览器之前操作'res'
   })
 })
 ```
 
-See ["Intercepted responses"][res] for more information on the `res` object. See
-["Controlling the outbound request with `req.continue()`"][req-continue] for
-more information about `req.continue()`.
+更多关于`res`对象的信息，参见["拦截的响应"][res]。更多关于`req.continue()`的信息，参见["使用`req.continue()`控制传出请求"][req-continue]。
 
-#### Asserting on a response
+#### 对响应进行断言
 
 ```js
 cy.intercept('/projects/2', (req) => {
@@ -679,28 +590,25 @@ cy.intercept('/projects/2', (req) => {
 })
 ```
 
-#### Returning a Promise
+#### 返回Promise
 
-If a Promise is returned from the route callback, it will be awaited before
-sending the response to the browser.
+如果从路由回调返回Promise，它将在将响应发送到浏览器之前被等待。
 
 ```js
 cy.intercept('/users', (req) => {
   req.continue((res) => {
-    // the response will not be sent to the browser until
-    // 'waitForSomething()' resolves
+    // 在'waitForSomething()'解析之前，响应不会发送到浏览器
     return waitForSomething()
   })
 })
 ```
 
-#### Throttle or delay response all incoming responses
+#### 限制或延迟所有传入响应
 
-You can throttle or delay all incoming responses using a `beforeEach()` in the
-[supportFile](/app/core-concepts/writing-and-organizing-tests#Support-file).
+可以使用[supportFile](/app/core-concepts/writing-and-organizing-tests#Support-file)中的`beforeEach()`限制或延迟所有传入响应。
 
 ```js
-// Throttle API responses to simulate real-world conditions
+// 限制API响应以模拟真实条件
 beforeEach(() => {
   cy.intercept(
     {
@@ -709,8 +617,7 @@ beforeEach(() => {
     },
     (req) => {
       req.on('response', (res) => {
-        // Throttle the response to 1 Mbps to simulate a
-        // mobile 3G connection
+        // 将响应限制为1 Mbps以模拟移动3G连接
         res.setThrottle(1000)
       })
     }
@@ -718,73 +625,65 @@ beforeEach(() => {
 })
 ```
 
-### Request/Response Modification with `routeHandler`
+### 使用`routeHandler`修改请求/响应
 
-Specify [`routeHandler`][arg-routehandler] as the last argument to modify the
-outgoing request, stub a response, make assertions, etc.
+将[`routeHandler`][arg-routehandler]作为最后一个参数指定，以修改传出请求、存根响应、进行断言等。
 
 {/* TODO DX-188 emphasize the usage of StaticResponse as the routeHandler */}
 
-If a function is passed as the `routeHandler`, it will be called with the
-intercepted HTTP request:
+如果向`routeHandler`传递函数，它将使用拦截的HTTP请求`req`作为第一个参数调用：
 
 ```js
 cy.intercept('/api', (req) => {
-  // do something with the intercepted request
+  // 对拦截的请求进行操作
 })
 ```
 
-From here, you can do several things with the intercepted request:
+从这里，可以对拦截的请求进行以下操作：
 
 {/* TODO DX-190 add links to examples */}
 
-- modify and make assertions on the request like its body, headers, URL, method,
-  etc. ([example](#Asserting-on-a-request-1))
-- stub out the response without interacting with a real back-end
-  ([example](#Controlling-the-response)
-- pass the request through to its destination and modify or make assertions on
-  the real response on its way back ([example](#Controlling-the-response))
-- attach listeners to various events on the request
-  ([example](#Controlling-the-response))
+- 修改并对请求的体、头、URL、方法等进行断言（[示例](#Asserting-on-a-request-1)）
+- 不与实际后端交互的情况下存根响应（[示例](#Controlling-the-response)）
+- 将请求传递到目标并在返回时修改或对真实响应进行断言（[示例](#Controlling-the-response)）
+- 为请求的各种事件附加监听器（[示例](#Controlling-the-response)）
 
-#### Asserting on a request
+#### 对请求进行断言
 
-You can use the request handler callback to make an assertion on the
-[intercepted request object][req] before it is sent.
+可以使用请求处理程序回调在发送之前对[拦截的请求对象][req]进行断言。
 
 ```js
-// match requests to create a user
+// 匹配创建用户的请求
 cy.intercept('POST', '/users', (req) => {
-  // make an assertion on the payload contents
+  // 对负载内容进行断言
   expect(req.body).to.include('Peter Pan')
 })
 ```
 
-#### Controlling the outgoing request
+#### 控制传出请求
 
-The outgoing request, including its body, headers, etc., can be modified before
-it's sent.
+可以在发送之前修改传出请求的体、头等。
 
 ```js
-// modify the request body before it's sent to its destination
+// 在发送到目标之前修改请求体
 cy.intercept('POST', '/users', (req) => {
   req.body = {
     name: 'Peter Pan',
   }
 })
 
-// add a header to an outgoing request
+// 向传出请求添加头
 cy.intercept('POST', '/users', (req) => {
   req.headers['x-custom-header'] = 'added by cy.intercept'
 })
 
-// modify an existing header
+// 修改现有头
 cy.intercept('POST', '/users', (req) => {
   req.headers['authorization'] = 'Basic YWxhZGRpbjpvcGVuc2VzYW1l'
 })
 ```
 
-#### Verifying the request modification
+#### 验证请求修改
 
 ```js
 cy.intercept('POST', '/users', (req) => {
@@ -792,50 +691,41 @@ cy.intercept('POST', '/users', (req) => {
 }).as('createUser')
 
 cy.get('button.save').click()
-// you can see the headers in the console output by selecting
-// this line in the command log:
+// 可以通过在命令日志中选择此行在控制台输出中查看头：
 cy.wait('@createUser')
-  // ...or make an assertion:
+  // ...或进行断言：
   .its('request.headers')
   .should('have.property', 'x-custom-header', 'added by cy.intercept')
 ```
 
 :::caution
 
-The request modification cannot be verified by inspecting the browser's network
-traffic (for example, in Chrome DevTools), since the browser logs network
-traffic _before_ Cypress can intercept it.
+无法通过检查浏览器的网络流量（例如在Chrome开发者工具中）验证请求修改，因为浏览器在Cypress可以拦截之前记录网络流量。
 
 :::
 
 :::caution
 
-`cy.intercept()` cannot be debugged using
-[`cy.request()`](/api/commands/request)! Cypress only intercepts requests made
-by your front-end application.
+无法使用[`cy.request()`](/api/commands/request)调试`cy.intercept()`！Cypress仅拦截由前端应用程序发出的请求。
 
 :::
 
-#### Controlling the response
+#### 控制响应
 
-The intercepted request passed to the route handler (hereafter referred to as
-`req`, though you can use any name) contains methods to dynamically control the
-response to a request:
+传递给路由处理程序的拦截请求（以下称为`req`，尽管可以使用任何名称）包含动态控制请求响应的方法：
 
-- `req.reply()` - stub out a response requiring no dependency on a real back-end
-- `req.continue()` - modify or make assertions on the real response
-- `req.destroy()` - destroy the request and respond with a network error
-- `req.redirect()` - respond to the request with a redirect to a specified
-  location
-- `req.on()` - modify the response by attaching to events
+- `req.reply()` - 存根响应，无需依赖真实后端
+- `req.continue()` - 修改或对真实响应进行断言
+- `req.destroy()` - 销毁请求并以网络错误响应
+- `req.redirect()` - 以重定向到指定位置响应请求
+- `req.on()` - 通过附加事件修改响应
 
-Stubbing out a response (`req.reply()`):
+存根响应（`req.reply()`）：
 
-`req.reply()` takes a [`StaticResponse`][staticresponse] object as the first
-argument:
+`req.reply()`的第一个参数是[`StaticResponse`][staticresponse]对象：
 
 ```js
-// stub out the response without interacting with a real back-end
+// 不依赖真实后端存根响应
 cy.intercept('POST', '/users', (req) => {
   req.reply({
     headers: {
@@ -845,57 +735,50 @@ cy.intercept('POST', '/users', (req) => {
     body: {
       name: 'Peter Pan'
     },
-    delay: 10, // milliseconds
-    throttleKbps: 1000, // to simulate a 3G connection
-    forceNetworkError: false // default
+    delay: 10, // 毫秒
+    throttleKbps: 1000, // 模拟3G连接
+    forceNetworkError: false // 默认
   })
 })
 
-// stub out a response body using a fixture
+// 使用fixture存根响应体
 cy.intercept('GET', '/users', (req) => {
   req.reply({
-    statusCode: 200, // default
+    statusCode: 200, // 默认
     fixture: 'users.json'
   })
 })
 ```
 
-See [`StaticResponse` objects][staticresponse] below for more information.
+更多信息参见[`StaticResponse`对象][staticresponse]。
 
-The `reply` method also supports shorthand to avoid having to specify a
-`StaticResponse` object:
+`reply`方法也支持简写，避免必须指定`StaticResponse`对象：
 
 ```js
-// equivalent to `req.reply({ body })`
+// 等同于`req.reply({ body })`
 req.reply(body)
 
-// equivalent to `req.reply({ body, headers })`
+// 等同于`req.reply({ body, headers })`
 req.reply(body, headers)
 
-// equivalent to `req.reply({ statusCode, body, headers})`
+// 等同于`req.reply({ statusCode, body, headers})`
 req.reply(statusCode, body, headers)
 ```
 
 :::note
 
-Note: Calling `reply()` will end the request phase and stop the request from
-propagating to the next matching request handler in line. See [Interception
-Lifecycle][lifecycle].
+注意：调用`reply()`将结束请求阶段并阻止请求传播到下一个匹配的请求处理程序。参见[拦截生命周期][lifecycle]。
 
 :::
 
-See also
-[Providing a stub response with `req.reply()`](#Providing-a-stub-response-with-reqreply)
+另见[使用`req.reply()`提供存根响应](#Providing-a-stub-response-with-reqreply)
 
-Modifying the real response (`continue`):
+修改真实响应（`continue`）：
 
-The `continue` method accepts a function which is passed an object representing
-the real response being intercepted on its way back to the client (your
-front-end application).
+`continue`方法接受一个函数，该函数传递一个表示在返回客户端（前端应用程序）时被拦截的真实响应的对象。
 
 ```js
-// pass the request through and make an assertion on
-// the real response
+// 传递请求并对真实响应进行断言
 cy.intercept('POST', '/users', (req) => {
   req.continue((res) => {
     expect(res.body).to.include('Peter Pan')
@@ -903,142 +786,132 @@ cy.intercept('POST', '/users', (req) => {
 })
 ```
 
-See also [Controlling the outbound request with `req.continue()`][req-continue]
+另见[使用`req.continue()`控制传出请求][req-continue]
 
-Responding with a network error (`destroy`):
+以网络错误响应（`destroy`）：
 
 ```js
-// dynamically destroy the request and
-// respond with a network error
+// 动态销毁请求并以网络错误响应
 cy.intercept('POST', '/users', (req) => {
   if (mustDestroy(req)) {
     req.destroy()
   }
 
   function mustDestroy(req) {
-    // code that determines whether to force a network error
-    // based on the contents of `req`
+    // 基于`req`内容决定是否强制网络错误的代码
   }
 })
 ```
 
-Responding with a new location (`redirect`):
+以新位置响应（`redirect`）：
 
 ```js
-// respond to this request with a redirect to a new 'location'
+// 以重定向到新'location'响应此请求
 cy.intercept('GET', '/users', (req) => {
-  // statusCode defaults to `302`
+  // statusCode默认为`302`
   req.redirect('/customers', 301)
 })
 ```
 
-Responding by listening to events (`on`):
+通过监听事件响应（`on`）：
 
 ```js
 cy.intercept('GET', '/users', (req) => {
   req.on('before:response', (res) => {
-    // do something when the `before:response` event is triggered
+    // 当触发`before:response`事件时执行操作
   })
 })
 cy.intercept('POST', '/users', (req) => {
   req.on('response', (res) => {
-    // do something when the `response` event is triggered
+    // 当触发`response`事件时执行操作
   })
 })
 ```
 
-See example for
-[throttling a response](#Throttle-or-delay-response-all-incoming-responses) See
-more examples of [events](#Request-events)
+示例参见[限制响应](#Throttle-or-delay-response-all-incoming-responses)更多[事件](#Request-events)示例
 
-#### Returning a Promise
+#### 返回Promise
 
-If a Promise is returned from the route callback, it will be awaited before
-continuing with the request.
+如果从路由回调返回Promise，它将在继续请求之前被等待。
 
 ```js
 cy.intercept('POST', '/users', (req) => {
-  // asynchronously fetch test data
+  // 异步获取测试数据
   return getAuthToken().then((token) => {
-    // ...and apply it to the outgoing request
+    // ...并将其应用于传出请求
     req.headers['Authorization'] = `Basic ${token}`
   })
 })
 
 cy.intercept('POST', '/users', (req) => {
   req.continue((res) => {
-    // the response will not be sent to the browser until
-    // `waitForSomething()` resolves:
+    // 在`waitForSomething()`解析之前，响应不会发送到浏览器：
     return waitForSomething()
   })
 })
 ```
 
-#### Stubbing a response with a string
+#### 使用字符串存根响应
 
 ```js
-// requests to create a user will be fulfilled
-// with a body of 'success'
+// 创建用户的请求将以'success'作为响应体完成
 cy.intercept('POST', '/users', 'success')
 // { body: 'success' }
 ```
 
-## Intercepted requests
+## 拦截的请求
 
-If a function is passed as the handler for a `cy.intercept()`, it will be called
-with the first argument being an object that represents the intercepted HTTP
-request:
+如果向`cy.intercept()`的处理程序传递函数，第一个参数将是表示拦截的HTTP请求的对象：
 
 ```js
 cy.intercept('/api', (req) => {
-  // `req` represents the intercepted HTTP request
+  // `req`表示拦截的HTTP请求
 })
 ```
 
-From here, you can do several things with the intercepted request:
+从这里，可以对拦截的请求进行以下操作：
 
-- you can modify and assert on the request's properties (body, headers, URL,
-  method...)
-- the request can be sent to the real upstream server
-  - optionally, you can intercept the response from this
-- a response can be provided to stub out the request
-- listeners can be attached to various events on the request
+- 可以修改并对请求的属性（体、头、URL、方法...）进行断言
+- 请求可以发送到真实的上游服务器
+  - 可选地，可以拦截此响应
+- 可以提供响应以存根请求
+- 可以为请求的各种事件附加监听器
 
-### Request object properties
+### 请求对象属性
 
-The request object (`req`) has several properties from the HTTP request itself:
+请求对象（`req`）具有HTTP请求本身的几个属性：
 
 ```ts
 {
   /**
-   * The body of the request.
-   * If a JSON Content-Type was used and the body was valid JSON,
-   * this will be an object.
-   * If the body was binary content, this will be a buffer.
+   * 请求的体。
+   * 如果使用JSON Content-Type且体是有效的JSON，
+   * 这将是一个对象。
+   * 如果体是二进制内容，这将是一个buffer。
    */
   body: string | object | any
   /**
-   * The headers of the request.
+   * 请求的头。
    */
   headers: { [key: string]: string }
   /**
-   * Request HTTP method (GET, POST, ...).
+   * 请求的HTTP方法（GET、POST等）。
    */
   method: string
   /**
-   * Request URL.
+   * 请求的URL。
    */
   url: string
   /**
-   * URL query string as object.
+   * URL查询字符串作为对象。
    */
   query: Record<string, string|number>
   /**
-   * The HTTP version used in the request. Read only.
+   * 请求中使用的HTTP版本。只读。
    */
   httpVersion: string
   /**
-   * The resource type of the request. Read only.
+   * 请求的资源类型。只读。
    */
   resourceType: 'document' | 'fetch' | 'xhr' | 'websocket' | 'stylesheet'
               | 'script' | 'image' | 'font' | 'cspviolationreport' | 'ping'
@@ -1046,89 +919,67 @@ The request object (`req`) has several properties from the HTTP request itself:
 }
 ```
 
-`req` also has some optional properties which can be set to control
-Cypress-specific behavior:
+`req`还有一些可选属性，可以设置以控制Cypress特定的行为：
 
 ```ts
 {
   /**
-   * If provided, the number of milliseconds before an upstream
-   * response to this request will time out and cause an error.
-   * By default, `responseTimeout` from config is used.
+   * 如果提供，上游响应此请求的超时毫秒数。
+   * 默认使用配置中的`responseTimeout`。
    */
   responseTimeout?: number
   /**
-   * Set if redirects should be followed when this request is made.
-   * By default, requests will not follow redirects before
-   * yielding the response (the 3xx redirect is yielded).
+   * 设置此请求发出时是否应遵循重定向。
+   * 默认情况下，请求在产生响应之前不会遵循重定向（产生3xx重定向）。
    */
   followRedirect?: boolean
   /**
-   * If set, `cy.wait` can be used to await the request/response
-   * cycle to complete for this request via `cy.wait('@alias')`.
+   * 如果设置，可以使用`cy.wait`通过`cy.wait('@alias')`等待此请求/响应周期完成。
    */
   alias?: string
 }
 ```
 
-Any modifications to the properties of `req` will be persisted to other request
-handlers, and finally merged into the actual outbound HTTP request.
+对`req`属性的任何修改将持久化到其他请求处理程序，并最终合并到实际的传出HTTP请求中。
 
-### Controlling the outbound request with `req.continue()`
+### 使用`req.continue()`控制传出请求
 
-Calling `req.continue()` without any argument will cause the request to be sent
-outgoing, and the response will be returned to the browser after any other
-listeners have been called. For example, the following code modifies a `POST`
-request and then sends it to the upstream server:
+不带任何参数调用`req.continue()`将导致请求被发出，响应将在任何其他监听器被调用后返回到浏览器。例如，以下代码修改`POST`请求然后将其发送到上游服务器：
 
 ```js
 cy.intercept('POST', '/submitStory', (req) => {
   req.body.storyName = 'some name'
-  // send the modified request and skip any other
-  // matching request handlers
+  // 发送修改后的请求并跳过任何其他匹配的请求处理程序
   req.continue()
 })
 ```
 
-If a function is passed to `req.continue()`, the request will be sent to the
-real upstream server, and the callback will be called with the response once the
-response is fully received from the server. See ["Intercepted responses"][res]
+如果向`req.continue()`传递函数，请求将被发送到真实的上游服务器，回调将在从服务器完全接收到响应时调用。参见["拦截的响应"][res]
 
-Note: calling `req.continue()` will stop the request from propagating to the
-next matching request handler in line. See ["Interception lifecycle"][lifecycle]
-for more information.
+注意：调用`req.continue()`将阻止请求传播到下一个匹配的请求处理程序。更多信息参见["拦截生命周期"][lifecycle]。
 
-### Providing a stub response with `req.reply()`
+### 使用`req.reply()`提供存根响应
 
-The `req.reply()` function can be used to send a stub response for an
-intercepted request. By passing a string, object, or
-[`StaticResponse`][staticresponse] to `req.reply()`, the request can be
-preventing from reaching the destination server.
+`req.reply()`函数可用于为拦截的请求发送存根响应。通过向`req.reply()`传递字符串、对象或[`StaticResponse`][staticresponse]，可以阻止请求到达目标服务器。
 
-For example, the following code stubs out a JSON response from a request
-interceptor:
+例如，以下代码从请求拦截器存根JSON响应：
 
 ```js
 cy.intercept('/billing', (req) => {
-  // dynamically get billing plan name at request-time
+  // 在请求时动态获取账单计划名称
   const planName = getPlanName()
-  // this object will automatically be JSON.stringified and
-  // sent as the response
+  // 此对象将自动被JSON.stringify并作为响应发送
   req.reply({ plan: planName })
 })
 ```
 
-Instead of passing a plain object or string to `req.reply()`, you can also pass
-a [`StaticResponse`][staticresponse] object. With a
-[`StaticResponse`][staticresponse], you can force a network error,
-delay/throttle the response, send a fixture, and more.
+除了向`req.reply()`传递普通对象或字符串，还可以传递[`StaticResponse`][staticresponse]对象。使用[`StaticResponse`][staticresponse]，可以强制网络错误、延迟/限制响应、发送fixture等。
 
-For example, the following code serves a dynamically chosen fixture with a delay
-of 500ms:
+例如，以下代码以500ms的延迟提供动态选择的fixture：
 
 ```js
 cy.intercept('/api/users/*', async (req) => {
-  // asynchronously retrieve fixture filename at request-time
+  // 在请求时异步获取fixture文件名
   const fixtureFilename = await getFixtureFilenameForUrl(req.url)
   req.reply({
     fixture: fixtureFilename,
@@ -1137,368 +988,289 @@ cy.intercept('/api/users/*', async (req) => {
 })
 ```
 
-See the [`StaticResponse` documentation][staticresponse] for more information on
-stubbing responses in this manner.
+更多关于以这种方式存根响应的信息，参见[`StaticResponse`文档][staticresponse]。
 
-#### `req.reply()` shorthand
+#### `req.reply()`简写
 
-`req.reply()` also supports shorthand, similar to [`res.send()`][res-send], to
-avoid having to specify a `StaticResponse` object:
+`req.reply()`也支持简写，类似于[`res.send()`][res-send]，避免必须指定`StaticResponse`对象：
 
 ```js
-// equivalent to `req.reply({ body })`
+// 等同于`req.reply({ body })`
 req.reply(body)
 
-// equivalent to `req.reply({ body, headers })`
+// 等同于`req.reply({ body, headers })`
 req.reply(body, headers)
 
-// equivalent to `req.reply({ statusCode, body, headers})`
+// 等同于`req.reply({ statusCode, body, headers})`
 req.reply(statusCode, body, headers)
 ```
 
-#### Convenience functions
+#### 便利函数
 
-There are also two convenience functions available on `req`:
+`req`上还有两个便利函数：
 
 ```ts
 {
   /**
-   * Destroy the request and respond with a network error.
+   * 销毁请求并以网络错误响应。
    */
   destroy(): void
   /**
-   * Respond to this request with a redirect to a new 'location'.
-   * @param statusCode HTTP status code to redirect with. Default: 302
+   * 以重定向到新'location'响应此请求。
+   * @param statusCode 重定向的HTTP状态码。默认：302
    */
   redirect(location: string, statusCode?: number): void
 }
 ```
 
-See examples in the [Controlling the response](#Controlling-the-response)
-section
+示例参见[控制响应](#Controlling-the-response)部分
 
-Note: calling `req.reply()` will end the request phase and stop the request from
-propagating to the next matching request handler in line. See ["Interception
-lifecycle"][lifecycle] for more information.
+注意：调用`req.reply()`将结束请求阶段并阻止请求传播到下一个匹配的请求处理程序。更多信息参见["拦截生命周期"][lifecycle]。
 
-### Request events
+### 请求事件
 
-For advanced use, several events are available on `req`, that represent
-different stages of the [Interception lifecycle][lifecycle].
+对于高级使用，`req`上有几个事件可用，代表[拦截生命周期][lifecycle]的不同阶段。
 
-By calling `req.on`, you can subscribe to different events:
+通过调用`req.on`，可以订阅不同的事件：
 
 ```js
 cy.intercept('/shop', (req) => {
   req.on('before:response', (res) => {
     /**
-     * Emitted before `response` and before any `req.continue`
-     * handlers. Modifications to `res` will be applied to the
-     * incoming response. If a promise is returned, it will be
-     * awaited before processing other event handlers.
+     * 在`response`之前和任何`req.continue`处理程序之前触发。
+     * 对`res`的修改将应用于传入的响应。
+     * 如果返回Promise，它将在处理其他事件处理程序之前被等待。
      */
   })
 
   req.on('response', (res) => {
     /**
-     * Emitted after `before:response` and after any
-     * `req.continue` handlers - before the response is sent
-     * to the browser. Modifications to `res` will be applied
-     * to the incoming response. If a promise is returned, it
-     * will be awaited before processing other event handlers.
+     * 在`before:response`之后和任何`req.continue`处理程序之后触发 - 在响应发送到浏览器之前。
+     * 对`res`的修改将应用于传入的响应。
+     * 如果返回Promise，它将在处理其他事件处理程序之前被等待。
      */
   })
 
   req.on('after:response', (res) => {
     /**
-     * Emitted once the response to a request has finished
-     * sending to the browser. Modifications to `res` have no
-     * impact. If a promise is returned, it will be awaited
-     * before processing other event handlers.
+     * 一旦请求的响应完成发送到浏览器时触发。
+     * 对`res`的修改没有影响。
+     * 如果返回Promise，它将在处理其他事件处理程序之前被等待。
      */
   })
 })
 ```
 
-See ["Intercepted responses"][res] for more details on the `res` object yielded
-by `before:response` and `response`. See ["Interception lifecycle"][lifecycle]
-for more details on request ordering.
+更多关于`res`对象的信息，参见["拦截的响应"][res]。更多关于请求排序的信息，参见["拦截生命周期"][lifecycle]。
 
-## Intercepted responses
+## 拦截的响应
 
-The response can be intercepted in two ways:
+可以通过两种方式拦截响应：
 
-- by passing a callback to [`req.continue()`][req-continue] within a request
-  handler
-- by listening for the `before:response` or `response` request events (see
-  ["Request events"](#Request-events))
+- 在请求处理程序内向[`req.continue()`][req-continue]传递回调
+- 通过监听`before:response`或`response`请求事件（参见["请求事件"](#Request-events)）
 
-The response object, `res`, will be passed as the first argument to the handler
-function:
+响应对象`res`将作为处理程序函数的第一个参数传递：
 
 ```js
 cy.intercept('/url', (req) => {
   req.on('before:response', (res) => {
-    // this will be called before any `req.continue` or
-    // `response` handlers
+    // 这将在任何`req.continue`或`response`处理程序之前调用
   })
 
   req.continue((res) => {
-    // this will be called after all `before:response`
-    // handlers and before any `response` handlers
-    // by calling `req.continue`, we signal that this
-    // request handler will be the last one, and that
-    // the request should be sent outgoing at this point.
-    // for that reason, there can only be one
-    // `req.continue` handler per request.
+    // 这将在所有`before:response`处理程序之后和任何`response`处理程序之前调用
+    // 通过调用`req.continue`，我们发出信号表示此请求处理程序将是最后一个，此时请求应被发出。
+    // 因此，每个请求只能有一个`req.continue`处理程序。
   })
 
   req.on('response', (res) => {
-    // this will be called after all `before:response`
-    // handlers and after the `req.continue` handler
-    // but before the response is sent to the browser
+    // 这将在所有`before:response`处理程序和`req.continue`处理程序之后调用
+    // 但在响应发送到浏览器之前
   })
 })
 ```
 
-### Response object properties
+### 响应对象属性
 
-The response object (`res`) yielded to response handlers has several properties
-from the HTTP response itself. All of the following properties on `res` can be
-modified:
+传递给响应处理程序的响应对象（`res`）具有HTTP响应本身的几个属性。可以修改`res`上的所有以下属性：
 
-| Property      | Description                                       |
+| 属性      | 描述                                       |
 | ------------- | ------------------------------------------------- |
-| body          | response body (`object`, `string`, `ArrayBuffer`) |
-| headers       | response headers (`object`)                       |
-| statusCode    | response status code (`number`)                   |
-| statusMessage | response status message (`string`)                |
+| body          | 响应体（`object`、`string`、`ArrayBuffer`） |
+| headers       | 响应头（`object`）                       |
+| statusCode    | 响应状态码（`number`）                   |
+| statusMessage | 响应状态消息（`string`）                |
 
-**Note about `body`:** If the response header contains
-`Content-Type: application/json` and the body contains valid JSON, this will be
-an `object`. And if the body contains binary content, this will be a buffer.
+**关于`body`的注意**：如果响应头包含`Content-Type: application/json`且体包含有效的JSON，这将是一个`object`。如果体包含二进制内容，这将是一个buffer。
 
-`res` also has some optional properties which can be set to control
-Cypress-specific behavior:
+`res`还有一些可选属性，可以设置以控制Cypress特定的行为：
 
-| Property     | Description                                                                 |
+| 属性     | 描述                                                                 |
 | ------------ | --------------------------------------------------------------------------- |
-| throttleKbps | Maximum data transfer rate of the response (kilobits/second)                |
-| delay        | Minimum network latency or delay to add to the response time (milliseconds) |
+| throttleKbps | 响应的最大数据传输速率（千比特/秒）                |
+| delay        | 添加到响应时间的最小网络延迟或延迟（毫秒） |
 
-Any modifications to the properties of `res` will be persisted to other response
-handlers, and finally merged into the actual incoming HTTP response.
+对`res`属性的任何修改将持久化到其他响应处理程序，并最终合并到实际的传入HTTP响应中。
 
-### Ending the response with `res.send()`
+### 使用`res.send()`结束响应
 
-To end the response phase of the request, call `res.send()`. Optionally, you can
-pass a [`StaticResponse`][staticresponse] to `res.send()`, to be merged with the
-actual response.
+要结束请求的响应阶段，调用`res.send()`。可选地，可以向`res.send()`传递[`StaticResponse`][staticresponse]，与实际响应合并。
 
-When `res.send()` is called, the response phase will end immediately and no
-other response handlers will be called for the current request. Here is an
-example of how `res.send()` could be used:
+当调用`res.send()`时，响应阶段将立即结束，当前请求的其他响应处理程序不会被调用。以下是`res.send()`的使用示例：
 
 ```js
 cy.intercept('/notification', (req) => {
   req.continue((res) => {
     if (res.body.status === 'failed') {
-      // sends a fixture body instead of the existing 'res.body'
+      // 发送fixture体而不是现有的'res.body'
       res.send({ fixture: 'success.json' })
     }
   })
 })
 ```
 
-See the [`StaticResponse` documentation][staticresponse] for more information on
-the format.
+更多关于格式的信息，参见[`StaticResponse`文档][staticresponse]。
 
-#### `res.send()` shorthand
+#### `res.send()`简写
 
-`res.send()` also supports shorthand, similar to [`req.reply()`][req-reply], to
-avoid having to specify a `StaticResponse` object:
+`res.send()`也支持简写，类似于[`req.reply()`][req-reply]，避免必须指定`StaticResponse`对象：
 
 ```js
-// equivalent to `res.send({ body })`
+// 等同于`res.send({ body })`
 res.send(body)
 
-// equivalent to `res.send({ body, headers })`
+// 等同于`res.send({ body, headers })`
 res.send(body, headers)
 
-// equivalent to `res.send({ statusCode, body, headers})`
+// 等同于`res.send({ statusCode, body, headers})`
 res.send(statusCode, body, headers)
 ```
 
-#### Convenience functions
+#### 便利函数
 
-There are also two convenience functions available on `res`:
+`res`上还有两个便利函数：
 
 ```ts
 {
   /**
-   * Wait for 'delay' milliseconds before sending the
-   * response to the client.
+   * 在发送响应到客户端之前等待'delay'毫秒。
    */
   setDelay: (delay: number) => IncomingHttpResponse
   /**
-   * Serve the response at 'throttleKbps' kilobytes per second.
+   * 以'throttleKbps'千比特/秒的速度提供响应。
    */
   setThrottle: (throttleKbps: number) => IncomingHttpResponse
 }
 ```
 
-Note: calling `res.send()` will end the response phase and stop the response
-from propagating to the next matching response handler in line. See
-["Interception lifecycle"][lifecycle] for more information.
+注意：调用`res.send()`将结束响应阶段并阻止响应传播到下一个匹配的响应处理程序。更多信息参见["拦截生命周期"][lifecycle]。
 
-## `StaticResponse` objects
+## `StaticResponse`对象
 
-A `StaticResponse` represents a
-[statically defined response (stub)](#Stubbing-a-response).
+`StaticResponse`表示[静态定义的响应（存根）](#Stubbing-a-response)。
 
-The following properties are available on `StaticResponse`.
+`StaticResponse`上可用的属性如下。
 
-| Option            | Description                                                                                                                                                                                                                       |
+| 选项            | 描述                                                                                                                                                                                                                       |
 | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| statusCode        | HTTP response status code                                                                                                                                                                                                         |
-| headers           | HTTP response headers                                                                                                                                                                                                             |
-| body              | Serve a static response body (`object`, `string`, `ArrayBuffer`) (when `fixture` is omitted).                                                                                                                                     |
-| fixture           | Serve a fixture as the HTTP response body (allowed when `body` is omitted). Read the contents with an encoding other than the [default for the file type](/api/commands/fixture#Encoding), pass the fixture like `path,encoding`. |
-| forceNetworkError | Force an error by destroying the browser connection                                                                                                                                                                               |
-| delay             | Minimum network latency or delay to add to the response time (milliseconds)                                                                                                                                                       |
-| throttleKbps      | Maximum data transfer rate of the response (kilobits/second)                                                                                                                                                                      |
+| statusCode        | HTTP响应状态码                                                                                                                                                                                                         |
+| headers           | HTTP响应头                                                                                                                                                                                                             |
+| body              | 提供静态响应体（`object`、`string`、`ArrayBuffer`）（当省略`fixture`时）。                                                                                                                                     |
+| fixture           | 提供fixture作为HTTP响应体（当省略`body`时允许）。以不同于[文件类型默认值](/api/commands/fixture#Encoding)的编码读取内容时，传递fixture如`path,encoding`。 |
+| forceNetworkError | 通过销毁浏览器连接强制错误                                                                                                                                                                               |
+| delay             | 添加到响应时间的最小网络延迟或延迟（毫秒）                                                                                                                                                       |
+| throttleKbps      | 响应的最大数据传输速率（千比特/秒）                                                                                                                                                                      |
 
-**Note:** All properties are optional.
+**注意**：所有属性都是可选的。
 
-You can supply a `StaticResponse` to Cypress in 3 ways:
+可以通过3种方式向Cypress提供`StaticResponse`：
 
-- To `cy.intercept()` as
-  [`an argument`](#staticResponse-StaticResponse), to stub a
-  response to a route: `cy.intercept('/url', staticResponse)`
-- To [`req.reply()`][req-reply], to stub a response from a request handler:
-  `req.reply(staticResponse)`
-- To [`res.send()`][res-send], to stub a response from a response handler:
-  `res.send(staticResponse)`
+- 作为[`参数`](#staticResponse-StaticResponse)传递给`cy.intercept()`，存根路由的响应：`cy.intercept('/url', staticResponse)`
+- 传递给[`req.reply()`][req-reply]，从请求处理程序存根响应：`req.reply(staticResponse)`
+- 传递给[`res.send()`][res-send]，从响应处理程序存根响应：`res.send(staticResponse)`
 
-See
-["Stubbing a response with a `StaticResponse` object"](#With-a-StaticResponse-object)
-for examples of stubbing with `cy.intercept()`.
+示例参见[使用`StaticResponse`对象存根响应](#With-a-StaticResponse-object)。
 
-## Interception lifecycle
+## 拦截生命周期
 
-The lifecycle of a `cy.intercept()` interception begins when an HTTP request is
-sent from your app that matches one or more registered `cy.intercept()` routes.
-From there, each interception has two phases: request and response.
+`cy.intercept()`拦截的生命周期始于从应用程序发送的HTTP请求匹配一个或多个注册的`cy.intercept()`路由。从那里，每个拦截有两个阶段：请求和响应。
 
-`cy.intercept()` routes are matched in reverse order of definition, except for
-routes which are defined with `{ middleware: true }`, which always run first.
-This allows you to override existing `cy.intercept()` declarations by defining
-an overlapping `cy.intercept()`:
+`cy.intercept()`路由按定义的相反顺序匹配，除了定义为`{ middleware: true }`的路由，它们总是首先运行。这允许你通过定义重叠的`cy.intercept()`来覆盖现有的`cy.intercept()`声明：
 
 <DocsImage
   src="/img/api/intercept/middleware-algo.png"
-  alt="Middleware Algorithm"
+  alt="中间件算法"
 />
 
-### Request phase
+### 请求阶段
 
-The following steps are used to handle the request phase.
+以下步骤用于处理请求阶段。
 
-1. Start with the first matching route according to the above algorithm
-   (middleware first, followed by handlers in reverse order).
-2. Was a handler (body, [`StaticResponse`][staticresponse], or function)
-   supplied to `cy.intercept()`? If not, continue to step 7.
-3. If the handler was a body or [`StaticResponse`][staticresponse], immediately
-   end the request with that response.
-4. If the handler was a function, call the function with `req`, the incoming
-   request, as the first argument. See ["Intercepted requests"][req] for more
-   information on the `req` object.
-   - If [`req.reply()`][req-reply] is called, immediately end the request phase
-     with the provided response. See
-     ["Providing a stub response with `req.reply()`"](#Providing-a-stub-response-with-reqreply).
-   - If [`req.continue()`][req-continue] is called, immediately end the request
-     phase, and send the request to the destination server. If a callback is
-     provided to [`req.continue()`][req-continue], it will be called during the
-     [response phase](#Response-phase)
-5. If the handler returned a Promise, wait for the Promise to resolve.
-6. Merge any modifications to the request object with the real request.
-7. If there is another matching `cy.intercept()`, return to step 2 and continue
-   following steps with that route.
-8. Send the request outgoing to the destination server and end the request
-   phase. The [response phase](#Response-phase) will begin once a response is
-   received.
+1. 根据上述算法（中间件优先，然后是反向顺序的处理程序）从第一个匹配的路由开始。
+2. 是否向`cy.intercept()`提供了处理程序（体、[`StaticResponse`][staticresponse]或函数）？如果没有，继续到步骤7。
+3. 如果处理程序是体或[`StaticResponse`][staticresponse]，立即以该响应结束请求。
+4. 如果处理程序是函数，使用`req`（传入的请求）作为第一个参数调用函数。更多关于`req`对象的信息，参见["拦截的请求"][req]。
+   - 如果调用[`req.reply()`][req-reply]，立即以提供的响应结束请求阶段。参见[使用`req.reply()`提供存根响应](#Providing-a-stub-response-with-reqreply)。
+   - 如果调用[`req.continue()`][req-continue]，立即结束请求阶段，并将请求发送到目标服务器。如果向[`req.continue()`][req-continue]提供了回调，它将在[响应阶段](#Response-phase)被调用。
+5. 如果处理程序返回Promise，等待Promise解析。
+6. 将对请求对象的任何修改与真实请求合并。
+7. 如果有另一个匹配的`cy.intercept()`，返回到步骤2并继续执行该路由的步骤。
+8. 将请求发出到目标服务器并结束请求阶段。一旦收到响应，[响应阶段](#Response-phase)将开始。
 
-### Response phase
+### 响应阶段
 
-Once the HTTP response is received from the upstream server, the following steps
-are applied:
+一旦从上游服务器收到HTTP响应，将应用以下步骤：
 
-1. Get a list of registered `before:response` event listeners.
-2. For each `before:response` listener (if any), call it with the [`res`][res]
-   object.
-   - If [`res.send()`][res-send] is called, end the response phase and merge any
-     passed arguments with the response.
-   - If a Promise is returned, await it. Merge any modified response properties
-     with the real response.
-3. If a `req.continue()` with callback is declared for this route, call the
-   callback with the [`res`][res] object.
-   - If [`res.send()`][res-send] is called, end the response phase and merge any
-     passed arguments with the response.
-   - If a Promise is returned, await it. Merge any modified response properties
-     with the real response.
-4. Get a list of registered `response` event listeners.
-5. For each `response` listener (if any), call it with the [`res`][res] object.
-   - If [`res.send()`][res-send] is called, end the response phase and merge any
-     passed arguments with the response.
-   - If a Promise is returned, await it. Merge any modified response properties
-     with the real response.
-6. Send the response to the browser.
-7. Once the response is complete, get a list of registered `after:response`
-   event listeners.
-8. For each `after:response` listener (if any), call it with the [`res`][res]
-   object (minus `res.send`)
-   - If a Promise is returned, await it.
-9. End the response phase.
+1. 获取注册的`before:response`事件监听器列表。
+2. 对于每个`before:response`监听器（如果有），使用[`res`][res]对象调用它。
+   - 如果调用[`res.send()`][res-send]，结束响应阶段并将任何传递的参数与响应合并。
+   - 如果返回Promise，等待它。将对响应属性的任何修改与真实响应合并。
+3. 如果为此路由声明了带回调的`req.continue()`，使用[`res`][res]对象调用回调。
+   - 如果调用[`res.send()`][res-send]，结束响应阶段并将任何传递的参数与响应合并。
+   - 如果返回Promise，等待它。将对响应属性的任何修改与真实响应合并。
+4. 获取注册的`response`事件监听器列表。
+5. 对于每个`response`监听器（如果有），使用[`res`][res]对象调用它。
+   - 如果调用[`res.send()`][res-send]，结束响应阶段并将任何传递的参数与响应合并。
+   - 如果返回Promise，等待它。将对响应属性的任何修改与真实响应合并。
+6. 将响应发送到浏览器。
+7. 一旦响应完成，获取注册的`after:response`事件监听器列表。
+8. 对于每个`after:response`监听器（如果有），使用[`res`][res]对象（减去`res.send`）调用它。
+   - 如果返回Promise，等待它。
+9. 结束响应阶段。
 
-## Glob Pattern Matching URLs
+## URL的Glob模式匹配
 
-When [matching a URL][match-url], providing an exact URL to match can be too
-restrictive. For example, what if you wanted to run your tests on a different
-host?
+当[匹配URL][match-url]时，提供精确的URL进行匹配可能限制性太强。例如，如果想在不同的主机上运行测试怎么办？
 
 ```js
-// match any request that exactly matches the URL
+// 匹配完全符合URL的任何请求
 cy.intercept('https://prod.cypress.io/users')
-// matches this: https://prod.cypress.io/users
-// ...but not this: https://staging.cypress.io/users
-// ...or this: http://localhost/users
+// 匹配: https://prod.cypress.io/users
+// ...但不匹配: https://staging.cypress.io/users
+// ...或: http://localhost/users
 ```
 
-Glob pattern matching provides the necessary flexibility:
+Glob模式匹配提供了必要的灵活性：
 
 ```js
 cy.intercept('/users')
-// matches all of these:
+// 匹配所有这些:
 //   https://prod.cypress.io/users
 //   https://staging.cypress.io/users
 //   http://localhost/users
 
 cy.intercept('/users?_limit=+(3|5)')
-// matches all of these:
+// 匹配所有这些:
 //   https://prod.cypress.io/users?_limit=3
 //   http://localhost/users?_limit=5
 ```
 
 ### Cypress.minimatch
 
-Under the hood, `cy.intercept` uses the [minimatch](/api/utilities/minimatch)
-library with the `{ matchBase: true }` option applied for glob matching and
-provides access to it via the `Cypress` global. This enables you to test your
-pattern in your spec or in the Cypress browser console.
+在底层，`cy.intercept`使用[minimatch](/api/utilities/minimatch)库和`{ matchBase: true }`选项进行glob匹配，并通过`Cypress`全局提供访问。这使你可以在规范或Cypress浏览器控制台中测试模式。
 
-You can invoke the `Cypress.minimatch` with just two arguments - the URL
-(`string`) and the pattern (`string`), respectively - and if it yields `true`,
-then you have a match!
+可以仅用两个参数调用`Cypress.minimatch` - URL（`string`）和模式（`string`），如果返回`true`，则匹配！
 
 ```javascript
 expect(
@@ -1514,42 +1286,32 @@ expect(
 ).to.be.false
 ```
 
-#### minimatch options
+#### minimatch选项
 
-You can also pass in options (`object`) as the third argument, one of which is
-`debug` which if set to `true`, will yield verbose output that could help you
-understand why your pattern isn't working as you expect:
+还可以传递选项（`object`）作为第三个参数，其中之一是`debug`，如果设置为`true`，将产生详细的输出，帮助你理解为什么模式不按预期工作：
 
 ```js
 Cypress.minimatch('http://localhost/users?_limit=3', '**/users?_limit=+(3|5)', {
   debug: true,
 })
-// true (plus debug messages)
+// true (加上调试消息)
 ```
 
-## `cy.intercept()` and request caching
+## `cy.intercept()`和请求缓存
 
-`cy.intercept()` intercepts requests at the network layer. This can cause
-confusion when trying to intercept a request that has already been cached by the
-browser. If a request is served from the browser cache, it will never hit the
-network layer, and `cy.intercept()` will never fire.
+`cy.intercept()`在网络层拦截请求。当尝试拦截已被浏览器缓存的请求时，可能会导致混淆。如果请求从浏览器缓存提供，它将永远不会到达网络层，`cy.intercept()`也永远不会触发。
 
-To see if this is affecting your app, check the Developer Tools. In the
-following example, all of the requests circled in red have been served from
-cache, and will not send an HTTP request. Thus, they cannot be intercepted by
-`cy.intercept()`:
+要查看是否影响你的应用程序，检查开发者工具。在以下示例中，所有红色圈出的请求已从缓存提供，不会发送HTTP请求。因此，它们不能被`cy.intercept()`拦截：
 
 <DocsImage
   src="/img/api/intercept/devtools-cached-responses.png"
-  alt="Screenshot of Chrome DevTools showing cached responses."
+  alt="Chrome开发者工具显示缓存响应的截图。"
 />
 
-If you would like to intercept resources that normally send cache headers, here
-are some workarounds:
+如果你想拦截通常发送缓存头的资源，以下是一些解决方法：
 
-- Turn off cache headers on your development server when in testing mode.
-- Disable caching on responses by adding a top-level `cy.intercept()` that
-  removes cache headers from desired requests. For example:
+- 在测试模式下关闭开发服务器上的缓存头。
+- 通过添加顶级`cy.intercept()`从所需请求中删除缓存头来禁用响应缓存。例如：
   ```ts
   beforeEach(() => {
     cy.intercept(
@@ -1557,22 +1319,20 @@ are some workarounds:
       { middleware: true },
       (req) => {
         req.on('before:response', (res) => {
-          // force all API responses to not be cached
+          // 强制所有API响应不被缓存
           res.headers['cache-control'] = 'no-store'
         })
       }
     )
   })
   ```
-- Chromium-family browsers only: Use `remote:debugger:protocol` to disable cache
-  entirely. For more information, see
-  [this comment on issue #14459](https://github.com/cypress-io/cypress/issues/14459#issuecomment-768616195)
+- 仅限Chromium家族浏览器：使用`remote:debugger:protocol`完全禁用缓存。更多信息，参见[#14459问题上的此评论](https://github.com/cypress-io/cypress/issues/14459#issuecomment-768616195)
 
-## Command Log
+## 命令日志
 
-**_Routes Instrument Panel_**
+**_路由仪表板_**
 
-When you create `cy.intercept()` rules, Cypress will display a new Instrument called _Routes_.
+当创建`cy.intercept()`规则时，Cypress将显示一个名为_Routes_的新仪表。
 
 ```javascript
 cy.intercept('/accounts*').as('accountsGet')
@@ -1580,9 +1340,7 @@ cy.intercept('/company', { companyId: 1 }).as('companyGet')
 cy.intercept('/teams*', [{ teamId: 2 }]).as('teamsGet')
 ```
 
-It will list the routing table in the
-Instrument Panel, including the `method`, `RouteMatcher`, if the route is
-stubbed, any alias, and number of matched requests:
+它将在仪表板中列出路由表，包括`method`、`RouteMatcher`、路由是否被存根、任何别名和匹配的请求数：
 
 <!-- Code to reproduce screenshot:
 it('cy.intercept command log', () => {
@@ -1599,52 +1357,48 @@ it('cy.intercept command log', () => {
 
 <DocsImage
   src="/img/api/intercept/command-log-routes-ui.png"
-  alt="Screenshot of Command Log Routes UI"
+  alt="命令日志路由UI截图"
 />
 
-When HTTP requests are made, Cypress will log them in the Command Log and
-indicate whether they matched a `cy.intercept()` by the presence of a yellow
-badge on the right hand side:
+当发出HTTP请求时，Cypress会在命令日志中记录它们，并通过右侧黄色徽章的存在指示它们是否匹配`cy.intercept()`：
 
 <DocsImage
   src="/img/api/intercept/command-log-fetches.png"
-  alt="Screenshot of example fetches"
+  alt="示例fetch截图"
 />
 
-The circular indicator is filled if the request went to the destination server,
-but unfilled if the request was stubbed with a response.
+圆形指示器填充表示请求到达了目标服务器，未填充表示请求被存根响应。
 
-Clicking on a request that matched a `cy.intercept()` will print additional
-information about the request and response to the console:
+点击匹配`cy.intercept()`的请求将在控制台打印有关请求和响应的额外信息：
 
 <DocsImage
   src="/img/api/intercept/console-props.png"
-  alt="Screenshot of cy.intercept console output"
+  alt="cy.intercept控制台输出截图"
 />
 
-[Read more about request logging in Cypress.](/app/guides/network-requests#Command-Log)
+[阅读更多关于Cypress中的请求日志记录。](/app/guides/network-requests#Command-Log)
 
-## History
+## 历史
 
-| Version                                    | Changes                                                                                                                                                                                                                                                                                              |
+| 版本                                    | 变更                                                                                                                                                                                                                                                                                              |
 | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [14.0.0](/app/references/changelog#14-0-0) | Deprecated `resourceType` property                                                                                                                                                                                                                                                                   |
-| [12.2.0](/app/references/changelog#12-2-0) | Added `resourceType` property to `req` and `RouteMatcher`.                                                                                                                                                                                                                                           |
-| [7.6.0](/app/references/changelog#7-0-0)   | Added `query` option to `req` (The incoming request object yielded to request handler functions).                                                                                                                                                                                                    |
-| [7.0.0](/app/references/changelog#7-0-0)   | Removed `matchUrlAgainstPath` option from `RouteMatcher`, reversed handler ordering, added request events, removed substring URL matching, removed `cy.route2` alias, added `middleware` RouteMatcher option, renamed `res.delay()` to `res.setDelay()` and `res.throttle()` to `res.setThrottle()`. |
-| [6.4.0](/app/references/changelog#6-4-0)   | Renamed `delayMs` property to `delay` (backwards-compatible).                                                                                                                                                                                                                                        |
-| [6.2.0](/app/references/changelog#6-2-0)   | Added `matchUrlAgainstPath` option to `RouteMatcher`.                                                                                                                                                                                                                                                |
-| [6.0.0](/app/references/changelog#6-0-0)   | Renamed `cy.route2()` to `cy.intercept()`.                                                                                                                                                                                                                                                           |
-| [6.0.0](/app/references/changelog#6-0-0)   | Removed `experimentalNetworkStubbing` option and made it the default behavior.                                                                                                                                                                                                                       |
-| [5.1.0](/app/references/changelog#5-1-0)   | Added experimental `cy.route2()` command under `experimentalNetworkStubbing` option.                                                                                                                                                                                                                 |
+| [14.0.0](/app/references/changelog#14-0-0) | 弃用`resourceType`属性                                                                                                                                                                                                                                                                   |
+| [12.2.0](/app/references/changelog#12-2-0) | 向`req`和`RouteMatcher`添加`resourceType`属性。                                                                                                                                                                                                                                           |
+| [7.6.0](/app/references/changelog#7-0-0)   | 向`req`（传递给请求处理程序函数的传入请求对象）添加`query`选项。                                                                                                                                                                                                                                    |
+| [7.0.0](/app/references/changelog#7-0-0)   | 从`RouteMatcher`中移除`matchUrlAgainstPath`选项，反转处理程序顺序，添加请求事件，移除子字符串URL匹配，移除`cy.route2`别名，添加`middleware` RouteMatcher选项，重命名`res.delay()`为`res.setDelay()`和`res.throttle()`为`res.setThrottle()`。 |
+| [6.4.0](/app/references/changelog#6-4-0)   | 将`delayMs`属性重命名为`delay`（向后兼容）。                                                                                                                                                                                                                                        |
+| [6.2.0](/app/references/changelog#6-2-0)   | 向`RouteMatcher`添加`matchUrlAgainstPath`选项。                                                                                                                                                                                                                                                |
+| [6.0.0](/app/references/changelog#6-0-0)   | 将`cy.route2()`重命名为`cy.intercept()`。                                                                                                                                                                                                                                                           |
+| [6.0.0](/app/references/changelog#6-0-0)   | 移除`experimentalNetworkStubbing`选项并使其成为默认行为。                                                                                                                                                                                                                       |
+| [5.1.0](/app/references/changelog#5-1-0)   | 在`experimentalNetworkStubbing`选项下添加实验性`cy.route2()`命令。                                                                                                                                                                                                                 |
 
-## See also
+## 另见
 
 - [`.as()`](/api/commands/as)
 - [`cy.wait()`](/api/commands/wait)
-- [Network Requests Guide](/app/guides/network-requests)
-- [Cypress Example Recipes](https://github.com/cypress-io/cypress-example-recipes#stubbing-and-spying)
-- [Kitchen Sink Examples](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/cypress/e2e/2-advanced-examples/network_requests.cy.js)
+- [网络请求指南](/app/guides/network-requests)
+- [Cypress示例配方](https://github.com/cypress-io/cypress-example-recipes#stubbing-and-spying)
+- [Kitchen Sink示例](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/cypress/e2e/2-advanced-examples/network_requests.cy.js)
 
 <!-- map often used refs to deeplinks within page !-->
 

@@ -1,120 +1,100 @@
 ---
-title: 'Stubs, Spies, and Clocks: Cypress Guide'
-description: Learn how to use `cy.stub()`, `cy.spy()`, and `cy.clock()` in Cypress to manipulate your application's behavior and time.
-sidebar_label: Stubs, Spies, and Clocks
+title: 'Stubs, Spies 和 Clocks: Cypress 指南'
+description: 学习如何在 Cypress 中使用 `cy.stub()`、`cy.spy()` 和 `cy.clock()` 来操控应用行为和模拟时间。
+sidebar_label: Stubs, Spies 和 Clocks
 ---
 
 <ProductHeading product="app" />
 
-# Stubs, Spies, and Clocks
+# Stubs, Spies 和 Clocks
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to use `cy.stub()`, `cy.spy()`, and `cy.clock()`
-- Common scenarios for using stubs, spies, and clocks
-- How to use assertions with stubs and spies
+- 如何使用 `cy.stub()`、`cy.spy()` 和 `cy.clock()`
+- 使用 stubs、spies 和 clocks 的常见场景
+- 如何对 stubs 和 spies 进行断言
 
 :::
 
-Cypress comes built in with the ability to stub and spy with
-[`cy.stub()`](/api/commands/stub), [`cy.spy()`](/api/commands/spy) or modify
-your application's time with [`cy.clock()`](/api/commands/clock) - which lets
-you manipulate `Date`, `setTimeout`, `clearTimeout`, `setInterval`, or
-`clearInterval`.
+Cypress 内置了通过 [`cy.stub()`](/api/commands/stub) 和 [`cy.spy()`](/api/commands/spy) 进行桩函数和监视的能力，或者使用 [`cy.clock()`](/api/commands/clock) 修改应用时间 - 这让你可以操控 `Date`、`setTimeout`、`clearTimeout`、`setInterval` 或 `clearInterval`。
 
-These commands are useful when writing both **unit tests** and **integration
-tests**.
+这些命令在编写**单元测试**和**集成测试**时都非常有用。
 
-## Libraries and Tools
+## 库和工具
 
-Cypress automatically bundles and wraps these libraries:
+Cypress 自动打包并封装了这些库：
 
-| Name                                                  | What it does                                                                                |
-| ----------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| [`sinon`](http://sinonjs.org)                         | provides the [`cy.stub()`](/api/commands/stub) and [`cy.spy()`](/api/commands/spy) APIs     |
-| [`lolex`](https://github.com/sinonjs/lolex)           | provides the [`cy.clock()`](/api/commands/clock) and [`cy.tick()`](/api/commands/tick) APIs |
-| [`sinon-chai`](https://github.com/domenic/sinon-chai) | adds `chai` assertions for stubs and spies                                                  |
+| 名称                                                  | 功能                                                                                       |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| [`sinon`](http://sinonjs.org)                         | 提供 [`cy.stub()`](/api/commands/stub) 和 [`cy.spy()`](/api/commands/spy) API              |
+| [`lolex`](https://github.com/sinonjs/lolex)           | 提供 [`cy.clock()`](/api/commands/clock) 和 [`cy.tick()`](/api/commands/tick) API         |
+| [`sinon-chai`](https://github.com/domenic/sinon-chai) | 为 stubs 和 spies 添加 `chai` 断言支持                                                     |
 
-You can refer to each of these libraries' documentation for more examples and
-explanations.
+你可以参考这些库的文档获取更多示例和解释。
 
-## Common Scenarios
+## 常见场景
 
 :::info
 
-<strong>Example test!</strong>
+<strong>测试示例！</strong>
 
-[Check out our example recipe testing spying, stubbing, and time](/app/references/recipes#Stubbing-and-spying)
+[查看我们关于测试 spying、stubbing 和时间的示例配方](/app/references/recipes#Stubbing-and-spying)
 
 :::
 
 ### Stubs
 
-A stub is a way to modify a function and delegate control over its behavior to
-you (the programmer).
+Stub 是一种修改函数并将其行为控制权交给开发者(程序员)的方式。
 
-A stub is most commonly used in a unit test but is still useful during some
-integration/e2e tests.
+Stub 最常用于单元测试，但在某些集成/e2e测试中仍然有用。
 
 ```javascript
-// create a standalone stub (generally for use in unit test)
+// 创建一个独立的 stub (通常用于单元测试)
 cy.stub()
 
-// replace obj.method() with a stubbed function
+// 用 stub 函数替换 obj.method()
 cy.stub(obj, 'method')
 
-// force obj.method() to return "foo"
+// 强制 obj.method() 返回 "foo"
 cy.stub(obj, 'method').returns('foo')
 
-// force obj.method() when called with "bar" argument to return "foo"
+// 当使用 "bar" 参数调用时，强制 obj.method() 返回 "foo"
 cy.stub(obj, 'method').withArgs('bar').returns('foo')
 
-// force obj.method() to return a promise which resolves to "foo"
+// 强制 obj.method() 返回解析为 "foo" 的 Promise
 cy.stub(obj, 'method').resolves('foo')
 
-// force obj.method() to return a promise rejected with an error
+// 强制 obj.method() 返回被错误拒绝的 Promise
 cy.stub(obj, 'method').rejects(new Error('foo'))
 ```
 
-You generally stub a function when it has side effects you are trying to
-control.
+通常在函数有副作用需要控制时使用 stub。
 
-#### Common Scenarios:
+#### 常见场景：
 
-- You have a function that accepts a callback, and want to invoke the callback.
-- Your function returns a `Promise`, and you want to automatically resolve or
-  reject it.
-- You have a function that wraps `window.location` and don't want your
-  application to be navigated.
-- You're trying to test your application's "failure path" by forcing things to
-  fail.
-- You're trying to test your application's "happy path" by forcing things to
-  pass.
-- You want to "trick" your application into thinking it's logged in or logged
-  out.
-- You're using `oauth` and want to stub login methods.
+- 你有一个接受回调的函数，并希望调用该回调
+- 你的函数返回一个 `Promise`，你想自动解析或拒绝它
+- 你有一个包装 `window.location` 的函数，不希望应用被导航
+- 你试图通过强制失败来测试应用的"失败路径"
+- 你试图通过强制成功来测试应用的"成功路径"
+- 你想"欺骗"应用使其认为已登录或已登出
+- 你使用 `oauth` 并想 stub 登录方法
 
 :::info
 
 <strong>cy.stub()</strong>
 
-[Read more about how to use `cy.stub()`](/api/commands/stub).
+[阅读更多关于如何使用 `cy.stub()`](/api/commands/stub)。
 
 :::
 
 ### Spies
 
-A spy gives you the ability to "spy" on a function, by letting you capture and
-then assert that the function was called with the right arguments, or that the
-function was called a certain number of times, or even what the return value was
-or what context the function was called with.
+Spy 让你能够"监视"函数，通过捕获并断言函数是否以正确的参数被调用，或者函数被调用了特定次数，甚至函数的返回值或调用上下文是什么。
 
-A spy does **not** modify the behavior of the function - it is left perfectly
-intact. A spy is most useful when you are testing the contract between multiple
-functions and you don't care about the side effects the real function may create
-(if any).
+Spy **不会**修改函数的行为 - 它完全保持原样。当测试多个函数之间的契约且不关心真实函数可能产生的副作用时，Spy 最有用。
 
 ```javascript
 cy.spy(obj, 'method')
@@ -124,31 +104,28 @@ cy.spy(obj, 'method')
 
 <strong>cy.spy()</strong>
 
-[Read more about how to use `cy.spy()`](/api/commands/spy).
+[阅读更多关于如何使用 `cy.spy()`](/api/commands/spy)。
 
 :::
 
 ### Clock
 
-There are situations when it is useful to control your application's `date` and
-`time` in order to override its behavior or avoid slow tests.
+在某些情况下，控制应用的 `date` 和 `time` 很有用，可以覆盖其行为或避免缓慢的测试。
 
-With [cy.clock()](/api/commands/clock) you can control:
+使用 [cy.clock()](/api/commands/clock) 你可以控制：
 
 - `Date`
 - `setTimeout`
 - `setInterval`
 
-#### Common Scenarios
+#### 常见场景
 
-##### Control `setInterval`
+##### 控制 `setInterval`
 
-- You're polling something in your application with `setInterval` and want to
-  control that.
-- You have **throttled** or **debounced** functions which you want to control.
+- 你在应用中用 `setInterval` 轮询某些内容并想控制它
+- 你有**节流**或**防抖**函数需要控制
 
-Once you've enabled [`cy.clock()`](/api/commands/clock) you can control time by
-**ticking** it ahead by milliseconds.
+启用 [`cy.clock()`](/api/commands/clock) 后，你可以通过**推进**毫秒数来控制时间。
 
 ```javascript
 cy.clock()
@@ -157,43 +134,35 @@ cy.get('#search').type('Acme Company')
 cy.tick(1000)
 ```
 
-You can call [`cy.clock()`](/api/commands/clock) **prior** to visiting your
-application and we will automatically bind it to the application on the next
-[`cy.visit()`](/api/commands/visit). The same concept applies to mounting a
-component with [`cy.mount()`](/api/commands/mount). We bind **before** any
-timers from your code can be invoked.
+你可以在访问应用前调用 [`cy.clock()`](/api/commands/clock)，我们会在下次 [`cy.visit()`](/api/commands/visit) 时自动将其绑定到应用。同样的概念适用于使用 [`cy.mount()`](/api/commands/mount) 挂载组件。我们在你的代码中的任何计时器被调用**之前**绑定。
 
-##### Restore the clock
+##### 恢复时钟
 
-You can restore the clock and allow your application to resume normally without
-manipulating native global functions related to time. This is automatically
-called between tests.
+你可以恢复时钟，让应用在没有时间相关全局函数操控的情况下正常运行。这在测试之间会自动调用。
 
 ```javascript
 cy.clock()
 cy.visit('http://localhost:3333')
 cy.get('#search').type('Acme Company')
 cy.tick(1000)
-// more test code here
+// 更多测试代码
 
-// restore the clock
+// 恢复时钟
 cy.clock().then((clock) => {
   clock.restore()
 })
-// more test code here
+// 更多测试代码
 ```
 
-You could also restore by using [.invoke()](/api/commands/invoke) to invoke the
-`restore` function.
+你也可以使用 [.invoke()](/api/commands/invoke) 调用 `restore` 函数来恢复。
 
 ```js
 cy.clock().invoke('restore')
 ```
 
-### Assertions
+### 断言
 
-Once you have a `stub` or a `spy` in hand, you can then create assertions about
-them.
+一旦有了 `stub` 或 `spy`，你就可以对它们进行断言。
 
 ```javascript
 const user = {
@@ -210,23 +179,23 @@ const user = {
   },
 }
 
-// force user.getName() to return "Jane"
+// 强制 user.getName() 返回 "Jane"
 cy.stub(user, 'getName').returns('Jane Lane')
 
-// spy on updateEmail but do not change its behavior
+// 监视 updateEmail 但不改变其行为
 cy.spy(user, 'updateEmail')
 
-// spy on fail but do not change its behavior
+// 监视 fail 但不改变其行为
 cy.spy(user, 'fail')
 
-// invoke getName
+// 调用 getName
 const name = user.getName(123)
 
-// invoke updateEmail
+// 调用 updateEmail
 const email = user.updateEmail('jane@devs.com')
 
 try {
-  // invoke fail
+  // 调用 fail
   user.fail()
 } catch (e) {}
 
@@ -244,49 +213,39 @@ expect(user.updateEmail).to.have.returned('jane@devs.com') // true
 expect(user.fail).to.have.thrown('Error') // true
 ```
 
-## Integration and Extensions
+## 集成与扩展
 
-Beyond integrating these tools together, we have also extended and improved
-collaboration between these tools.
+除了将这些工具集成在一起，我们还改进和扩展了这些工具之间的协作。
 
-**Some examples:**
+**一些例子：**
 
-- We replaced Sinon's argument stringifier for a much less noisy, more
-  performant, custom version.
-- We improved the `sinon-chai` assertion output by changing what is displayed
-  during a passing vs. failing test.
-- We added aliasing support to `stub` and `spy` APIs.
-- We automatically restore and tear down `stub`, `spy`, and `clock` between
-  tests.
+- 我们替换了 Sinon 的参数字符串化器，使用了一个更简洁、性能更好的自定义版本
+- 我们改进了 `sinon-chai` 断言输出，改变了通过和失败测试时的显示内容
+- 我们为 `stub` 和 `spy` API 添加了别名支持
+- 我们在测试之间自动恢复和清理 `stub`、`spy` 和 `clock`
 
-We also integrated all of these APIs directly into the Command Log, so you can
-visually see what's happening in your application.
+我们还将所有这些 API 直接集成到命令日志中，这样你可以直观地看到应用中发生了什么。
 
-We visually indicate when:
+我们会在以下情况时进行视觉提示：
 
-- A `stub` is called
-- A `spy` is called
-- A `clock` is ticked
+- `stub` 被调用时
+- `spy` 被调用时
+- `clock` 被推进时
 
-When you use aliasing with the [`.as()`](/api/commands/as) command, we also
-correlate those aliases with the calls. This works identically to aliasing
-[`cy.intercept()`](/api/commands/intercept).
+当你使用 [`.as()`](/api/commands/as) 命令设置别名时，我们也会将这些别名与调用关联起来。这与别名 [`cy.intercept()`](/api/commands/intercept) 的工作方式相同。
 
-When stubs are created by calling the method `.withArgs(...)` we also visually
-link these together.
+当 stub 通过调用 `.withArgs(...)` 方法创建时，我们也会将它们视觉上链接在一起。
 
-When you click on a stub or spy, we also output **remarkably** helpful debugging
-information.
+当你点击 stub 或 spy 时，我们还会输出**极其**有用的调试信息。
 
-For instance we automatically display:
+例如，我们会自动显示：
 
-- The call count (and the total number of calls)
-- The arguments, without transforming them (they are the real arguments)
-- The return value of the function
-- The context the function was invoked with
+- 调用计数(以及总调用次数)
+- 参数，未经转换(它们是真实参数)
+- 函数的返回值
+- 函数被调用时的上下文
 
-## See also
+## 另请参阅
 
-- [Spies, stubs, and clocks](https://example.cypress.io/commands/spies-stubs-clocks)
-  examples
-- [Testing periodic network requests with cy.intercept and cy.clock combination](https://www.cypress.io/blog/2021/02/23/cy-intercept-and-cy-clock/)
+- [Spies, stubs 和 clocks](https://example.cypress.io/commands/spies-stubs-clocks) 示例
+- [使用 cy.intercept 和 cy.clock 组合测试周期性网络请求](https://www.cypress.io/blog/2021/02/23/cy-intercept-and-cy-clock/)

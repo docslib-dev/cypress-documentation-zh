@@ -1,34 +1,34 @@
 ---
-title: 'Cypress.stop() | Cypress Documentation'
-description: Stop Cypress on failure or any other conditions
-sidebar_label: stop
+title: 'Cypress.stop() | Cypress 文档'
+description: '在测试失败或其他条件下停止Cypress运行'
+sidebar_label: 'stop'
 ---
 
 <ProductHeading product="app" />
 
 # Cypress.stop
 
-Stop the Cypress App on the current machine while tests are running. This can be useful for stopping test execution upon failures or other predefined conditions.
+停止当前机器上正在运行的Cypress应用。这在测试失败或其他预设条件下停止测试执行时非常有用。
 
 :::tip
 
-**Auto Cancellation**: If you're looking to automatically stop _all tests_ across _multiple machines_ when a test fails, consider using the [Auto Cancellation feature](/cloud/features/smart-orchestration/run-cancellation) in Cypress Cloud.
+**自动取消功能**：如果您希望在测试失败时自动停止跨多台机器的所有测试，请考虑使用Cypress Cloud中的[自动取消功能](/cloud/features/smart-orchestration/run-cancellation)。
 
 <AutoCancellationBenefits />
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 Cypress.stop()
 ```
 
-## Examples
+## 示例
 
-### Stop tests when a test fails
+### 测试失败时停止测试
 
-To ensure tests stop immediately after a failure across any spec file, add the following snippet to your `support/index.js` file:
+为确保在任何测试文件失败后立即停止测试，请将以下代码片段添加到您的`support/index.js`文件中：
 
 ```javascript
 afterEach(function () {
@@ -39,55 +39,55 @@ afterEach(function () {
 })
 ```
 
-### Abort tests when a condition is met
+### 满足条件时中止测试
 
 ```javascript
 beforeEach(() => {
   if (env !== 'expected-condition') {
-    cy.log('Stop tests - environment is not setup correctly')
+    cy.log('停止测试 - 环境未正确设置')
     Cypress.stop()
     return
   }
 })
 ```
 
-## Notes
+## 注意事项
 
-Calling `Cypress.stop()` will stop the execution of remaining tests, but any code after `Cypress.stop()` in the same container block (such as `beforeEach` or `afterEach`) will still run. To prevent additional logic from executing after `Cypress.stop()`, add a `return` statement immediately after it:
+调用`Cypress.stop()`会停止剩余测试的执行，但同一代码块（如`beforeEach`或`afterEach`）中`Cypress.stop()`之后的代码仍会运行。为防止在`Cypress.stop()`后执行额外逻辑，请在其后立即添加`return`语句：
 
 ```javascript
 if (someCondition) {
   Cypress.stop()
-  return // Prevents further code execution in this block
+  return // 阻止此代码块中后续代码的执行
 }
 ```
 
-### `cypress run` vs `cypress open` behavior
+### `cypress run`与`cypress open`的行为差异
 
-Calling `Cypress.stop()` during `cypress run` will skip any remaining tests in the current specfile. If recording to Cypress Cloud, all screenshots, videos, and [Test Replay](/cloud/features/test-replay) will still successfully upload.
+在`cypress run`期间调用`Cypress.stop()`会跳过当前测试文件中剩余的测试。如果正在录制到Cypress Cloud，所有截图、视频和[测试回放](/cloud/features/test-replay)仍将成功上传。
 
-![Terminal output of a Cypress run displays running an `example.cy.ts` file with 1 test passing in green and 1 test passing in red with an error message. The Results table shows 4 tests, 1 passing, 1 failing, and 2 skipped.](/img/api/stop/cypress-stop-during-run-mode.png)
+![Cypress运行时的终端输出显示正在运行`example.cy.ts`文件，其中1个测试通过（绿色），1个测试失败（红色）并显示错误信息。结果表显示4个测试，1个通过，1个失败，2个跳过。](/img/api/stop/cypress-stop-during-run-mode.png)
 
-Calling `Cypress.stop()` during `cypress open` will stop execution of the Cypress App, but remain open for inspection. The remaining tests will not run.
+在`cypress open`期间调用`Cypress.stop()`会停止Cypress应用的执行，但应用仍保持打开状态以供检查。剩余的测试不会运行。
 
-![Cypress App shows an example.cy.ts file as running with 1 passing test collapsed, 1 failing test expanded with the assertion error and the remaining tests having not run, showing square neutral icons for their status.](/img/api/stop/cypress-stop-during-open-mode.png)
+![Cypress应用显示正在运行`example.cy.ts`文件，其中1个通过的测试已折叠，1个失败的测试展开显示断言错误，其余测试未运行，状态显示为方形中立图标。](/img/api/stop/cypress-stop-during-open-mode.png)
 
-### Why choose Auto Cancellation?
+### 为什么选择自动取消功能？
 
-[Auto Cancellation](/cloud/features/smart-orchestration/run-cancellation) is available with Cypress Cloud's Business+ plan. It offers several advantages over `Cypress.stop` for stopping tests on **failure**:
+[自动取消功能](/cloud/features/smart-orchestration/run-cancellation)是Cypress Cloud商业+计划的一部分。在测试失败时停止测试方面，它比`Cypress.stop`具有以下优势：
 
-1. **Scope of Cancellation:** `Cypress.stop` halts only the current spec file, skipping remaining tests within it. Auto Cancellation, however, stops all tests across all machines and marks the entire run as **cancelled** in Cypress Cloud for better visibility.
-2. **Configurable Thresholds:** Auto Cancellation allows you to define failure thresholds. `Cypress.stop` executes immediately when the specified condition is met.
-3. **Simplified Configuration**: Auto Cancellation settings can be managed in Cypress Cloud, whereas `Cypress.stop` requires manual code changes.
-4. **Optimization with Spec Prioritization**: Combined with [Spec Prioritization](/cloud/features/smart-orchestration/spec-prioritization) (another Business+ feature), Auto Cancellation helps efficiently allocate resources by running previously failing specs first in a new run.
+1. **取消范围**：`Cypress.stop`仅停止当前测试文件，跳过其中的剩余测试。而自动取消功能会停止所有机器上的所有测试，并在Cypress Cloud中将整个运行标记为已取消，以提高可见性。
+2. **可配置阈值**：自动取消功能允许您定义失败阈值。`Cypress.stop`在满足指定条件时立即执行。
+3. **简化配置**：自动取消功能设置可在Cypress Cloud中管理，而`Cypress.stop`需要手动修改代码。
+4. **与测试优先级优化的结合**：结合[测试优先级](/cloud/features/smart-orchestration/spec-prioritization)（另一项商业+功能），自动取消功能通过在新运行中优先运行之前失败的测试，帮助高效分配资源。
 
 <CloudFreePlan />
 
-## See also
+## 另请参阅
 
-- [Auto Cancellation](/cloud/features/smart-orchestration/run-cancellation)
+- [自动取消功能](/cloud/features/smart-orchestration/run-cancellation)
 - [`Cypress.currentTest`](/api/cypress-api/currenttest)
 - [`Cypress.currentRetry`](/api/cypress-api/currentretry)
-- [Load Balancing](/cloud/features/smart-orchestration/load-balancing)
-- [Parallelization](/cloud/features/smart-orchestration/parallelization)
-- [Spec Prioritization](/cloud/features/smart-orchestration/spec-prioritization)
+- [负载均衡](/cloud/features/smart-orchestration/load-balancing)
+- [并行化](/cloud/features/smart-orchestration/parallelization)
+- [测试优先级](/cloud/features/smart-orchestration/spec-prioritization)

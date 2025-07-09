@@ -1,6 +1,6 @@
 ---
-title: 'shadow | Cypress Documentation'
-description: Traverse into the shadow DOM of an element in Cypress.
+title: 'shadow | Cypress 文档'
+description: 在 Cypress 中遍历元素的 shadow DOM。
 sidebar_label: shadow
 slug: /api/commands/shadow
 ---
@@ -9,126 +9,116 @@ slug: /api/commands/shadow
 
 # shadow
 
-Traverse into the shadow DOM of an element.
+遍历进入元素的 shadow DOM。
 
-## Syntax
+## 语法
 
 ```javascript
 .shadow()
 .shadow(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 cy.get('.shadow-host').shadow()
 ```
 
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
 ```javascript
-cy.shadow() // Errors, cannot be chained off 'cy'
-cy.exec('npm start').shadow() // Errors, 'exec' does not yield DOM element
-cy.get('.not-a-shadow-host').shadow() // Errors, subject must host a shadow root
+cy.shadow() // 错误，不能直接链式调用 'cy'
+cy.exec('npm start').shadow() // 错误，'exec' 不返回 DOM 元素
+cy.get('.not-a-shadow-host').shadow() // 错误，目标元素必须包含 shadow root
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `.shadow()`.
+传入一个选项对象来改变 `.shadow()` 的默认行为。
 
-| Option    | Default                                                           | Description                                                                         |
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.get()` to resolve before [timing out](#Timeouts)               |
+| `log`     | `true`                                                            | 在 [命令日志](/app/core-concepts/open-mode#Command-Log) 中显示该命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 在 [超时](#Timeouts) 前等待 `cy.get()` 解析的时间               |
 
 <HeaderYields />
 
-- `.shadow()` yields the new DOM element(s) it found.
-- `.shadow()` is a query, and it is _safe_ to chain further commands.
+- `.shadow()` 返回它找到的新 DOM 元素。
+- `.shadow()` 是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### Find and click on a button inside the shadow DOM
+### 查找并点击 shadow DOM 中的按钮
 
 ```html
 <div class="shadow-host">
   #shadow-root
-  <button class="my-button">Click me</button>
+  <button class="my-button">点击我</button>
 </div>
 ```
 
 ```javascript
-// yields [#shadow-root (open)]
+// 返回 [#shadow-root (open)]
 cy.get('.shadow-host').shadow().find('.my-button').click()
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.shadow()` requires being chained off a command that yields a DOM element
-  that is a shadow host (i.e. has a shadow root directly attached to it).
+- `.shadow()` 必须链式调用在返回 DOM 元素的命令之后，且该 DOM 元素必须是一个 shadow host（即直接附加了 shadow root）。
 
 <HeaderAssertions />
 
-- `.shadow()` will automatically [retry](/app/core-concepts/retry-ability)
-  until the element(s)
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.shadow()` will automatically [retry](/app/core-concepts/retry-ability)
-  until the element(s) host(s) a shadow root.
-- `.shadow()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed.
+- `.shadow()` 会自动 [重试](/app/core-concepts/retry-ability) 直到元素 [存在于 DOM 中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)。
+- `.shadow()` 会自动 [重试](/app/core-concepts/retry-ability) 直到元素包含 shadow root。
+- `.shadow()` 会自动 [重试](/app/core-concepts/retry-ability) 直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `.shadow()` can time out waiting for the element(s) to
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.shadow()` can time out waiting for the element(s) to host a shadow root.
-- `.shadow()` can time out waiting for assertions you've added to pass.
+- `.shadow()` 可能会因等待元素 [存在于 DOM 中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions) 而超时。
+- `.shadow()` 可能会因等待元素包含 shadow root 而超时。
+- `.shadow()` 可能会因等待添加的断言通过而超时。
 
-## Known Issue
+## 已知问题
 
-When working with `cy.click()`, it sometimes won't click the right element in
-Chrome. It's happening because of
-[the ambiguity in spec](https://bugs.chromium.org/p/chromium/issues/detail?id=1188919&q=shadowRoot%20elementFromPoint&can=2).
+在使用 `cy.click()` 时，有时在 Chrome 中无法正确点击元素。这是由于 [规范中的歧义](https://bugs.chromium.org/p/chromium/issues/detail?id=1188919&q=shadowRoot%20elementFromPoint&can=2) 导致的。
 
-In this case, pass `'top'` to `cy.click()` like below:
+在这种情况下，可以像下面这样将 `'top'` 传递给 `cy.click()`：
 
 ```js
 cy.get('#element').shadow().find('[data-test-id="my-button"]').click('top')
 ```
 
-## Command Log
+## 命令日志
 
-**_Traverse into the shadow DOM of an element_**
+**_遍历进入元素的 shadow DOM_**
 
 ```javascript
 cy.get('.shadow-host').shadow()
 ```
 
-The commands above will display in the Command Log as:
+上述命令会在命令日志中显示为：
 
 <DocsImage
   src="/img/api/shadow/shadow-command-log.png"
-  alt="Command Log shadow"
+  alt="命令日志 shadow"
 />
 
-When clicking on the `shadow` command within the command log, the console
-outputs the following:
+当点击命令日志中的 `shadow` 命令时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/shadow/shadow-in-console.png"
   alt="console.log shadow"
 />
 
-## See also
+## 另请参阅
 
-- [`cy.get()`](/api/commands/get#Arguments) with `includeShadowDom` option
-- [`cy.find()`](/api/commands/find#Arguments) with `includeShadowDom` option
-- [`cy.contains()`](/api/commands/contains#Arguments) with `includeShadowDom`
-  option
-- [`includeShadowDom` config option](/app/references/configuration#Global)
+- [`cy.get()`](/api/commands/get#Arguments) 的 `includeShadowDom` 选项
+- [`cy.find()`](/api/commands/find#Arguments) 的 `includeShadowDom` 选项
+- [`cy.contains()`](/api/commands/contains#Arguments) 的 `includeShadowDom` 选项
+- [`includeShadowDom` 配置选项](/app/references/configuration#Global)

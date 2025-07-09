@@ -1,6 +1,6 @@
 ---
-title: 'eq | Cypress Documentation'
-description: Get a DOM element at a specific index in an array of elements in Cypress.
+title: 'eq | Cypress 文档'
+description: 在Cypress中获取元素数组中指定索引的DOM元素。
 sidebar_label: eq
 slug: /api/commands/eq
 ---
@@ -9,16 +9,15 @@ slug: /api/commands/eq
 
 # eq
 
-Get A DOM element at a specific index in an array of elements.
+获取元素数组中指定索引的DOM元素。
 
 :::info
 
-The querying behavior of this command matches exactly how
-[`.eq()`](https://api.jquery.com/eq) works in jQuery.
+该命令的查询行为与jQuery中的[`.eq()`](https://api.jquery.com/eq)完全一致。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .eq(index)
@@ -27,154 +26,147 @@ The querying behavior of this command matches exactly how
 .eq(indexFromEnd, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('tbody>tr').eq(0) // Yield first 'tr' in 'tbody'
-cy.get('ul>li').eq(4) // Yield fifth 'li' in 'ul'
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.eq(0) // Errors, cannot be chained off 'cy'
-cy.getCookies().eq(4) // Errors, 'getCookies' does not yield DOM element
+cy.get('tbody>tr').eq(0) // 获取'tbody'中的第一个'tr'
+cy.get('ul>li').eq(4) // 获取'ul'中的第五个'li'
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
+
+```javascript
+cy.eq(0) // 错误，不能直接链式调用'cy'
+cy.getCookies().eq(4) // 错误，'getCookies'不返回DOM元素
+```
+
+### 参数
 
 <Icon name="angle-right" /> **index _(Number)_**
 
-A number indicating the index to find the element at within an array of
-elements. Starts with 0.
+表示在元素数组中查找元素的索引位置，从0开始计数。
 
 <Icon name="angle-right" /> **indexFromEnd _(Number)_**
 
-A negative number indicating the index position from the end to find the element
-at within an array of elements.
+表示从元素数组末尾开始计算的负索引位置。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `.eq()`.
+传入选项对象以修改`.eq()`的默认行为。
 
-| Option    | Default                                                           | Description                                                                         |
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.eq()` to resolve before [timing out](#Timeouts)                  |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 等待`.eq()`解析的超时时间，超过则[超时](#Timeouts)                  |
 
 <HeaderYields />
 
-- `.eq()` yields the new DOM element it found.
-- `.eq()` is a query, and it is _safe_ to chain further commands.
+- `.eq()`返回找到的新DOM元素。
+- `.eq()`是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### Index
+### 索引
 
-#### Find the 2nd element within the elements
+#### 查找元素中的第二个元素
 
 ```html
 <ul>
-  <li>tabby</li>
-  <li>siamese</li>
-  <li>persian</li>
-  <li>sphynx</li>
-  <li>burmese</li>
+  <li>虎斑猫</li>
+  <li>暹罗猫</li>
+  <li>波斯猫</li>
+  <li>斯芬克斯猫</li>
+  <li>缅甸猫</li>
 </ul>
 ```
 
 ```javascript
-cy.get('li').eq(1).should('contain', 'siamese') // true
+cy.get('li').eq(1).should('contain', '暹罗猫') // true
 ```
 
-#### Make an assertion on the 3rd row of a table
+#### 对表格的第三行进行断言
 
 ```html
 <table>
   <tr>
-    <th>Breed</th>
-    <th>Origin</th>
+    <th>品种</th>
+    <th>起源地</th>
   </tr>
   <tr>
-    <td>Siamese</td>
-    <td>Thailand</td>
+    <td>暹罗猫</td>
+    <td>泰国</td>
   </tr>
   <tr>
-    <td>Sphynx</td>
-    <td>Canada</td>
+    <td>斯芬克斯猫</td>
+    <td>加拿大</td>
   </tr>
   <tr>
-    <td>Persian</td>
-    <td>Iran</td>
+    <td>波斯猫</td>
+    <td>伊朗</td>
   </tr>
 </table>
 ```
 
 ```javascript
-cy.get('tr').eq(2).should('contain', 'Canada') //true
+cy.get('tr').eq(2).should('contain', '加拿大') //true
 ```
 
-### Index From End
+### 从末尾开始的索引
 
-#### Find the 2nd from the last element within the elements
+#### 查找元素中倒数第二个元素
 
 ```html
 <ul>
-  <li>tabby</li>
-  <li>siamese</li>
-  <li>persian</li>
-  <li>sphynx</li>
-  <li>burmese</li>
+  <li>虎斑猫</li>
+  <li>暹罗猫</li>
+  <li>波斯猫</li>
+  <li>斯芬克斯猫</li>
+  <li>缅甸猫</li>
 </ul>
 ```
 
 ```javascript
-cy.get('li').eq(-2).should('contain', 'sphynx') // true
+cy.get('li').eq(-2).should('contain', '斯芬克斯猫') // true
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.eq()` requires being chained off a command that yields DOM element(s).
+- `.eq()`需要链式调用返回DOM元素的命令。
 
 <HeaderAssertions />
 
-- `.eq()` will automatically [retry](/app/core-concepts/retry-ability) until
-  the element(s)
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.eq()` will automatically [retry](/app/core-concepts/retry-ability) until
-  all chained assertions have passed.
+- `.eq()`会自动[重试](/app/core-concepts/retry-ability)，直到元素[存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)。
+- `.eq()`会自动[重试](/app/core-concepts/retry-ability)，直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `.eq()` can time out waiting for the element(s) to
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.eq()` can time out waiting for assertions you've added to pass.
+- `.eq()`可能因等待元素[存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)而超时。
+- `.eq()`可能因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Find the 4th `<li>` in the navigation_**
+**_在导航中查找第4个`<li>`_**
 
 ```javascript
 cy.get('.left-nav.nav').find('>li').eq(3)
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
-<DocsImage src="/img/api/eq/find-element-at-index.png" alt="Command log eq" />
+<DocsImage src="/img/api/eq/find-element-at-index.png" alt="命令日志 eq" />
 
-When clicking on the `eq` command within the command log, the console outputs
-the following:
+当点击命令日志中的`eq`命令时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/eq/see-element-and-list-when-using-eq.png"
   alt="console.log eq"
 />
 
-## See also
+## 另请参阅
 
 - [`.first()`](/api/commands/first)
 - [`.last()`](/api/commands/last)

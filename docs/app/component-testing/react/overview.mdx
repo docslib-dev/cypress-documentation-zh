@@ -1,78 +1,69 @@
 ---
-title: React Component Testing
-description: Learn how to set up component tests in React and use Cypress with different React frameworks and bundlers.
+title: React组件测试
+description: 学习如何在React中设置组件测试，以及如何将Cypress与不同的React框架和打包工具结合使用。
 sidebar_position: 10
-sidebar_label: Overview
+sidebar_label: 概述
 ---
 
 <ProductHeading product="app" />
 
-# React Component Testing
+# React组件测试
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 学习内容
 
-- How to set up component tests in React
-- How to use Cypress with different React frameworks and bundlers
+- 如何在React中设置组件测试
+- 如何将Cypress与不同的React框架和打包工具结合使用
 
 :::
 
-## Framework Support
+## 框架支持
 
-Cypress Component Testing currently supports React 18 and 19 with the following
-frameworks:
+Cypress组件测试目前支持React 18和19，并与以下框架兼容：
 
-- [React with Vite](#React-with-Vite)
-- [React with Webpack](#React-with-Webpack)
-- [Next.js](#Nextjs)
+- [Vite构建的React应用](#React-with-Vite)
+- [Webpack构建的React应用](#React-with-Webpack)
+- [Next.js应用](#Nextjs)
 
-## Tutorial
+## 教程
 
-Visit the
-[Getting Started Guide](/app/component-testing/get-started) for a
-step-by-step tutorial on adding component testing to any project and how to write your first tests.
+访问[入门指南](/app/component-testing/get-started)，获取逐步教程，了解如何为项目添加组件测试并编写第一个测试用例。
 
-## Installation
+## 安装
 
-To get up and running with Cypress Component Testing in React, install Cypress
-into your project:
+要在React中开始使用Cypress组件测试，请先将Cypress安装到项目中：
 
 <CypressInstallCommands />
 
-Open Cypress:
+打开Cypress：
 
 <CypressOpenCommands />
 
 <DocsImage
   src="/img/app/component-testing/select-test-type.jpg"
-  caption="Choose Component Testing"
+  caption="选择组件测试"
 />
 
-The Cypress Launchpad will guide you through configuring your project.
+Cypress启动向导将引导您完成项目配置。
 
 :::info
 
-For a step-by-step guide on how to create a component test, refer to the
-[Getting Started](/app/component-testing/get-started) guide.
+如需创建组件测试的逐步指南，请参考[入门指南](/app/component-testing/get-started)。
 
-For usage and examples, visit the
-[React Examples](/app/component-testing/react/examples) guide.
+查看使用方法和示例，请访问[React示例指南](/app/component-testing/react/examples)。
 
 :::
 
-## Framework Configuration
+## 框架配置
 
-Cypress Component Testing works out of the box with [Vite](https://vitejs.dev/), [Next.js](https://nextjs.org/), and a custom
-[Webpack](https://webpack.js.org/) config. Cypress will automatically detect one
-of these frameworks during setup and configure them properly. The examples below
-are for reference purposes.
+Cypress组件测试开箱即支持[Vite](https://vitejs.dev/)、[Next.js](https://nextjs.org/)和自定义[Webpack](https://webpack.js.org/)配置。Cypress在设置过程中会自动检测这些框架并进行正确配置。以下示例供参考。
 
-### React with Vite
+### Vite构建的React应用
 
-Cypress Component Testing works with React apps that use Vite 4+ as the bundler.
+Cypress组件测试支持使用Vite 4+作为打包工具的React应用。
 
-#### Vite Configuration
+#### Vite配置
 
 :::cypress-config-example
 
@@ -86,12 +77,11 @@ import customViteConfig from './customConfig'
     devServer: {
       framework: 'react',
       bundler: 'vite',
-      // optionally pass in vite config
+      // 可选：传入vite配置
       viteConfig: customViteConfig,
-      // or a function - the result is merged with
-      // any `vite.config` file that is detected
+      // 或使用函数 - 结果会与检测到的任何`vite.config`文件合并
       viteConfig: async () => {
-        // ... do things ...
+        // ...自定义操作...
         const modifiedConfig = await injectCustomConfig(baseConfig)
         return modifiedConfig
       },
@@ -102,16 +92,15 @@ import customViteConfig from './customConfig'
 
 :::
 
-#### Sample React Vite Apps
+#### Vite React示例项目
 
-- [React Vite with TypeScript](https://github.com/cypress-io/cypress-component-testing-apps/tree/main/react-vite-ts)
+- [TypeScript版React Vite应用](https://github.com/cypress-io/cypress-component-testing-apps/tree/main/react-vite-ts)
 
-### React with Webpack
+### Webpack构建的React应用
 
-Cypress Component Testing works with React apps that use Webpack 4+ as the
-bundler.
+Cypress组件测试支持使用Webpack 4+作为打包工具的React应用。
 
-#### Webpack Configuration
+#### Webpack配置
 
 :::cypress-config-example
 
@@ -125,12 +114,11 @@ import webpackConfig from './webpack.config'
     devServer: {
       framework: 'react',
       bundler: 'webpack',
-      // optionally pass in webpack config
+      // 可选：传入webpack配置
       webpackConfig,
-      // or a function - the result is merged with any
-      // webpack.config that is found
+      // 或使用函数 - 结果会与找到的任何webpack.config合并
       webpackConfig: async () => {
-        // ... do things ...
+        // ...自定义操作...
         const modifiedConfig = await injectCustomConfig(baseConfig)
         return modifiedConfig
       },
@@ -141,19 +129,17 @@ import webpackConfig from './webpack.config'
 
 :::
 
-If you don't provide a webpack config, Cypress will try to infer it. If Cypress
-cannot do so, or you want to make modifications to your config, you can specify
-it via the `webpackConfig` option.
+如果不提供webpack配置，Cypress会尝试自动推断。如果无法推断或需要修改配置，可以通过`webpackConfig`选项指定。
 
-#### Sample React Webpack Apps
+#### Webpack React示例项目
 
-- [React Webpack 5 with JavaScript](https://github.com/cypress-io/cypress-component-testing-apps/tree/main/react-webpack5-js)
+- [JavaScript版React Webpack 5应用](https://github.com/cypress-io/cypress-component-testing-apps/tree/main/react-webpack5-js)
 
-### Next.js
+### Next.js应用
 
-Cypress Component Testing works with Next.js 14 and Next.js 15.
+Cypress组件测试支持Next.js 14和Next.js 15。
 
-#### Next.js Configuration
+#### Next.js配置
 
 :::cypress-config-example
 
@@ -170,29 +156,22 @@ Cypress Component Testing works with Next.js 14 and Next.js 15.
 
 :::
 
-#### Next.js Caveats
+#### Next.js注意事项
 
-There are some specific caveats to consider when testing Next.js
-[Pages](https://nextjs.org/docs/basic-features/pages) in component testing.
+在组件测试中测试Next.js[页面](https://nextjs.org/docs/basic-features/pages)时需注意特定限制。
 
-A page component could have additional logic in its `getServerSideProps` or
-`getStaticProps` methods. These methods only run on the server, so they are not
-available to run inside a component test. Trying to test a page in a component
-test would result in the props being passed into the page to be undefined.
+页面组件可能包含`getServerSideProps`或`getStaticProps`方法中的逻辑。这些方法仅在服务端运行，因此在组件测试中不可用。尝试在组件测试中测试页面会导致传入页面的props为undefined。
 
-While you could pass in props directly to the page component in a component
-test, that would leave these server-side methods untested. However, an
-end-to-end test would execute and test a page entirely.
+虽然可以在组件测试中直接向页面组件传递props，但这会使服务端方法未经测试。而端到端测试可以完整执行和测试页面。
 
-Because of this, we recommend using E2E Testing over Component Testing for
-Next.js pages and Component Testing for individual components in a Next.js app.
+因此，我们建议对Next.js页面使用端到端测试，对Next.js应用中的独立组件使用组件测试。
 
-#### Sample Next.js Apps
+#### Next.js示例项目
 
-- [Next.js 14 with TypeScript](https://github.com/cypress-io/cypress-component-testing-apps/tree/main/react-next14-ts)
-- [Next.js 15 with TypeScript](https://github.com/cypress-io/cypress-component-testing-apps/tree/main/react-next15-ts)
+- [TypeScript版Next.js 14应用](https://github.com/cypress-io/cypress-component-testing-apps/tree/main/react-next14-ts)
+- [TypeScript版Next.js 15应用](https://github.com/cypress-io/cypress-component-testing-apps/tree/main/react-next15-ts)
 
-## Community Resources
+## 社区资源
 
-- [Cypress Component Test Driven Design](https://muratkerem.gitbook.io/cctdd/)
-- [Cypress React Component Test Examples](https://github.com/muratkeremozcan/cypress-react-component-test-examples)
+- [Cypress组件测试驱动设计](https://muratkerem.gitbook.io/cctdd/)
+- [Cypress React组件测试示例](https://github.com/muratkeremozcan/cypress-react-component-test-examples)

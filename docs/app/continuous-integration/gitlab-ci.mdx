@@ -1,38 +1,36 @@
 ---
-title: 'Run Cypress in GitLab CI: A Step-by-Step Guide'
-description: 'Set up GitLab CI/CD to run Cypress tests with Docker images, caching, parallelization, and Cypress Cloud.'
+title: '在GitLab CI中运行Cypress：分步指南'
+description: '配置GitLab CI/CD以使用Docker镜像、缓存、并行化和Cypress Cloud运行Cypress测试'
 sidebar_label: GitLab CI
 ---
 
 <ProductHeading product="app" />
 
-# Run Cypress in GitLab CI
+# 在GitLab CI中运行Cypress
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 您将学习到
 
-- How to set up GitLab CI/CD to run Cypress tests
-- How to cache dependencies and build artifacts
-- How to parallelize Cypress tests with GitLab CI/CD
-- How to use Cypress Cloud with GitLab CI/CD
+- 如何设置GitLab CI/CD来运行Cypress测试
+- 如何缓存依赖项和构建产物
+- 如何使用GitLab CI/CD并行化Cypress测试
+- 如何在GitLab CI/CD中使用Cypress Cloud
 
 :::
 
-With its hosted
-[CI/CD Service](https://about.gitlab.com/stages-devops-lifecycle/continuous-integration/),
-[GitLab](https://gitlab.com) offers developers "a tool built into GitLab for
-software development through the continuous methodologies".
+GitLab通过其托管的
+[CI/CD服务](https://about.gitlab.com/stages-devops-lifecycle/continuous-integration/)，
+为开发者提供了"一个内置在GitLab中的工具，用于通过持续方法论进行软件开发"。
 
-Detailed documentation is available in the
-[GitLab CI/CD Documentation](https://docs.gitlab.com/ee/ci/).
+详细文档可在
+[GitLab CI/CD文档](https://docs.gitlab.com/ee/ci/)中找到。
 
-## Basic Setup
+## 基础设置
 
-The example below is basic CI setup and job using
+以下示例是使用
 [GitLab CI/CD](https://about.gitlab.com/stages-devops-lifecycle/continuous-integration/)
-to run Cypress tests within the Electron browser. This GitLab CI configuration
-is placed within `.gitlab-ci.yml`.
+在Electron浏览器中运行Cypress测试的基本CI设置和任务。此GitLab CI配置位于`.gitlab-ci.yml`中。
 
 ```yaml
 stages:
@@ -42,32 +40,29 @@ test:
   image: node:latest
   stage: test
   script:
-    # install dependencies
+    # 安装依赖
     - npm ci
-    # start the server in the background
+    # 在后台启动服务器
     - npm start &
-    # run Cypress tests
+    # 运行Cypress测试
     - npm run e2e
 ```
 
-**How this configuration works:**
+**此配置的工作原理：**
 
-- On _push_ to this repository, this job will provision and start GitLab-hosted
-  Linux instance for running the outlined `stages` declared in `script` within
-  the `test` job section of the configuration.
-- The code is checked out from the GitLab repository.
-- Finally, our scripts will:
-  - Install npm dependencies
-  - Start the project web server (`npm start`)
-  - Run the Cypress tests within the GitLab repository using Electron.
+- 当代码推送到此仓库时，此任务将配置并启动GitLab托管的Linux实例，用于运行在`test`任务部分中声明的`stages`脚本。
+- 代码从GitLab仓库中检出。
+- 最后，我们的脚本将：
+  - 安装npm依赖
+  - 启动项目Web服务器（`npm start`）
+  - 在GitLab仓库中使用Electron运行Cypress测试。
 
-## Testing with Cypress Docker Images
+## 使用Cypress Docker镜像测试
 
-The Cypress team maintains the official
-[Docker Images](https://github.com/cypress-io/cypress-docker-images) for running
-Cypress tests locally and in CI, which are built with Google Chrome, Mozilla Firefox and Microsoft Edge.
-For example, this allows us to run the tests in Firefox by passing the
-`--browser firefox` attribute to `cypress run`.
+Cypress团队维护了官方的
+[Docker镜像](https://github.com/cypress-io/cypress-docker-images)，
+用于在本地和CI中运行Cypress测试，这些镜像内置了Google Chrome、Mozilla Firefox和Microsoft Edge。
+例如，这允许我们通过向`cypress run`传递`--browser firefox`属性来在Firefox中运行测试。
 
 ```yaml
 stages:
@@ -77,22 +72,19 @@ test:
   image: cypress/browsers:22.15.0
   stage: test
   script:
-    # install dependencies
+    # 安装依赖
     - npm ci
-    # start the server in the background
+    # 在后台启动服务器
     - npm start &
-    # run Cypress tests
+    # 运行Cypress测试
     - npx cypress run --browser firefox
 ```
 
-## Caching Dependencies and Build Artifacts
+## 缓存依赖项和构建产物
 
-Caching of dependencies and build artifacts can be accomplished with the `cache`
-configuration. The
-[caching documentation](https://docs.gitlab.com/ee/ci/caching/) contains all
-options for caching dependencies and build artifacts across many different
-workflows. Artifacts from a job can be defined by providing paths and an
-optional expiry time.
+可以通过`cache`配置实现依赖项和构建产物的缓存。
+[缓存文档](https://docs.gitlab.com/ee/ci/caching/)包含了跨多种工作流缓存依赖项和构建产物的所有选项。
+任务的产物可以通过提供路径和可选的过期时间来定义。
 
 ```yaml
 stages:
@@ -108,11 +100,11 @@ test:
   image: cypress/browsers:22.15.0
   stage: test
   script:
-    # install dependencies
+    # 安装依赖
     - npm ci
-    # start the server in the background
+    # 在后台启动服务器
     - npm start &
-    # run Cypress tests
+    # 运行Cypress测试
     - npx cypress run --browser firefox
   artifacts:
     when: always
@@ -122,43 +114,35 @@ test:
     expire_in: 1 day
 ```
 
-## Parallelization
+## 并行化
 
-[Cypress Cloud](/cloud/get-started/introduction) offers the ability to
-[parallelize and group test runs](/cloud/features/smart-orchestration/parallelization)
-along with additional insights and [analytics](/cloud/features/analytics/overview) for
-Cypress tests.
+[Cypress Cloud](/cloud/get-started/introduction)提供了
+[并行化和分组测试运行](/cloud/features/smart-orchestration/parallelization)的能力，
+以及Cypress测试的额外洞察和[分析](/cloud/features/analytics/overview)。
 
-The addition of the
-[`parallel` attribute](https://docs.gitlab.com/ee/ci/yaml/#parallel) to the
-configuration of a job will allow us to run multiples instances of Cypress at
-same time as we will see later in this section.
+在任务配置中添加
+[`parallel`属性](https://docs.gitlab.com/ee/ci/yaml/#parallel)将允许我们同时运行多个Cypress实例，
+如本节稍后将看到的那样。
 
-Before diving into an example of a parallelization setup, it is important to
-understand the two different types of jobs that we will declare:
+在深入并行化设置示例之前，重要的是理解我们将声明的两种不同类型的任务：
 
-- **Install Job**: A job that installs and caches dependencies that will be used
-  by subsequent jobs later in the GitLab CI workflow.
-- **Worker Job**: A job that handles execution of Cypress tests and depends on
-  the _install job_.
+- **安装任务**：安装并缓存后续任务将在GitLab CI工作流中使用的依赖项的任务。
+- **工作器任务**：处理Cypress测试执行并依赖于_安装任务_的任务。
 
-### Install Job
+### 安装任务
 
-The separation of installation from test running is necessary when running
-parallel jobs. It allows for reuse of various build steps aided by caching.
+将安装与测试运行分离在运行并行任务时是必要的。它允许通过缓存辅助重用各种构建步骤。
 
-First, we will define the `build` stage along with `cache` and variables related
-to the cache.
+首先，我们将定义`build`阶段以及`cache`和与缓存相关的变量。
 
-Then we define the `install` step that will be used by the worker jobs and
-assign it to the `build` stage.
+然后我们定义将被工作器任务使用的`install`步骤，并将其分配给`build`阶段。
 
 ```yaml
 stages:
   - build
 
-## Set environment variables for folders in "cache" job settings
-## for npm modules and Cypress binary
+## 为"cache"任务设置中的文件夹设置环境变量
+## 用于npm模块和Cypress二进制文件
 variables:
   npm_config_cache: '$CI_PROJECT_DIR/.npm'
   CYPRESS_CACHE_FOLDER: '$CI_PROJECT_DIR/cache/Cypress'
@@ -170,7 +154,7 @@ cache:
     - node_modules
     - build
 
-## Install npm dependencies and Cypress
+## 安装npm依赖和Cypress
 install:
   image: cypress/browsers:22.15.0
   stage: build
@@ -178,21 +162,19 @@ install:
     - npm ci
 ```
 
-### Worker Jobs
+### 工作器任务
 
-Next, we add a `test` stage and define the worker job named `ui-chrome-tests`
-that will run Cypress tests with Chrome in parallel during the `test` stage.
+接下来，我们添加一个`test`阶段，并定义一个名为`ui-chrome-tests`的工作器任务，
+该任务将在`test`阶段并行运行带有Chrome的Cypress测试。
 
-The addition of the
-[`parallel` attribute](https://docs.gitlab.com/ee/ci/yaml/#parallel) to the
-configuration of a job will allow us to run multiples instances of Cypress at
-same time.
+在任务配置中添加
+[`parallel`属性](https://docs.gitlab.com/ee/ci/yaml/#parallel)将允许我们同时运行多个Cypress实例。
 
 :::info
 
-The following configuration using the `--parallel` and `--record` flags to
-[cypress run](/app/references/command-line#cypress-run) requires setting up
-recording test results to [Cypress Cloud](/cloud/get-started/introduction).
+以下配置使用`--parallel`和`--record`标志到
+[cypress run](/app/references/command-line#cypress-run)需要设置将测试结果记录到
+[Cypress Cloud](/cloud/get-started/introduction)。
 
 :::
 
@@ -201,8 +183,8 @@ stages:
   - build
   - test
 
-## Set environment variables for folders in "cache" job settings
-## for npm modules and Cypress binary
+## 为"cache"任务设置中的文件夹设置环境变量
+## 用于npm模块和Cypress二进制文件
 variables:
   npm_config_cache: '$CI_PROJECT_DIR/.npm'
   CYPRESS_CACHE_FOLDER: '$CI_PROJECT_DIR/cache/Cypress'
@@ -215,7 +197,7 @@ cache:
     - node_modules
     - build
 
-## Install npm dependencies and Cypress
+## 安装npm依赖和Cypress
 install:
   image: cypress/browsers:22.15.0
   stage: build
@@ -227,18 +209,17 @@ ui-chrome-tests:
   stage: test
   parallel: 5
   script:
-    # install dependencies
+    # 安装依赖
     - npm ci
-    # start the server in the background
+    # 在后台启动服务器
     - npm start &
-    # run Cypress tests in parallel
+    # 并行运行Cypress测试
     - npx cypress run --record --parallel --browser chrome --group UI-Chrome
 ```
 
-## Using Cypress Cloud with GitLab CI/CD
+## 在GitLab CI/CD中使用Cypress Cloud
 
-In the GitLab CI configuration we have defined in the previous section, we are
-leveraging three useful features of
-[Cypress Cloud](/cloud/get-started/introduction):
+在上一节定义的GitLab CI配置中，我们利用了
+[Cypress Cloud](/cloud/get-started/introduction)的三个有用功能：
 
 <CiProviderCloudSteps />

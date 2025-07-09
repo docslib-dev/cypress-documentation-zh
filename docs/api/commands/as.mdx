@@ -1,6 +1,6 @@
 ---
-title: 'as | Cypress Documentation'
-description: Assign an alias for later use in Cypress. Reference the alias later within a `cy.get()` query or `cy.wait()` command with an `@` prefix.
+title: 'as | Cypress 文档'
+description: 为后续在Cypress中使用分配别名。稍后可以在`cy.get()`查询或`cy.wait()`命令中通过`@`前缀引用该别名。
 sidebar_label: as
 slug: /api/commands/as
 ---
@@ -9,203 +9,181 @@ slug: /api/commands/as
 
 # as
 
-Assign an alias for later use. Reference the alias later within a
-[`cy.get()`](/api/commands/get) query or [`cy.wait()`](/api/commands/wait)
-command with an `@` prefix.
+分配别名供后续使用。稍后可以在[`cy.get()`](/api/commands/get)查询或[`cy.wait()`](/api/commands/wait)命令中通过`@`前缀引用该别名。
 
 :::info
 
-**Note:** `.as()` assumes you are already familiar with core concepts such as
-[aliases](/app/core-concepts/variables-and-aliases)
+**注意:** `.as()`假设您已经熟悉核心概念如[别名](/app/core-concepts/variables-and-aliases)
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .as(aliasName)
 .as(aliasName, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('.main-nav').find('li').first().as('firstNav') // Alias element as @firstNav
-cy.get('input.username').invoke('val').as('username', { type: 'static' }) // Alias that references the value at the time the alias was created
-cy.intercept('PUT', '/users').as('putUser') // Alias route as @putUser
-cy.stub(api, 'onUnauth').as('unauth') // Alias stub as @unauth
-cy.spy(win, 'fetch').as('winFetch') // Alias spy as @winFetch
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.as('foo') // Errors, cannot be chained off 'cy'
+cy.get('.main-nav').find('li').first().as('firstNav') // 将元素别名为@firstNav
+cy.get('input.username').invoke('val').as('username', { type: 'static' }) // 创建别名时引用该值的静态别名
+cy.intercept('PUT', '/users').as('putUser') // 将路由别名为@putUser
+cy.stub(api, 'onUnauth').as('unauth') // 将存根别名为@unauth
+cy.spy(win, 'fetch').as('winFetch') // 将间谍别名为@winFetch
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
-<Icon name="angle-right" /> **aliasName _(String)_**
+```javascript
+cy.as('foo') // 错误，不能直接链式调用'cy'
+```
 
-The name of the alias to be referenced later within a
-[`cy.get()`](/api/commands/get) or [`cy.wait()`](/api/commands/wait) command
-using an `@` prefix.
+### 参数
 
-<Icon name="angle-right" /> **options _(Object)_**
+<Icon name="angle-right" /> **aliasName _(字符串)_**
 
-Pass in an options object to change the default behavior of `.as()`.
+别名的名称，稍后可以在[`cy.get()`](/api/commands/get)或[`cy.wait()`](/api/commands/wait)命令中使用`@`前缀引用。
 
-| Option | Default | Description                                                                                                                                                                                                                                                                                                                                                                                 |
+<Icon name="angle-right" /> **options _(对象)_**
+
+传入选项对象以更改`.as()`的默认行为。
+
+| 选项 | 默认值 | 描述                                                                                                                                                                                                                                                                                                                                                                                 |
 | ------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type` | `query` | The type of alias to store, which impacts how the value is retrieved later in the test. Valid values are `query` and `static`. A `query` alias re-runs all queries leading up to the resulting value each time the alias is requested. A `static` alias is retrieved once when the alias is stored, and will never change. `type` has no effect when aliasing intercepts, spies, and stubs. |
+| `type` | `query` | 存储的别名类型，影响后续测试中如何检索值。有效值为`query`和`static`。`query`别名每次请求时会重新运行所有查询以获取结果值。`static`别名在存储时获取一次，之后不会改变。`type`在别名拦截、间谍和存根时无效。 |
 
 <HeaderYields />
 
-- `.as()` yields the same subject it was given.
-- It is _safe_ to chain further commands after `.as()`.
+- `.as()`返回与输入相同的主题。
+- 在`.as()`之后继续链式调用是安全的。
 
-## Examples
+## 示例
 
-### DOM element
+### DOM元素
 
-Aliasing a DOM element and then using [`cy.get()`](/api/commands/get) to access
-the aliased element.
+为DOM元素创建别名，然后使用[`cy.get()`](/api/commands/get)访问该别名元素。
 
 ```javascript
-it('disables on click', () => {
+it('点击后禁用', () => {
   cy.get('button[type=submit]').as('submitBtn')
   cy.get('@submitBtn').click().should('be.disabled')
 })
 ```
 
-### Intercept
+### 拦截
 
-Aliasing an intercepted route defined with
-[`cy.intercept()`](/api/commands/intercept) and then using
-[`cy.wait()`](/api/commands/wait) to wait for the aliased route.
+为使用[`cy.intercept()`](/api/commands/intercept)定义的拦截路由创建别名，然后使用[`cy.wait()`](/api/commands/wait)等待该别名路由。
 
 ```javascript
-// `PUT` requests on the `/users` endpoint will be stubbed with
-// the `user` fixture and be aliased as `editUser`
+// 对`/users`端点的`PUT`请求将被`user`夹具存根并别名为`editUser`
 cy.intercept('PUT', '/users', { fixture: 'user' }).as('editUser')
 
-// we'll assume submitting `form` triggers a matching request
+// 假设提交`form`会触发匹配的请求
 cy.get('form').submit()
 
-// once a response comes back from the `editUser`
-// this `wait` will resolve with the subject containing `url`
+// 一旦从`editUser`返回响应
+// 这个`wait`将解析为包含`url`的主题
 cy.wait('@editUser').its('url').should('contain', 'users')
 ```
 
-More examples of aliasing routes can be found
-[here](/api/commands/intercept#Aliasing-an-intercepted-route).
+更多别名路由的示例可以在[这里](/api/commands/intercept#Aliasing-an-intercepted-route)找到。
 
-### Fixture
+### 夹具
 
-Aliasing [`cy.fixture()`](/api/commands/fixture) data and then using `this` to
-access it via the alias.
+为[`cy.fixture()`](/api/commands/fixture)数据创建别名，然后通过`this`访问该别名。
 
 ```javascript
 beforeEach(() => {
   cy.fixture('users-admins.json').as('admins')
 })
 
-it('the users fixture is bound to this.admins', function () {
-  cy.log(`There are ${this.admins.length} administrators.`)
+it('用户夹具绑定到this.admins', function () {
+  cy.log(`共有${this.admins.length}个管理员。`)
 })
 ```
 
 :::caution
 
-Note the use of the standard function syntax. Using
-[arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
-to access aliases via `this` won't work because of
-[the lexical binding](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#No_separate_this)
-of `this`.
+注意使用标准函数语法。使用[箭头函数](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)通过`this`访问别名将不起作用，因为[词法绑定](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#No_separate_this)的`this`。
 
 :::
 
-## Notes
+## 注意事项
 
-### Aliases are reset
+### 别名会被重置
 
 :::caution
 
-**Note:** all aliases are reset before each test. See the
-[aliases guide](/app/core-concepts/variables-and-aliases) for details.
+**注意:** 所有别名在每个测试前都会被重置。详情参见[别名指南](/app/core-concepts/variables-and-aliases)。
 
 :::
 
-### Reserved words
+### 保留字
 
-#### Alias names cannot match some reserved words.
+#### 别名名称不能匹配某些保留字。
 
-Some strings are not allowed as alias names since they are reserved words in
-Cypress. These words include: `test`, `runnable`, `timeout`, `slow`, `skip`, and
-`inspect`.
+某些字符串不允许作为别名名称，因为它们是Cypress的保留字。这些词包括：`test`、`runnable`、`timeout`、`slow`、`skip`和`inspect`。
 
-### `as` is asynchronous
+### `as`是异步的
 
-Remember that **Cypress commands are async**, including `.as()`.
+记住**Cypress命令是异步的**，包括`.as()`。
 
-Because of this you cannot _synchronously_ access anything you have aliased. You
-must use other asynchronous commands such as [`.then()`](/api/commands/then) to
-access what you've aliased.
+因此，您不能同步访问任何已别名的内容。必须使用其他异步命令如[`.then()`](/api/commands/then)来访问您创建的别名。
 
-Here are some further examples of using `.as()` that illustrate the asynchronous
-behavior.
+以下是更多使用`.as()`的示例，展示了异步行为。
 
 ```javascript
-describe('A fixture', () => {
-  describe('alias can be accessed', () => {
-    it('via get().', () => {
+describe('一个夹具', () => {
+  describe('别名可以被访问', () => {
+    it('通过get().', () => {
       cy.fixture('admin-users.json').as('admins')
       cy.get('@admins').then((users) => {
-        cy.log(`There are ${users.length} admins.`)
+        cy.log(`共有${users.length}个管理员。`)
       })
     })
 
-    it('via then().', function () {
+    it('通过then().', function () {
       cy.fixture('admin-users.json').as('admins')
       cy.visit('/').then(() => {
-        cy.log(`There are ${this.admins.length} admins.`)
+        cy.log(`共有${this.admins.length}个管理员。`)
       })
     })
   })
 
-  describe('aliased in beforeEach()', () => {
+  describe('在beforeEach()中别名', () => {
     beforeEach(() => {
       cy.fixture('admin-users.json').as('admins')
     })
 
-    it('is bound to this.', function () {
-      cy.log(`There are ${this.admins.length} admins.`)
+    it('绑定到this.', function () {
+      cy.log(`共有${this.admins.length}个管理员。`)
     })
   })
 })
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.as()` requires being chained off a previous command.
+- `.as()`需要链式调用在先前的命令上。
 
 <HeaderAssertions />
 
-- `.as()` is a utility command.
-- `.as()` will not run assertions. Assertions will pass through as if this
-  command did not exist.
+- `.as()`是一个实用命令。
+- `.as()`不会运行断言。断言会像该命令不存在一样通过。
 
 <HeaderTimeouts />
 
-- `.as()` cannot time out.
+- `.as()`不会超时。
 
-## Command Log
+## 命令日志
 
-**_Alias several routes_**
+**_为多个路由创建别名_**
 
 ```javascript
 cy.intercept('/company/*').as('companyGet')
@@ -215,22 +193,22 @@ cy.intercept(/users\/\d+/).as('userGet')
 cy.intercept('PUT', /^\/users\/\d+/).as('userPut')
 ```
 
-Aliases of routes display in the routes instrument panel:
+路由的别名显示在路由仪表板中：
 
 <DocsImage
   src="/img/api/as/routes-table-in-command-log.png"
-  alt="Command log for route"
+  alt="命令日志中的路由"
 />
 
-## History
+## 历史
 
-| Version                                    | Changes                                                       |
+| 版本                                    | 变更                                                       |
 | ------------------------------------------ | ------------------------------------------------------------- |
-| [12.3.0](/app/references/changelog#12-3-0) | Added option `type` to opt into the pre-12.0.0 behavior.      |
-| [12.0.0](/app/references/changelog#12-0-0) | All aliases now re-run queries leading up to them by default. |
+| [12.3.0](/app/references/changelog#12-3-0) | 添加`type`选项以选择12.0.0之前的行为。      |
+| [12.0.0](/app/references/changelog#12-0-0) | 默认情况下，所有别名现在都会重新运行其之前的查询。 |
 
-## See also
+## 另请参阅
 
 - [`cy.get()`](/api/commands/get)
 - [`cy.wait()`](/api/commands/wait)
-- [Aliases](/app/core-concepts/variables-and-aliases)
+- [别名](/app/core-concepts/variables-and-aliases)

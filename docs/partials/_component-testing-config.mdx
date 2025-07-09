@@ -1,19 +1,12 @@
-## Component Testing Config
+## 组件测试配置
 
-Below are a few additional configuration values that are specific to component
-testing.
+以下是专用于组件测试的额外配置选项。
 
-### Custom Dev Server
+### 自定义开发服务器
 
-A custom function can be passed into the `devServer` option, which allows the
-use of other dev servers not provided by Cypress out of the box. These can be
-from the Cypress community, preview builds not included with the app, or a
-custom one you create.
+可以通过`devServer`选项传入自定义函数，从而使用Cypress未内置提供的其他开发服务器。这些服务器可以来自Cypress社区、应用程序未包含的预览构建版本，或是您自行创建的自定义服务器。
 
-The function's signature takes in a
-[Cypress Configuration](/app/references/configuration) object as its only
-parameter and returns either an instance of a `devServer` or a promise that
-resolves to a `devServer` instance.
+该函数接收一个[Cypress配置](/app/references/configuration)对象作为唯一参数，并返回一个`devServer`实例或解析为`devServer`实例的Promise。
 
 <cypress-config-file>
 <template js>
@@ -24,8 +17,7 @@ const { defineConfig } = require('cypress')
 module.exports = defineConfig({
   component: {
     devServer(cypressConfig) {
-      // return devServer instance or a promise that resolves to
-      // a dev server here
+      // 在此返回devServer实例或解析为开发服务器的Promise
       return {
         port: 1234,
         close: () => {},
@@ -44,8 +36,7 @@ import { defineConfig } from 'cypress'
 export default defineConfig({
   component: {
     devServer(cypressConfig: CypressConfiguration) {
-      // return devServer instance or a promise that resolves to
-      // a dev server here
+      // 在此返回devServer实例或解析为开发服务器的Promise
       return {
         port: 1234,
         close: () => {},
@@ -58,16 +49,13 @@ export default defineConfig({
 </template>
 </cypress-config-file>
 
-### Custom Index File
+### 自定义索引文件
 
-By default, Cypress renders your components into an HTML file located at
-`cypress/support/component-index.html`.
+默认情况下，Cypress会将您的组件渲染到位于`cypress/support/component-index.html`的HTML文件中。
 
-The index file allows you to add in global assets, such as styles, fonts, and
-external scripts.
+该索引文件允许您添加全局资源，如样式、字体和外部脚本。
 
-You can provide an alternative path to the file using the `indexHtmlFile` option
-in the [component config](/app/references/configuration#component) options:
+您可以通过[组件配置](/app/references/configuration#component)选项中的`indexHtmlFile`指定自定义文件路径：
 
 ```js
 {
@@ -78,14 +66,9 @@ in the [component config](/app/references/configuration#component) options:
 }
 ```
 
-### Spec Pattern for Component Tests
+### 组件测试的规范文件匹配模式
 
-By default, Cypress looks for spec files anywhere in your project with an
-extension of `.cy.js`, `.cy.jsx`, `.cy.ts`, or `.cy.tsx`. However, you can
-change this behavior for component tests with a custom `specPattern` value. In
-the following example, we've configured Cypress to look for spec files with
-those same extensions, but only in the `src` folder or any of its
-subdirectories.
+默认情况下，Cypress会查找项目中任何位置扩展名为`.cy.js`、`.cy.jsx`、`.cy.ts`或`.cy.tsx`的规范文件。但您可以通过自定义`specPattern`值来改变组件测试的这一行为。在以下示例中，我们配置Cypress仅查找`src`文件夹或其子目录中具有相同扩展名的规范文件。
 
 ```js
 {
@@ -95,7 +78,6 @@ subdirectories.
 }
 ```
 
-### Additional Config
+### 其他配置
 
-For more information on all the available configuration options, see the
-[configuration reference](/app/references/configuration).
+有关所有可用配置选项的更多信息，请参阅[配置参考文档](/app/references/configuration)。

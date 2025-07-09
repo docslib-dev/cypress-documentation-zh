@@ -1,6 +1,6 @@
 ---
 title: Angular API
-description: API for mounting Angular components in Cypress tests.
+description: 在Cypress测试中挂载Angular组件的API
 sidebar_position: 40
 sidebar_label: API
 ---
@@ -9,7 +9,7 @@ sidebar_label: API
 
 # Angular API
 
-## Methods
+## 方法
 
 ### mount
 
@@ -19,49 +19,49 @@ import { mount } from 'cypress/angular'
 
 <table class="api-table">
   <tr>
-    <td>Description</td>
-    <td>Mounts an Angular component inside Cypress browser</td>
+    <td>描述</td>
+    <td>在Cypress浏览器中挂载Angular组件</td>
   </tr>
   <tr>
-    <td>Signature</td>
+    <td>签名</td>
     <td>
       mount&lt;T&gt;(component: Type&lt;T&gt; | string, config?:
       MountConfig&lt;T&gt;): Cypress.Chainable&lt;MountResponse&lt;T&gt;&gt;
     </td>
   </tr>
   <tr>
-    <td>Returns</td>
+    <td>返回值</td>
     <td>Cypress.Chainable&lt;MountResponse&gt;</td>
   </tr>
 </table>
 
 <table class="api-table">
-  <caption>mount Parameters</caption>
+  <caption>mount 参数</caption>
   <thead>
-    <td>Name</td>
-    <td>Type</td>
-    <td>Description</td>
+    <td>名称</td>
+    <td>类型</td>
+    <td>描述</td>
   </thead>
   <tr>
     <td>component</td>
     <td>Type&lt;T&gt; | string</td>
-    <td>Angular component being mounted or its template</td>
+    <td>要挂载的Angular组件或其模板</td>
   </tr>
   <tr>
     <td>config</td>
     <td></td>
-    <td>MountConfig&lt;T&gt; (optional)</td>
+    <td>MountConfig&lt;T&gt; (可选)</td>
   </tr>
 </table>
 
-#### Example
+#### 示例
 
 ```ts
 import { mount } from '@cypress/angular'
 import { StepperComponent } from './stepper.component'
 import { MyService } from 'services/my.service'
 import { SharedModule } from 'shared/shared.module'
-it('mounts', () => {
+it('挂载组件', () => {
   mount(StepperComponent, {
     providers: [MyService],
     imports: [SharedModule],
@@ -70,9 +70,9 @@ it('mounts', () => {
   cy.get('[data-cy=counter]').should('have.text', '1')
 })
 
-// or
+// 或
 
-it('mounts with template', () => {
+it('使用模板挂载', () => {
   mount('<app-stepper></app-stepper>', {
     declarations: [StepperComponent],
   })
@@ -87,73 +87,71 @@ import { createOutputSpy } from 'cypress/angular'
 
 <table class="api-table">
   <tr>
-    <td>Description</td>
-    <td>Creates a new Event Emitter and then spies on it's `emit` method</td>
+    <td>描述</td>
+    <td>创建一个新的事件发射器并监听其`emit`方法</td>
   </tr>
   <tr>
-    <td>Signature</td>
+    <td>签名</td>
     <td>(alias: string) => any</td>
   </tr>
   <tr>
-    <td>Returns</td>
+    <td>返回值</td>
     <td>EventEmitter&lt;T&gt;</td>
   </tr>
 </table>
 
 <table class="api-table">
-  <caption>createOutputSpy parameters</caption>
+  <caption>createOutputSpy 参数</caption>
   <thead>
-    <td>Name</td>
-    <td>Type</td>
-    <td>Description</td>
+    <td>名称</td>
+    <td>类型</td>
+    <td>描述</td>
   </thead>
   <tr>
     <td>alias</td>
     <td>string</td>
-    <td>alias name you want to use for your cy.spy() alias</td>
+    <td>要为cy.spy()别名使用的名称</td>
   </tr>
 </table>
 
-#### Example
+#### 示例
 
 ```ts
 import { StepperComponent } from './stepper.component'
 import { mount, createOutputSpy } from '@cypress/angular'
 
-it('Has spy', () => {
+it('包含监听器', () => {
   mount(StepperComponent, { change: createOutputSpy('changeSpy') })
   cy.get('[data-cy=increment]').click()
   cy.get('@changeSpy').should('have.been.called')
 })
 ```
 
-## Interfaces
+## 接口
 
 ### MountConfig
 
-Additional module configurations needed while mounting the component, like
-providers, declarations, imports and even component @Inputs()
+挂载组件时需要的额外模块配置，如providers、declarations、imports甚至组件@Inputs()
 
 <table class="api-table">
-  <caption>members</caption>
+  <caption>成员</caption>
   <thead>
-    <td>Name</td>
-    <td>Type</td>
-    <td>Description</td>
+    <td>名称</td>
+    <td>类型</td>
+    <td>描述</td>
   </thead>
   <tr>
     <td>autoSpyOutputs</td>
-    <td>boolean (optional)</td>
+    <td>boolean (可选)</td>
     <td>
-      flag to automatically create a cy.spy() for every component @Output()
-      property
+      自动为每个组件@Output()属性创建cy.spy()的标记
     </td>
   </tr>
   <tr>
     <td>autoDetectChanges</td>
-    <td>boolean (optional)</td>
+    <td>boolean (可选)</td>
     <td>
-      flag defaulted to true to automatically detect changes in your components
+      默认为true的标记，用于自动检测组件中的变化
     </td>
   </tr>
   <tr>
@@ -161,38 +159,37 @@ providers, declarations, imports and even component @Inputs()
     <td>
       Partial&lt;&lbrace;[P in keyof T]: T[P] extends InputSignal&lt;infer V&gt;
       ? InputSignal&lt;V&gt; | WritableSignal&lt;V&gt; | V : T[P]&rbrace;&gt;
-      (optional)
+      (可选)
     </td>
     <td>
       {' '}
-      signal based inference types need only apply if you are using signals within
-      your component tests
+      仅当在组件测试中使用信号时才需要应用基于信号的推断类型
     </td>
   </tr>
 </table>
 
 ### MountResponse
 
-Type that the `mount` function yields
+`mount`函数返回的类型
 
 <table class="api-table">
-  <caption>members</caption>
+  <caption>成员</caption>
   <thead>
-    <td>Name</td>
-    <td>Type</td>
-    <td>Description</td>
+    <td>名称</td>
+    <td>类型</td>
+    <td>描述</td>
   </thead>
   <tr>
     <td>fixture</td>
     <td>ComponentFixture&lt;T&gt;</td>
-    <td>Fixture for debugging and testing a component.</td>
+    <td>用于调试和测试组件的Fixture</td>
   </tr>
   <tr>
     <td>component</td>
     <td>T</td>
-    <td>The instance of the root component class</td>
+    <td>根组件类的实例</td>
   </tr>
 </table>
 
-See
+参见
 [https://angular.io/api/core/testing/ComponentFixture#componentInstance](https://angular.io/api/core/testing/ComponentFixture#componentInstance)

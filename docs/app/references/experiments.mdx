@@ -1,104 +1,81 @@
 ---
-title: 'Experimental Features in Cypress: Configuration Options'
-description: 'Enable experimental features in Cypress by configuring specific options.'
-sidebar_label: 'Experiments'
+title: 'Cypress中的实验性功能：配置选项'
+description: '通过配置特定选项启用Cypress中的实验性功能。'
+sidebar_label: '实验功能'
 ---
 
 <ProductHeading product="app" />
 
-# Experimental Features
+# 实验性功能
 
-If you'd like to try out what we're working on in Cypress, you can enable
-specific experimental features for your project using the Cypress configuration
-options described below.
+如果您想尝试Cypress正在开发的功能，可以使用下面描述的Cypress配置选项为您的项目启用特定的实验性功能。
 
 :::caution
 
-⚠️ The experimental features might change or ultimately be removed without
-making it into the core product. Our primary goal for experiments is to collect
-real-world feedback during their development. For more information, see the
-documentation for all
-[Cypress Release Stages](/app/references/roadmap#Release-Stages).
+⚠️ 实验性功能可能会变更或最终被移除，而不会成为核心产品功能。我们推出实验功能的主要目的是在开发过程中收集真实世界的反馈。更多信息请参阅所有[Cypress发布阶段](/app/references/roadmap#Release-Stages)的文档。
 
 :::
 
-## Configuration
+## 配置
 
-You can pass the [Cypress configuration](/app/references/configuration)
-options below to enable or disable experiments. See our
-[Configuration Guide](/app/references/configuration) on how to pass
-configuration to Cypress.
+您可以通过以下[Cypress配置](/app/references/configuration)选项来启用或禁用实验功能。关于如何向Cypress传递配置，请参阅我们的[配置指南](/app/references/configuration)。
 
-| Option                                        | Default | Description                                                                                                                                                                                                                                                                                                                                 |
+| 选项                                        | 默认值  | 描述                                                                                                                                                                                                                                                                                                                                 |
 | --------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `experimentalCspAllowList`                    | `false` | Indicates the Content-Security-Policy directives to be permitted during a test run. See [Content-Security-Policy](/app/references/content-security-policy) for more information.                                                                                                                                                            |
-| `experimentalFetchPolyfill`                   | `false` | Automatically replaces `window.fetch` with a polyfill that Cypress can spy on and stub. Note: `experimentalFetchPolyfill` has been deprecated in Cypress 6.0.0 and will be removed in a future release. Consider using [cy.intercept()](/api/commands/intercept) to intercept `fetch` requests instead.                                     |
-| `experimentalInteractiveRunEvents`            | `false` | Allows listening to the [`before:run`](/api/node-events/before-run-api), [`after:run`](/api/node-events/after-run-api), [`before:spec`](/api/node-events/before-spec-api), and [`after:spec`](/api/node-events/after-spec-api) events in the [setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin) function during interactive mode. |
-| `experimentalMemoryManagement`                | `false` | Enables support for improved memory management within Chromium-based browsers.                                                                                                                                                                                                                                                              |
-| `experimentalModifyObstructiveThirdPartyCode` | `false` | Whether Cypress will search for and replace obstructive code in third party `.js` or `.html` files. NOTE: Setting this flag removes [Subresource Integrity (SRI)](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity).                                                                                             |
-| `experimentalSourceRewriting`                 | `false` | Enables AST-based JS/HTML rewriting. This may fix issues caused by the existing regex-based JS/HTML replacement algorithm. See [#5273](https://github.com/cypress-io/cypress/issues/5273) for details.                                                                                                                                      |
-| `experimentalWebKitSupport`                   | `false` | Enable experimental support for running tests in WebKit. When set, installs of `playwright-webkit` will be detected and available in Cypress. See [Launching Browsers](/app/references/launching-browsers#WebKit-Experimental) for more information.                                                                                        |
-| `retries.experimentalStrategy`                | N/A     | Applies a strategy for test retries according to your "flake tolerance"; options are detect-flake-but-always-fail or detect-flake-and-pass-on-threshold. See [Experimental Retries](/app/references/experiments#Experimental-Flake-Detection-Features) for more details.                                                                    |
-| `retries.experimentalOptions`                 | N/A     | Sets retries strategy-specific options like maxRetries, passesRequired, and stopIfAnyPassed. See [Experimental Retries](/app/references/experiments#Experimental-Flake-Detection-Features) for more details.                                                                                                                                |
+| `experimentalCspAllowList`                    | `false` | 表示在测试运行期间允许的Content-Security-Policy指令。更多信息请参阅[Content-Security-Policy](/app/references/content-security-policy)。                                                                                                                                                            |
+| `experimentalFetchPolyfill`                   | `false` | 自动用Cypress可以监视和存根的polyfill替换`window.fetch`。注意：`experimentalFetchPolyfill`已在Cypress 6.0.0中弃用，并将在未来版本中移除。建议使用[cy.intercept()](/api/commands/intercept)来拦截`fetch`请求。                                     |
+| `experimentalInteractiveRunEvents`            | `false` | 允许在交互模式下监听[`before:run`](/api/node-events/before-run-api)、[`after:run`](/api/node-events/after-run-api)、[`before:spec`](/api/node-events/before-spec-api)和[`after:spec`](/api/node-events/after-spec-api)事件，这些事件在[setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin)函数中触发。 |
+| `experimentalMemoryManagement`                | `false` | 启用基于Chromium浏览器改进的内存管理支持。                                                                                                                                                                                                                                                              |
+| `experimentalModifyObstructiveThirdPartyCode` | `false` | 是否在第三方`.js`或`.html`文件中搜索并替换阻碍性代码。注意：设置此标志会移除[子资源完整性(SRI)](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)。                                                                                             |
+| `experimentalSourceRewriting`                 | `false` | 启用基于AST的JS/HTML重写。这可能会修复现有基于正则表达式的JS/HTML替换算法导致的问题。详情请参见[#5273](https://github.com/cypress-io/cypress/issues/5273)。                                                                                                                                      |
+| `experimentalWebKitSupport`                   | `false` | 启用对在WebKit中运行测试的实验性支持。设置后，将检测并启用`playwright-webkit`的安装。更多信息请参阅[启动浏览器](/app/references/launching-browsers#WebKit-Experimental)。                                                                                        |
+| `retries.experimentalStrategy`                | N/A     | 根据您的"flake容忍度"应用测试重试策略；选项为detect-flake-but-always-fail或detect-flake-and-pass-on-threshold。详情请参阅[实验性重试](/app/references/experiments#Experimental-Flake-Detection-Features)。                                                                    |
+| `retries.experimentalOptions`                 | N/A     | 设置重试策略特定的选项，如maxRetries、passesRequired和stopIfAnyPassed。详情请参阅[实验性重试](/app/references/experiments#Experimental-Flake-Detection-Features)。                                                                                                                                |
 
-### Experimental CSP Allow List
+### 实验性CSP允许列表
 
-Cypress by default strips all CSP headers (`Content-Security-Policy` and
-`Content-Security-Policy-Report-Only`) from the response before it is sent to
-the browser. The `experimentalCspAllowList` option allows for more granular
-control over which CSP directives are stripped from the CSP response headers,
-allowing you to test your application with CSP enabled. Valid values for this
-option are `false` (the default), `true`, or an array of CSP directive names.
+默认情况下，Cypress会在响应发送到浏览器之前剥离所有CSP头信息(`Content-Security-Policy`和`Content-Security-Policy-Report-Only`)。`experimentalCspAllowList`选项允许更精细地控制哪些CSP指令从CSP响应头中被剥离，从而让您可以在启用CSP的情况下测试应用程序。此选项的有效值为`false`(默认)、`true`或CSP指令名称数组。
 
-| Value                                                 | Example                                                 |
+| 值                                                 | 示例                                                 |
 | ----------------------------------------------------- | ------------------------------------------------------- |
-| [`false` (default)](#Strip-All-CSP-Headers)           | `experimentalCspAllowList=false`                        |
+| [`false` (默认)](#Strip-All-CSP-Headers)           | `experimentalCspAllowList=false`                        |
 | [`true`](#Strip-Minimum-CSP-Directives)               | `experimentalCspAllowList=true`                         |
 | [`<CspDirectives>[]`](#Allow-Specific-CSP-Directives) | `experimentalCspAllowList=["default-src","script-src"]` |
 
-#### Strip All CSP Headers
+#### 剥离所有CSP头信息
 
-The value `experimentalCspAllowList=false` (default) will remove all CSP headers
-from the response before it is sent to the browser. This option should be used
-if you do not depend on CSP for any tests in your application.
+值`experimentalCspAllowList=false`(默认)将在响应发送到浏览器之前移除所有CSP头信息。如果您的应用程序测试不依赖CSP，应使用此选项。
 
-#### Strip Minimum CSP Directives
+#### 剥离最小CSP指令
 
-If you need to test your application with CSP enabled, setting the
-`experimentalCspAllowList` option will allow all CSP headers to be sent to the
-browser _*except*_ those that could prevent Cypress from functioning normally.
+如果您需要在启用CSP的情况下测试应用程序，设置`experimentalCspAllowList`选项将允许所有CSP头信息发送到浏览器，*除了*那些可能阻止Cypress正常运行的指令。
 
-The following CSP directives will always be stripped:
+以下CSP指令将始终被剥离：
 
-| Stripped Directive          | Allowable | Reason                                                           |
+| 剥离的指令          | 可允许 | 原因                                                           |
 | --------------------------- | --------- | ---------------------------------------------------------------- |
-| `frame-ancestors`           | No        | Prevents Cypress from loading a test application into an iframe. |
-| `navigate-to`               | No        | Affects Cypress' ability to navigate to different URLs.          |
-| `require-trusted-types-for` | No        | Might prevent Cypress from rewriting the DOM.                    |
-| `sandbox`                   | No        | Can restrict access to script and iframe functionality.          |
-| `trusted-types`             | No        | Could cause Cypress injections to be marked as untrusted.        |
+| `frame-ancestors`           | 否        | 阻止Cypress将测试应用程序加载到iframe中。 |
+| `navigate-to`               | 否        | 影响Cypress导航到不同URL的能力。          |
+| `require-trusted-types-for` | 否        | 可能阻止Cypress重写DOM。                    |
+| `sandbox`                   | 否        | 可能限制对脚本和iframe功能的访问。          |
+| `trusted-types`             | 否        | 可能导致Cypress注入被标记为不可信。        |
 
-When `experimentalCspAllowList=true` the following directives are also stripped
-in addition to the ones listed above, but can be configured to be allowed to be
-sent to the browser:
+当`experimentalCspAllowList=true`时，除了上述指令外，以下指令也会被剥离，但可以配置为允许发送到浏览器：
 
-| Stripped Directive | Allowable | Reason                                                                        |
+| 剥离的指令 | 可允许 | 原因                                                                        |
 | ------------------ | --------- | ----------------------------------------------------------------------------- |
-| `child-src`        | Yes       | Could prevent iframes from loading in combination with other Cypress options. |
-| `default-src`      | Yes       | Conditionally prevents Cypress from loading scripts and running.              |
-| `frame-src`        | Yes       | Could prevent iframes from loading in combination with other Cypress options. |
-| `form-action`      | Yes       | Can prevent Cypress from monitoring form events.                              |
-| `script-src`       | Yes       | Conditionally prevents Cypress from loading scripts and running.              |
-| `script-src-elem`  | Yes       | Conditionally prevents Cypress from loading scripts and running.              |
+| `child-src`        | 是       | 结合其他Cypress选项可能阻止iframe加载。 |
+| `default-src`      | 是       | 有条件地阻止Cypress加载和运行脚本。              |
+| `frame-src`        | 是       | 结合其他Cypress选项可能阻止iframe加载。 |
+| `form-action`      | 是       | 可能阻止Cypress监控表单事件。                              |
+| `script-src`       | 是       | 有条件地阻止Cypress加载和运行脚本。              |
+| `script-src-elem`  | 是       | 有条件地阻止Cypress加载和运行脚本。              |
 
-#### Allow Specific CSP Directives
+#### 允许特定CSP指令
 
-Set the `experimentalCspAllowList` option to an array of directive names marked
-as "Allowable" from the list above. This will allow the specified CSP directives
-to be sent to the browser.
+将`experimentalCspAllowList`选项设置为上述标记为"可允许"的指令名称数组。这将允许指定的CSP指令发送到浏览器。
 
-The following configuration would allow the `default-src`, `script-src`, and
-`script-src-elem` directives to be sent to the browser:
+以下配置将允许`default-src`、`script-src`和`script-src-elem`指令发送到浏览器：
 
 :::cypress-config-example
 
@@ -112,40 +89,34 @@ The following configuration would allow the `default-src`, `script-src`, and
 
 :::caution
 
-Defining `experimentalCspAllowList` _*may*_ cause Cypress to be unable to run
-tests against your application. If you experience issues, reduce the directives
-specified in your allow list to identify which directive is causing issues.
+定义`experimentalCspAllowList`*可能*导致Cypress无法对您的应用程序运行测试。如果遇到问题，请减少允许列表中指定的指令以识别导致问题的指令。
 
-There is a known issue when using certain directives containing hash algorithm
-values and the `modifyObstructiveCode` and/or `experimentalSourceRewriting`
-options. Using these options in combination with the `experimentalCspAllowList`
-option can cause a mismatch between the original hashed directive value, and the
-modified HTML or JS value.
+已知问题：当使用某些包含哈希算法值的指令与`modifyObstructiveCode`和/或`experimentalSourceRewriting`选项时，可能会导致原始哈希指令值与修改后的HTML或JS值不匹配。
 
 :::
 
-## Experimental Flake Detection Features
+## 实验性Flake检测功能
 
-### Experimental Test Retries
+### 实验性测试重试
 
-[Test retries](/app/guides/test-retries) is a Cypress [Flake Detection](/cloud/features/flaky-test-management#Flake-Detection) feature that enables you to re-attempt any tests that initially fail. The failure may not be a "true" failure, i.e. flaky. The only way to determine this is to retry the test.
+[测试重试](/app/guides/test-retries)是Cypress的一项[Flake检测](/cloud/features/flaky-test-management#Flake-Detection)功能，允许您重新尝试任何最初失败的测试。失败可能不是"真正的"失败，即flaky。确定这一点的唯一方法是重试测试。
 
-Normally, test retries simply stop on the first passing attempt. And the final test result of any flaky test is always "passing", regardless of how many prior attempts failed. The following experimental settings for retries give you more control over the retries process.
+通常，测试重试在第一次通过尝试时停止。任何flaky测试的最终测试结果始终为"通过"，无论之前有多少次尝试失败。以下实验性重试设置让您对重试过程有更多控制。
 
-There are two strategies for retries:
+有两种重试策略：
 
 - `detect-flake-and-pass-on-threshold`
 - `detect-flake-but-always-fail`
 
-The `detect-flake-and-pass-on-threshold` strategy is most like the current implementation of retries, where failing tests have a "chance" to still pass, but still detect flake. But this new experimental strategy also enables you to now set a threshold of passing attempts to achieve a passing final result. And if you want to ensure flaky tests are treated with the same urgency as failing tests, then you will prefer to use the `detect-flake-but-always-fail` strategy, which assures that every flaky test is still marked as failing.
+`detect-flake-and-pass-on-threshold`策略最像当前的重试实现，失败的测试仍有机会通过，但仍检测flake。但这个新的实验性策略还允许您设置通过尝试的阈值以实现通过的最终结果。如果您希望确保flaky测试与失败测试受到同等重视，您会更倾向于使用`detect-flake-but-always-fail`策略，它确保每个flaky测试仍被标记为失败。
 
 #### `experimentalStrategy: 'detect-flake-and-pass-on-threshold'`
 
-Setting `experimentalStrategy: 'detect-flake-and-pass-on-threshold'` within retries will give you ability to set how many passing attempts are required for the test result to be passing. There are two `experimentalOptions` that must be set with this strategy:
+在重试中设置`experimentalStrategy: 'detect-flake-and-pass-on-threshold'`将让您能够设置需要多少次通过尝试才能使测试结果为通过。此策略必须设置两个`experimentalOptions`：
 
-- `maxRetries` sets the maximum number of retries that can occur after the first attempt failed
-- `passesRequired` sets the required number of passing attempts for the final test result to be passing. Cannot be greater than `maxRetries`.
-  - `passesRequired` also determines how the retries may stop before `maxRetries` is reached; either if the number of passing attempts so far has met the `passesRequired` condition or if the number of failing attempts exceeds the difference between `maxRetries` and `passesRequired` (when it's impossible to achieve the passing result).
+- `maxRetries`设置第一次尝试失败后可以发生的最大重试次数
+- `passesRequired`设置最终测试结果为通过所需的通过尝试次数。不能大于`maxRetries`。
+  - `passesRequired`还决定了重试是否会在达到`maxRetries`之前停止；如果到目前为止的通过尝试次数满足`passesRequired`条件，或者如果失败尝试次数超过`maxRetries`和`passesRequired`之间的差值（当无法实现通过结果时）。
 
 :::cypress-config-example
 
@@ -158,8 +129,7 @@ Setting `experimentalStrategy: 'detect-flake-and-pass-on-threshold'` within retr
       passesRequired: 2
     },
 
-    // you must also explicitly set openMode and runMode to
-    // either true or false when using experimental retries
+    // 使用实验性重试时，还必须显式设置openMode和runMode为true或false
     openMode: true,
     runMode: true
   }
@@ -168,38 +138,38 @@ Setting `experimentalStrategy: 'detect-flake-and-pass-on-threshold'` within retr
 
 :::
 
-Examples of the above configuration's results:
+上述配置的结果示例：
 
-**Scenario 1:**
+**场景1：**
 
-- Attempt 1: <Icon name="times" color="red" /> Fail
-- Attempt 2: <Icon name="check-circle" color="green" /> Pass
-- Attempt 3: <Icon name="times" color="red" /> Fail
+- 尝试1: <Icon name="times" color="red" /> 失败
+- 尝试2: <Icon name="check-circle" color="green" /> 通过
+- 尝试3: <Icon name="times" color="red" /> 失败
 
-The retries stop on attempt 3, since `maxRetries: 2` is now met and the test's final result is **failing** <Icon name="times" color="red" /> and **flaky**. Only one attempt passed, but two are needed to pass.
+重试在尝试3停止，因为`maxRetries: 2`现已满足，测试的最终结果为**失败** <Icon name="times" color="red" /> 且**flaky**。只有一次尝试通过，但需要两次才能通过。
 
-**Scenario 2:**
+**场景2：**
 
-- Attempt 1: <Icon name="times" color="red" /> Fail
-- Attempt 2: <Icon name="check-circle" color="green" /> Pass
-- Attempt 3: <Icon name="check-circle" color="green" /> Pass
+- 尝试1: <Icon name="times" color="red" /> 失败
+- 尝试2: <Icon name="check-circle" color="green" /> 通过
+- 尝试3: <Icon name="check-circle" color="green" /> 通过
 
-Retries stop at attempt 3 again, and the test is **passing** <Icon name="check-circle" color="green" /> and **flaky**, since there are now two passing attempts.
+重试再次在尝试3停止，测试为**通过** <Icon name="check-circle" color="green" /> 且**flaky**，因为现在有两次通过尝试。
 
-**Scenario 3:**
+**场景3：**
 
-- Attempt 1: <Icon name="times" color="red" /> Fail
-- Attempt 2: <Icon name="times" color="red" /> Fail
+- 尝试1: <Icon name="times" color="red" /> 失败
+- 尝试2: <Icon name="times" color="red" /> 失败
 
-Retries stop on attempt 2, and the test is **failing** <Icon name="times" color="red" />, because the requisite two passing attempts for a passing result can no longer be achieved once the 1st retry failed. It's also **not flaky**, since there were no passing attempts.
+重试在尝试2停止，测试为**失败** <Icon name="times" color="red" />，因为一旦第一次重试失败，就无法再实现通过结果所需的两次通过尝试。也**不是flaky**，因为没有通过尝试。
 
 #### `experimentalStrategy: 'detect-flake-but-always-fail'`
 
-Setting `experimentalStrategy: 'detect-flake-but-always-fail'` within retries ensures any test with any failed attempt will always end with a failing final result. There are two `experimentalOptions` that must be set in this strategy:
+在重试中设置`experimentalStrategy: 'detect-flake-but-always-fail'`确保任何有失败尝试的测试始终以失败的最终结果结束。此策略必须设置两个`experimentalOptions`：
 
-- `maxRetries` sets the maximum number of retries that can occur after the first attempt failed
-- `stopIfAnyPassed` will stop the retries before `maxRetries` is reached when there is any passing attempt.
-  - `stopIfAnyPassed` causes retries to exit as soon as any flake is detected (a test that is retrying after a failure only needs to pass once to exhibit flaky behavior). However it may help to see more retry attempts, such as when the failure mode is also non-deterministic and more of these different errors are revealed on more retries, in which case `stopIfAnyPassed: false` may be desirable.
+- `maxRetries`设置第一次尝试失败后可以发生的最大重试次数
+- `stopIfAnyPassed`将在有任何通过尝试时在达到`maxRetries`之前停止重试。
+  - `stopIfAnyPassed`导致重试在检测到任何flake时立即退出（一个在失败后重试的测试只需要通过一次就表现出flaky行为）。但有时可能需要看到更多重试尝试，例如当失败模式也是非确定性的，并且在更多重试中揭示这些不同的错误时，此时`stopIfAnyPassed: false`可能更可取。
 
 :::cypress-config-example
 
@@ -212,8 +182,7 @@ Setting `experimentalStrategy: 'detect-flake-but-always-fail'` within retries en
       stopIfAnyPassed: true
     },
 
-    // you must also explicitly set openMode and runMode to
-    // either true or false when using experimental retries
+    // 使用实验性重试时，还必须显式设置openMode和runMode为true或false
     openMode: true,
     runMode: true
   }
@@ -222,90 +191,87 @@ Setting `experimentalStrategy: 'detect-flake-but-always-fail'` within retries en
 
 :::
 
-Examples of the above configuration's results:
+上述配置的结果示例：
 
-**Scenario 1:**
+**场景1：**
 
-- Attempt 1: <Icon name="times" color="red" /> Fail
-- Attempt 2: <Icon name="times" color="red" /> Fail
-- Attempt 3: <Icon name="times" color="red" /> Fail
+- 尝试1: <Icon name="times" color="red" /> 失败
+- 尝试2: <Icon name="times" color="red" /> 失败
+- 尝试3: <Icon name="times" color="red" /> 失败
 
-The retries stop on attempt 3, since `maxRetries: 2` is now met and the test is **failing** <Icon name="times" color="red" />, but also **not flaky**.
+重试在尝试3停止，因为`maxRetries: 2`现已满足，测试为**失败** <Icon name="times" color="red" />，但也**不是flaky**。
 
-**Scenario 2:**
+**场景2：**
 
-- Attempt 1: <Icon name="times" color="red" /> Fail
-- Attempt 2: <Icon name="check-circle" color="green" /> Pass
+- 尝试1: <Icon name="times" color="red" /> 失败
+- 尝试2: <Icon name="check-circle" color="green" /> 通过
 
-Retries stop on the first retry, due to the passing attempt. The test is **failing** <Icon name="times" color="red" /> and **flaky**. If `stopIfAnyPassed` was `false`, then the retries would have proceeded once more.
+由于通过尝试，重试在第一次重试时停止。测试为**失败** <Icon name="times" color="red" /> 且**flaky**。如果`stopIfAnyPassed`为`false`，则重试会再进行一次。
 
 :::caution
 
-**Note:** Experimental retries can only be configured at the global level and **not** per individual test, whereas non-experimental `retries` [can be configured per test](/app/guides/test-retries#Individual-Tests). If you configure retries on a per-test basis while using experimental retries globally, that particular test's `retries` configuration will override the experimental retries and ignore it.
+**注意：** 实验性重试只能在全局级别配置，**不能**针对单个测试，而非实验性`retries`[可以针对单个测试配置](/app/guides/test-retries#Individual-Tests)。如果在使用全局实验性重试时针对特定测试配置重试，则该测试的`retries`配置将覆盖实验性重试并忽略它。
 
-Also, while using experimental retries, you cannot set numeric values for `openMode` or `runMode` [at the global level](/app/guides/test-retries#Global-Configuration). You can instead set `true` or `false` for each.
+此外，在使用实验性重试时，不能在全局级别为`openMode`或`runMode`[设置数值](/app/guides/test-retries#Global-Configuration)。您可以为每个设置`true`或`false`。
 
 :::
 
 :::info
 
-If you have any feedback for the experimental retries feature, please use [this form](https://share.hsforms.com/1pCBMIbQjQwKY_f2qcdLVzw3a4za).
+如果您对实验性重试功能有任何反馈，请使用[此表单](https://share.hsforms.com/1pCBMIbQjQwKY_f2qcdLVzw3a4za)。
 
 :::
 
-## Testing Type-Specific Experiments
+## 测试类型特定的实验功能
 
-You can provide configuration options for either E2E or Component Testing by
-creating `e2e` and `component` objects inside your Cypress configuration.
+您可以通过在Cypress配置中创建`e2e`和`component`对象来为端到端测试或组件测试提供配置选项。
 
-### End-to-End Testing
+### 端到端测试
 
-These experiments are available to be specified inside the `e2e` configuration
-object:
+以下实验功能可以在`e2e`配置对象中指定：
 
-| Option                           | Default | Description                                                                                               |
+| 选项                           | 默认值  | 描述                                                                                               |
 | -------------------------------- | ------- | --------------------------------------------------------------------------------------------------------- |
-| `experimentalStudio`             | `false` | Generate and save commands directly to your test suite by interacting with your app as an end user would. |
-| `experimentalRunAllSpecs`        | `false` | Enables the "Run All Specs" UI feature, allowing the execution of multiple specs sequentially.            |
-| `experimentalOriginDependencies` | `false` | Enables support for `Cypress.require` within `cy.origin`.                                                 |
+| `experimentalStudio`             | `false` | 通过像最终用户一样与您的应用程序交互，直接生成并保存命令到您的测试套件中。 |
+| `experimentalRunAllSpecs`        | `false` | 启用"运行所有Specs"UI功能，允许顺序执行多个specs。            |
+| `experimentalOriginDependencies` | `false` | 在`cy.origin`中启用`Cypress.require`支持。                                                 |
 
-### Component Testing
+### 组件测试
 
-These experiments are available to be specified inside the `component`
-configuration object:
+以下实验功能可以在`component`配置对象中指定：
 
-| Option                         | Default | Description                                                                                                                                                                       |
+| 选项                         | 默认值  | 描述                                                                                                                                                                       |
 | ------------------------------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `experimentalSingleTabRunMode` | `false` | Run all specs in a single tab, instead of creating a new tab per spec. This can improve run mode performance, but can impact spec isolation and reliability on large test suites. |
+| `experimentalSingleTabRunMode` | `false` | 在单个标签页中运行所有specs，而不是为每个spec创建新标签页。这可以提高运行模式性能，但在大型测试套件上可能影响spec隔离和可靠性。 |
 
-## History
+## 历史记录
 
-| Version                                      | Changes                                                                                                                                       |
+| 版本                                      | 变更                                                                                                                                       |
 | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| [14.0.0](/app/references/changelog#14-0-0)   | Removed `experimentalJustInTimeCompile` and `experimentalSkipDomainInjection` and made it default behavior.                                   |
-| [13.14.0](/app/references/changelog#13-14-0) | Added support for configuring the Experimental Just-In-Time (JIT) Compiling for component testing via `experimentalJustInTimeCompile`.        |
-| [13.4.0](/app/references/changelog#13-4-0)   | Added support for configuring the Experimental Flake Detection strategy via `retries.experimentalStrategy` and `retries.experimentalOptions`. |
-| [12.6.0](/app/references/changelog#12-6-0)   | Removed `require`/`import` and added `Cypress.require` for `experimentalOriginDependencies`.                                                  |
-| [12.4.0](/app/references/changelog#12-4-0)   | Added `experimentalSkipDomainInjection` and `experimentalMemoryManagement`.                                                                   |
-| [12.0.0](/app/references/changelog#12-0-0)   | Removed `experimentalSessionAndOrigin` and made it the default behavior. Added `experimentalOriginDependencies`.                              |
-| [11.2.0](/app/references/changelog#11-2-0)   | Added `experimentalRunAllSpecs`.                                                                                                              |
-| [10.8.0](/app/references/changelog#10-8-0)   | Added `experimentalWebKitSupport`.                                                                                                            |
-| [10.6.0](/app/references/changelog#10-6-0)   | Added support for `experimentalSingleTabRunMode`.                                                                                             |
-| [10.4.0](/app/references/changelog#10-4-0)   | Added support for `experimentalModifyObstructiveThirdPartyCode`.                                                                              |
-| [9.6.0](/app/references/changelog#9-6-0)     | Added support for `experimentalSessionAndOrigin` and removed `experimentalSessionSupport`.                                                    |
-| [8.2.0](/app/references/changelog#8-2-0)     | Added support for `experimentalSessionSupport`.                                                                                               |
-| [7.1.0](/app/references/changelog#7-1-0)     | Added support for `experimentalInteractiveRunEvents`.                                                                                         |
-| [7.0.0](/app/references/changelog#7-0-0)     | Removed `experimentalComponentTesting` and made it the default behavior.                                                                      |
-| [6.7.0](/app/references/changelog#6-7-0)     | Removed `experimentalRunEvents` and made it the default behavior.                                                                             |
-| [6.3.0](/app/references/changelog#6-3-0)     | Added support for `experimentalStudio`.                                                                                                       |
-| [6.2.0](/app/references/changelog#6-2-0)     | Added support for `experimentalRunEvents`.                                                                                                    |
-| [6.0.0](/app/references/changelog#6-0-0)     | Removed `experimentalNetworkStubbing` and made it the default behavior when using [cy.intercept()](/api/commands/intercept).                  |
-| [6.0.0](/app/references/changelog#6-0-0)     | Deprecated `experimentalFetchPolyfill`.                                                                                                       |
-| [5.2.0](/app/references/changelog#5-2-0)     | Removed `experimentalShadowDomSupport` and made it the default behavior.                                                                      |
-| [5.1.0](/app/references/changelog#5-1-0)     | Added support for `experimentalNetworkStubbing`.                                                                                              |
-| [5.0.0](/app/references/changelog#5-0-0)     | Removed `experimentalGetCookiesSameSite` and made it the default behavior.                                                                    |
-| [4.9.0](/app/references/changelog#4-9-0)     | Added support for `experimentalFetchPolyfill`.                                                                                                |
-| [4.8.0](/app/references/changelog#4-8-0)     | Added support for `experimentalShadowDomSupport`.                                                                                             |
-| [4.6.0](/app/references/changelog#4-6-0)     | Added support for `experimentalSourceRewriting`.                                                                                              |
-| [4.5.0](/app/references/changelog#4-5-0)     | Added support for `experimentalComponentTesting`.                                                                                             |
-| [4.3.0](/app/references/changelog#4-3-0)     | Added support for `experimentalGetCookiesSameSite`.                                                                                           |
+| [14.0.0](/app/references/changelog#14-0-0)   | 移除了`experimentalJustInTimeCompile`和`experimentalSkipDomainInjection`并使其成为默认行为。                                   |
+| [13.14.0](/app/references/changelog#13-14-0) | 添加了通过`experimentalJustInTimeCompile`配置组件测试的实验性即时(JIT)编译支持。        |
+| [13.4.0](/app/references/changelog#13-4-0)   | 添加了通过`retries.experimentalStrategy`和`retries.experimentalOptions`配置实验性Flake检测策略的支持。 |
+| [12.6.0](/app/references/changelog#12-6-0)   | 移除了`require`/`import`并为`experimentalOriginDependencies`添加了`Cypress.require`。                                                  |
+| [12.4.0](/app/references/changelog#12-4-0)   | 添加了`experimentalSkipDomainInjection`和`experimentalMemoryManagement`。                                                                   |
+| [12.0.0](/app/references/changelog#12-0-0)   | 移除了`experimentalSessionAndOrigin`并使其成为默认行为。添加了`experimentalOriginDependencies`。                              |
+| [11.2.0](/app/references/changelog#11-2-0)   | 添加了`experimentalRunAllSpecs`。                                                                                                              |
+| [10.8.0](/app/references/changelog#10-8-0)   | 添加了`experimentalWebKitSupport`。                                                                                                            |
+| [10.6.0](/app/references/changelog#10-6-0)   | 添加了对`experimentalSingleTabRunMode`的支持。                                                                                             |
+| [10.4.0](/app/references/changelog#10-4-0)   | 添加了对`experimentalModifyObstructiveThirdPartyCode`的支持。                                                                              |
+| [9.6.0](/app/references/changelog#9-6-0)     | 添加了对`experimentalSessionAndOrigin`的支持并移除了`experimentalSessionSupport`。                                                    |
+| [8.2.0](/app/references/changelog#8-2-0)     | 添加了对`experimentalSessionSupport`的支持。                                                                                               |
+| [7.1.0](/app/references/changelog#7-1-0)     | 添加了对`experimentalInteractiveRunEvents`的支持。                                                                                         |
+| [7.0.0](/app/references/changelog#7-0-0)     | 移除了`experimentalComponentTesting`并使其成为默认行为。                                                                      |
+| [6.7.0](/app/references/changelog#6-7-0)     | 移除了`experimentalRunEvents`并使其成为默认行为。                                                                             |
+| [6.3.0](/app/references/changelog#6-3-0)     | 添加了对`experimentalStudio`的支持。                                                                                                       |
+| [6.2.0](/app/references/changelog#6-2-0)     | 添加了对`experimentalRunEvents`的支持。                                                                                                    |
+| [6.0.0](/app/references/changelog#6-0-0)     | 移除了`experimentalNetworkStubbing`并在使用[cy.intercept()](/api/commands/intercept)时使其成为默认行为。                  |
+| [6.0.0](/app/references/changelog#6-0-0)     | 弃用了`experimentalFetchPolyfill`。                                                                                                       |
+| [5.2.0](/app/references/changelog#5-2-0)     | 移除了`experimentalShadowDomSupport`并使其成为默认行为。                                                                      |
+| [5.1.0](/app/references/changelog#5-1-0)     | 添加了对`experimentalNetworkStubbing`的支持。                                                                                              |
+| [5.0.0](/app/references/changelog#5-0-0)     | 移除了`experimentalGetCookiesSameSite`并使其成为默认行为。                                                                    |
+| [4.9.0](/app/references/changelog#4-9-0)     | 添加了对`experimentalFetchPolyfill`的支持。                                                                                                |
+| [4.8.0](/app/references/changelog#4-8-0)     | 添加了对`experimentalShadowDomSupport`的支持。                                                                                             |
+| [4.6.0](/app/references/changelog#4-6-0)     | 添加了对`experimentalSourceRewriting`的支持。                                                                                              |
+| [4.5.0](/app/references/changelog#4-5-0)     | 添加了对`experimentalComponentTesting`的支持。                                                                                             |
+| [4.3.0](/app/references/changelog#4-3-0)     | 添加了对`experimentalGetCookiesSameSite`的支持。                                                                                           |

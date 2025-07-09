@@ -1,6 +1,6 @@
 ---
-title: 'Element Filters | Cypress UI Coverage'
-description: 'The `elementFilters` property allows you to specify selectors for elements that should be excluded from UI Coverage.'
+title: '元素过滤器 | Cypress UI 覆盖率'
+description: '`elementFilters` 属性允许你指定应从 UI 覆盖率中排除的元素选择器。'
 sidebar_label: elementFilters
 sidebar_position: 40
 ---
@@ -11,11 +11,11 @@ sidebar_position: 40
 
 <ElementFilters />
 
-### Excluding disabled elements
+### 排除禁用元素
 
-UI Coverage highlights disabled elements by default to reveal potential untested paths in your app, in case those elements become enabled later. If needed, you can exclude them from the report using the `elementFilters` configuration.
+UI 覆盖率默认会高亮显示禁用元素，以揭示应用中可能存在的未测试路径（以防这些元素后续变为启用状态）。如果需要，你可以使用 `elementFilters` 配置将它们从报告中排除。
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -32,12 +32,12 @@ UI Coverage highlights disabled elements by default to reveal potential untested
 
 ```xml
 <body>
-  <button data-cy='cancel'>Cancel</button>
-  <button disabled data-cy='submit'>Submit</button>
+  <button data-cy='cancel'>取消</button>
+  <button disabled data-cy='submit'>提交</button>
 </body>
 ```
 
-#### Elements shown in UI
+#### UI 中显示的元素
 
 ```
 [data-cy='cancel']

@@ -1,21 +1,21 @@
 ---
-title: 'Uniquely identify test elements | Cypress Accessibility'
-description: 'Elements are uniquely identified across views and snapshots by their HTML attributes, location, and other signals in the DOM.'
-sidebar_label: Element identification
+title: '唯一标识测试元素 | Cypress Accessibility'
+description: '通过HTML属性、位置和DOM中的其他信号，元素在不同视图和快照中被唯一标识。'
+sidebar_label: 元素标识
 sidebar_position: 20
 ---
 
 <ProductHeading product="accessibility" />
 
-# Element Identification
+# 元素标识
 
-Cypress Accessibility uniquely identifies elements across views and snapshots using a combination of HTML attributes, location, and other signals in the DOM. Stable and unique identifiers are crucial for accurately tracking and de-duplicating elements throughout the various snapshots captured in your tests.
+Cypress Accessibility 通过结合HTML属性、位置和DOM中的其他信号，在不同视图和快照中唯一标识元素。稳定且唯一的标识符对于准确跟踪和去重测试中捕获的各种快照中的元素至关重要。
 
-This process replaces the underlying Axe-Core® library's default mechanism for identifying elements, which also uses strings but focusing on capturing a unique identifier for a given element in a specific DOM context. The default behavior does not account for situations where sometimes tens of thousands of Axe-Core® scans need to be merged together for a single run, or later compared based on different builds of the application. Both of these happen in Cypress Cloud, and are much more effective when the element identification process is controllable by the user and can be customized for your project.
+此过程替换了底层 Axe-Core® 库默认的元素标识机制，后者虽然也使用字符串，但侧重于在特定DOM上下文中捕获元素的唯一标识符。默认行为未考虑以下情况：有时需要将数万次 Axe-Core® 扫描合并为单次运行，或基于应用程序的不同构建版本进行比较。这两种情况都发生在 Cypress Cloud 中，当元素标识过程可由用户控制并能为项目定制时，效果会更好。
 
-## Significant attributes for identification
+## 标识的重要属性
 
-Certain attributes are prioritized by Cypress Accessibility for element identification. These include:
+Cypress Accessibility 优先考虑以下属性进行元素标识：
 
 - `data-cy`
 - `data-test`
@@ -26,15 +26,15 @@ Certain attributes are prioritized by Cypress Accessibility for element identifi
 - `id`
 - `name`
 
-If you already have Test IDs or similar attributes in your application, Cypress Accessibility will pick these up and use them to recognize the same element in a new place for improved deduplication. This behavior itself is configurable as well, so that highly-dynamic Test IDs can be avoided, for example.
+如果您的应用中已存在测试ID或类似属性，Cypress Accessibility 将识别这些属性，并用它们在新位置识别相同元素以改进去重。此行为本身也是可配置的，例如可以避免使用高度动态的测试ID。
 
-## Configuring element identification
+## 配置元素标识
 
-Using these configuration properties helps you adjust the amount of deduplication Cypress will do to match what makes sense in your application. For example, a component-based Test ID might make a great identifier if the component renders static content, but the same exact test ID would be a poor identifier if the component renders different things everywhere - you might rather treat those instances as unique for accessibility purposes.
+使用这些配置属性可帮助您调整 Cypress 的去重程度，以匹配您的应用需求。例如，如果组件渲染静态内容，基于组件的测试ID可能是很好的标识符；但如果组件在不同位置渲染不同内容，相同的测试ID将是一个糟糕的标识符——出于可访问性目的，您可能更愿意将这些实例视为唯一。
 
-### Attribute filters
+### 属性过滤器
 
-Exclude irrelevant or dynamically generated attributes to reduce noise in Cypress Accessibility reports. For example:
+排除无关或动态生成的属性，减少 Cypress Accessibility 报告中的干扰。例如：
 
 ```json
 {
@@ -48,11 +48,11 @@ Exclude irrelevant or dynamically generated attributes to reduce noise in Cypres
 }
 ```
 
-Learn more about attribute filtering in the [Attribute Filters](/accessibility/configuration/attributefilters) guide.
+了解更多关于属性过滤的信息，请参阅[属性过滤器](/accessibility/configuration/attributefilters)指南。
 
-### Significant attributes
+### 重要属性
 
-Define custom significant attributes to prioritize specific selectors that align with your application’s structure. For example:
+定义自定义重要属性，优先考虑与您应用结构相符的特定选择器。例如：
 
 ```json
 {
@@ -60,4 +60,4 @@ Define custom significant attributes to prioritize specific selectors that align
 }
 ```
 
-Refer to the [Significant Attributes](/accessibility/configuration/significantattributes) guide for detailed instructions.
+详细说明请参考[重要属性](/accessibility/configuration/significantattributes)指南。

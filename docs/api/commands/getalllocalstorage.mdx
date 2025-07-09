@@ -1,6 +1,6 @@
 ---
-title: 'getAllLocalStorage | Cypress Documentation'
-description: Get localStorage data for all origins with which the test has interacted in Cypress.
+title: 'getAllLocalStorage | Cypress 文档'
+description: 获取测试在Cypress中交互过的所有源的localStorage数据。
 sidebar_label: getAllLocalStorage
 ---
 
@@ -8,44 +8,40 @@ sidebar_label: getAllLocalStorage
 
 # getAllLocalStorage
 
-Get
+获取测试交互过的所有源的
 [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
-data for all origins with which the test has interacted.
+数据。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.getAllLocalStorage()
 cy.getAllLocalStorage(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 cy.getAllLocalStorage()
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of
-`cy.getAllLocalStorage()`.
+传入一个选项对象来改变`cy.getAllLocalStorage()`的默认行为。
 
-| Option | Default | Description                                                                         |
-| ------ | ------- | ----------------------------------------------------------------------------------- |
-| `log`  | `true`  | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
+| 选项   | 默认值  | 描述                                                                         |
+| ------ | ------- | --------------------------------------------------------------------------- |
+| `log`  | `true`  | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令          |
 
 <HeaderYields />
 
-`cy.getAllLocalStorage()` yields an object where the keys are origins and the
-values are key-value pairs of `localStorage` data.
+`cy.getAllLocalStorage()`返回一个对象，其键为源，值为`localStorage`数据的键值对。
 
-For example, if `key1` is set to `value1` on `https://example.cypress.io` and
-`key2` is set to `value2` on `https://www.cypress-dx.com`,
-`cy.getAllLocalStorage()` will yield:
+例如，如果在`https://example.cypress.io`上设置了`key1`为`value1`，在`https://www.cypress-dx.com`上设置了`key2`为`value2`，`cy.getAllLocalStorage()`将返回：
 
 ```js
 {
@@ -58,9 +54,9 @@ For example, if `key1` is set to `value1` on `https://example.cypress.io` and
 }
 ```
 
-## Examples
+## 示例
 
-### Get all localStorage
+### 获取所有localStorage
 
 ```javascript
 cy.visit('https://example.cypress.io', {
@@ -78,22 +74,21 @@ cy.getAllLocalStorage().then((result) => {
 })
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.getAllLocalStorage()` requires being chained off of `cy`.
+- `cy.getAllLocalStorage()`需要链式调用`cy`。
 
 <HeaderAssertions />
 
-- `cy.getAllLocalStorage()` will only run assertions you have chained once, and
-  will not [retry](/app/core-concepts/retry-ability).
+- `cy.getAllLocalStorage()`只会运行一次链式断言，不会[重试](/app/core-concepts/retry-ability)。
 
 <HeaderTimeouts />
 
-- `cy.getAllLocalStorage()` cannot time out.
+- `cy.getAllLocalStorage()`不会超时。
 
-## See also
+## 另请参阅
 
 - [`cy.clearAllLocalStorage()`](/api/commands/clearalllocalstorage)
 - [`cy.clearAllSessionStorage()`](/api/commands/clearallsessionstorage)

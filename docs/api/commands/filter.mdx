@@ -1,6 +1,6 @@
 ---
-title: 'filter | Cypress Documentation'
-description: Get the DOM elements that match a specific selector in Cypress.
+title: 'filter | Cypress 文档'
+description: 在Cypress中获取匹配特定选择器的DOM元素。
 sidebar_label: filter
 slug: /api/commands/filter
 ---
@@ -9,114 +9,114 @@ slug: /api/commands/filter
 
 # filter
 
-Get the DOM elements that match a specific selector.
+获取匹配特定选择器的DOM元素。
 
 :::info
 
-Opposite of [`.not()`](/api/commands/not)
+与[`.not()`](/api/commands/not)功能相反
 
 :::
 
 :::info
 
-The querying behavior of this command matches exactly how
-[`.filter()`](http://api.jquery.com/filter) works in jQuery.
+该命令的查询行为与jQuery中的
+[`.filter()`](http://api.jquery.com/filter)完全一致。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .filter(selector)
 .filter(selector, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('td').filter('.users') // Yield all el's with class '.users'
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.filter('.animated') // Errors, cannot be chained off 'cy'
-cy.clock().filter() // Errors, 'clock' does not yield DOM elements
+cy.get('td').filter('.users') // 获取所有包含'.users'类的元素
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
-<Icon name="angle-right" /> **selector _(String selector)_**
+```javascript
+cy.filter('.animated') // 错误，不能直接链式调用'cy'
+cy.clock().filter() // 错误，'clock'不返回DOM元素
+```
 
-A selector used to filter matching DOM elements.
+### 参数
 
-<Icon name="angle-right" /> **options _(Object)_**
+<Icon name="angle-right" /> **selector _(字符串选择器)_**
 
-Pass in an options object to change the default behavior of `.filter()`.
+用于过滤匹配DOM元素的选择器。
 
-| Option    | Default                                                           | Description                                                                         |
+<Icon name="angle-right" /> **options _(对象)_**
+
+传入选项对象以改变`.filter()`的默认行为。
+
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.filter()` to resolve before [timing out](#Timeouts)              |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 等待`.filter()`解析的时长，超过则[超时](#Timeouts)              |
 
 <HeaderYields />
 
-- `.filter()` yields the new DOM element(s) it found.
-- `.filter()` is a query, and it is _safe_ to chain further commands.
+- `.filter()`返回它找到的新DOM元素。
+- `.filter()`是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### Selector
+### 选择器
 
-#### Filter the current subject to the elements with the class 'active'
+#### 过滤当前元素集合，保留带有'active'类的元素
 
 ```html
 <ul>
-  <li>Home</li>
-  <li class="active">About</li>
-  <li>Services</li>
-  <li>Pricing</li>
-  <li>Contact</li>
+  <li>首页</li>
+  <li class="active">关于</li>
+  <li>服务</li>
+  <li>价格</li>
+  <li>联系</li>
 </ul>
 ```
 
 ```javascript
-// yields <li>About</li>
+// 返回 <li>关于</li>
 cy.get('ul').find('>li').filter('.active')
 ```
 
-### Contains
+### 包含文本
 
-#### Filter by text
+#### 通过文本过滤
 
-You can use the [jQuery :contains](https://api.jquery.com/contains-selector/)
-selector to perform a case-sensitive text substring match.
+可以使用[jQuery :contains](https://api.jquery.com/contains-selector/)
+选择器执行区分大小写的文本子串匹配。
 
 ```html
 <ul>
-  <li>Home</li>
-  <li>Services</li>
-  <li>Advanced Services</li>
-  <li>Pricing</li>
-  <li>Contact</li>
+  <li>首页</li>
+  <li>服务</li>
+  <li>高级服务</li>
+  <li>价格</li>
+  <li>联系</li>
 </ul>
 ```
 
-Let's find both list items that contain the work "Services"
+查找所有包含"服务"的列表项：
 
 ```javascript
 cy.get('li').filter(':contains("Services")').should('have.length', 2)
 ```
 
-#### Non-breaking space
+#### 不换行空格
 
-If the HTML contains a
-[non-breaking space](https://en.wikipedia.org/wiki/Non-breaking_space) entity
-`&nbsp;` and the test uses the
-[jQuery :contains](https://api.jquery.com/contains-selector/) selector, then the
-test needs to use the Unicode value `\u00a0` instead of `&nbsp;`.
+如果HTML包含
+[不换行空格](https://en.wikipedia.org/wiki/Non-breaking_space)实体
+`&nbsp;`，而测试使用
+[jQuery :contains](https://api.jquery.com/contains-selector/)选择器，
+则测试需要使用Unicode值`\u00a0`代替`&nbsp;`。
 
 ```html
 <div data-testid="testattr">
@@ -128,49 +128,49 @@ test needs to use the Unicode value `\u00a0` instead of `&nbsp;`.
 cy.get('[data-testid="testattr"]').filter(':contains("Hello\u00a0world")')
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.filter()` requires being chained off a command that yields DOM element(s).
+- `.filter()`必须链式调用自返回DOM元素的命令。
 
 <HeaderAssertions />
 
-- `.filter()` will automatically [retry](/app/core-concepts/retry-ability)
-  until the element(s)
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.filter()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed.
+- `.filter()`会自动[重试](/app/core-concepts/retry-ability)
+  直到元素
+  [存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)。
+- `.filter()`会自动[重试](/app/core-concepts/retry-ability)
+  直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `.filter()` can time out waiting for the element(s) to
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.filter()` can time out waiting for assertions you've added to pass.
+- `.filter()`可能因等待元素
+  [存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)而超时。
+- `.filter()`可能因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Filter the li's to the li with the class 'active'._**
+**_过滤li元素，保留带有'active'类的li。_**
 
 ```javascript
 cy.get('.left-nav>.nav').find('>li').filter('.active')
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/filter/filter-el-by-selector.png"
-  alt="Command Log filter"
+  alt="命令日志 filter"
 />
 
-When clicking on the `filter` command within the command log, the console
-outputs the following:
+当点击命令日志中的`filter`命令时，控制台
+会输出以下内容：
 
 <DocsImage
   src="/img/api/filter/console-shows-list-and-filtered-element.png"
   alt="console.log filter"
 />
 
-## See also
+## 另请参阅
 
 - [`.not()`](/api/commands/not)

@@ -1,210 +1,175 @@
 ---
-title: Flaky Test Management
+title: 不稳定测试管理
 sidebar_position: 60
-description: Detect and manage flaky tests in Cypress Cloud
-sidebar_label: Flake Management
+description: 在Cypress Cloud中检测和管理不稳定测试
+sidebar_label: 不稳定测试管理
 ---
 
 <ProductHeading product="cloud" />
 
-# Flaky Test Management
+# 不稳定测试管理
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to detect and manage flaky tests in Cypress Cloud
-- How to enable flake detection and alerting
-- The benefits of using flaky test management features
+- 如何在Cypress Cloud中检测和管理不稳定测试
+- 如何启用不稳定检测和告警
+- 使用不稳定测试管理功能的优势
 
 :::
 
-By enabling [test retries](/app/guides/test-retries), Cypress Cloud can
-detect, flag, and track flaky tests from your recorded Cypress test runs in your
-CI/CD pipeline.
+通过启用[测试重试](/app/guides/test-retries)，Cypress Cloud能够从CI/CD流水线记录的Cypress测试运行中检测、标记和跟踪不稳定测试。
 
-A test is considered to be **flaky** when it can pass and fail across multiple
-retry attempts without any code changes. For example, a test is executed and fails, then the test is executed again,
-without any change to the code, but this time it passes.
+当测试在多次重试尝试中无需代码更改即可交替通过和失败时，该测试被视为**不稳定**。例如，测试执行失败后，在未修改代码的情况下再次执行却通过了。
 
 :::info
 
-<strong>What are test retries?</strong>
+<strong>什么是测试重试？</strong>
 
-Cypress has the ability to automatically
-[retry failed tests](/app/guides/test-retries#Configure-Test-Retries) to
-mitigate flaky tests from failing entire test runs or CI builds.
+Cypress能够自动[重试失败测试](/app/guides/test-retries#Configure-Test-Retries)，以减少不稳定测试导致整个测试运行或CI构建失败的情况。
 
 :::
 
-## Flake Detection
+## 不稳定检测
 
 :::tip
 
-<Icon name="star" /> **Premium Cypress Cloud Feature**
+<Icon name="star" /> **Cypress Cloud高级功能**
 
-**Test flake detection** is available to users with a
-[Team Cypress Cloud plan](https://cypress.io/pricing).
+**测试不稳定检测**功能仅适用于[团队版Cypress Cloud计划](https://cypress.io/pricing)用户。
 
 :::
 
-One way to battle flaky tests is to detect and monitor them as they occur in an
-organized and methodical manner such that you can assess their severity to
-assist with prioritizing their fix.
+应对不稳定测试的一种方法是系统化地检测和监控它们，评估其严重性以帮助确定修复优先级。
 
-### Enable test retries
+### 启用测试重试
 
-Test retries is the _fundamental mechanism_ that enables the detection of flaky
-tests by Cypress Cloud. Therefore, **enabling
-[test retries](/app/guides/test-retries#Configure-Test-Retries) is required**
-to take advantage of any flaky test management feature.
+测试重试是Cypress Cloud检测不稳定测试的_基础机制_。因此，**必须启用[测试重试](/app/guides/test-retries#Configure-Test-Retries)**才能使用任何不稳定测试管理功能。
 
 :::caution
-If you want more control over the pass/fail result of any test deemed flaky by test retries, you may want to use [experimental test retries](/app/references/experiments#Experimental-Flake-Detection-Features), which is available as of Cypress `13.4.0`.
+若需对测试重试标记为不稳定的测试结果有更多控制，可使用[实验性测试重试](/app/references/experiments#Experimental-Flake-Detection-Features)功能（Cypress `13.4.0`及以上版本支持）。
 :::
 
-### Flagging Flaky Tests
+### 标记不稳定测试
 
-Test runs with flaky tests will be flagged with the number of flaky of tests
-within Cypress Cloud "Latest runs" page. Flaky tests runs can also be filtered
-in and out via the "Flaky" filter within this page.
+包含不稳定测试的测试运行会在Cypress Cloud"最新运行"页面被标记出不稳定测试数量。该页面还支持通过"Flaky"过滤器筛选不稳定测试运行。
 
 <DocsImage
   src="/img/cloud/features/flaky-test-management/flaky-runs-view.png"
-  alt="Flagging flaky tests runs in Cypress Cloud"
+  alt="Cypress Cloud中标记不稳定测试运行"
 />
 
-Any failure across multiple test run attempts triggered by test retrying will
-result in a given test case to be flagged as flaky.
+任何因测试重试导致的多次运行失败都会导致对应测试用例被标记为不稳定。
 
-### Flaky Test Analytics
+### 不稳定测试分析
 
 :::tip
 
-<Icon name="star" /> **Premium Cypress Cloud Feature**
+<Icon name="star" /> **Cypress Cloud高级功能**
 
-**Test flake analytics** are available to users with a
-[Team Cypress Cloud plan](https://cypress.io/pricing).
+**测试不稳定分析**功能仅适用于[团队版Cypress Cloud计划](https://cypress.io/pricing)用户。
 
 :::
 
-The flaky tests analytics page provides a birds-eye-view on the state of flake
-within your project by showing:
+不稳定测试分析页面通过以下维度全景展示项目的不稳定状况：
 
-- Plot of the **number of flaky tests over time**.
-- Overall **flakiness level** of the entire project.
-- **Number of flake tests** grouped by their severity.
-- Filterable **log of all flaky test** cases ordered by severity.
+- **随时间变化的不稳定测试数量**趋势图
+- 项目整体**不稳定程度**
+- 按严重性分组的**不稳定测试数量**
+- 可筛选的**所有不稳定测试**日志（按严重性排序）
 
 :::info
 
-<strong>Flake Severity</strong>
+<strong>不稳定严重性</strong>
 
-Test flake **severity** is determined by the frequency of flake or the **flake
-rate** of a given test. Flake severity level can be used to prioritize the work
-needed to resolve flake issues.
+测试不稳定的**严重性**由出现频率或**不稳定率**决定。该指标可用于优先处理需要修复的问题。
 
 :::
 
 <DocsImage
   src="/img/cloud/features/flaky-test-management/flake-analytics.png"
-  alt="Flaky tests analytics"
+  alt="不稳定测试分析"
 />
 
-Selecting any of the flaky test cases in the analytics page will reveal a test
-case details panel that shows:
+点击分析页面的任意不稳定测试用例，将显示详情面板，包含：
 
-- Historical log of latest flaky runs
-- Most common errors across the runs of the test case
-- Related test case changelog
-- Plot of failure rate and flaky rate over time.
+- 最近不稳定运行的历史记录
+- 该测试用例运行中最常见的错误
+- 相关测试用例变更日志
+- 随时间变化的失败率与不稳定率趋势图
 
-All these test case level details provide deeper context around the occurrences
-of flake over time to assist with debugging the root cause.
+这些测试用例级别的详细信息为调试根本原因提供了深度上下文。
 
 <DocsImage
   src="/img/cloud/features/flaky-test-management/flake-panel.png"
-  alt="Flaky tests analytics details panel"
+  alt="不稳定测试分析详情面板"
 />
 
-### Failure Rate vs Flake Rate
+### 失败率 vs 不稳定率
 
-It is important to understand the distinction between failure rate and flake
-rate when test retries is enabled. These two metrics are tracked over time for
-each flaky test case within the flaky tests analytics page:
+启用测试重试后，理解失败率与不稳定率的区别至关重要。不稳定测试分析页面会跟踪每个测试用例的这两个指标：
 
 <DocsImage
   src="/img/cloud/features/flaky-test-management/flake-v-fail-2.png"
-  alt="flake rate vs fail rate"
+  alt="不稳定率与失败率对比"
 />
 
-A test case flagged as flaky could have still passed after multiple test retry
-attempts. The test result status of individual test retry attempts is separate
-and distinct from the final test status.
+被标记为不稳定的测试用例可能在多次重试后最终通过。单个重试尝试的测试结果状态与最终测试状态是相互独立的。
 
-For example, a project is configured to retry failing tests up to 3 times. The
-first two attempts fail, but the last and third attempt passes, resulting in a
-final status of passing.
+例如：项目配置了最多3次重试。前两次尝试失败，但第三次通过，最终状态为通过。
 
-With this concept in mind, it is possible to always have zero final failure rate
-while exhibiting flake as demonstrated below:
+基于此概念，可能出现最终失败率为零但仍存在不稳定的情况：
 
 <DocsImage
   src="/img/cloud/features/flaky-test-management/flake-v-fail-1.png"
-  alt="flake rate vs fail rate"
+  alt="不稳定率与失败率对比"
 />
 
-## Flake Alerting
+## 不稳定告警
 
 :::tip
 
-<Icon name="star" /> **Premium Cypress Cloud Feature**
+<Icon name="star" /> **Cypress Cloud高级功能**
 
-**Test flake alerting** is available to users with a
-[Team Cypress Cloud plan](https://cypress.io/pricing).
+**测试不稳定告警**功能仅适用于[团队版Cypress Cloud计划](https://cypress.io/pricing)用户。
 
 :::
 
-Cypress Cloud can provide alerts via source control ([GitHub](/cloud/integrations/source-control/github), [GitLab](/cloud/integrations/source-control/gitlab), [BitBucket](/cloud/integrations/source-control/bitbucket)), [Slack](/cloud/integrations/slack), and [Microsoft Teams](/cloud/integrations/teams) integrations to further assist with
-staying on top of flake occurrences.
+Cypress Cloud可通过源代码管理（[GitHub](/cloud/integrations/source-control/github)、[GitLab](/cloud/integrations/source-control/gitlab)、[BitBucket](/cloud/integrations/source-control/bitbucket)）、[Slack](/cloud/integrations/slack)和[Microsoft Teams](/cloud/integrations/teams)集成发送告警，帮助及时掌握不稳定情况。
 
 ### GitHub
 
-Flake alerting via GitHub PR comments and status checks can be enabled within a
-project's GitHub integration settings:
+在项目的GitHub集成设置中可启用通过PR评论和状态检查的不稳定告警：
 
 <DocsImage
   src="/img/cloud/features/flaky-test-management/gh-flake.png"
-  alt="GitHub flake alert settings"
+  alt="GitHub不稳定告警设置"
 />
 
-After enabling GitHub flake alerting, GitHub PR comments will show the number of
-flaky tests associated with the PR within the test summary, and include a
-"Flakiness" section highlighting the specific tests that flaked.
+启用后，GitHub PR评论将在测试摘要中显示相关不稳定测试数量，并包含突出显示具体不稳定测试的"Flakiness"模块。
 
 <DocsImage
   src="/img/cloud/features/flaky-test-management/flake-pr-comment.png"
-  alt="GitHub flake alert pr comment"
+  alt="GitHub不稳定告警PR评论"
 />
 
 ### Slack
 
-Flake alerting via Slack can be enabled within Slack integration settings:
+在Slack集成设置中可启用不稳定告警：
 
 <DocsImage
   src="/img/cloud/features/flaky-test-management/slack-flake.png"
-  alt="Slack flake alert settings"
+  alt="Slack不稳定告警设置"
 />
 
-After enabling Slack alerts, Cypress Cloud will send Slack messages whenever
-flaky tests are detected:
+启用后，当检测到不稳定测试时Cypress Cloud将发送Slack消息：
 
 <DocsImage
   src="/img/cloud/features/flaky-test-management/flake-slack-alert.png"
-  alt="Slack flake alert"
+  alt="Slack不稳定告警"
 />
 
-## See Also
+## 另请参阅
 
-- Read our blog posts about fighting
-  [the test flake](https://cypress.io/blog/tag/flake/).
+- 阅读我们关于应对[测试不稳定](https://cypress.io/blog/tag/flake/)的博客文章。

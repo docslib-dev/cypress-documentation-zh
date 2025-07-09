@@ -1,32 +1,31 @@
 ---
-title: Angular Examples
-description: Learn how to mount an Angular component, pass data to an Angular component, test multiple scenarios of Angular components, test Angular signals, and customize `cy.mount()` for Angular.
+title: Angular 示例
+description: 学习如何挂载Angular组件、向Angular组件传递数据、测试Angular组件的多种场景、测试Angular信号量，以及为Angular自定义`cy.mount()`方法。
 sidebar_position: 30
-sidebar_label: Examples
+sidebar_label: 示例
 ---
 
 <ProductHeading product="app" />
 
-# Angular Examples
+# Angular 示例
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学习到
 
-- How to mount an Angular component
-- How to pass data to an Angular component
-- How to test multiple scenarios of Angular components
-- How to test Angular signals
-- How to customize the`cy.mount()` for Angular
+- 如何挂载Angular组件
+- 如何向Angular组件传递数据
+- 如何测试Angular组件的多种场景
+- 如何测试Angular信号量
+- 如何为Angular自定义`cy.mount()`方法
 
 :::
 
-## Mounting Components
+## 挂载组件
 
-### Using `cy.mount()`
+### 使用 `cy.mount()`
 
-To mount a component with `cy.mount()`, import the component and pass it to the
-method:
+要使用`cy.mount()`挂载组件，需导入组件并传递给该方法：
 
 ```ts
 import { StepperComponent } from './stepper.component'
@@ -36,11 +35,9 @@ it('mounts', () => {
 })
 ```
 
-### Passing Data to a Component
+### 向组件传递数据
 
-You can pass inputs and outputs to a component by setting
-[componentProperties](/app/component-testing/angular/api#MountConfig)
-in the options:
+可以通过在选项中的[componentProperties](/app/component-testing/angular/api#MountConfig)设置输入和输出：
 
 ```ts
 cy.mount(StepperComponent, {
@@ -51,10 +48,9 @@ cy.mount(StepperComponent, {
 })
 ```
 
-### Testing Event Handlers
+### 测试事件处理器
 
-Pass a Cypress [spy](/app/guides/stubs-spies-and-clocks#Spies) to an event
-prop and validate it was called:
+将Cypress的[spy](/app/guides/stubs-spies-and-clocks#Spies)传递给事件属性并验证其调用：
 
 ```ts
 it('clicking + fires a change event with the incremented value', () => {
@@ -68,14 +64,12 @@ it('clicking + fires a change event with the incremented value', () => {
 })
 ```
 
-### Imports/Declarations/Providers
+### 导入/声明/提供者
 
-If you need to set up any additional `imports`, `declarations`, or `providers`
-for your component to mount successfully, you can set them in the options
-(similar to setting them up in `ngModule` in a app):
+如需为组件挂载设置额外的`imports`、`declarations`或`providers`，可在选项中配置（类似于在应用中的`ngModule`设置）：
 
 :::info
-Note: `imports`, `declarations`, and `providers` options do not work with `standalone` components as they are set within the test `ngModule`. This is the default behavior in Angular 19.
+注意：`imports`、`declarations`和`providers`选项不适用于`standalone`组件，因为它们已在测试`ngModule`中设置。这是Angular 19的默认行为。
 :::
 
 ```ts
@@ -86,26 +80,19 @@ cy.mount(ComponentThatFetchesData, {
 })
 ```
 
-See
-[Default Declarations, Providers, or Imports](/app/component-testing/angular/examples#Default-Declarations-Providers-or-Imports)
-to set up common options in a custom `cy.mount()` command to avoid having to
-repeat this boilerplate for each test.
+参见[默认声明、提供者或导入](/app/component-testing/angular/examples#Default-Declarations-Providers-or-Imports)，在自定义`cy.mount()`命令中设置通用选项，避免为每个测试重复样板代码。
 
-### Using Standalone
+### 使用独立组件
 
-Not only are [Standalone Components](https://angular.io/guide/standalone-components) supported, they are the simplest components to write tests for.
-Standalone Components provide the Angular compiler with everything it needs to compile through its [`@Component()`](https://angular.io/api/core/Component) decorator.
-This means that in most cases a Standalone Component can be mounted without ever providing any `imports`, `decorators`, or `providers`. Mounting then becomes as simple as:
+不仅支持[独立组件](https://angular.io/guide/standalone-components)，它们还是编写测试最简单的组件。独立组件通过其[`@Component()`](https://angular.io/api/core/Component)装饰器为Angular编译器提供所需的一切。这意味着在大多数情况下，独立组件无需提供任何`imports`、`decorators`或`providers`即可挂载。挂载变得非常简单：
 
 ```ts
 cy.mount(MyStandaloneComponent)
 ```
 
-### Using Angular Template Syntax
+### 使用Angular模板语法
 
-The `cy.mount()` method also supports the Angular template syntax when mounting
-a component. Some developers might prefer this approach to the object based
-mount style:
+`cy.mount()`方法也支持在挂载组件时使用Angular模板语法。一些开发者可能更喜欢这种方式而非基于对象的挂载风格：
 
 ```ts
 cy.mount(`<app-stepper [count]="100"></app-stepper>`, {
@@ -113,10 +100,9 @@ cy.mount(`<app-stepper [count]="100"></app-stepper>`, {
 })
 ```
 
-> When using template syntax, the component needs to added to the declarations
-> in the options parameter.
+> 使用模板语法时，组件需添加到选项参数的declarations中。
 
-Using with event emitter spy:
+结合事件发射器spy使用：
 
 ```ts
 cy.mount('<app-button (click)="onClick.emit($event)">Click me</app-button>', {
@@ -129,15 +115,11 @@ cy.get('button').click();
 cy.get('@onClickSpy').should('have.been.called');
 ```
 
-### Accessing the Component Instance
+### 访问组件实例
 
-There might be times when you might want to access the component instance
-directly in your tests. To do so, use `.then()`, which enables us to work with
-the subject that was yielded from the `cy.mount()` command. In this case, mount
-yields an object that contains the rendered component and the fixture.
+有时可能需要直接在测试中访问组件实例。使用`.then()`可以处理`cy.mount()`命令返回的主题。此时mount返回一个包含渲染组件和fixture的对象。
 
-In the below example, we use the component to spy directly on the `change` event
-emitter.
+以下示例中，我们直接在组件上对`change`事件发射器进行spy。
 
 ```ts
 it('clicking + fires a change event with the incremented value', () => {
@@ -157,11 +139,9 @@ it('clicking + fires a change event with the incremented value', () => {
 })
 ```
 
-### Using createOutputSpy()
+### 使用createOutputSpy()
 
-To make spying on event emitters easier, there is a utility function called
-`createOutputSpy()` which can be used to automatically create an `EventEmitter`
-and setup the spy on it's `.emit()` method. It can be used like the following:
+为了更轻松地对事件发射器进行spy，提供了`createOutputSpy()`工具函数，可自动创建`EventEmitter`并在其`.emit()`方法上设置spy。用法如下：
 
 ```ts
 import { createOutputSpy } from 'cypress/angular'
@@ -179,14 +159,9 @@ it('clicking + fires a change event with the incremented value', () => {
 })
 ```
 
-### Using autoSpyOutputs
+### 使用autoSpyOutputs
 
-You might find yourself repeatedly creating a `cy.spy()` for each of your
-component outputs. Because of this, we created an easy mechanism to handle this
-for you. This feature can be turned on by passing the `autoSpyOutputs` flag into
-`MountConfig`. After the component has been mounted you can then access each of
-the generated spies using the `@Output()` property name + `Spy`. So our `change`
-property can be accessed via its alias of `cy.get('@changeSpy')`
+可能会发现需要为每个组件输出重复创建`cy.spy()`。为此，我们创建了一个简便机制。通过将`autoSpyOutputs`标志传入`MountConfig`即可启用此功能。组件挂载后，可以使用`@Output()`属性名+`Spy`访问生成的spy。例如，`change`属性可通过别名`cy.get('@changeSpy')`访问。
 
 ```ts
 it('clicking + fires a change event with the incremented value', () => {
@@ -203,29 +178,27 @@ it('clicking + fires a change event with the incremented value', () => {
 
 :::caution
 
-The `autoSpyOutput` flag only works when passing in a component to the mount
-function. It currently does not work with the template syntax.
+`autoSpyOutput`标志仅在向mount函数传递组件时有效。目前不支持模板语法。
 
 :::
 
 :::caution
 
-`autoSpyOutput` is an **experimental feature** and could be removed or changed
-in the future
+`autoSpyOutput`是**实验性功能**，未来可能被移除或更改
 
 :::
 
-### Signals
+### 信号量
 
-With the releases of Angular versions [17.1](https://github.com/angular/angular/blob/main/CHANGELOG.md#1710-2024-01-17) and [17.2](https://github.com/angular/angular/blob/main/CHANGELOG.md#1720-2024-02-14), [input](https://github.com/angular/angular/pull/53521) and [model](https://github.com/angular/angular/pull/54252) signals were introduced into the `@angular/core` API. Though basic signals were introduced in Angular `16`, using all signals requires Angular `17.2` and above.
+随着Angular版本[17.1](https://github.com/angular/angular/blob/main/CHANGELOG.md#1710-2024-01-17)和[17.2](https://github.com/angular/angular/blob/main/CHANGELOG.md#1720-2024-02-14)的发布，[input](https://github.com/angular/angular/pull/53521)和[model](https://github.com/angular/angular/pull/54252)信号量被引入到`@angular/core` API中。虽然基础信号量在Angular `16`中引入，但使用所有信号量需要Angular `17.2`及以上版本。
 
 :::info
 
-With Cypress 14, signal support is directly included in the `cypress/angular` testing harness.
+Cypress 14直接在`cypress/angular`测试工具中支持信号量。
 
 :::
 
-For the below examples, we'll be working with a very simple component called `TestComponent`, which looks something like shown below:
+以下示例中，我们将使用一个非常简单的组件`TestComponent`，如下所示：
 
 ```typescript
 // app/components/test-component.component.ts
@@ -254,16 +227,16 @@ export class TestComponent {
 </button>
 ```
 
-#### Testing Signals
+#### 测试信号量
 
-There are two ways to test signals within Cypress Component Testing:
+在Cypress组件测试中有两种测试信号量的方法：
 
-1. [Inferred Generic Type](#Inferred-Generic-Type)
-2. [Writable Signal](#Writable-Signal)
+1. [推断泛型类型](#Inferred-Generic-Type)
+2. [可写信号量](#Writable-Signal)
 
-##### Inferred Generic Type
+##### 推断泛型类型
 
-In the example below, the `title` prop being passed into our `TestComponent` is a `string`. A `string` is the generic type of our `input()` signal we defined in our `TestComponent`.
+以下示例中，传递给`TestComponent`的`title`属性是`string`类型。`string`是我们在`TestComponent`中定义的`input()`信号量的泛型类型。
 
 ```typescript
 let titleProp = 'Test Component'
@@ -280,7 +253,7 @@ cy.get('[data-cy="test-component-title-display"]').should(
 ```
 
 :::info
-Under the hood, Cypress wraps the generic value in a writable `signal()` and merges it into the prop. In other words, this example is really:
+在底层，Cypress将泛型值包装在可写的`signal()`中并合并到属性中。换句话说，此示例实际上是：
 
 ```typescript
 cy.mount(TestComponent, {
@@ -292,7 +265,7 @@ cy.mount(TestComponent, {
 
 :::
 
-This works for any signal. Shown below is an example of testing a `model()` signal with a generic type `number` as seen in our `TestComponent`:
+这适用于任何信号量。以下示例展示了如何使用泛型类型`number`测试`model()`信号量，如我们的`TestComponent`所示：
 
 ```ts
 cy.mount(TestComponent, {
@@ -305,11 +278,11 @@ cy.mount(TestComponent, {
 cy.get('[data-cy="test-component-count-display"]').should('have.text', '3')
 ```
 
-##### Writable Signal
+##### 可写信号量
 
-Inferred generic types work very well for most test cases. However, they don't allow us to update the prop in the component after the prop is passed in. For this use case, we need to use a writable `signal()`.
+推断泛型类型在大多数测试场景中非常有效。然而，它们不允许我们在属性传入后更新组件中的属性。为此用例，我们需要使用可写的`signal()`。
 
-This allows us to test our one-way data binding for our `input()` signals.
+这允许我们测试`input()`信号量的单向数据绑定。
 
 ```typescript
 const myTitlePropAsSignal = signal('Test Component')
@@ -324,14 +297,14 @@ cy.get('[data-cy="test-component-title-display"]').should(
   'Test Component'
 )
 cy.then(() => {
-  // now set the input() through a signal to update the one-way binding
+  // 现在通过信号量设置input()以更新单向绑定
   myTitlePropAsSignal.set('FooBar')
 })
 
 cy.get('[data-cy="test-component-title-display"]').should('have.text', 'FooBar')
 ```
 
-And our two-way data binding for our `model()` signals.
+以及`model()`信号量的双向数据绑定。
 
 ```typescript
 let count = signal(5)
@@ -343,13 +316,13 @@ cy.mount(TestComponent, {
 })
 
 cy.then(() => {
-  // now set the model() through a signal to update the binding in the component
+  // 现在通过信号量设置model()以更新组件中的绑定
   count.set(8)
 })
 
 cy.get('[data-cy="test-component-count-display"]').should('have.text', '8')
 
-// some action occurs that changes the count to 9 inside the component, which updates the binding in our test
+// 组件内发生某些操作将计数更改为9，这会更新测试中的绑定
 cy.get('[data-cy="test-component-count-incr"]').click()
 cy.get('[data-cy="test-component-count-display"]').should('have.text', '9')
 cy.then(() => {
@@ -357,12 +330,11 @@ cy.then(() => {
 })
 ```
 
-##### Change Spies
+##### 变更Spy
 
-Cypress doesn't propagate changes via spy from `input()` signals.
+Cypress不会通过spy从`input()`信号量传播变更。
 
-For writable signals, such as `model()`s or `signal()`s, Cypress **will** propagate changes if an output spy is created with the prop's name suffixed with `Change`. In the example below,
-`countChange` will spy on changes to the `count` signal.
+对于可写信号量，如`model()`或`signal()`，如果创建了以属性名加`Change`后缀的输出spy，Cypress**会**传播变更。以下示例中，`countChange`将spy`count`信号量的变更。
 
 ```typescript
 cy.mount(TestComponent, {
@@ -374,33 +346,25 @@ cy.mount(TestComponent, {
   },
 })
 
-// some action occurs that changes the count
+// 发生某些操作更改计数
 cy.get('[data-cy="test-component-count-incr"]').click()
 
 cy.get('@countChange').should('have.been.called')
 ```
 
-These spies can automatically be created if `autoSpyOutputs: true` is configured. The suffix in this case will be `ChangeSpy`.
+如果配置了`autoSpyOutputs: true`，这些spy会自动创建。此时后缀将为`ChangeSpy`。
 
-## Custom Mount Commands
+## 自定义挂载命令
 
-### Customizing `cy.mount()`
+### 自定义 `cy.mount()`
 
-By default, `cy.mount()` is a simple passthrough to `mount()`, however, you can
-customize `cy.mount()` to fit your needs. For instance, you may find yourself
-doing repetitive work during mounting. In order to reduce boilerplate you may
-find it useful to create a custom mount command.
+默认情况下，`cy.mount()`是`mount()`的简单传递，但可以自定义`cy.mount()`以满足需求。例如，可能会发现挂载过程中有重复工作。为了减少样板代码，创建自定义mount命令可能很有用。
 
-### Default Declarations, Providers, or Imports
+### 默认声明、提供者或导入
 
-If you find yourself registering a bunch of declarations, providers, or imports
-in your individual tests, we recommend doing them all within a custom
-`cy.mount()` command. The overhead is usually minimal for all your tests and it
-helps keep your spec code clean.
+如果发现在单个测试中注册了大量declarations、providers或imports，建议在自定义`cy.mount()`命令中进行。通常这对所有测试的开销很小，有助于保持规范代码的整洁。
 
-Below is a sample that registers several default component declarations while
-still allowing additional ones to be passed in via the config param. The same
-pattern can also be applied to providers and module imports.
+以下示例注册了几个默认组件声明，同时仍允许通过config参数传递额外的声明。相同的模式也可应用于providers和模块导入。
 
 ```ts title=support/component.ts
 import { Type } from '@angular/core'
@@ -430,13 +394,11 @@ function customMount<T>(component: string | Type<T>, config?: MountConfig<T>) {
 Cypress.Commands.add('mount', customMount)
 ```
 
-This custom mount command will allow you to skip manually passing in the
-`ButtonComponent` and `CardComponent` as declarations into each `cy.mount()`
-call.
+此自定义mount命令将允许跳过在每个`cy.mount()`调用中手动传递`ButtonComponent`和`CardComponent`作为declarations。
 
 ### autoSpyOutputs
 
-Here is an example of defaulting `autoSpyOutputs` for every mounted component:
+以下是为每个挂载的组件默认设置`autoSpyOutputs`的示例：
 
 ```ts title=support/component.ts
 declare global {
@@ -460,7 +422,6 @@ Cypress.Commands.add(
 
 :::caution
 
-The `autoSpyOutput` flag only works when passing in a component to the mount
-function. It currently does not work with the template syntax.
+`autoSpyOutput`标志仅在向mount函数传递组件时有效。目前不支持模板语法。
 
 :::

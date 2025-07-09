@@ -1,6 +1,6 @@
 ---
-title: 'last | Cypress Documentation'
-description: Get the last DOM element within a set of DOM elements in Cypress.
+title: 'last | Cypress 文档'
+description: 在Cypress中获取一组DOM元素中的最后一个DOM元素。
 sidebar_label: last
 slug: /api/commands/last
 ---
@@ -9,117 +9,116 @@ slug: /api/commands/last
 
 # last
 
-Get the last DOM element within a set of DOM elements.
+获取一组DOM元素中的最后一个元素。
 
 :::info
 
-The querying behavior of this command matches exactly how
-[`.last()`](http://api.jquery.com/last) works in jQuery.
+该命令的查询行为与jQuery中的
+[`.last()`](http://api.jquery.com/last)完全一致。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .last()
 .last(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('nav a').last() // Yield last link in nav
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.last() // Errors, cannot be chained off 'cy'
-cy.getCookies().last() // Errors, 'getCookies' does not yield DOM element
+cy.get('nav a').last() // 获取导航中的最后一个链接
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
-<Icon name="angle-right" /> **options _(Object)_**
+```javascript
+cy.last() // 错误，不能直接链式调用'cy'
+cy.getCookies().last() // 错误，'getCookies'不返回DOM元素
+```
 
-Pass in an options object to change the default behavior of `.last()`.
+### 参数
 
-| Option    | Default                                                           | Description                                                                         |
+<Icon name="angle-right" /> **options _(对象)_**
+
+传入一个选项对象来改变`.last()`的默认行为。
+
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.last()` to resolve before [timing out](#Timeouts)                |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 等待`.last()`解析的超时时间，超过则[超时](#Timeouts)                |
 
 <HeaderYields />
 
-- `.last()` yields the new DOM element it found.
-- `.last()` is a query, and it is _safe_ to chain further commands.
+- `.last()`返回它找到的新DOM元素。
+- `.last()`是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Get the last list item in a list
+#### 获取列表中的最后一个列表项
 
 ```html
 <ul>
-  <li class="one">Knick knack on my thumb</li>
-  <li class="two">Knick knack on my shoe</li>
-  <li class="three">Knick knack on my knee</li>
-  <li class="four">Knick knack on my door</li>
+  <li class="one">大拇指上的小玩意儿</li>
+  <li class="two">鞋子上的小玩意儿</li>
+  <li class="three">膝盖上的小玩意儿</li>
+  <li class="four">门上的小玩意儿</li>
 </ul>
 ```
 
 ```javascript
-// yields <li class="four">Knick knack on my door</li>
+// 返回 <li class="four">门上的小玩意儿</li>
 cy.get('li').last()
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.last()` requires being chained off a command that yields DOM element(s).
+- `.last()`必须链式调用在一个返回DOM元素的命令之后。
 
 <HeaderAssertions />
 
-- `.last()` will automatically [retry](/app/core-concepts/retry-ability)
-  until the element(s)
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.last()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed.
+- `.last()`会自动[重试](/app/core-concepts/retry-ability)
+  直到元素
+  [存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)。
+- `.last()`会自动[重试](/app/core-concepts/retry-ability)
+  直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `.last()` can time out waiting for the element(s) to
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.last()` can time out waiting for assertions you've added to pass.
+- `.last()`可能会因等待元素
+  [存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)而超时。
+- `.last()`可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Find the last button in the form_**
+**_查找表单中的最后一个按钮_**
 
 ```javascript
 cy.get('form').find('button').last()
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/last/find-the-last-button-in-a-form.png"
-  alt="Command Log for last"
+  alt="last命令的日志"
 />
 
-When clicking on `last` within the command log, the console outputs the
-following:
+当点击命令日志中的`last`时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/last/inspect-last-element-in-console.png"
-  alt="Console Log for last"
+  alt="last命令的控制台日志"
 />
 
-## See also
+## 另请参阅
 
 - [`.eq()`](/api/commands/eq)
 - [`.first()`](/api/commands/first)

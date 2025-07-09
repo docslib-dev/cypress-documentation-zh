@@ -1,6 +1,6 @@
 ---
-title: 'clock | Cypress Documentation'
-description: Override native global functions related to time allowing them to be controlled synchronously via `cy.tick()` or the yielded `clock` object.
+title: 'clock | Cypress 文档'
+description: 覆盖与时间相关的原生全局函数，使其可以通过 `cy.tick()` 或返回的 `clock` 对象进行同步控制。
 sidebar_label: clock
 ---
 
@@ -8,21 +8,17 @@ sidebar_label: clock
 
 # clock
 
-`cy.clock()` overrides native global functions related to time allowing them to
-be controlled synchronously via [`cy.tick()`](/api/commands/tick) or the yielded
-`clock` object. This includes controlling:
+`cy.clock()` 覆盖与时间相关的原生全局函数，使其可以通过 [`cy.tick()`](/api/commands/tick) 或返回的 `clock` 对象进行同步控制。这包括控制以下函数：
 
 - `setTimeout`
 - `clearTimeout`
 - `setInterval`
 - `clearInterval`
-- `Date` Objects
+- `Date` 对象
 
-The clock starts at the unix epoch (timestamp of 0). This means that when you
-instantiate `new Date` in your application, it will have a time of
-`January 1st, 1970`.
+时钟从 Unix 纪元（时间戳为 0）开始。这意味着当你在应用中实例化 `new Date` 时，它将显示 `1970 年 1 月 1 日` 的时间。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.clock()
@@ -33,63 +29,58 @@ cy.clock(now, options)
 cy.clock(now, functionNames, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 cy.clock()
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **now _(number)_**
 
-A timestamp specifying where the clock should start.
+指定时钟起始时间的时间戳。
 
 <Icon name="angle-right" /> **functionNames _(Array)_**
 
-Name of native functions that clock should override.
+时钟应覆盖的原生函数名称。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `cy.clock()`.
+传入一个选项对象以更改 `cy.clock()` 的默认行为。
 
-| Option | Default | Description                                                                         |
-| ------ | ------- | ----------------------------------------------------------------------------------- |
-| `log`  | `true`  | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
+| 选项   | 默认值  | 描述                                                                         |
+| ------ | ------- | --------------------------------------------------------------------------- |
+| `log`  | `true`  | 在 [命令日志](/app/core-concepts/open-mode#Command-Log) 中显示该命令          |
 
 <HeaderYields />
 
-`cy.clock()` yields a `clock` object with the following methods:
+`cy.clock()` 返回一个包含以下方法的 `clock` 对象：
 
 - **`clock.tick(milliseconds)`**
 
-  Move the clock the specified number of `milliseconds`. Any timers within the
-  affected range of time will be called.
+  将时钟向前移动指定的 `milliseconds` 毫秒。受影响的计时器将被触发。
 
 - **`clock.restore()`**
 
-  Restore all overridden native functions. This is automatically called between
-  tests, so should not generally be needed.
+  恢复所有被覆盖的原生函数。此操作会在测试之间自动调用，通常无需手动执行。
 
 - **`clock.setSystemTime(now)`**
 
-  Change the system time to the new `now`. Now can be a timestamp, date object,
-  or not passed in which defaults to 0. No timers will be called, nor will the
-  time left before they trigger change.
+  将系统时间更改为新的 `now` 时间。`now` 可以是时间戳、日期对象，或不传参（默认为 0）。不会触发任何计时器，也不会改变它们剩余的触发时间。
 
-You can also access the `clock` object via `this.clock` in a
-[`.then()`](/api/commands/then) callback.
+你也可以在 [`.then()`](/api/commands/then) 回调中通过 `this.clock` 访问 `clock` 对象。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Create a clock and use it to trigger a `setInterval`
+#### 创建一个时钟并用它触发 `setInterval`
 
 ```javascript
-// your app code
+// 你的应用代码
 let seconds = 0
 
 setInterval(() => {
@@ -106,10 +97,9 @@ cy.tick(1000)
 cy.get('#seconds-elapsed').should('have.text', '2 seconds')
 ```
 
-#### Access the clock object to synchronously move time
+#### 访问时钟对象以同步移动时间
 
-In most cases, it's easier to use [`cy.tick()`](/api/commands/tick) to move
-time, but you can also use the `clock` object yielded by `cy.clock()`.
+大多数情况下，使用 [`cy.tick()`](/api/commands/tick) 移动时间更为方便，但你也可以使用 `cy.clock()` 返回的 `clock` 对象。
 
 ```javascript
 cy.clock().then((clock) => {
@@ -117,7 +107,7 @@ cy.clock().then((clock) => {
 })
 ```
 
-You can call `cy.clock()` again for this purpose later in a chain if necessary.
+如果需要，你可以在链式调用中再次调用 `cy.clock()` 来实现这一目的。
 
 ```javascript
 cy.clock()
@@ -127,22 +117,19 @@ cy.clock().then((clock) => {
 })
 ```
 
-The clock object is also available via `this.clock` in any
-[`.then()`](/api/commands/then) callback.
+时钟对象也可以通过 `this.clock` 在任何 [`.then()`](/api/commands/then) 回调中访问。
 
 ```javascript
 cy.clock()
 cy.get('form').then(($form) => {
   this.clock.tick(1000)
-  // do something with $form ...
+  // 对 $form 进行某些操作...
 })
 ```
 
-#### Access the clock object to restore native functions
+#### 访问时钟对象以恢复原生函数
 
-In general, it should not be necessary to manually restore the native functions
-that `cy.clock()` overrides since this is done automatically between tests. But
-if you need to, the `clock` object yield has a `.restore()` method.
+通常不需要手动恢复 `cy.clock()` 覆盖的原生函数，因为这会自动在测试之间完成。但如果需要，可以通过返回的 `clock` 对象的 `.restore()` 方法实现。
 
 ```javascript
 cy.clock().then((clock) => {
@@ -150,24 +137,24 @@ cy.clock().then((clock) => {
 })
 ```
 
-Or via `this.clock`:
+或通过 `this.clock`：
 
 ```javascript
 cy.clock()
 cy.get('.timer').then(($timer) => {
   this.clock.restore()
-  // do something with $timer ...
+  // 对 $timer 进行某些操作...
 })
 ```
 
-### Now
+### Now 参数
 
-#### Specify a now timestamp
+#### 指定起始时间戳
 
 :::visit-mount-example
 
 ```js
-const now = new Date(2021, 3, 14) // month is 0-indexed
+const now = new Date(2021, 3, 14) // 月份从 0 开始
 
 cy.clock(now)
 -{cy.visit('/index.html')::cy.mount(<DatePicker id="date" />)}-
@@ -176,162 +163,142 @@ cy.get('#date').should('have.value', '04/14/2021')
 
 :::
 
-### Function names
+### 函数名参数
 
-#### Specify which functions to override
+#### 指定要覆盖的函数
 
-This example below will only override `setTimeout` and `clearTimeout` and leave
-the other time-related functions as they are.
+以下示例仅覆盖 `setTimeout` 和 `clearTimeout`，其他时间相关函数保持不变。
 
 ```javascript
 cy.clock(null, ['setTimeout', 'clearTimeout'])
 ```
 
-Note that you must specify `Date` in order to override the current datetime. The
-example below affects the current datetime without affecting scheduled timers.
+注意，要覆盖当前日期时间必须显式指定 `Date`。以下示例仅影响当前日期时间而不影响已计划的计时器。
 
 ```javascript
 cy.clock(Date.UTC(2018, 10, 30), ['Date'])
 ```
 
-#### `Using cy.clock()` with `cy.tick()`
+#### 结合 `cy.clock()` 与 `cy.tick()` 使用
 
 :::info
 
-[Check out our example recipe testing spying, stubbing and time.](/app/references/recipes#Stubbing-and-spying)
+[查看我们关于测试间谍、存根和时间的示例配方](/app/references/recipes#Stubbing-and-spying)
 
 :::
 
-### Restore clock
+### 恢复时钟
 
-You can restore the clock and allow your application to resume normally without
-manipulating native global functions related to time. This is automatically
-called between tests.
+你可以恢复时钟，让应用正常继续运行而不操纵与时间相关的原生全局函数。此操作会在测试之间自动调用。
 
 ```javascript
 cy.clock()
 cy.visit('http://localhost:3333')
 cy.get('#search').type('Acme Company')
 cy.tick(1000)
-// more test code here
+// 更多测试代码...
 
-// restore the clock
+// 恢复时钟
 cy.clock().then((clock) => {
   clock.restore()
 })
-// more test code here
+// 更多测试代码...
 ```
 
-You could also restore by using [.invoke()](/api/commands/invoke) to invoke the
-`restore` function.
+你也可以使用 [.invoke()](/api/commands/invoke) 调用 `restore` 函数来恢复。
 
 ```js
 cy.clock().invoke('restore')
 ```
 
-### Change current system time
+### 更改当前系统时间
 
-Here we test that a timer still looks good if it has run for an hour, without
-triggering an hours worth of setInterval or requestAnimationFrame timers and
-overloading our CPU.
+以下示例测试计时器在运行一小时后是否仍然正常显示，而无需触发一小时的 `setInterval` 或 `requestAnimationFrame` 计时器，避免 CPU 过载。
 
 ```javascript
 cy.clock(0)
 cy.visit('http://localhost:3333')
 cy.clock().then((clock) => {
   clock.setSystemTime(60 * 60 * 1000 - 60);
-  // setSystemTime doesn't trigger any timers, so we run the last frame
-  // with tick to trigger a callback to update the timer.
+  // setSystemTime 不会触发任何计时器，所以我们用 tick 触发最后一帧的回调来更新时间显示
   clock.tick(60);
 })
-cy.get('#timer').should(...) // assert that it fits within the screen etc.
-// more test code here
+cy.get('#timer').should(...) // 断言它是否适应屏幕等
+// 更多测试代码...
 ```
 
-You could also change the system time by using [.invoke()](/api/commands/invoke)
-to invoke the `setSystemTime` function.
+你也可以使用 [.invoke()](/api/commands/invoke) 调用 `setSystemTime` 函数来更改系统时间。
 
 ```js
 cy.clock().invoke('setSystemTime', 60 * 60 * 1000)
 ```
 
-## Notes
+## 注意事项
 
 ### iframes
 
-#### iframes not supported
+#### 不支持 iframes
 
-Note that `cy.clock()` only applies to the `top` window on a web page. It will
-not override the time functions of any `iframe` embedded on the page.
+注意 `cy.clock()` 仅适用于网页的 `top` 窗口，不会覆盖页面中任何 `iframe` 的时间函数。
 
-### Behavior
+### 行为
 
-#### clock behavior before `cy.mount()`
+#### `cy.mount()` 前的时钟行为
 
-Using the [`cy.mount()`](/api/commands/mount) command in a Cypress Component
-Test will render your component but does not affect the behavior of the page or
-window object. This means you can `mount` directly after calling `cy.clock()` to
-test the component against any changes you've made to the yielded clock object.
+在 Cypress 组件测试中使用 [`cy.mount()`](/api/commands/mount) 命令会渲染你的组件，但不会影响页面或 window 对象的行为。这意味着你可以在调用 `cy.clock()` 后直接 `mount`，以测试组件对时钟对象更改的反应。
 
-#### clock behavior before `cy.visit()`
+#### `cy.visit()` 前的时钟行为
 
-If you call `cy.clock()` before visiting a page with
-[`cy.visit()`](/api/commands/visit), the page's native global functions will be
-overridden on window load, before any of your app code runs. So even if
-`setTimeout`, for example, is called on page load, it can still be controlled
-via [`cy.tick()`](/api/commands/tick). This also applies if, during the course
-of a test, the page under test is reloaded or changed.
+如果在使用 [`cy.visit()`](/api/commands/visit) 访问页面之前调用 `cy.clock()`，页面的原生全局函数将在窗口加载时被覆盖，早于任何应用代码运行。因此即使 `setTimeout` 在页面加载时调用，仍然可以通过 [`cy.tick()`](/api/commands/tick) 控制。这也适用于测试过程中被测页面被重新加载或更改的情况。
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.clock()` requires being chained off of `cy`.
+- `cy.clock()` 需要链式调用 `cy`。
 
 <HeaderAssertions />
 
-- `cy.clock()` is a utility command.
-- `cy.clock()` will not run assertions. Assertions will pass through as if this
-  command did not exist.
+- `cy.clock()` 是一个实用命令。
+- `cy.clock()` 不会运行断言。断言会直接通过，就像该命令不存在一样。
 
 <HeaderTimeouts />
 
-- `cy.clock()` cannot time out.
+- `cy.clock()` 不会超时。
 
-## Command Log
+## 命令日志
 
-**_Create a clock and tick it 1 second_**
+**_创建一个时钟并将其移动 1 秒_**
 
 ```javascript
 cy.clock()
 cy.tick(1000)
 ```
 
-The command above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/clock/clock-displays-in-command-log.png"
-  alt="Command Log clock"
+  alt="命令日志中的 clock"
 />
 
-When clicking on the `clock` command within the command log, the console outputs
-the following:
+点击命令日志中的 `clock` 命令时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/clock/clock-displays-methods-replaced-in-console.png"
-  alt="console.log clock command"
+  alt="console.log clock 命令"
 />
 
-## History
+## 历史
 
-| Version                                    | Changes                                       |
-| ------------------------------------------ | --------------------------------------------- |
-| [10.7.0](/app/references/changelog#10-7-0) | Added `setSystemTime` to yielded clock object |
+| 版本                                      | 变更                                          |
+| ---------------------------------------- | -------------------------------------------- |
+| [10.7.0](/app/references/changelog#10-7-0) | 在返回的 clock 对象中添加了 `setSystemTime` 方法 |
 
-## See also
+## 另请参阅
 
 - [`cy.spy()`](/api/commands/spy)
 - [`cy.stub()`](/api/commands/stub)
 - [`cy.tick()`](/api/commands/tick)
-- [Guide: Stubs, Spies and Clocks](/app/guides/stubs-spies-and-clocks)
-- [Recipe: Stubbing, Spying](/app/references/recipes#Stubbing-and-spying)
+- [指南：存根、间谍和时钟](/app/guides/stubs-spies-and-clocks)
+- [配方：存根和间谍](/app/references/recipes#Stubbing-and-spying)

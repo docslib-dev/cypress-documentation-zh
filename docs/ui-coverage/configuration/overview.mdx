@@ -1,50 +1,50 @@
 ---
-title: 'Configuration | Cypress UI Coverage'
-description: 'Configuration allows you to customize and fine-tune UI Coverage in Cypress to suit specific needs and scenarios.'
-sidebar_label: Overview
+title: '配置 | Cypress UI 覆盖率'
+description: '通过配置可以自定义和微调 Cypress 中的 UI 覆盖率，以满足特定需求和场景。'
+sidebar_label: 概述
 sidebar_position: 10
 ---
 
 <ProductHeading product="ui-coverage" />
 
-# Configuration
+# 配置
 
-Configuration enables you to customize and fine-tune UI Coverage in Cypress to suit the unique needs of your application. While UI Coverage is designed to work seamlessly out of the box, there are scenarios where fine-tuning may be necessary—such as dealing with dynamic attributes, filtering out irrelevant elements, or grouping related components. These guides explain how to configure UI Coverage effectively to improve accuracy and usability.
+配置功能使您能够自定义和微调 Cypress 中的 UI 覆盖率，以适应应用程序的独特需求。虽然 UI 覆盖率设计为开箱即用，但在某些情况下可能需要进行微调——例如处理动态属性、过滤无关元素或分组相关组件。这些指南将说明如何有效配置 UI 覆盖率以提高准确性和可用性。
 
-**Note**: By default, setting configuration is limited to Admin users. At your request, this can be changed to allow setting config by all users. Reach out to your Cypress point-of-contact if you would like to change this.
+**注意**：默认情况下，仅限管理员用户进行配置设置。根据您的需求，可以更改为允许所有用户设置配置。如需更改此设置，请联系您的 Cypress 对接人。
 
 :::success
 
-## New configuration options
+## 新增配置选项
 
-UI Coverage now supports defining custom commands that will count towards coverage scores, restricting which kinds of interactions are allowed for certain elements, and including assertions in the UI Coverage calculations. See the following new properties for more details:
+UI 覆盖率现在支持定义计入覆盖率分数的自定义命令、限制特定元素允许的交互类型，以及在 UI 覆盖率计算中包含断言。详情请参阅以下新增属性：
 
 - [`additionalInteractionCommands`](/ui-coverage/configuration/additionalinteractioncommands)
 - [`allowedInteractionCommands`](/ui-coverage/configuration/allowedinteractioncommands)
 
 :::
 
-## Setting configuration
+## 设置配置
 
-To add or modify the configuration for your project:
+要为项目添加或修改配置：
 
-1. Navigate to the **App Quality** tab in your project settings on Cypress Cloud.
-2. Use the configuration editor to add or edit confiuration in JSON format.
+1. 在 Cypress Cloud 的项目设置中导航至 **App Quality** 选项卡。
+2. 使用配置编辑器以 JSON 格式添加或编辑配置。
 
 <DocsImage
   src="/img/ui-coverage/configuration/cypress-ui-coverage-configuration-editor.png"
-  alt="The Cypress Cloud UI showing the configuration editor"
+  alt="Cypress Cloud 界面中显示的配置编辑器"
 />
 
-## Configuration options
+## 配置选项
 
 :::info
 
-For a quick overview of the practical application of the most common UI Coverage confiuration properties, you can read [this blog post](https://www.cypress.io/blog/making-the-most-of-ui-coverage).
+如需快速了解最常见的 UI 覆盖率配置属性的实际应用，可阅读[这篇博客文章](https://www.cypress.io/blog/making-the-most-of-ui-coverage)。
 
 :::
 
-A complete configuration with all available options looks as follows:
+包含所有可用选项的完整配置如下所示：
 
 ```json
 {
@@ -89,29 +89,29 @@ A complete configuration with all available options looks as follows:
 }
 ```
 
-## Configuration scope
+## 配置作用域
 
-The root-level properties `elementFilters` and `viewFilters` apply to both UI Coverage and Accessibility. These properties can also be nested under `uiCoverage` or `accessibility` to apply to only that product, with nested configuration taking precedence over root-level configuration.
+根级属性 `elementFilters` 和 `viewFilters` 同时适用于 UI 覆盖率和无障碍功能。这些属性也可以嵌套在 `uiCoverage` 或 `accessibility` 下，仅应用于相应产品，嵌套配置优先于根级配置。
 
-The `views` property applies to UI Coverage and Accessibility but cannot be nested.
+`views` 属性同时适用于 UI 覆盖率和无障碍功能，但不能嵌套。
 
-## Viewing Configuration for a Run
+## 查看运行配置
 
-You can review the configuration used during a specific run by checking the **Properties** tab, as shown below. This displays the configuration as it was applied at the start of the run.
+您可以通过检查 **Properties** 选项卡来查看特定运行期间使用的配置，如下所示。这将显示运行开始时应用的配置。
 
 <DocsImage
   src="/img/accessibility/configuration/cypress-cloud-properties-tab-application-quality-config.png"
-  alt="The properties tab for a run, with an Application Quality section at the bottom"
+  alt="运行属性选项卡，底部显示 Application Quality 部分"
 />
 
-## Next steps
+## 后续步骤
 
-Check out the following configuration guides.
+请查阅以下配置指南：
 
-- [Attribute Filters](/ui-coverage/configuration/attributefilters)
-- [Element Filters](/ui-coverage/configuration/elementfilters)
-- [Element Groups](/ui-coverage/configuration/elementgroups)
-- [Elements](/ui-coverage/configuration/elements)
-- [Significant Attributes](/ui-coverage/configuration/significantattributes)
-- [View Filters](/ui-coverage/configuration/viewfilters)
-- [Views](/ui-coverage/configuration/views)
+- [属性过滤器](/ui-coverage/configuration/attributefilters)
+- [元素过滤器](/ui-coverage/configuration/elementfilters)
+- [元素分组](/ui-coverage/configuration/elementgroups)
+- [元素](/ui-coverage/configuration/elements)
+- [关键属性](/ui-coverage/configuration/significantattributes)
+- [视图过滤器](/ui-coverage/configuration/viewfilters)
+- [视图](/ui-coverage/configuration/views)

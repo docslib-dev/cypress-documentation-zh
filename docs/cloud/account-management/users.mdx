@@ -1,165 +1,147 @@
 ---
-title: 'Manage users | Cypress Cloud'
-description: 'Learn how to manage user logins in Cypress Cloud, manage user roles, and accept user requests.'
+title: '用户管理 | Cypress Cloud'
+description: '了解如何在Cypress Cloud中管理用户登录、用户角色以及处理用户请求。'
 sidebar_position: 30
-sidebar_label: Users
+sidebar_label: 用户管理
 ---
 
 <ProductHeading product="cloud" />
 
-# Manage users
+# 用户管理
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 学习内容
 
-- How to invite users to Cypress Cloud
-- How to manage user roles and updates
-- How to accept user requests
+- 如何邀请用户加入Cypress Cloud
+- 如何管理用户角色和更新
+- 如何处理用户请求
 
 :::
 
-A user is anyone who logs in to Cypress Cloud.
+用户是指任何登录Cypress Cloud的人员。
 
-## Invite users
+## 邀请用户
 
-Organization [owner or admin](#User-roles) roles can invite
-[Cypress Cloud](https://on.cypress.io/cloud) users. Those invited will see
-the projects and tests the user has [team permissions](/cloud/account-management/teams#Assign-projects-to-a-team)
-to view.
+组织[所有者或管理员](#用户角色)可以邀请用户加入[Cypress Cloud](https://on.cypress.io/cloud)。被邀请的用户将能看到他们拥有[团队权限](/cloud/account-management/teams#为团队分配项目)的项目和测试。
 
-_Note: only owners can give other users 'owner' access._
+_注意：只有所有者可以授予其他用户"所有者"权限。_
 
-### Invite a user to an organization:
+### 邀请用户加入组织：
 
-1. Select the [organization](/cloud/account-management/organizations) you
-   want to invite a user to.
-2. Click **Users & Teams**, then **Invite User**.
-3. Add one or more emails, pressing **Enter** after each one, and select their [role](#User-roles).
-4. Click **Invite User**.
-5. The user will receive an invitation email with a link to accept the invitation.
+1. 选择要邀请用户的[组织](/cloud/account-management/organizations)
+2. 点击**用户与团队**，然后点击**邀请用户**
+3. 添加一个或多个邮箱地址（每个地址输入后按**Enter**键），并选择他们的[角色](#用户角色)
+4. 点击**邀请用户**
+5. 用户将收到包含接受邀请链接的邮件
 
-If you prefer to send your own message to users and include a link to join the organization,
-you can click **Copy invite link** and all users who accept this invitation will be given
-the default role of **Member**.
+如果您希望自行发送邀请信息并附带加入组织的链接，可以点击**复制邀请链接**，所有接受此邀请的用户将被默认授予**成员**角色。
 
 <DocsImage
   src="/img/cloud/users/invite-user-dialog.jpg"
-  alt="Invite User dialog"
+  alt="邀请用户对话框"
 />
 
-### Sign Up with an Invitation:
+### 通过邀请注册：
 
-Upon receiving the email, click **"Accept Invitation"** to be redirected to
-Cypress Cloud. From there, you will have the choice of authentication type:
+收到邮件后，点击**"接受邀请"**跳转至Cypress Cloud。您可以选择以下认证方式：
 
-- **Basic** (Email and Password)
-- **Social** (Google or GitHub)
-- **Single Sign On**
+- **基础认证**（邮箱和密码）
+- **社交账号**（Google或GitHub）
+- **单点登录(SSO)**
 
-#### **Sign Up with Basic Authentication**
+#### **基础认证注册**
 
-1. Click **"Don't have an account? Sign Up"**
-2. Click **"Sign up with Email"**
-3. Type your **email address** and make a **password**
-4. Click **"Sign Up"**
+1. 点击**"没有账号？注册"**
+2. 点击**"通过邮箱注册"**
+3. 输入**邮箱地址**并设置**密码**
+4. 点击**"注册"**
 
-#### **Sign Up with Social Authentication**
+#### **社交账号注册**
 
-1. Click **"Don't have an account? Sign Up"**
-2. Click **"Sign up with Google"** or **"Sign up with GitHub"**
-3. You may need to verify via your Social provider depending on your personal
-   settings
+1. 点击**"没有账号？注册"**
+2. 点击**"通过Google注册"**或**"通过GitHub注册"**
+3. 根据您的个人设置，可能需要通过社交账号提供商进行验证
 
-#### **Sign Up with Single Sign On (SSO) Authentication**
+#### **单点登录(SSO)注册**
 
-Refer to our
-[Enterprise SSO Guide](/cloud/account-management/enterprise-sso).
+请参考我们的[企业SSO指南](/cloud/account-management/enterprise-sso)。
 
-#### Locked Out or Forgot Password
+#### 账户锁定或忘记密码
 
-See
-[What if I can't access my Cypress Cloud account](/cloud/faq#What-if-I-cant-access-my-Cypress-Cloud-account).
+参见[无法访问Cypress Cloud账户怎么办](/cloud/faq#无法访问Cypress-Cloud账户怎么办)。
 
-## User roles
+## 用户角色
 
-Users can be assigned roles that affect their access to certain features of
-[Cypress Cloud](https://on.cypress.io/cloud).
+用户可被分配不同角色，这些角色影响其对[Cypress Cloud](https://on.cypress.io/cloud)功能的访问权限。
 
-- **Viewer:** Can see projects and runs but not make any changes.
-- **Member:** Can see projects, runs, record keys, and adjust App Quality configuration.
-- **Team Admin:** Can manage the member list for projects where the Team Admin is a member, and edit project configurations.
-- **Org Admin:** Can manage all users within the organization, and edit both organization and project configurations.
-- **Org Owner:** Can manage all aspects of the organization and projects.
+- **查看者**：可查看项目和运行记录，但不能进行任何修改
+- **成员**：可查看项目、运行记录、录制密钥，并可调整应用质量配置
+- **团队管理员**：可管理项目成员列表（需本身是项目成员），并可编辑项目配置
+- **组织管理员**：可管理组织内所有用户，并可编辑组织和项目配置
+- **组织所有者**：可管理组织和项目的所有方面
 
-The permissions for each user role for Cypress Cloud:
+各角色在Cypress Cloud中的权限如下：
 
-**Organization-level permissions**
+**组织级别权限**
 
-| Permission                                | Viewer | Member | Team Admin | Org Admin | Org Owner |
-| ----------------------------------------- | ------ | ------ | ---------- | --------- | --------- |
-| See billing and usage information         |        |        |            | ✅        | ✅        |
-| Edit billing information                  |        |        |            | ✅        | ✅        |
-| Invite 'member' to organization           |        |        |            | ✅        | ✅        |
-| Invite 'admin' to organization            |        |        |            | ✅        | ✅        |
-| Invite 'owner' to organization            |        |        |            |           | ✅        |
-| See users invited to organization         |        |        |            | ✅        | ✅        |
-| Resend invitation to invited user         |        |        |            | ✅        | ✅        |
-| See user requests to join organization    |        |        |            | ✅        | ✅        |
-| Accept user requests to join organization |        |        |            | ✅        | ✅        |
-| Edit users in organization                |        |        |            | ✅        | ✅        |
-| Remove users from organization            |        |        |            | ✅        | ✅        |
-| Edit 'owner' in organization              |        |        |            |           | ✅        |
-| Remove 'owner' from organization          |        |        |            |           | ✅        |
-| Create and edit teams                     |        |        |            | ✅        | ✅        |
-| Assign projects to a team                 |        |        |            | ✅        | ✅        |
-| Remove projects from a team               |        |        |            | ✅        | ✅        |
-| Assign members to a team                  |        |        | ✅         | ✅        | ✅        |
-| Remove members from a team                |        |        | ✅         | ✅        | ✅        |
-| Set up organization GitHub Integration    |        |        |            | ✅        | ✅        |
-| Set up organization Slack Integration     |        |        |            | ✅        | ✅        |
-| Set up organization MS Teams Integration  |        |        |            | ✅        | ✅        |
-| Edit organization name                    |        |        |            |           | ✅        |
-| Delete organization                       |        |        |            |           | ✅        |
-| Set up SSO                                |        |        |            |           | ✅        |
-| View Enterprise Reporting                 | ✅     | ✅     | ✅         | ✅        | ✅        |
+| 权限                                | 查看者 | 成员 | 团队管理员 | 组织管理员 | 组织所有者 |
+| ----------------------------------- | ------ | ---- | ---------- | ---------- | ---------- |
+| 查看账单和使用信息                  |        |      |            | ✅         | ✅         |
+| 编辑账单信息                        |        |      |            | ✅         | ✅         |
+| 邀请"成员"加入组织                  |        |      |            | ✅         | ✅         |
+| 邀请"管理员"加入组织                |        |      |            | ✅         | ✅         |
+| 邀请"所有者"加入组织                |        |      |            |            | ✅         |
+| 查看组织邀请用户                    |        |      |            | ✅         | ✅         |
+| 重新发送邀请                        |        |      |            | ✅         | ✅         |
+| 查看加入组织请求                    |        |      |            | ✅         | ✅         |
+| 处理加入组织请求                    |        |      |            | ✅         | ✅         |
+| 编辑组织用户                        |        |      |            | ✅         | ✅         |
+| 移除组织用户                        |        |      |            | ✅         | ✅         |
+| 编辑组织"所有者"                    |        |      |            |            | ✅         |
+| 移除组织"所有者"                    |        |      |            |            | ✅         |
+| 创建和编辑团队                      |        |      |            | ✅         | ✅         |
+| 为团队分配项目                      |        |      |            | ✅         | ✅         |
+| 从团队移除项目                      |        |      |            | ✅         | ✅         |
+| 为团队添加成员                      |        |      | ✅          | ✅         | ✅         |
+| 从团队移除成员                      |        |      | ✅          | ✅         | ✅         |
+| 设置组织GitHub集成                  |        |      |            | ✅         | ✅         |
+| 设置组织Slack集成                   |        |      |            | ✅         | ✅         |
+| 设置组织MS Teams集成                |        |      |            | ✅         | ✅         |
+| 编辑组织名称                        |        |      |            |            | ✅         |
+| 删除组织                            |        |      |            |            | ✅         |
+| 设置SSO                             |        |      |            |            | ✅         |
+| 查看企业报告                        | ✅     | ✅   | ✅          | ✅         | ✅         |
 
-**Project-level permissions**
+**项目级别权限**
 
-| Permission                               | Viewer | Member | Team Admin | Org Admin | Org Owner |
-| ---------------------------------------- | ------ | ------ | ---------- | --------- | --------- |
-| See test results of private projects     | ✅     | ✅     | ✅         | ✅        | ✅        |
-| See record keys of projects              |        | ✅     | ✅         | ✅        | ✅        |
-| Edit App Quality configuration           |        | ✅     | ✅         | ✅        | ✅        |
-| Edit project name                        |        |        | ✅         | ✅        | ✅        |
-| Edit project status (private/public)     |        |        | ✅         | ✅        | ✅        |
-| Add or delete record keys                |        |        | ✅         | ✅        | ✅        |
-| Configure project GitHub Integration     |        |        | ✅         | ✅        | ✅        |
-| Configure project Slack Integration      |        |        | ✅         | ✅        | ✅        |
-| Configure project MS Teams Integration   |        |        | ✅         | ✅        | ✅        |
-| Transfer project to another organization |        |        | ✅         | ✅        | ✅        |
-| Delete project                           |        |        | ✅         | ✅        | ✅        |
+| 权限                               | 查看者 | 成员 | 团队管理员 | 组织管理员 | 组织所有者 |
+| ---------------------------------- | ------ | ---- | ---------- | ---------- | ---------- |
+| 查看私有项目测试结果               | ✅     | ✅   | ✅         | ✅         | ✅         |
+| 查看项目录制密钥                   |        | ✅   | ✅         | ✅         | ✅         |
+| 编辑应用质量配置                   |        | ✅   | ✅         | ✅         | ✅         |
+| 编辑项目名称                       |        |      | ✅         | ✅         | ✅         |
+| 编辑项目状态（私有/公开）          |        |      | ✅         | ✅         | ✅         |
+| 添加或删除录制密钥                 |        |      | ✅         | ✅         | ✅         |
+| 配置项目GitHub集成                 |        |      | ✅         | ✅         | ✅         |
+| 配置项目Slack集成                  |        |      | ✅         | ✅         | ✅         |
+| 配置项目MS Teams集成               |        |      | ✅         | ✅         | ✅         |
+| 将项目转移至其他组织               |        |      | ✅         | ✅         | ✅         |
+| 删除项目                           |        |      | ✅         | ✅         | ✅         |
 
-## User requests
+## 用户请求
 
-Cypress App users can "request" access to a given organization. If a developer on
-your team has access to Cypress and your project's source code - they can request
-to be given access to your organization from within the Cypres App. This means
-instead of you having to invite team members up front, they can request access and
-you can choose to accept or deny them access.
+Cypress App用户可"申请"访问特定组织。如果您团队的开发人员已拥有Cypress和项目源代码的访问权限，他们可以直接从Cypress App申请加入您的组织。这意味着您无需提前邀请团队成员，他们可以主动申请，由您决定是否批准。
 
-_Note: this option is not available if your Cloud organization is configured for SSO._
+_注意：如果您的Cloud组织配置了SSO，此选项不可用。_
 
 <DocsImage
   src="/img/cloud/users/request-access-to-organization.png"
-  alt="Request access to project"
+  alt="申请访问项目"
 />
 
-## User updates
+## 用户更新
 
-To change a user email, an **Owner** or **Admin** can invite the new user/email
-address and delete the previous user/email address.
+如需更改用户邮箱，**所有者**或**管理员**可以邀请新用户/邮箱地址并删除旧用户/邮箱地址。
 
-Update the billing email address via the **Billing & Usage** page within
-[Cypress Cloud](https://on.cypress.io/cloud) or by contacting
-[billing@cypress.io](mailto:billing@cypress.io) directly.
+更新账单邮箱地址可通过[Cypress Cloud](https://on.cypress.io/cloud)中的**账单与使用情况**页面，或直接联系[billing@cypress.io](mailto:billing@cypress.io)。

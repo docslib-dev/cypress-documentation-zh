@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.platform | Cypress Documentation'
-description: Get the underlying OS name as returned from Node's os.platform() in Cypress.
+title: 'Cypress.platform | Cypress 文档'
+description: 获取Cypress中Node的os.platform()返回的底层操作系统名称。
 sidebar_label: platform
 ---
 
@@ -8,25 +8,24 @@ sidebar_label: platform
 
 # Cypress.platform
 
-`Cypress.platform` returns the underlying OS name, as returned from Node's
-[`os.platform()`](https://nodejs.org/api/os.html#os_os_platform).
+`Cypress.platform` 返回底层操作系统名称，等同于Node的
+[`os.platform()`](https://nodejs.org/api/os.html#os_os_platform)返回值。
 
-Even though Cypress runs in the browser, it automatically makes this property
-available for use in your tests.
+尽管Cypress运行在浏览器中，但它会自动使该属性在测试中可用。
 
-## Syntax
+## 语法
 
 ```javascript
 Cypress.platform // 'darwin'
 ```
 
-## Examples
+## 示例
 
-### Conditionals
+### 条件判断
 
 ```javascript
-it('has JSON files', () => {
-  // if windows do one thing, else do another
+it('包含JSON文件', () => {
+  // 如果是Windows执行一种操作，否则执行另一种
   const cmd = Cypress.platform === 'win32' ? 'dir *.json' : 'ls *.json'
 
   cy.exec(cmd).its('stdout').should('include', 'package.json')

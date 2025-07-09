@@ -1,6 +1,6 @@
 ---
-title: 'readFile | Cypress Documentation'
-description: Read a file and yield its contents in Cypress.
+title: 'readFile | Cypress 文档'
+description: 在Cypress中读取文件并返回其内容。
 sidebar_label: readFile
 slug: /api/commands/readfile
 ---
@@ -9,9 +9,9 @@ slug: /api/commands/readfile
 
 # readFile
 
-Read a file and yield its contents.
+读取文件并返回其内容。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.readFile(filePath)
@@ -20,25 +20,23 @@ cy.readFile(filePath, options)
 cy.readFile(filePath, encoding, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 cy.readFile('menu.json')
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **filePath _(String)_**
 
-A path to a file within the project root (the directory that contains the
-[Cypress configuration file](/app/references/configuration)).
+项目根目录（包含[Cypress配置文件](/app/references/configuration)的目录）中文件的路径。
 
 <Icon name="angle-right" /> **encoding _(String)_**
 
-The encoding to be used when reading the file. The following encodings are
-supported:
+读取文件时使用的编码。支持以下编码：
 
 - `'ascii'`
 - `'base64'`
@@ -51,34 +49,31 @@ supported:
 - `'ucs-2'`
 - `'utf16le'`
 - `'utf-16le'`
-- `null`
+- `'null'`
 
-Using `null` explicitly will return the file as a
-[`Cypress.Buffer`](/api/utilities/buffer) instance, regardless of file
-extension.
+显式使用`null`将返回一个[`Cypress.Buffer`](/api/utilities/buffer)实例，无论文件扩展名是什么。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `cy.readFile()`.
+传入一个选项对象以更改`cy.readFile()`的默认行为。
 
-| Option    | Default                                                           | Description                                                                         |
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.readFile()` to resolve before [timing out](#Timeouts)          |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 在[超时](#Timeouts)前等待`cy.readFile()`解析的时间          |
 
 <HeaderYields />
 
-- `cy.readFile()` yields the contents of the file.
-- The file will be read from disk again if any upcoming command (such as an
-  assertion) in the chain fails.
+- `cy.readFile()`返回文件的内容。
+- 如果链中的任何后续命令（如断言）失败，将再次从磁盘读取文件。
 
-## Examples
+## 示例
 
-### Text
+### 文本
 
-#### Read a `.txt` file
+#### 读取`.txt`文件
 
-For any file other than JSON, the contents of the file are returned.
+对于非JSON文件，返回文件的内容。
 
 ```text
 // path/to/message.txt
@@ -92,7 +87,7 @@ cy.readFile('path/to/message.txt').should('eq', 'Hello World') // true
 
 ### JSON
 
-For JSON, the contents yielded are parsed into JavaScript and returned.
+对于JSON，返回的内容会被解析为JavaScript对象。
 
 ```javascript
 // data.json
@@ -109,13 +104,13 @@ cy.readFile('path/to/data.json').its('name').should('eq', 'Eliza') // true
 
 ### YAML
 
-#### Get translation data from a YAML file
+#### 从YAML文件中获取翻译数据
 
 ```javascript
 const YAML = require('yamljs')
 
 cy.readFile('languages/en.yml').then((str) => {
-  // parse the string into object literal
+  // 将字符串解析为对象字面量
   const english = YAML.parse(str)
 
   cy.get('#sidebar')
@@ -128,29 +123,29 @@ cy.readFile('languages/en.yml').then((str) => {
 })
 ```
 
-### Encoding
+### 编码
 
-#### Specify the encoding with the second argument
+#### 使用第二个参数指定编码
 
 ```javascript
 cy.readFile('path/to/logo.png', 'base64').then((logo) => {
-  // logo will be encoded as base64
-  // and should look something like this:
+  // logo将以base64编码
+  // 看起来应该像这样：
   // aIJKnwxydrB10NVWqhlmmC+ZiWs7otHotSAAAOw==...
 })
 ```
 
-#### Read
+#### 读取为Buffer
 
 ```javascript
 cy.fixture('path/to/logo.png', null).then((logo) => {
-  // logo will be read as a buffer
-  // and should look something like this:
+  // logo将作为Buffer读取
+  // 看起来应该像这样：
   // Buffer([0, 0, ...])
 })
 ```
 
-### Playing MP3 file
+### 播放MP3文件
 
 ```javascript
 cy.readFile('audio/sound.mp3', 'base64').then((mp3) => {
@@ -161,85 +156,78 @@ cy.readFile('audio/sound.mp3', 'base64').then((mp3) => {
 })
 ```
 
-## Notes
+## 注意事项
 
-### Existence
+### 存在性
 
-#### Default file existence assertion
+#### 默认的文件存在断言
 
-By default, `cy.readFile()` asserts that the file exists and will fail if it
-does not exist. It will retry reading the file if it does not initially exist
-until the file exists or the command times out.
+默认情况下，`cy.readFile()`断言文件存在，如果文件不存在则会失败。如果文件最初不存在，它将重试读取文件，直到文件存在或命令超时。
 
 ```javascript
-// will fail after the defaultCommandTimeout is reached
+// 在达到defaultCommandTimeout后失败
 cy.readFile('does-not-exist.yaml')
 ```
 
-#### Asserting file non-existence
+#### 断言文件不存在
 
-You can assert that a file does not exist like so:
+你可以这样断言文件不存在：
 
 ```javascript
-// will pass if the file does not exist
+// 如果文件不存在则通过
 cy.readFile('does-not-exist.yaml').should('not.exist')
 ```
 
-#### Read a file that might not exist
+#### 读取可能不存在的文件
 
-[See our example on using `cy.task()` to read a file that _may_ not exist.](/api/commands/task#Read-a-file-that-might-not-exist)
+[查看我们使用`cy.task()`读取可能不存在的文件的示例。](/api/commands/task#Read-a-file-that-might-not-exist)
 
-### Retries
+### 重试
 
-#### Automatic retries
+#### 自动重试
 
-`cy.readFile()` will continue to read the file until it passes all of its
-assertions.
+`cy.readFile()`将继续读取文件，直到通过所有断言。
 
 ```javascript
-// if this assertion fails cy.readFile will poll the file
-// until it eventually passes its assertions (or times out)
+// 如果此断言失败，cy.readFile将轮询文件
+// 直到最终通过其断言（或超时）
 cy.readFile('some/nested/path/story.txt').should('eq', 'Once upon a time...')
 ```
 
-Starting in Cypress `v13`, `cy.readFile()` is a query, and will continue to read
-the file until all chained commands of any type pass, not just assertions.
+从Cypress `v13`开始，`cy.readFile()`是一个查询，将继续读取文件，直到所有链式命令（不仅是断言）通过。
 
 ```javascript
-// will retry until the json file has a `users[123].name` field, and
-// the assertion passes
+// 将重试直到json文件具有`users[123].name`字段，并且
+// 断言通过
 cy.readFile('users.json').its('users.123.name').should('eq', 'John Doe')
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.readFile()` requires being chained off of `cy`.
-- `cy.readFile()` requires the file must exist.
-- `cy.readFile()` requires the file be successfully read from disk.
+- `cy.readFile()`需要链式调用`cy`。
+- `cy.readFile()`要求文件必须存在。
+- `cy.readFile()`要求文件必须成功从磁盘读取。
 
 <HeaderAssertions />
 
-- `cy.readFile()` will automatically
-  [retry](/app/core-concepts/retry-ability) until all chained assertions have
-  passed.
+- `cy.readFile()`将自动[重试](/app/core-concepts/retry-ability)，直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `cy.readFile()` can time out waiting for assertions you've added to pass.
-- `cy.readFile()` can time out when the content being read takes a significant
-  amount of time to encode.
+- `cy.readFile()`可能会因等待添加的断言通过而超时。
+- `cy.readFile()`可能会因读取的内容编码耗时过长而超时。
 
-## Command Log
+## 命令日志
 
-**_List the contents of your package.json file_**
+**_列出package.json文件的内容_**
 
 ```javascript
 cy.readFile('package.json')
 ```
 
-The command above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <!-- Code to reproduce screenshot:
   in spec file:
@@ -248,30 +236,28 @@ The command above will display in the Command Log as:
 
 <DocsImage
   src="/img/api/readfile/readfile-can-get-content-of-system-files-in-tests.png"
-  alt="Command Log readFile"
+  alt="命令日志 readFile"
 />
 
-When clicking on the `readFile` command within the command log, the console
-outputs the following:
+当点击命令日志中的`readFile`命令时，控制台输出如下：
 
 <DocsImage
   src="/img/api/readfile/console-log-shows-content-from-file-formatted-as-javascript.png"
-  alt="Console Log readFile"
+  alt="控制台日志 readFile"
 />
 
-## History
+## 历史
 
-| Version                                    | Changes                                   |
+| 版本                                    | 变更                                   |
 | ------------------------------------------ | ----------------------------------------- |
-| [13.0.0](/app/references/changelog#13-0-0) | `cy.readFile()` became a query            |
-| [9.0.0](/app/references/changelog#9-0-0)   | Changed `null` encoding to read as Buffer |
-| [0.17.2](/app/references/changelog#0-17-2) | Improved error messaging                  |
-| [0.17.1](/app/references/changelog#0-17-1) | `cy.readFile()` command added             |
+| [13.0.0](/app/references/changelog#13-0-0) | `cy.readFile()`成为查询            |
+| [9.0.0](/app/references/changelog#9-0-0)   | 更改`null`编码为读取为Buffer |
+| [0.17.2](/app/references/changelog#0-17-2) | 改进错误消息                  |
+| [0.17.1](/app/references/changelog#0-17-1) | 添加`cy.readFile()`命令             |
 
-## See also
+## 另请参阅
 
 - [`cy.exec()`](/api/commands/exec)
-- [`cy.fixture()`](/api/commands/fixture) for a similar command with caching
-  that does not retry
+- [`cy.fixture()`](/api/commands/fixture) 用于类似但不重试且具有缓存的命令
 - [`cy.task()`](/api/commands/task)
 - [`cy.writeFile()`](/api/commands/writefile)

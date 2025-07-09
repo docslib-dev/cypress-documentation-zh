@@ -1,266 +1,220 @@
 ---
-title: 'Microsoft Teams Integration'
-description: 'Setup Microsoft Teams notifications for your Cypress Cloud organization and projects.'
+title: 'Microsoft Teams 集成'
+description: '为您的 Cypress Cloud 组织和项目设置 Microsoft Teams 通知。'
 sidebar_position: 60
 sidebar_label: Microsoft Teams
 ---
 
 <ProductHeading product="cloud" />
 
-# Microsoft Teams Integration
+# Microsoft Teams 集成
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 您将学习到
 
-- How to enable the Cypress integration for Microsoft Teams
-- How to configure Microsoft Teams notifications for your Cypress Cloud organization and projects
-- How to manage Microsoft Teams notifications at the organization and project level
+- 如何启用 Cypress 与 Microsoft Teams 的集成
+- 如何为 Cypress Cloud 组织和项目配置 Microsoft Teams 通知
+- 如何在组织和项目级别管理 Microsoft Teams 通知
 
 :::
 
-The Microsoft Teams integration allows you to see your Cypress test results
-directly in your Microsoft Teams channels.
+Microsoft Teams 集成允许您直接在 Microsoft Teams 频道中查看 Cypress 测试结果。
 
 <DocsImage
   src="/img/cloud/integrations/teams/ms-teams.png"
-  alt="Cypress notification feed in Microsoft Teams channel"
+  alt="Microsoft Teams 频道中的 Cypress 通知信息流"
   width={800}
 />
 
-## Enable the Microsoft Teams integration
+## 启用 Microsoft Teams 集成
 
 :::caution
 
-<strong>Ownership Requirements</strong>
+<strong>所有权要求</strong>
 
-In order to enable the Cypress integration for Microsoft Teams, you must be an
-admin or owner of both your Cypress Cloud organization and your Microsoft Teams
-workspace.
+要启用 Cypress 与 Microsoft Teams 的集成，您必须是 Cypress Cloud 组织和 Microsoft Teams 工作区的管理员或所有者。
 
 :::
 
-### Per-organization configuration (all projects)
+### 按组织配置（所有项目）
 
-1. Go to Cypress Cloud
-   [Organizations page](https://cloud.cypress.io/organizations) or open the
-   organization switcher.
-2. Select the organization you wish to integrate with Microsoft Teams.
+1. 访问 Cypress Cloud 的[组织页面](https://cloud.cypress.io/organizations)或打开组织切换器。
+2. 选择您希望与 Microsoft Teams 集成的组织。
 
    <DocsImage
      src="/img/cloud/organizations/select-cypress-organization.jpg"
-     alt="Select an organization"
+     alt="选择一个组织"
      width={500}
    />
 
-3. Visit the selected organization's **Integrations** page via the side
-   navigation.
+3. 通过侧边导航栏访问所选组织的**集成**页面。
 
    <DocsImage
      src="/img/cloud/organizations/navigate-to-organization-integrations.jpg"
-     alt="Install Cypress Microsoft Teams from Integrations"
+     alt="从集成中安装 Cypress Microsoft Teams"
      width={500}
    />
 
-4. Click the **Enable** button in the Microsoft Teams section.
+4. 在 Microsoft Teams 部分点击**启用**按钮。
 
    <DocsImage
      src="/img/cloud/integrations/teams/enable-teams-integration.jpg"
-     alt="Click enable under Microsoft Teams Integration"
+     alt="在 Microsoft Teams 集成下点击启用"
      width={1000}
    />
 
-5. You'll navigate to a window that manages webhooks as a way for Cypress Cloud
-   to communicate with Microsoft Teams. First, you must configure an _Incoming
-   Webhook_ to a Teams channel.
+5. 您将跳转到一个管理 Webhook 的窗口，这是 Cypress Cloud 与 Microsoft Teams 通信的方式。首先，您需要为 Teams 频道配置一个_传入 Webhook_。
 
-   In Microsoft Teams:
+   在 Microsoft Teams 中：
 
-   - Open the channel in which you want to add the webhook and select **•••**
-     from the upper-right corner.
-
-   - Select Connectors from the dropdown menu.
+   - 打开您要添加 Webhook 的频道，从右上角选择**•••**。
+   - 从下拉菜单中选择 Connectors。
 
      <DocsImage
        src="/img/cloud/integrations/teams/teams-connectors.png"
-       alt="Visit project settings"
+       alt="访问项目设置"
        width={300}
      />
 
-   - Search for Incoming Webhook and select Configure. Provide a name, and
-     upload an image for your webhook if necessary.
+   - 搜索 Incoming Webhook 并选择 Configure。提供名称，并根据需要上传 Webhook 的图像。
 
      <DocsImage
        src="/img/cloud/integrations/teams/teams-configure.png"
-       alt="Visit project settings"
+       alt="访问项目设置"
        width={500}
      />
 
-   - Copy and save the unique webhook URL present in the dialog. The URL maps to
-     the channel and you can use it to send information to Teams.
-
-   - Select **Done**.
+   - 复制并保存对话框中显示的唯一 Webhook URL。该 URL 映射到频道，可用于向 Teams 发送信息。
+   - 选择**Done**。
 
      <DocsImage
        src="/img/cloud/integrations/teams/teams-url.png"
-       alt="Visit project settings"
+       alt="访问项目设置"
        width={500}
      />
 
-     The webhook is now available in the Teams channel. For more information,
-     see
-     [Microsoft Teams - Create Incoming Webhooks](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook?tabs=dotnet#create-incoming-webhooks-1).
+     Webhook 现在已在 Teams 频道中可用。更多信息，请参阅
+     [Microsoft Teams - 创建传入 Webhook](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook?tabs=dotnet#create-incoming-webhooks-1)。
 
-6. Then, add the Teams webhook to your Cypress Cloud Organization.
+6. 然后，将 Teams Webhook 添加到您的 Cypress Cloud 组织。
 
-   In Cypress Cloud:
+   在 Cypress Cloud 中：
 
-   - Paste in the Teams webhook URL, choosing the types of notifications your
-     team should receive.
+   - 粘贴 Teams Webhook URL，选择您的团队应接收的通知类型。
 
      <DocsImage
        src="/img/cloud/integrations/teams/add-teams-webhook.jpg"
-       alt="Click enable under Microsoft Teams Integration"
+       alt="在 Microsoft Teams 集成下点击启用"
        width={450}
      />
 
-   Once you've configured and added your webhooks, the installation is complete!
-   Cypress Cloud will post run results for **all** projects in your organization
-   to the specified Microsoft Teams channel.
+   配置并添加 Webhook 后，安装即完成！Cypress Cloud 会将您组织中**所有**项目的运行结果发布到指定的 Microsoft Teams 频道。
 
-#### Remove a webhook
+#### 移除 Webhook
 
-You can have Cypress Cloud stop posting notifications to a channel. You cannot
-delete the global notification channels from a project.
+您可以停止 Cypress Cloud 向某个频道发布通知。您无法从项目中删除全局通知频道。
 
-1. Navigate to the **Integrations** page for the project with the installed
-   integration.
-2. Scroll down to the **Microsoft Teams** section.
-3. Under **Actions**, select **Delete** for each webhook you want deleted.
+1. 导航到已安装集成的项目的**集成**页面。
+2. 滚动到**Microsoft Teams**部分。
+3. 在**操作**下，为每个要删除的 Webhook 选择**删除**。
 
-### Per-project configuration
+### 按项目配置
 
-If your organization has multiple teams working on separate projects, you can
-tailor the Microsoft Teams notifications of each project to match your teams'
-needs. You can have Cypress Cloud post run results for a specific project.
+如果您的组织有多个团队在独立项目上工作，您可以根据团队的需求为每个项目定制 Microsoft Teams 通知。您可以让 Cypress Cloud 为特定项目发布运行结果。
 
-1. Select your organization in the organization switcher.
+1. 在组织切换器中选择您的组织。
    <DocsImage
      src="/img/cloud/organizations/select-cypress-organization.jpg"
-     alt="Select an organization"
+     alt="选择一个组织"
      width={500}
    />
-2. Select the project you wish to integrate with Microsoft Teams.
+2. 选择您希望与 Microsoft Teams 集成的项目。
    <DocsImage
      src="/img/cloud/projects/select-cypress-project.jpg"
-     alt="Select a project"
+     alt="选择一个项目"
      width={600}
    />
-3. Go to the project's settings page.
+3. 转到项目的设置页面。
    <DocsImage
      src="/img/cloud/projects/select-project-settings.jpg"
-     alt="Visit project settings"
+     alt="访问项目设置"
      width={400}
    />
-4. Scroll down and click **Add Teams webhook** in the **Microsoft Teams**
-   section.
-5. You'll navigate to a window that manages webhooks as a way for Cypress Cloud
-   to communicate with Microsoft Teams. First, you must configure an _Incoming
-   Webhook_ to a Teams channel.
+4. 滚动到底部，在**Microsoft Teams**部分点击**添加 Teams Webhook**。
+5. 您将跳转到一个管理 Webhook 的窗口，这是 Cypress Cloud 与 Microsoft Teams 通信的方式。首先，您需要为 Teams 频道配置一个_传入 Webhook_。
 
-   In Microsoft Teams:
+   在 Microsoft Teams 中：
 
-   - Open the channel in which you want to add the webhook and select **•••**
-     from the upper-right corner.
-
-   - Select Connectors from the dropdown menu.
+   - 打开您要添加 Webhook 的频道，从右上角选择**•••**。
+   - 从下拉菜单中选择 Connectors。
 
      <DocsImage
        src="/img/cloud/integrations/teams/teams-connectors.png"
-       alt="Open channel menu menu and select Connectors"
+       alt="打开频道菜单并选择 Connectors"
        width={300}
      />
 
-   - Search for Incoming Webhook and select Configure. Provide a name, and
-     upload an image for your webhook if necessary.
+   - 搜索 Incoming Webhook 并选择 Configure。提供名称，并根据需要上传 Webhook 的图像。
 
      <DocsImage
        src="/img/cloud/integrations/teams/teams-configure.png"
-       alt="Click Configure Incoming Webhook"
+       alt="点击配置传入 Webhook"
        width={500}
      />
 
-   - Copy and save the unique webhook URL present in the dialog. The URL maps to
-     the channel and you can use it to send information to Teams.
-
-   - Select **Done**.
+   - 复制并保存对话框中显示的唯一 Webhook URL。该 URL 映射到频道，可用于向 Teams 发送信息。
+   - 选择**Done**。
 
      <DocsImage
        src="/img/cloud/integrations/teams/teams-url.png"
-       alt="Copy url and Click Done"
+       alt="复制 URL 并点击 Done"
        width={500}
      />
 
-     The webhook is now available in the Teams channel. For more information,
-     see
-     [Microsoft Teams - Create Incoming Webhooks](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook?tabs=dotnet#create-incoming-webhooks-1).
+     Webhook 现在已在 Teams 频道中可用。更多信息，请参阅
+     [Microsoft Teams - 创建传入 Webhook](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook?tabs=dotnet#create-incoming-webhooks-1)。
 
-6. Then, add the Teams webhook to your Cypress Cloud Project.
+6. 然后，将 Teams Webhook 添加到您的 Cypress Cloud 项目。
 
-   In Cypress Cloud:
+   在 Cypress Cloud 中：
 
-   - Paste in the Teams webhook URL, choosing the types of notifications your
-     team should receive.
+   - 粘贴 Teams Webhook URL，选择您的团队应接收的通知类型。
 
      <DocsImage
        src="/img/cloud/integrations/teams/add-teams-webhook.jpg"
-       alt="Paste in the Teams webhook URL"
+       alt="粘贴 Teams Webhook URL"
        width={450}
      />
 
-   Once you've configured and added your webhooks, the installation is complete!
-   Cypress Cloud will post run results for **this** project to the specified
-   Microsoft Teams channel.
+   配置并添加 Webhook 后，安装即完成！Cypress Cloud 会将**此**项目的运行结果发布到指定的 Microsoft Teams 频道。
 
-## Notification preferences
+## 通知偏好设置
 
-By default, Cypress Cloud will post a Teams message to each configured channel
-only for failing runs. However, you can select any combination of the followings preferences:
+默认情况下，Cypress Cloud 只会为失败的运行向每个配置的频道发布 Teams 消息。但是，您可以选择以下任意组合的偏好设置：
 
-- **Failed runs**: will notify on runs with a _failed_ status.
-- **Passed runs**: will notify on runs with a _passed_ status.
-- **Flaky tests**: will notify on runs that have an identified _flaky_ test.
+- **失败的运行**：会在运行状态为_失败_时通知。
+- **通过的运行**：会在运行状态为_通过_时通知。
+- **不稳定的测试**：会在运行中识别出_不稳定_测试时通知。
 
-To set notification preferences:
+设置通知偏好：
 
-1. Navigate to Teams configuration page
-2. Select the notification preferences for each channel
+1. 导航到 Teams 配置页面
+2. 为每个频道选择通知偏好
 
-### Filter notifications by tag or run group
+### 按标签或运行组过滤通知
 
-When configuring at the project-level, you can filter notifications posted to Teams based on a
-[tag](/app/references/command-line#cypress-run-tag-lt-tag-gt) or
-[group](/app/references/command-line#cypress-run-group-lt-name-gt) the run was
-recorded with. This can be helpful to only post notifications on certain runs,
-like those to a staging or release environment.
+在项目级别配置时，您可以根据运行记录时使用的[标签](/app/references/command-line#cypress-run-tag-lt-tag-gt)或[组](/app/references/command-line#cypress-run-group-lt-name-gt)过滤发布到 Teams 的通知。这有助于仅在某些运行（如暂存或发布环境）时发布通知。
 
-1. Navigate to the **Teams** configuration page
-2. Under **Tags**, select the **Tag** dropdown for the desired integration and
-   select which tag(s) to filter. If more than one tag is selected the Teams message will be sent
-   if any of the tags were associated with the run.
-3. Under **Run Groups**, select the **Run Group** dropdown for the desired integration and
-   select which run group(s) to filter. If more than one run group is selected the Teams message will be
-   sent if any of the run groups were associated with the run.
+1. 导航到**Teams**配置页面
+2. 在**标签**下，为所需的集成选择**标签**下拉菜单，并选择要过滤的标签。如果选择了多个标签，只要运行关联了其中任何一个标签，Teams 消息就会被发送。
+3. 在**运行组**下，为所需的集成选择**运行组**下拉菜单，并选择要过滤的运行组。如果选择了多个运行组，只要运行关联了其中任何一个运行组，Teams 消息就会被发送。
 
-If both a tag and run group are selected, only a run associated with both criteria will
-trigger a message to be sent to Teams.
+如果同时选择了标签和运行组，只有同时满足这两个条件的运行才会触发向 Teams 发送消息。
 
-### Mute a channel
+### 静音频道
 
-If you want Cypress Cloud to temporarily stop posting Teams messages to a
-certain channel, you can **Mute** that channel. This allows you to easily pause
-and resume notifications for a specific channel without losing the configuration
-you've put in place.
+如果您希望 Cypress Cloud 暂时停止向某个频道发布 Teams 消息，您可以**静音**该频道。这允许您轻松暂停和恢复特定频道的通知，而不会丢失已配置的设置。
 
-1. Navigate to the **Teams** configuration page
-2. Toggle the **Active** selector for each Teams channel you want muted.
+1. 导航到**Teams**配置页面
+2. 为每个要静音的 Teams 频道切换**活跃**选择器。

@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.Blob | Cypress Documentation'
-description: Cypress automatically includes a Blob library and exposes it as `Cypress.Blob`.
+title: 'Cypress.Blob | Cypress 文档'
+description: Cypress 自动包含一个 Blob 库并将其暴露为 `Cypress.Blob`。
 sidebar_label: Cypress.Blob
 ---
 
@@ -8,77 +8,76 @@ sidebar_label: Cypress.Blob
 
 # Cypress.Blob
 
-Cypress automatically includes a
-[Blob](https://github.com/nolanlawson/blob-util) library and exposes it as
-`Cypress.Blob`.
+Cypress 自动包含一个
+[Blob](https://github.com/nolanlawson/blob-util) 库并将其暴露为
+`Cypress.Blob`。
 
-Use `Cypress.Blob` to convert `base64` strings to Blob objects. Useful for
-testing uploads.
+使用 `Cypress.Blob` 将 `base64` 字符串转换为 Blob 对象。适用于测试上传功能。
 
-## Syntax
-
-```javascript
-Cypress.Blob.method()
-```
-
-### Usage
-
-<Icon name="check-circle" color="green" /> **Correct Usage**
+## 语法
 
 ```javascript
 Cypress.Blob.method()
 ```
 
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+### 用法
+
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.Blob.method() // Errors, cannot be chained off 'cy'
+Cypress.Blob.method()
 ```
 
-## Examples
-
-### Image Fixture
-
-#### Using an image fixture for jQuery plugin upload
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
 ```javascript
-// programmatically upload the logo
+cy.Blob.method() // 错误，不能链式调用 'cy'
+```
+
+## 示例
+
+### 图片夹具
+
+#### 使用图片夹具进行 jQuery 插件上传
+
+```javascript
+// 以编程方式上传 logo
 cy.fixture('images/logo.png').as('logo')
 cy.get('input[type=file]').then(function ($input) {
-  // convert the logo base64 string to a blob
+  // 将 logo 的 base64 字符串转换为 blob
   const blob = Cypress.Blob.base64StringToBlob(this.logo, 'image/png')
 
-  // pass the blob to the fileupload jQuery plugin
+  // 将 blob 传递给 fileupload jQuery 插件
   // https://github.com/blueimp/jQuery-File-Upload
-  // used in your application's code
-  // which initiates a programmatic upload
+  // 在应用程序代码中使用
+  // 这会触发编程式上传
   $input.fileupload('add', { files: blob })
 })
 ```
 
-### Getting dataUrl string
+### 获取 dataUrl 字符串
 
-#### Create an `img` element and set its `src` to the `dataUrl`
+#### 创建 `img` 元素并将其 `src` 设置为 `dataUrl`
 
 ```javascript
 return Cypress.Blob.imgSrcToDataURL('/assets/img/logo.png').then((dataUrl) => {
   const img = Cypress.$('<img />', { src: dataUrl })
 
   cy.get('.utility-blob').then(($div) => {
-    // append the image
+    // 添加图片
     $div.append(img)
   })
   cy.get('.utility-blob img').click().should('have.attr', 'src', dataUrl)
 })
 ```
 
-## History
+## 历史版本
 
-| Version                            | Changes                                                                                                                                            |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [5.0.0](/app/references/changelog) | Return type of `arrayBufferToBlob`, `base64StringToBlob`, `binaryStringToBlob`, and `dataURLToBlob` methods changed from `Promise<Blob>` to `Blob` |
-| [5.0.0](/app/references/changelog) | Added `arrayBufferToBinaryString`, `binaryStringToArrayBuffer` methods.                                                                            |
+| 版本                              | 变更内容                                                                                                                                            |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [5.0.0](/app/references/changelog) | `arrayBufferToBlob`、`base64StringToBlob`、`binaryStringToBlob` 和 `dataURLToBlob` 方法的返回类型从 `Promise<Blob>` 改为 `Blob` |
+| [5.0.0](/app/references/changelog) | 新增 `arrayBufferToBinaryString` 和 `binaryStringToArrayBuffer` 方法。                                                                            |
 
-## See also
+## 另请参阅
 
-- [Bundled Libraries](/app/references/bundled-libraries)
+- [捆绑库](/app/references/bundled-libraries)

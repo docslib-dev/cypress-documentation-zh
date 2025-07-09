@@ -1,44 +1,35 @@
 ---
-title: 'Migrating from Protractor to Cypress: A Guide'
-description: 'Migrate from Protractor to Cypress with this guide. Learn how to work with the DOM, write assertions, and use the Angular schematic to configure Cypress.'
-sidebar_label: Migrating from Protractor
+title: '从 Protractor 迁移到 Cypress：指南'
+description: '通过本指南从 Protractor 迁移到 Cypress。学习如何操作 DOM、编写断言以及使用 Angular schematic 配置 Cypress。'
+sidebar_label: 从 Protractor 迁移
 ---
 
 <ProductHeading product="app" />
 
-# Migrating from Protractor to Cypress
+# 从 Protractor 迁移到 Cypress
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 您将学习到
 
-- How to migrate from Protractor to Cypress
-- The benefits of using Cypress for end-to-end testing
-- How to work with the DOM and write assertions in Cypress
-- Using the Angular schematic to configure Cypress
+- 如何从 Protractor 迁移到 Cypress
+- 使用 Cypress 进行端到端测试的优势
+- 如何在 Cypress 中操作 DOM 和编写断言
+- 使用 Angular schematic 配置 Cypress
 
 :::
 
-Protractor was a popular end-to-end testing tool for Angular and AngularJS
-apps, but is
-[no longer included](https://blog.angular.io/angular-v12-is-now-available-32ed51fbfd49)
-in new Angular projects as of Angular 12. We've got you covered here with this
-migration guide to help you and your team transition from Protractor to Cypress.
+Protractor 曾是 Angular 和 AngularJS 应用中流行的端到端测试工具，但自 Angular 12 起，新 Angular 项目已[不再包含](https://blog.angular.io/angular-v12-is-now-available-32ed51fbfd49)它。我们为您准备了这份迁移指南，帮助您和团队从 Protractor 过渡到 Cypress。
 
-To start, let's look at a quick code sample to see how approachable Cypress is
-coming from Protractor. In this scenario, we have a test to validate that a user
-can sign up for a new account.
+首先，通过一个快速代码示例看看 Cypress 对 Protractor 用户有多友好。以下场景测试用户能否注册新账户。
 
 :::tip
 
-To see how this conversion would work with some of your own test code, you can
-paste it into the interactive
-[Cypress Migrator tool](https://migrator.cypress.io/), which will generate the
-equivalent Cypress code.
+要查看您自己的测试代码如何转换，可将其粘贴到交互式 [Cypress Migrator 工具](https://migrator.cypress.io/)，该工具会生成等效的 Cypress 代码。
 
 :::
 
-<Badge type="danger">Before: Protractor</Badge>
+<Badge type="danger">迁移前：Protractor</Badge>
 
 ```js
 describe('Authorization tests', () => {
@@ -54,7 +45,7 @@ describe('Authorization tests', () => {
 })
 ```
 
-<Badge type="success">After: Cypress</Badge>
+<Badge type="success">迁移后：Cypress</Badge>
 
 ```js
 describe('Authorization Tests', () => {
@@ -70,146 +61,68 @@ describe('Authorization Tests', () => {
 })
 ```
 
-## Benefits of Using Cypress
+## 使用 Cypress 的优势
 
-As many developers can attest, end-to-end testing is one of those things that
-they know they _should_ do, but often don't. Or if they do run tests, the tests
-are often flaky and often very expensive due to how long it takes to run. And
-while there are often ideals of complete code coverage, the realities of
-business and deadlines often take precedence and the tests are left unwritten,
-or worse, ignored when errors are being reported because they aren't reliable.
+许多开发者深知端到端测试的必要性，但常因测试脆弱或耗时过长而放弃。Cypress 不仅确保测试可靠，还提供工具使测试成为开发助力而非阻碍。
 
-Not only does Cypress make sure that your tests will be reliable, but it
-provides developers with tools that make e2e testing an asset to development
-rather than a hindrance.
+### 在浏览器中交互式测试
 
-### Interact with your tests in a browser
-
-When Protractor runs tests, the browser automation launches a browser instance
-and often runs through tests too fast for the human eye. Without additional
-configuration, this often leads to a reliance on lengthy terminal messages that
-can be expensive from a context-switching perspective.
-
-With [Cypress](/app/core-concepts/open-mode), your tests run in an
-interactive browser environment in real time. Cypress's
-[Command Log](/app/core-concepts/open-mode#Command-Log) displays the tests
-from your test suite and their assertions. When you
-[click on a command or assertion](/app/core-concepts/open-mode#Command-Log)
-in the command log, a DOM snapshot displays so you can see what the application
-under test looked like at the time of the test's execution. This allows you to
-see the **real rendered UI** and the behavior of the app under **real user
-interactions.** Since the app is loaded within a real browser, you can also
-manually explore its behavior while it is under the state of a desired test
-scenario.
-
-Cypress also helps you to write your tests by making it as easy as possible to
-find the right CSS selectors for the DOM elements in your application with its
-[Selector Playground](/app/core-concepts/open-mode#Selector-Playground) and [Cypress Studio](/app/guides/cypress-studio).
-These tools help you cut down on time spent finding the right
-selectors so you can focus on what's important: writing tests that verify your
-app's logic.
+Protractor 测试时浏览器自动化速度过快，难以观察。Cypress 的[命令日志](/app/core-concepts/open-mode#Command-Log)实时显示测试过程，点击命令可查看 DOM 快照，观察应用在测试中的**真实渲染 UI** 和**用户交互行为**。此外，[选择器 playground](/app/core-concepts/open-mode#Selector-Playground) 和 [Cypress Studio](/app/guides/cypress-studio) 帮助快速定位 CSS 选择器。
 
 <DocsVideo
   src="/img/app/migrating-to-cypress/DevTools.mp4"
-  title="interacting with tests in a browser"
+  title="在浏览器中交互式测试"
 />
 
-### Faster feedback loops
+### 更快的反馈循环
 
-When it comes to your end-to-end or component tests, being able to see your tests as they run
-is critical to allowing you to confidently iterate faster. With Cypress, your
-tests are automatically re-run upon file save as you are iterating on them.
-
-Having your code editor and application under test within a browser side-by-side
-(shown below) while re-running tests on save is a highly productive workflow. It
-provides an instant feedback loop that allows you to iterate faster with
-confidence.
+Cypress 在文件保存时自动重新运行测试，结合编辑器与浏览器并排工作，实现高效迭代。
 
 <DocsVideo
   src="/img/app/migrating-to-cypress/codeframe-ex.webm"
-  title="auto-reloading"
+  title="自动重新加载"
 />
 
-### Time travel through tests
+### 测试时间回溯
 
-Cypress gives you time travel capabilities to see exactly how your app was
-behaving at any point during test execution. Cypress takes DOM snapshots of your
-application under test as the commands and assertions in your tests are
-executed. This enables you to view the **real UI** of your application at any
-point during your tests' execution. By clicking from one command to another in
-the [command log](/app/core-concepts/open-mode#Command-Log), you can see
-which elements Cypress acted upon and how your application responded to the
-simulated **real user behavior**.
+通过 DOM 快照，可回溯测试执行中任意时间点的应用状态，模拟真实用户行为。
 
 <DocsVideo
   src="/img/app/migrating-to-cypress/interactivity.mp4"
-  title="Time travel debugging"
+  title="时间回溯调试"
 />
 
-### Gain Visibility in Headless Mode with Screenshots and Videos
+### 无头模式下的可视化
 
-Running browser tests in headless mode (locally or in continuous integration
-pipeline) can be a bit of a black-box without much visibility. When tests fail,
-error messages by themselves can often fall short in painting the picture of
-**why** something failed, especially if assertions were not explicit enough or
-too indirect. To understand the reason behind test failures it also helps to see
-the state of the app UI at the point of failure or see the events that led up to
-the failure.
+Cypress 在无头模式下自动截取失败截图、录制测试视频，并通过 [Test Replay](/cloud/features/test-replay) 在 Cypress Cloud 中重现测试过程。
 
-Cypress assists with debugging in headless mode, in numerous ways:
+### 测试重试
 
-- Replay the test as it executed during the recorded run with full debug capability using [Test Replay](/cloud/features/test-replay) in Cypress Cloud.
-- By automatically taking a
-  screenshot of the app UI and command log at the exact point of test failure.
-- To see everything that happened prior to test failure, enable the [`video`](/app/references/configuration#Videos).
-  configuration option to record (as an MP4 file) the full test spec run.
+复杂应用中可能出现“脆弱测试”。Cypress 支持[测试重试](/app/guides/test-retries)，Cypress Cloud 还能[检测 CI/CD 中的脆弱测试](/cloud/features/flaky-test-management)。
 
-### Test Retries
+## 开始使用
 
-End-to-end tests can be complicated because modern web applications are also
-complex. You may find that some features of your web application are challenging
-to test or the tests sporadically fail. We call these tests "flaky." Cypress
-allows you to [retry failed tests](/app/guides/test-retries). Sometimes tests
-will fail in a CI environment when they otherwise would pass on a developer's
-machine. Enabling test retries in the Cypress configuration can help you to get
-unblocked when unpredictable, flaky tests are occasionally failing.
+### 推荐安装方式
 
-Cypress Cloud goes a step further and helps you and your team to
-[detect flaky tests](/cloud/features/flaky-test-management) that run in your CI/CD
-pipeline.
-
-## Getting Started
-
-### Recommended Installation
-
-We recommend using our
-[official Cypress Angular schematic](https://www.npmjs.com/package/@cypress/schematic)
-to add Cypress to your Angular project:
+使用官方 [Cypress Angular schematic](https://www.npmjs.com/package/@cypress/schematic)：
 
 ```shell
 ng add @cypress/schematic
 ```
 
-This will install Cypress, add scripts for running Cypress in `run` and `open`
-mode, scaffold base Cypress files and directories, and (optional) prompt you to
-remove Protractor and reconfigure the default `ng e2e` command to use Cypress.
-
-With our schematic installed and Protractor removed, you can run Cypress in
-`open` mode with the following command:
+这会安装 Cypress、添加运行脚本、生成基础文件，并可选移除 Protractor 配置。安装后，通过以下命令启动 Cypress：
 
 ```shell
 ng e2e
 ```
 
-You can also use the following command to start Cypress in `open` mode:
+或直接运行：
 
 ```shell
 ng run {your-project-name}:cypress-open
 ```
 
-Both of these commands will launch Cypress in an Electron browser.
-
-You can also launch Cypress via `run` mode, which runs headlessly:
+无头模式运行：
 
 ```shell
 ng run {your-project-name}:cypress-run
@@ -217,40 +130,21 @@ ng run {your-project-name}:cypress-run
 
 :::info
 
-Check out the
-[Cypress Angular Schematic Configuration section](#Angular-Schematic-Configuration)
-documentation for more details like how to
-[configure your tests to run in a specific browser](#Running-the-builder-with-a-specific-browser)
-or [record test results](#Recording-test-results-to-Cypress-Cloud) to
-[Cypress Cloud](/cloud/get-started/introduction).
+更多配置如[指定浏览器](#Running-the-builder-with-a-specific-browser)或[记录测试到 Cypress Cloud](#Recording-test-results-to-Cypress-Cloud)，请参阅[Angular Schematic 配置](#Angular-Schematic-Configuration)。
 
 :::
 
 :::tip
 
-The
-[Cypress Angular Schematic](https://www.npmjs.com/package/@cypress/schematic)
-package was made possible by the original work of the
-[Briebug](https://briebug.com/) team and the contributors of
-[@briebug/cypress-schematic](https://www.npmjs.com/package/@briebug/cypress-schematic).
-
-**@briebug/cypress-schematic** served as the starting point for improvements and
-new functionality the Cypress team will continue to develop along with the
-community.
+此 schematic 基于 [Briebug](https://briebug.com/) 团队的 [@briebug/cypress-schematic](https://www.npmjs.com/package/@briebug/cypress-schematic) 开发。
 
 :::
 
-### Manual Installation
-
-While we recommend using our official Angular schematic, you can still install
-Cypress manually.
+### 手动安装
 
 <CypressInstallCommands />
 
-Then, since Cypress can run in parallel with your application, let's install
-[concurrently](https://www.npmjs.com/package/concurrently) to simplify our npm
-script. This is optional; however, you will need another way to serve your
-Angular app for Cypress to run tests against your application.
+安装 [concurrently](https://www.npmjs.com/package/concurrently) 并行启动应用和 Cypress：
 
 <Tabs>
   <TabItem value="npm" active>
@@ -269,7 +163,7 @@ yarn add concurrently --dev
   </TabItem>
 </Tabs>
 
-Then we will update our `package.json` with the following scripts:
+更新 `package.json` 脚本：
 
 ```json title="package.json"
 {
@@ -282,7 +176,7 @@ Then we will update our `package.json` with the following scripts:
 }
 ```
 
-Now, when we run:
+运行：
 
 <Tabs>
   <TabItem value="npm" active>
@@ -301,703 +195,311 @@ yarn run cy:open
   </TabItem>
 </Tabs>
 
-It will start up Cypress and our Angular app at the same time.
+## DOM 操作
 
-Again, we highly recommend using our
-[Angular Schematic](https://github.com/cypress-io/cypress/tree/develop/npm/cypress-schematic)
-to install Cypress, and we plan on adding new capabilities to it over time.
+### 获取 DOM 元素
 
-## Working with the DOM
+#### 获取单个元素
 
-### How to Get DOM Elements
-
-#### Getting a single element on the page
-
-When it comes to e2e tests, one of the most common things you'll need to do is
-get one or more HTML elements on a page. Rather than split element fetching into
-multiple methods that you need to memorize, everything can be accomplished with
-[`cy.get`](/api/commands/get) while using CSS selectors or the preferred
-[**data attribute**](/app/core-concepts/best-practices#Selecting-Elements).
-
-<Badge type="danger">Before: Protractor</Badge>
+<Badge type="danger">迁移前：Protractor</Badge>
 
 ```js
-// Get an element
-element(by.tagName('h1'))
-
-/// Get an element using a CSS selector.
 element(by.css('.my-class'))
-
-// Get an element with the given id.
 element(by.id('my-id'))
-
-// Get an element using an input name selector.
 element(by.name('field-name'))
-
-//Get an element by the text it contains within a certain CSS selector
 element(by.cssContainingText('.my-class', 'text'))
-
-//Get the first element containing a specific text (only for link elements)
 element(by.linkText('text'))
 ```
 
-<Badge type="success">After: Cypress</Badge>
+<Badge type="success">迁移后：Cypress</Badge>
 
 ```js
-// Get an element
-cy.get('h1')
-
-// Get an element using a CSS selector.
 cy.get('.my-class')
-
-// Get an element with the given id.
 cy.get('#my-id')
-
-// Get an element using an input name selector.
 cy.get('input[name="field-name"]')
-
-//Get an element by the text it contains within a certain CSS selector
 cy.get('.my-class').contains('text')
-
-//Get the first element containing a specific text (available for any element)
 cy.contains('text')
 ```
 
-You can also get elements by their text value. This can be accomplished using
-[`cy.contains`](/api/commands/contains) while using CSS selectors to account for
-all use cases.
+#### 获取多个元素
 
-<Badge type="danger">Before: Protractor</Badge>
+<Badge type="danger">迁移前：Protractor</Badge>
 
 ```js
-// Get an element by the text it contains within a certain CSS selector
-element(by.cssContainingText('.my-class', 'text'))
-
-// Get the first element containing a specific text (only for link elements)
-element(by.linkText('text'))
-```
-
-<Badge type="success">After: Cypress</Badge>
-
-```js
-// Get an element by the text it contains within a certain CSS selector
-cy.get('.my-class').contains('text')
-
-// Get the first element containing a specific text (available for any element)
-cy.contains('text')
-```
-
-#### Getting multiple elements on a page
-
-When you want to get access to more than one element on the page, you would need
-to chain the `.all()` method. However, in Cypress, no syntax change is
-necessary!
-
-<Badge type="danger">Before: Protractor</Badge>
-
-```js
-// Get all list-item elements on the page
 element.all(by.tagName('li'))
-
-/// Get all elements by using a CSS selector.
 element.all(by.css('.list-item'))
-
-// Find an element using an input name selector.
 element.all(by.name('field-name'))
 ```
 
-<Badge type="success">After: Cypress</Badge>
+<Badge type="success">迁移后：Cypress</Badge>
 
 ```js
-// Get all list-item elements on the page
 cy.get('li')
-
-/// Get all elements by using a CSS selector.
 cy.get('.list-item')
-
-// Find an element using an input name selector.
 cy.get('input[name="field-name"]')
 ```
 
 :::info
 
-Another plugin that we recommend for selecting multiple elements is the
-[Cypress Testing Library](https://github.com/testing-library/cypress-testing-library).
-This extends Cypress by adding `findBy` and `findAllBy` commands.
+推荐使用 [Cypress Testing Library](https://github.com/testing-library/cypress-testing-library) 扩展 `findBy` 和 `findAllBy` 命令。
 
 :::
 
-:::info
+#### 选择器 Playground
 
-You can learn more about
-[how to get DOM elements in our official documentation](/api/commands/get#Syntax).
-
-:::
-
-#### Selector Playground
-
-For those who are big fans of
-[Protractor's Element Explorer functionality](https://www.protractortest.org/#/debugging#enabled-control-flow),
-Cypress also provides you with a
-[Selector Playground](/app/core-concepts/open-mode#Selector-Playground)
-that allows you to:
-
-- Determine a unique selector for an element
-- See what elements match a given selector
-- See what element matches a string of text
-
-The Selector Playground can be useful when you need to find a specific selector
-to use in your Cypress tests.
+类似 Protractor 的 Element Explorer，Cypress 提供[选择器 Playground](/app/core-concepts/open-mode#Selector-Playground) 帮助定位唯一选择器。
 
 <DocsVideo
   src="/img/snippets/selector-playground.mp4"
-  title="Selector Playground"
+  title="选择器 Playground"
 />
 
-### How to Interact with DOM Elements
+### 与 DOM 元素交互
 
-<Badge type="danger">Before: Protractor</Badge>
+<Badge type="danger">迁移前：Protractor</Badge>
 
 ```js
-// Click on the element
 element(by.css('button')).click()
-
-// Send keys to the element (usually an input)
 element(by.css('input')).sendKeys('my text')
-
-// Clear the text in an element (usually an input).
 element(by.css('input')).clear()
-
-// Check the first checkbox on a page
 element.all(by.css('[type="checkbox"]')).first().click()
-
-// Check a radio button with the value "radio1"
 element(by.css('[type="radio"][value="radio1"]')).click()
-
-// Uncheck the first checkbox that is checked
 element.all(by.css('[type="checkbox"][checked="true"]')).first().click()
-
-// Select an option with the text value "my value" from a select list
 element(by.cssContainingText('option', 'my value')).click()
-
-// Scroll an element into view
-browser
-  .actions()
-  .mouseMove(element(by.id('my-id')))
-  .perform()
+browser.actions().mouseMove(element(by.id('my-id'))).perform()
 ```
 
-<Badge type="success">After: Cypress</Badge>
+<Badge type="success">迁移后：Cypress</Badge>
 
 ```js
-// Click on the element
 cy.get('button').click()
-
-// Send keys to the element (usually an input)
 cy.get('input').type('my text')
-
-// Clear the text in an element (usually an input)
 cy.get('input').clear()
-
-// Check the first checkbox on a page
 cy.get('[type="checkbox"]').first().check()
-
-// Check a radio button with the value "radio1"
 cy.get('[type="radio"]').check('radio1')
-
-// Uncheck the first checkbox that is not disabled
 cy.get('[type="checkbox"]').not('[disabled]').first().uncheck()
-
-// Select an option with the text value "my value" from a select list
 cy.get('select[name="optionsList"]').select('my value')
-
-// Scroll an element into view
 cy.get('#my-id').scrollIntoView()
 ```
 
 :::info
 
-You can learn more about
-[interacting with DOM elements in our official documentation](/app/core-concepts/interacting-with-elements).
+更多交互方法见[官方文档](/app/core-concepts/interacting-with-elements)。
 
 :::
 
-## Assertions
+## 断言
 
-Similar to Protractor, Cypress enables use of human readable assertions.
+### 长度断言
 
-Here are some common DOM element assertions with Cypress and equivalent
-assertions with Protractor.
-
-### Length
-
-<Badge type="danger">Before: Protractor</Badge>
+<Badge type="danger">迁移前：Protractor</Badge>
 
 ```javascript
-const list = element.all(by.css('li.selected'))
 expect(list.count()).toBe(3)
 ```
 
-<Badge type="success">After: Cypress</Badge>
+<Badge type="success">迁移后：Cypress</Badge>
 
 ```javascript
-// retry until we find 3 matching <li.selected>
 cy.get('li.selected').should('have.length', 3)
 ```
 
-### Class
+### 类断言
 
-<Badge type="danger">Before: Protractor</Badge>
+<Badge type="danger">迁移前：Protractor</Badge>
 
 ```javascript
-expect(
-  element(by.tagName('form')).element(by.tagName('input')).getAttribute('class')
-).not.toContain('disabled')
+expect(input.getAttribute('class')).not.toContain('disabled')
 ```
 
-<Badge type="success">After: Cypress</Badge>
+<Badge type="success">迁移后：Cypress</Badge>
 
 ```javascript
-// retry until this input does not have class disabled
 cy.get('form').find('input').should('not.have.class', 'disabled')
 ```
 
-### Value
+### 值断言
 
-<Badge type="danger">Before: Protractor</Badge>
+<Badge type="danger">迁移前：Protractor</Badge>
 
 ```javascript
-expect(element(by.tagName('textarea'))).getAttribute('value')).toBe('foo bar baz')
+expect(textarea.getAttribute('value')).toBe('foo bar baz')
 ```
 
-<Badge type="success">After: Cypress</Badge>
+<Badge type="success">迁移后：Cypress</Badge>
 
 ```javascript
-// retry until this textarea has the correct value
 cy.get('textarea').should('have.value', 'foo bar baz')
 ```
 
-### Text Content
+### 文本内容断言
 
-<Badge type="danger">Before: Protractor</Badge>
+<Badge type="danger">迁移前：Protractor</Badge>
 
 ```javascript
-// assert the element's text content is exactly the given text
 expect(element(by.id('user-name')).getText()).toBe('Joe Smith')
-// assert the element's text includes the given substring
 expect(element(by.id('address')).getText()).toContain('Atlanta')
-// assert the span does not contain 'click me'
-const child = element(by.tagName('a')).getWebElement()
-const parent = child.getDriver().findElement(by.css('span.help'))
 expect(parent.getText()).not.toContain('click me')
-// assert that the greeting starts with "Hello"
 element(by.id('greeting').getText()).toMatch(/^Hello/)
 ```
 
-<Badge type="success">After: Cypress</Badge>
+<Badge type="success">迁移后：Cypress</Badge>
 
 ```javascript
-// assert the element's text content is exactly the given text
 cy.get('#user-name').should('have.text', 'Joe Smith')
-// assert the element's text includes the given substring
 cy.get('#address').should('include.text', 'Atlanta')
-// retry until this span does not contain 'click me'
 cy.get('a').parent('span.help').should('not.contain', 'click me')
-// the element's text should start with "Hello"
-cy.get('#greeting')
-  .invoke('text')
-  .should('match', /^Hello/)
-// tip: use cy.contains to find element with its text
-// matching the given regular expression
+cy.get('#greeting').invoke('text').should('match', /^Hello/)
 cy.contains('#a-greeting', /^Hello/)
 ```
 
-### Visibility
+### 可见性断言
 
-<Badge type="danger">Before: Protractor</Badge>
+<Badge type="danger">迁移前：Protractor</Badge>
 
 ```javascript
-// assert button is visible
-expect(element(by.tagName('button')).isDisplayed()).toBe(true)
+expect(button.isDisplayed()).toBe(true)
 ```
 
-<Badge type="success">After: Cypress</Badge>
+<Badge type="success">迁移后：Cypress</Badge>
 
 ```javascript
-// retry until this button is visible
 cy.get('button').should('be.visible')
 ```
 
-### Existence
+### 存在性断言
 
-<Badge type="danger">Before: Protractor</Badge>
+<Badge type="danger">迁移前：Protractor</Badge>
 
 ```javascript
-// assert the spinner no longer exists
 expect(element(by.id('loading')).isPresent()).toBe(false)
 ```
 
-<Badge type="success">After: Cypress</Badge>
+<Badge type="success">迁移后：Cypress</Badge>
 
 ```javascript
-// retry until loading spinner no longer exists
 cy.get('#loading').should('not.exist')
 ```
 
-### State
+### 状态断言
 
-<Badge type="danger">Before: Protractor</Badge>
+<Badge type="danger">迁移前：Protractor</Badge>
 
 ```javascript
-expect(element('input[type="radio"]').isSelected()).toBeTruthy()
+expect(radio.isSelected()).toBeTruthy()
 ```
 
-<Badge type="success">After: Cypress</Badge>
+<Badge type="success">迁移后：Cypress</Badge>
 
 ```javascript
-// retry until our radio is checked
 cy.get(':radio').should('be.checked')
 ```
 
-### CSS
+### CSS 断言
 
-<Badge type="danger">Before: Protractor</Badge>
+<Badge type="danger">迁移前：Protractor</Badge>
 
 ```javascript
-// assert .completed has css style "line-through" for "text-decoration" property
-expect(element(by.css('.completed')).getCssValue('text-decoration')).toBe(
-  'line-through'
-)
-
-// assert the accordion does not have a "display: none"
+expect(element(by.css('.completed')).getCssValue('text-decoration')).toBe('line-through')
 expect(element(by.id('accordion')).getCssValue('display')).not.toBe('none')
 ```
 
-<Badge type="success">After: Cypress</Badge>
+<Badge type="success">迁移后：Cypress</Badge>
 
 ```javascript
-// retry until .completed has matching css
 cy.get('.completed').should('have.css', 'text-decoration', 'line-through')
-
-// retry while .accordion css has the "display: none" property
 cy.get('#accordion').should('not.have.css', 'display', 'none')
 ```
 
-### Disabled property
+### 禁用属性断言
 
-```html
-<input type="text" id="example-input" disabled />
-```
-
-<Badge type="danger">Before: Protractor</Badge>
+<Badge type="danger">迁移前：Protractor</Badge>
 
 ```javascript
-// assert the input is disabled
-expect(element(by.id('example-input')).isEnabled()).toBe(false)
+expect(input.isEnabled()).toBe(false)
 ```
 
-<Badge type="success">After: Cypress</Badge>
+<Badge type="success">迁移后：Cypress</Badge>
 
 ```javascript
 cy.get('#example-input')
   .should('be.disabled')
-  // let's enable this element from the test
   .invoke('prop', 'disabled', false)
-
-cy.get('#example-input')
-  // we can use "enabled" assertion
   .should('be.enabled')
-  // or negate the "disabled" assertion
   .and('not.be.disabled')
 ```
 
-Cypress has one additional feature that can make a critical difference in the
-reliability of your tests' assertions:
-[retry-ability](/app/core-concepts/retry-ability).
-When your test fails an assertion or command, Cypress will mimic a real user
-with build-in wait times and multiple attempts at asserting your tests in order
-to minimize the amount of false negatives / positives.
+Cypress 的[重试机制](/app/core-concepts/retry-ability)能减少误报。
 
-<Badge type="danger">Before: Protractor</Badge>
+## 网络处理
 
-```js
-describe('verify elements on a page', () => {
-  it('verifies that a link is visible', () => {
-    expect($('a.submit-link').isDisplayed()).toBe(true)
-  })
-})
-```
+### 网络监听
 
-<Badge type="success">After: Cypress</Badge>
+Cypress 的 [intercept API](/api/commands/intercept) 可监听和管理网络请求：
 
 ```js
-describe('verify elements on a page', () => {
-  it('verifies that a link is visible', () => {
-    cy.get('a.submit-link').should('be.visible')
-  })
-})
+cy.intercept('/users/**')
+cy.get('button').contains('Load More')
 ```
 
-In the example above, if the submit link does not appear on the page at the
-exact moment when Protractor runs the test (which can be due to any number of
-factors including API calls, slow browser rendering, etc.), your test will fail.
-However, Cypress factors these conditions into its assertions and will only fail
-if the time goes beyond a reasonable amount.
+### 网络桩
 
-## Negative assertions
-
-There are positive and negative assertions. Negative assertions have the "not"
-chainer prefixed to the assertion. Examples of negative assertions in both
-Protractor and Cypress:
-
-<Badge type="danger">Before: Protractor</Badge>
-
-```javascript
-expect(
-  element(by.css('.todo'))
-    .getAttribute('class')
-    .then((classes) => {
-      return classes.split(' ').indexOf('completed') !== -1
-    })
-).not.toBe(true)
-
-expect(element(by.id('loading')).isDisplayed()).not.toBe(true)
-```
-
-<Badge type="success">After: Cypress</Badge>
-
-```javascript
-cy.get('.todo').should('not.have.class', 'completed')
-cy.get('#loading').should('not.be.visible')
-```
-
-:::info
-
-Learn more about how Cypress handles
-[assertions](/app/references/assertions).
-
-:::
-
-## Network Handling
-
-### Network Spying
-
-Protractor doesn't offer a built-in solution for network spying. With Cypress,
-you can leverage the [intercept API](/api/commands/intercept) to spy on and
-manage the behavior of any network request.
-
-For example, if you wanted to wait on a network request to complete before
-continuing your test, you could write the following:
+模拟网络错误或自定义响应：
 
 ```js
-it('should display a Load More button after fetching and displaying a list of users', () => {
-  cy.visit('/users')
-  cy.intercept('/users/**')
-  cy.get('button').contains('Load More')
-})
+cy.intercept('GET', 'https://api.openweathermap.org/data/2.5/weather?q=Atlanta', { statusCode: 500 })
+cy.get('.weather-forecast').contains('Weather Forecast Unavailable')
 ```
 
-Cypress will automatically wait for any request to `/users/**` to complete
-before continuing your test.
+## 导航
 
-### Network Stubbing
-
-Cypress's [intercept API](/api/commands/intercept) also allows you to stub any
-network request for your app under test. You can use the
-[intercept API](/api/commands/intercept) to make assertions based on different
-simulated responses for your network requests. For example, you might want to
-simulate a 3rd-party API outage by forcing a network error and test your app
-under those conditions. With Cypress's [intercept API](/api/commands/intercept),
-this and more is possible!
+<Badge type="danger">迁移前：Protractor</Badge>
 
 ```js
-it('should display a warning when the third-party API is down', () => {
-  cy.intercept(
-    'GET',
-    'https://api.openweathermap.org/data/2.5/weather?q=Atlanta',
-    { statusCode: 500 }
-  )
-  cy.get('.weather-forecast').contains('Weather Forecast Unavailable')
-})
+browser.get('/about')
+browser.navigate().forward()
+browser.navigate().back()
 ```
 
-You can also use the intercept API to stub a custom response for specific
-network requests:
+<Badge type="success">迁移后：Cypress</Badge>
 
 ```js
-it('projects endpoint should return 2 projects', () => {
-  cy.intercept('/projects', {
-    body: [{ projectId: '1' }, { projectId: '2' }],
-  }).as('projects')
-  cy.wait('@projects').its('response.body').should('have.length', 2)
-})
+cy.visit('/about')
+cy.go('forward')
+cy.go('back')
 ```
 
-:::info
+## 自动重试与等待
 
-For more information, check out the
-[intercept API documentation](/api/commands/intercept).
+Cypress 自动重试 DOM 查询命令，无需手动等待：
 
-:::
-
-## Navigating Websites
-
-When you want to visit a page, you can do so with the following code:
-
-<Badge type="danger">Before: Protractor</Badge>
+<Badge type="danger">迁移前：Protractor</Badge>
 
 ```js
-it('visits a page', () => {
-  browser.get('/about')
-  browser.navigate().forward()
-  browser.navigate().back()
-})
-```
-
-<Badge type="success">After: Cypress</Badge>
-
-```js
-it('visits a page', () => {
-  cy.visit('/about')
-  cy.go('forward')
-  cy.go('back')
-})
-```
-
-However, Protractor assumes that all websites you want to visit are Angular
-apps. As a result, you have to take an extra step to disable this behavior. When
-you write Cypress tests though, you don't need to do any extra work!
-
-<Badge type="danger">Before: Protractor</Badge>
-
-```js
-it('visit a non-Angular page', () => {
-  browser.waitForAngularEnabled(false)
-  browser.get('/about')
-})
-```
-
-<Badge type="success">After: Cypress</Badge>
-
-```js
-it('visit a non-Angular page', () => {
-  cy.visit('/about')
-})
-```
-
-:::info
-
-For more information, check out our
-[official documentation on navigation](https://example.cypress.io/commands/navigation)!
-
-:::
-
-## Automatic Retrying and Waiting
-
-Web applications are usually rarely synchronous. With Protractor, you may be
-accustomed to adding arbitrary timeouts or using the
-[waitForAngular](https://www.protractortest.org/#/api?view=ProtractorBrowser.prototype.waitForAngular)
-API to wait for Angular to finish rendering before attempting to interact with
-an element.
-
-With Cypress, commands that query the DOM are
-[automatically retried](/app/core-concepts/retry-ability). Cypress will
-automatically wait and retry most commands until an element appears in the DOM.
-If an element is not
-[actionable](/app/core-concepts/interacting-with-elements#Actionability)
-within the
-[`defaultCommandTimeout`](/app/core-concepts/retry-ability#Timeouts) setting,
-the command will fail. This enables you to write tests without the need for
-arbitrary timeouts, enabling you to write more predictable tests.
-
-<Badge type="danger">Before: Protractor</Badge>
-
-```js
-// Clicking a button
 element(by.css('button')).click()
-// Waiting for Angular to re-render the page
 browser.waitForAngular()
-// Make assertion after waiting for Angular to update
 expect(by.css('.list-item').getText()).toEqual('my text')
 ```
 
-<Badge type="success">After: Cypress</Badge>
+<Badge type="success">迁移后：Cypress</Badge>
 
 ```js
-// Clicking a button
 cy.get('button').click()
-// Make assertion. No waiting necessary!
 cy.get('.list-item').contains('my text')
 ```
 
-## Cypress vs WebDriver Control Flow
+## Cypress 与 WebDriver 控制流
 
-Cypress commands are similar to Protractor code at first glance. Cypress
-commands are
-[not invoked immediately](/app/core-concepts/introduction-to-cypress#Commands-Are-Asynchronous)
-and are enqueued to run serially at a later time. Cypress commands might look
-like promises, but the
-[Cypress API is not an exact implementation of Promises](/app/core-concepts/introduction-to-cypress#The-Cypress-Command-Queue).
-The modern web is asynchronous, therefore you need to interact with modern web
-apps in an asynchronous fashion. This is why the Cypress API is asynchronous.
-This allows you to write deterministic tests since all of your commands are
-executed serially, enabling your tests to run predictably each time.
-
-In comparison, Protractor's WebDriverJS API is based on promises, which is
-managed by a control flow. This
-[Control Flow](https://www.protractortest.org/#/control-flow) enables you to
-write asynchronous Protractor tests in a synchronous style.
+Cypress 命令异步执行但串行排队，类似 Protractor 的控制流但更直观：
 
 ```js
-// Click on the element
-// This code looks synchronous!
-element(by.css('button')).click()
-
-// Send keys to the element (usually an input)
-element(by.css('input')).sendKeys('my text')
-```
-
-Protractor's Control Flow can be disabled, allowing you to write your test cases
-as asynchronous functions.
-
-```js
-// Wait for the button to be found and click it
-await element(by.css('button')).click()
-
-// Wait for the input to be found and type into the field
-await element(by.css('input')).sendKeys('my text')
-```
-
-The Control Flow example rewritten as a Cypress test would look something like
-this:
-
-```js
-// Click on the element
 cy.get('button').click()
-
-// Send keys to the element (usually an input)
 cy.get('input').type('my text')
 ```
 
-## Using Page Objects
+## 使用页面对象
 
-A common pattern when writing end-to-end tests, especially with Protractor, is
-[Page Objects](https://github.com/SeleniumHQ/selenium/wiki/PageObjects). Page
-Objects can simplify your test code by creating reusable methods if you find
-yourself writing the same test code across multiple test cases.
-
-### Protractor without Page Objects
-
-```js
-// Type into username field
-element(by.css('.username')).sendKeys('my username')
-// Type into password field
-element(by.css('.password')).sendKeys('my password')
-// Click the login button
-element(by.css('button')).click()
-```
-
-### Protractor with Page Objects
+### Protractor 页面对象
 
 ```js
 const page = {
@@ -1007,24 +509,9 @@ const page = {
     element(by.css('button')).click()
   },
 }
-
-it('should display the username of a logged in user', () => {
-  page.login()
-  expect(by.css('.username').getText()).toEqual('my username')
-})
 ```
 
-You can use the same Page Object pattern within your Cypress tests:
-
-### Cypress without Page Objects
-
-```js
-cy.get('.username').type('my username')
-cy.get('.password').type('my password')
-cy.get('button').click()
-```
-
-### Cypress with Page Objects
+### Cypress 页面对象
 
 ```js
 const page = {
@@ -1034,15 +521,9 @@ const page = {
     cy.get('button').click()
   },
 }
-
-it('should display the username of a logged in user', () => {
-  page.login()
-  cy.get('.username').contains('my username')
-})
 ```
 
-Cypress also provides a [Custom Command](/api/cypress-api/custom-commands) API
-to enable you to add methods to the `cy` global directly:
+或使用自定义命令：
 
 ```js
 Cypress.Commands.add('login', (username, password) => {
@@ -1051,70 +532,28 @@ Cypress.Commands.add('login', (username, password) => {
 })
 ```
 
-You can use your own custom commands in any of your tests:
+## 持续集成
 
-```js
-it('should display the username of a logged in user', () => {
-  cy.login('Matt', Cypress.env('password'))
-  cy.get('.username').contains('Matt')
-})
-```
+Cypress 支持所有主流 CI 环境，详见：
+- [GitHub Actions](/app/continuous-integration/github-actions)
+- [CircleCI](/app/continuous-integration/circleci)
+- [GitLab CI](/app/continuous-integration/gitlab-ci)
+- [Bitbucket Pipeline](/app/continuous-integration/bitbucket-pipelines)
+- [AWS CodeBuild](/app/continuous-integration/aws-codebuild)
 
-## Continuous Integration
+## 并行化
 
-Cypress makes it easy to
-[run your tests in all Continuous Integration environments](/app/continuous-integration/overview).
-
-Check out our in-depth guides to run your Cypress tests in
-[GitHub Actions](/app/continuous-integration/github-actions),
-[CircleCI](/app/continuous-integration/circleci),
-[GitLab CI](/app/continuous-integration/gitlab-ci),
-[Bitbucket Pipeline](/app/continuous-integration/bitbucket-pipelines), or
-[AWS CodeBuild](/app/continuous-integration/aws-codebuild).
-
-We also have code samples to get Cypress up and running in
-[many of the other popular CI environments](/app/continuous-integration/overview#CI-Examples).
-Even if your CI provider isn't listed, you can still run Cypress in your CI
-environment.
-
-## Parallelization
-
-[Cypress Cloud](/cloud/get-started/introduction) allows you to run your test files in
-parallel across multiple CI machines.
-
-With Cypress, your tests can be
-[parallelized on a per spec file basis](/cloud/features/smart-orchestration/parallelization).
-This is an important distinction between Protractor and Cypress parallelization.
-One of the reasons why Cypress parallelizes tests per file is because some users
-may write tests that build up state that subsequent tests, although we
-[do not recommend relying on the state of previous tests](/app/core-concepts/best-practices#Having-Tests-Rely-On-The-State-Of-Previous-Tests).
-
-With Cypress, all you need to do is pass the `--parallel` and `--record` flag to
-`cypress run`, and it will take care of the rest for you:
+[Cypress Cloud](/cloud/get-started/introduction) 支持跨多台 CI 机器[并行运行测试文件](/cloud/features/smart-orchestration/parallelization)：
 
 ```bash
 cypress run --record --parallel
 ```
 
-:::info
-
-For more information, check out our
-[docs on parallelization](/cloud/features/smart-orchestration/parallelization)!
-
-:::
-
 <TestReplayInfo />
 
-## Angular Schematic Configuration
+## Angular Schematic 配置
 
-The
-[Cypress Angular Schematic](https://github.com/cypress-io/cypress/tree/develop/npm/cypress-schematic#readme)
-has many configurable options to fit the needs of your project.
-
-### Running the builder with a specific browser
-
-Before running Cypress in `open` mode, ensure that you have started your
-application server using `ng serve`.
+### 指定浏览器运行
 
 ```json
 "cypress-open": {
@@ -1123,160 +562,68 @@ application server using `ng serve`.
     "watch": true,
     "headless": false,
     "browser": "chrome"
-  },
-  "configurations": {
-    "production": {
-      "devServerTarget": "{project-name}:serve:production"
-    }
   }
 }
 ```
 
-:::info
-
-Read the docs on [launching browsers](http://on.cypress.io/launching-browsers)
-to learn more.
-
-:::
-
-### Recording test results to Cypress Cloud
-
-We recommend setting your
-[Cypress Cloud](/cloud/get-started/introduction) recording key
-as an environment variable and _NOT_ as a builder option when running it in CI.
+### 记录测试到 Cypress Cloud
 
 ```json
 "cypress-run": {
   "builder": "@cypress/schematic:cypress",
   "options": {
-    "devServerTarget": "{project-name}:serve",
     "record": true,
     "key": "your-cypress-dashboard-recording-key"
-  },
-  "configurations": {
-    "production": {
-      "devServerTarget": "{project-name}:production"
-    }
   }
 }
 ```
 
-Read the docs on
-[recording test results](http://on.cypress.io/recording-project-runs) to
-[Cypress Cloud](/cloud/get-started/introduction) to learn more.
-
-### Specifying a custom Cypress configuration file
-
-It may be useful to have different Cypress configuration files per environment
-(ie. development, staging, production).
+### 自定义配置文件
 
 ```json
-"cypress-run": {
-  "builder": "@cypress/schematic:cypress",
-  "options": {
-    "devServerTarget": "{project-name}:serve",
-    "configFile": "cypress.production.config.js"
-  },
-  "configurations": {
-    "production": {
-      "devServerTarget": "{project-name}:production"
-    }
-  }
+"options": {
+  "configFile": "cypress.production.config.js"
 }
 ```
 
-:::info
-
-Read our docs to learn more about all the
-[configuration options](http://on.cypress.io/configuration) Cypress offers.
-
-:::
-
-### Running Cypress in parallel mode within CI
+### CI 并行模式
 
 ```json
-"cypress-run": {
-  "builder": "@cypress/schematic:cypress",
-  "options": {
-    "devServerTarget": "{project-name}:serve",
-    "parallel": true,
-    "record": true,
-    "key": "your-cypress-dashboard-recording-key"
-  },
-  "configurations": {
-    "production": {
-      "devServerTarget": "{project-name}:production"
-    }
-  }
+"options": {
+  "parallel": true,
+  "record": true,
+  "key": "your-cypress-dashboard-recording-key"
 }
 ```
 
-:::info
+### 代码覆盖率
 
-Read our docs to learn more about speeding up test execution in CI via
-[Cypress parallelization](http://on.cypress.io/parallelization)
+参考[代码覆盖率指南](/app/tooling/code-coverage)评估测试覆盖范围。
 
-:::
+## 下一步
 
-### Code Coverage
-
-As you write more and more end-to-end tests, you will find yourself wondering -
-do I need to write more tests? Are there parts of the application still
-untested? Are there parts of the application that perhaps are tested too much?
-This [code coverage guide](/app/tooling/code-coverage) is an excellent
-resource to learn how to add code coverage.
-
-### Questions or Issues?
-
-Visit our
-[plugins discussion](https://github.com/cypress-io/cypress/discussions/categories/plugins)
-to ask questions or report issues related to our Cypress Angular Schematic.
-
-## Next Steps
-
-For more information on how to create end-to-end tests with Cypress, be sure to
-check out [our official documentation here](/app/get-started/why-cypress).
+更多端到端测试信息，请查阅[官方文档](/app/get-started/why-cypress)。
 
 :::caution
 
-If you see any inaccuracies with this guide or feel like something has been
-misrepresented, please
-[start a discussion here](https://github.com/cypress-io/cypress/discussions/new).
+发现指南有误？请[发起讨论](https://github.com/cypress-io/cypress/discussions/new)。
 
 :::
 
-## FAQs
+## 常见问题
 
-### Do I have to replace all of my tests with Cypress immediately?
+### 必须立即替换所有 Protractor 测试吗？
 
-Absolutely not. While it might sound ideal to replace Protractor immediately,
-you can gradually migrate Protractor tests over to Cypress.
+不必。可逐步迁移 Protractor 测试到 Cypress。
 
-### Can Protractor and Cypress coexist in the same app?
+### Protractor 和 Cypress 能否共存？
 
-Yes! Your Protractor tests would continue to live in the `e2e` directory that
-Angular CLI scaffolded while all Cypress tests would live in a sibling folder
-named `cypress`.
+可以。Protractor 测试保留在 `e2e` 目录，Cypress 测试放在同级 `cypress` 文件夹。
 
 ```
 .
 ├── cypress
 ├── e2e
 ├── src
-├── .editorconfig
-├── .gitignore
-├── angular.json
-├── browserslist
-├── cypress.config.js
-├── karma.conf.js
-├── package.json
-├── README.md
-├── tsconfig.app.json
-├── tsconfig.json
-├── tsconfig.spec.json
-└── tslint.json
+└── ...
 ```
-
-In fact, as you work through migrating to Cypress, we believe that progressively
-enhancing your e2e tests with Cypress is the best path forward to ensure that
-feature development is not impacted.

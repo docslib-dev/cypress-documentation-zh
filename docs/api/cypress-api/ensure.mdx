@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.ensure | Cypress Documentation'
-description: 'Cypress.ensure is a collection of helper methods for making assertions. They are mostly useful when writing custom queries or custom commands.'
+title: 'Cypress.ensure | Cypress 文档'
+description: 'Cypress.ensure 是一组用于断言的辅助方法，在编写自定义查询或自定义命令时特别有用。'
 sidebar_label: ensure
 sidebar_position: 110
 ---
@@ -9,25 +9,20 @@ sidebar_position: 110
 
 # Cypress.ensure
 
-`Cypress.ensure` is a collection of helper methods for making assertions. They
-are mostly useful when writing [custom queries](/api/cypress-api/custom-queries)
-or [custom commands](/api/cypress-api/custom-commands).
+`Cypress.ensure` 是一组用于断言的辅助方法，主要适用于编写[自定义查询](/api/cypress-api/custom-queries)或[自定义命令](/api/cypress-api/custom-commands)。
 
-Most functions on `Cypress.ensure` accept a
-[`subject`](/app/core-concepts/introduction-to-cypress#Subject-Management)
-argument, check an assertion, and throw an error if the assertion fails. These
-functions have no return value.
+`Cypress.ensure` 上的大多数函数接受一个[`subject`](/app/core-concepts/introduction-to-cypress#Subject-Management)参数，检查断言，并在断言失败时抛出错误。这些函数没有返回值。
 
-## Syntax
+## 语法
 
 ```javascript
-// Type of argument
+// 参数类型
 Cypress.ensure.isType(subject, type, commandName, cy)​
 Cypress.ensure.isElement(subject, commandName, cy)​
 Cypress.ensure.isWindow(subject, commandName, cy)
 Cypress.ensure.isDocument(subject, commandName, cy)​
 
-// State of DOM element
+// DOM元素状态
 Cypress.ensure.isAttached(subject, commandName, cy)​
 Cypress.ensure.isNotDisabled(subject, commandName)​
 Cypress.ensure.isNotHiddenByAncestors(subject, commandName)​
@@ -39,21 +34,18 @@ Cypress.ensure.isVisible(subject, commandName)​
 
 :::caution
 
-Many of these functions accept an optional `onFail` argument. This is a legacy
-feature used to customize the thrown error, and may be removed in a future
-release; we recommend against relying on it. If you need more control over the
-error thrown, write your own `ensure` function instead.
+这些函数中的许多接受一个可选的 `onFail` 参数。这是一个用于自定义抛出错误的遗留功能，可能在未来的版本中移除；我们建议不要依赖它。如果需要更多对抛出错误的控制，请编写自己的 `ensure` 函数。
 
 :::
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 Cypress.Commands.addQuery('getChildById', function (id) {
   return (subject) => {
-    // Verify that the subject is an element, document, or window object
+    // 验证 subject 是一个元素、文档或窗口对象
     Cypress.ensure.isType(
       subject,
       ['element', 'document', 'window'],
@@ -69,7 +61,7 @@ const queryName = 'verifyElementActionable'
 
 Cypress.Commands.addQuery(queryName, function (...args) {
   return (subject) => {
-    // Verify that the subject fulfills a variety of conditions
+    // 验证 subject 满足多种条件
     Cypress.ensure.isElement(subject, queryName, cy)
     Cypress.ensure.isVisible(subject, queryName, cy)
     Cypress.ensure.isNotDisabled(subject, queryName, cy)
@@ -80,8 +72,6 @@ Cypress.Commands.addQuery(queryName, function (...args) {
 })
 ```
 
-## See also
+## 另请参阅
 
-- ["Custom Queries"](/api/cypress-api/custom-queries) contains more information
-  about writing custom queries, which is the main use-case for the `ensure`
-  functions.
+- ["自定义查询"](/api/cypress-api/custom-queries) 包含更多关于编写自定义查询的信息，这是 `ensure` 函数的主要用例。

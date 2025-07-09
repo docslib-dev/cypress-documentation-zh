@@ -1,6 +1,6 @@
 ---
-title: 'closest | Cypress Documentation'
-description: Get the first DOM element that matches the selector in Cypress (whether it be itself or one of its ancestors).
+title: 'closest | Cypress 文档'
+description: 获取与选择器匹配的第一个DOM元素（可以是元素本身或其祖先元素之一）。
 sidebar_label: closest
 slug: /api/commands/closest
 ---
@@ -9,112 +9,108 @@ slug: /api/commands/closest
 
 # closest
 
-Get the first DOM element that matches the selector (whether it be itself or one
-of its ancestors).
+获取与选择器匹配的第一个DOM元素（可以是元素本身或其祖先元素之一）。
 
 :::info
 
-The querying behavior of this command matches exactly how
-[`.closest()`](https://api.jquery.com/closest) works in jQuery.
+该命令的查询行为与jQuery中的
+[`.closest()`](https://api.jquery.com/closest)完全一致。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .closest(selector)
 .closest(selector, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('td').closest('.filled') // Yield closest el with class '.filled'
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.closest('.active') // Errors, cannot be chained off 'cy'
-cy.clock().closest() // Errors, 'clock' does not yield DOM elements
+cy.get('td').closest('.filled') // 获取带有类'.filled'的最近元素
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
-<Icon name="angle-right" /> **selector _(String selector)_**
+```javascript
+cy.closest('.active') // 错误，不能直接在'cy'上链式调用
+cy.clock().closest() // 错误，'clock'不返回DOM元素
+```
 
-A selector used to filter matching DOM elements.
+### 参数
 
-<Icon name="angle-right" /> **options _(Object)_**
+<Icon name="angle-right" /> **selector _(字符串选择器)_**
 
-Pass in an options object to change the default behavior of `.closest()`.
+用于过滤匹配DOM元素的选择器。
 
-| Option    | Default                                                           | Description                                                                         |
-| --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.closest()` to resolve before [timing out](#Timeouts)             |
+<Icon name="angle-right" /> **options _(对象)_**
+
+传入选项对象以改变`.closest()`的默认行为。
+
+| 选项      | 默认值                                                           | 描述                                                                         |
+| --------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令           |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 等待`.closest()`解析的时长，超过则[超时](#Timeouts)                         |
 
 <HeaderYields />
 
-- `.closest()` yields the new DOM element(s) it found.
-- `.closest()` is a query, and it is _safe_ to chain further commands.
+- `.closest()`返回找到的新DOM元素。
+- `.closest()`是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### Selector
+### 选择器
 
-#### Find the closest element of the `.error` with the class 'banner'
+#### 查找`.error`元素最近的带有'banner'类的祖先元素
 
 ```javascript
 cy.get('p.error').closest('.banner')
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.closest()` requires being chained off a command that yields DOM element(s).
+- `.closest()`必须链式调用在返回DOM元素的命令之后。
 
 <HeaderAssertions />
 
-- `.closest()` will automatically [retry](/app/core-concepts/retry-ability)
-  until the element(s)
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.closest()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed.
+- `.closest()`会自动[重试](/app/core-concepts/retry-ability)，直到元素
+  [存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)。
+- `.closest()`会自动[重试](/app/core-concepts/retry-ability)，直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `.closest()` can time out waiting for the element(s) to
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.closest()` can time out waiting for assertions you've added to pass.
+- `.closest()`可能因等待元素
+  [存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)而超时。
+- `.closest()`可能因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Find the closest element of `li.active` with the class 'nav'_**
+**_查找`li.active`元素最近的带有'nav'类的祖先元素_**
 
 ```javascript
 cy.get('li.active').closest('.nav')
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/closest/find-closest-nav-element-in-test.png"
-  alt="Command Log closest"
+  alt="命令日志 closest"
 />
 
-When clicking on the `closest` command within the command log, the console
-outputs the following:
+当点击命令日志中的`closest`命令时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/closest/closest-console-logs-elements-found.png"
   alt="console.log closest"
 />
 
-## See also
+## 另请参阅
 
 - [`.first()`](/api/commands/first)
 - [`.parent()`](/api/commands/parent)

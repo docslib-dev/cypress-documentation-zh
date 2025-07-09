@@ -9,10 +9,10 @@ interface CypressConfigFileTabsProps {
 const CypressConfigFileTabs: React.FC<CypressConfigFileTabsProps> = ({ children }) => {
   return (
     <Tabs groupId="config-file-tabs">
-      <TabItem value="js" label="cypress.config.js">
+      <TabItem value="js" label="cypress.config.js 文件">
         {children && children[0]}
       </TabItem>
-      <TabItem value="ts" label="cypress.config.ts">
+      <TabItem value="ts" label="cypress.config.ts 文件">
         {children && children[1]}
       </TabItem>
     </Tabs>

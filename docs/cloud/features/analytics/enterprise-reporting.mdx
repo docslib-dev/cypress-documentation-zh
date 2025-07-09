@@ -1,187 +1,160 @@
 ---
-title: Enterprise Reporting
+title: 企业级报告
 sidebar_position: 30
-description: Enterprise Reporting in Cypress Cloud provides insights and data access to help you spot trends and anomalies, track usage, and govern your overall test program across all projects in your organization.
+description: Cypress Cloud的企业级报告功能提供洞察力和数据访问，帮助您发现趋势和异常、跟踪使用情况，并管理组织内所有项目的整体测试计划。
 sidebar_custom_props: { 'new_label': true }
 ---
 
 <ProductHeading product="cloud" plan="enterprise" />
 
-# Enterprise Reporting
+# 企业级报告
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 您将了解
 
-- How to access and use Enterprise Reporting in Cypress Cloud
-- How to interpret the data and insights provided by Enterprise Reporting
-- How to download data from Enterprise Reporting
-- How to programmatically retrieve test data through the Cypress Cloud API
+- 如何在Cypress Cloud中访问和使用企业级报告
+- 如何解读企业级报告提供的数据和洞察
+- 如何从企业级报告下载数据
+- 如何通过Cypress Cloud API以编程方式获取测试数据
 
 :::
 
-Enterprise Reporting is available within Cypress Cloud so that you can spot trends and anomalies,
-track usage, and govern your overall test program across all projects in your organization. Included
-is the ability to interact with visual cards that highlight usage, test metrics, test types, flake,
-build versions, and more. The raw data from all graphs presented in Cloud can be downloaded in a variety
-of formats. And if you prefer to programmatically retrieve test data for use within your own analytics
-platform, take a look at our [data extract API](/cloud/integrations/data-extract-api).
+Cypress Cloud提供企业级报告功能，让您能够发现趋势和异常、跟踪使用情况，并管理组织内所有项目的整体测试计划。该功能包含可交互的可视化卡片，突出显示使用情况、测试指标、测试类型、不稳定测试、构建版本等信息。Cloud中展示的所有图表原始数据都可以多种格式下载。如果您更倾向于以编程方式获取测试数据用于自己的分析平台，请查看我们的[数据提取API](/cloud/integrations/data-extract-api)。
 
 :::tip
 
-<Icon name="star" /> **Premium Cypress Cloud Feature**
+<Icon name="star" /> **Cypress Cloud高级功能**
 
-**Enterprise Reporting** is available to users with an
-[Enterprise Cypress Cloud plan](https://cypress.io/pricing).
+**企业级报告**仅适用于拥有
+[企业版Cypress Cloud计划](https://cypress.io/pricing)的用户。
 :::
 
-## Comprehensive Insights & Data Access
+## 全面洞察与数据访问
 
-If available in your Cypress plan, Enterprise Reporting is accessible by clicking on the **Enterprise
-Reporting** link in the left menu.
+如果您的Cypress计划包含此功能，可通过左侧菜单中的**企业级报告**链接访问。
 
-Your insights are grouped into tabs named **Overall Usage**, **Test Results**, **Test
-Setup**, **Test Execution**, **Flaky Tests**, and **Raw Data**. When the page first loads, data is displayed for all projects in your
-organization for the current month and the preceding two months. However, the ability to customize your date range and projects is
-supported through the filters available on the page.
+您的洞察数据按标签页分组显示，包括**总体使用情况**、**测试结果**、**测试设置**、**测试执行**、**不稳定测试**和**原始数据**。页面首次加载时，会显示您组织中所有项目当前月及前两个月的数据。但您可以通过页面上的筛选器自定义日期范围和项目。
 
-**A couple of things to note:**
+**需要注意几点：**
 
-- Data shown in Enterprise Reporting is not real-time. It is available as of midnight UTC of the current day.
-  I.e. - data will be populated through "end of day yesterday".
-- Historical data is available as specified by your data retention limit in Cypress Cloud.
+- 企业级报告中显示的数据并非实时数据。数据更新截至当天UTC时间午夜，即数据会更新到"昨天结束"。
+- 历史数据的可用性取决于您在Cypress Cloud中的数据保留期限。
 
-The type of information and insights available on the various tabs are described in the sections that follow.
+以下各节将描述各标签页上可用的信息类型和洞察内容。
 
-### Overall Usage
+### 总体使用情况
 
-- How many Cypress tests are you utilizing across all projects in your organization?
-- Where are those tests concentrated?
-- How has test utilization changed over time?
+- 您的组织在所有项目中使用了多少Cypress测试？
+- 这些测试集中在哪些地方？
+- 测试使用情况随时间发生了怎样的变化？
 
-These are a few of the questions that can be answered by the cards shown on the **Overall Usage** tab of Enterprise
-Reporting. Utilize the `Start Date` and `End Date` filters if you need to drill into a specific time period. The `Projects`
-filter can be used to filter the data by one or multiple projects. The `Branch` filter can be used to select one or more
-branches that exist in your projects. The data on this tab correlates to what Cypress Cloud
-[counts as a test result](/cloud/faq#What-counts-as-a-test-result).
+这些问题可以通过企业级报告**总体使用情况**标签页上的卡片得到解答。如需深入特定时间段，可使用`开始日期`和`结束日期`筛选器。`项目`筛选器可用于按一个或多个项目筛选数据。`分支`筛选器可用于选择项目中存在的一个或多个分支。此标签页上的数据与Cypress Cloud[计为测试结果的内容](/cloud/faq#What-counts-as-a-test-result)相关。
 
 <DocsImage
   src="/img/cloud/features/analytics/enterprise-reporting-usage-report.png"
-  alt="Cloud Enterprise Reporting usage report"
+  alt="Cloud企业级报告使用情况报告"
 />
 
-### Test Results
+### 测试结果
 
-How many of your runs, specs, or individual tests are passing or failing? The **Test Results** tab
-of Enterprise Reporting allows you to review the status rates of your tests from all three levels of granularity.
+您的运行、规范或单个测试中有多少是通过或失败的？企业级报告的**测试结果**标签页允许您从三个粒度级别审查测试的状态率。
 
 <DocsImage
   src="/img/cloud/features/analytics/enterprise-reporting-test-results.png"
-  alt="Cloud Enterprise Reporting test results report"
+  alt="Cloud企业级报告测试结果报告"
 />
 
-### Test Setup
+### 测试设置
 
-The **Test Setup** tab on Enterprise Reporting contains metrics that show how your runs are configured and maintained.
+企业级报告的**测试设置**标签页包含显示您的运行如何配置和维护的指标。
 
-- What is your proportion of end-to-end tests to [component tests](/app/component-testing/get-started)?
-- How has the size of your test suites changed over time across your organization?
-- What projects are configured and using Cypress smart orchestration capabilities?
-- Which version of Cypress are you using for your runs?
+- 您的端到端测试与[组件测试](/app/component-testing/get-started)的比例是多少？
+- 您的测试套件规模在组织中随时间发生了怎样的变化？
+- 哪些项目配置并使用了Cypress智能编排功能？
+- 您用于运行的Cypress版本是什么？
 
-These are some of the questions that will be answered by the data presented on this tab.
+这些问题将通过此标签页上展示的数据得到解答。
 
 <DocsImage
   src="/img/cloud/features/analytics/enterprise-reporting-test-setup1.png"
-  alt="Cloud Enterprise Reporting test setup report"
+  alt="Cloud企业级报告测试设置报告"
 />
 
 <DocsImage
   src="/img/cloud/features/analytics/enterprise-reporting-test-setup2.png"
-  alt="Cloud Enterprise Reporting test setup report"
+  alt="Cloud企业级报告测试设置报告"
 />
 
-### Test Execution
+### 测试执行
 
-The **Test Execution** tab on Enterprise Reporting helps you understand the environment and details around your Cypress runs.
+企业级报告的**测试执行**标签页帮助您了解Cypress运行的环境和细节。
 
-- Which browsers are being tested?
-- Are the browsers used for testing consistent across your organization or changing over time within a project?
-- Have there been changes to the text execution times of your Cypress runs?
-- What is the average failure or error rate of tests across your organization and how do individual projects compare to those averages?
+- 测试了哪些浏览器？
+- 用于测试的浏览器在组织中是否一致，或在项目中是否随时间变化？
+- 您的Cypress运行的测试执行时间是否有变化？
+- 您组织中测试的平均失败或错误率是多少，单个项目与这些平均值相比如何？
 
-These are some of the questions that will be answered by the data presented on this tab.
+这些问题将通过此标签页上展示的数据得到解答。
 
 <DocsImage
   src="/img/cloud/features/analytics/enterprise-reporting-test-execution1.png"
-  alt="Cloud Enterprise Reporting test execution report"
+  alt="Cloud企业级报告测试执行报告"
 />
 
 <DocsImage
   src="/img/cloud/features/analytics/enterprise-reporting-test-execution2.png"
-  alt="Cloud Enterprise Reporting test execution report"
+  alt="Cloud企业级报告测试执行报告"
 />
 
-### Flaky Tests
+### 不稳定测试
 
-The **Flaky Tests** tab on Enterprise Reporting allows you to see flaky test occurrences and rates for your entire organization or
-specific projects. This can be a single snapshot based on the start and end date filters, or can be viewed over time. Flake
-_rate_ can be helpful because it allows you to see what % of runs in a project are flaky. This allows easy comparison of flaky
-tests between projects regardless of the volume of runs occurring in the projects.
+企业级报告的**不稳定测试**标签页允许您查看整个组织或特定项目的不稳定测试发生情况和比率。这可以是基于开始和结束日期筛选器的单一快照，也可以随时间查看。不稳定_率_很有帮助，因为它可以让您看到项目中不稳定运行的百分比。这使得无论项目中的运行量如何，都可以轻松比较项目之间的不稳定测试。
 
 <DocsImage
   src="/img/cloud/features/analytics/enterprise-reporting-flaky-tests.png"
-  alt="Cloud Enterprise Reporting test suite report"
+  alt="Cloud企业级报告测试套件报告"
 />
 
-### UI Coverage
+### UI覆盖率
 
-See trends in [UI Coverage](https://www.cypress.io/ui-coverage?utm_medium=enterprise-reporting&utm_source=docs.cypress.io&utm_content=UI%20Coverage) to understand when coverage scores are improving or drifting off course.
+查看[UI覆盖率](https://www.cypress.io/ui-coverage?utm_medium=enterprise-reporting&utm_source=docs.cypress.io&utm_content=UI%20Coverage)趋势，了解覆盖率分数何时提高或偏离。
 
 <DocsImage
   src="/img/cloud/features/analytics/uicov-enterprise-reporting.png"
-  alt="Cloud Enterprise Reporting showing accessibility scores and trends"
+  alt="Cloud企业级报告显示可访问性分数和趋势"
 />
 
-### Cypress Accessibility
+### Cypress可访问性
 
-See trends in [Cypress Accessibility](https://www.cypress.io/accessibility?utm_medium=enterprise-reporting&utm_source=docs.cypress.io&utm_content=Cypress%20Accessibility) scores across projects to understand the relative changes in accessibility scores over time.
+查看项目中[Cypress可访问性](https://www.cypress.io/accessibility?utm_medium=enterprise-reporting&utm_source=docs.cypress.io&utm_content=Cypress%20Accessibility)分数的趋势，了解可访问性分数随时间的相对变化。
 
 <DocsImage
   src="/img/cloud/features/analytics/a11y-enterprise-reporting.png"
-  alt="Cloud Enterprise Reporting showing accessibility scores and trends"
+  alt="Cloud企业级报告显示可访问性分数和趋势"
 />
 
-### Download data from Cloud
+### 从Cloud下载数据
 
-All of the charts shown in Enterprise Reporting allow you to download the raw data used to
-render the chart visual. If you would like to manually download the raw data for further review, simply
-hover over the chart, select `Download results` from the three ellipsis menu in the upper right corner of the
-chart, and a menu will be displayed that allows you to download the data in the following formats:
+企业级报告中显示的所有图表都允许您下载用于渲染图表可视化的原始数据。如果您想手动下载原始数据进行进一步审查，只需将鼠标悬停在图表上，从图表右上角的三点菜单中选择`下载结果`，将显示一个菜单，允许您以以下格式下载数据：
 
 - .csv
 - .xlsx
 - .json
 - .png
 
-Once you select the format you want to download, the file will immediately be downloaded by your browser.
+选择您想要下载的格式后，文件将立即由您的浏览器下载。
 
 <DocsImage
   src="/img/cloud/features/analytics/enterprise-reporting-download.png"
-  alt="Cloud Enterprise Reporting download data"
+  alt="Cloud企业级报告下载数据"
 />
 
-### Retrieve your test data through API
+### 通过API获取测试数据
 
-The Cypress Cloud [data extract API](/cloud/integrations/data-extract-api) provides full access to
-the test data shown within the Cloud Enterprise Reporting pages. Examples of the granular data are
-provided on the **Raw Data** tab so that you can review the data before you decide to integrate with the
-Cypress Cloud API. To download, simply hover over the chart, select `Download results`, and choose the
-download format of your data. When you are ready to integrate with the API you can visit the
-[data extract API](/cloud/integrations/data-extract-api) page for the list of endpoints, data
-returned, and instructions for how to integrate.
+Cypress Cloud的[数据提取API](/cloud/integrations/data-extract-api)提供对Cloud企业级报告页面中显示的测试数据的完全访问。**原始数据**标签页上提供了粒度数据的示例，以便您在决定与Cypress Cloud API集成之前可以审查数据。要下载，只需将鼠标悬停在图表上，选择`下载结果`，并选择您数据的下载格式。当您准备好与API集成时，可以访问[数据提取API](/cloud/integrations/data-extract-api)页面，查看端点列表、返回的数据以及集成说明。
 
 <DocsImage
   src="/img/cloud/features/analytics/enterprise-reporting-sample-download.png"
-  alt="Cloud Enterprise Reporting retrieve JWT"
+  alt="Cloud企业级报告获取JWT"
 />

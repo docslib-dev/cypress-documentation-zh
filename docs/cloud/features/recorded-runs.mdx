@@ -1,462 +1,340 @@
 ---
-title: Recorded Runs
-description: View and analyze recorded test runs in Cypress Cloud.
+title: 记录的测试运行
+description: 在Cypress Cloud中查看和分析记录的测试运行。
 sidebar_position: 30
 ---
 
 <ProductHeading product="cloud" />
 
-# Recorded Runs
+# 记录的测试运行
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 您将学习到
 
-- How to view and analyze recorded test runs in Cypress Cloud
-- How to cancel, archive, and restore archived runs
-- How to view and analyze recorded test runs in the Cypress App
+- 如何在Cypress Cloud中查看和分析记录的测试运行
+- 如何取消、归档和恢复已归档的运行
+- 如何在Cypress App中查看和分析记录的测试运行
 
 :::
 
-Recorded runs capture the results from your test runs. Each specific area of
-this highly informative view is described below.
+记录的测试运行捕获了您的测试运行结果。这个信息丰富的视图的每个特定区域将在下面描述。
 
 :::tip
 
-<Icon name="check-circle" color="green" /> If you haven't set up your project to
-record, [read here](/cloud/get-started/setup#Setup).
+<Icon name="check-circle" color="green" /> 如果您尚未设置项目进行记录，[请阅读此处](/cloud/get-started/setup#Setup)。
 
 :::
 
-## Latest Runs
+## 最新运行
 
-The Project entry point provides a high-level overview of your most recent runs.
-This view presents a paginated summary of runs which are filterable and can be
-manually refreshed in the top right corner.
+项目入口点提供了您最近运行的高级概览。此视图显示了可分页的运行摘要，可进行过滤，并可在右上角手动刷新。
 
-## Run Details
+## 运行详情
 
-On navigating to a specific run, you are presented with the Run Details page.
-This page consists of a common header and four tabbed sub-pages,
-[Overview](#Overview-tab), [Test Results](#Test-Results-tab),
-[Specs](#Specs-tab), and [Errors](#Errors-tab).
+导航到特定运行时，您将看到运行详情页面。该页面包含一个通用标题和四个标签子页面：[概览](#Overview-tab)、[测试结果](#Test-Results-tab)、[规范文件](#Specs-tab)和[错误](#Errors-tab)。
 
-<DocsImage src="/img/cloud/runs/run-details-page.png" alt="Run Details page" />
+<DocsImage src="/img/cloud/runs/run-details-page.png" alt="运行详情页面" />
 
-### Run header
+### 运行标题
 
-At the left side of the header is important metadata about the run, including
-git author and branch
-([if available](/app/continuous-integration/overview#Git-information)),
-run time and duration, CI data and more. Clicking on the three dots to the right
-of this section displays additional metadata, including browsers and operating
-systems used, the Cypress version, and what
-[Smart Orchestration](/cloud/features/smart-orchestration/overview) settings were
-active.
+标题的左侧是关于运行的重要元数据，包括git作者和分支（[如果可用](/app/continuous-integration/overview#Git-information)）、运行时间和持续时间、CI数据等。点击此部分右侧的三个点会显示更多元数据，包括使用的浏览器和操作系统、Cypress版本以及哪些[智能编排](/cloud/features/smart-orchestration/overview)设置处于活动状态。
 
-At the right of the header are a set of indicators showing the number of
-[flaky](/cloud/features/flaky-test-management), skipped, pending, passed, and
-failed tests in this run. Clicking any of these takes you to the
-[Test Results](#Test-Results-tab) tab with results filtered by the clicked
-status.
+标题的右侧是一组指示器，显示此运行中[不稳定](/cloud/features/flaky-test-management)、跳过、待定、通过和失败的测试数量。点击其中任何一个将带您到[测试结果](#Test-Results-tab)标签页，并按点击的状态过滤结果。
 
 <DocsImage
   src="/img/cloud/runs/run-details-header.png"
-  alt="Run details header"
+  alt="运行详情标题"
 />
 
-### Run in progress panel
+### 运行中面板
 
-If the selected run is currently in progress, an additional panel will be shown
-under the Run Header with a progress indicator and an action link to
-[cancel the run](#Run-cancellation).
+如果所选运行当前正在进行中，将在运行标题下方显示一个额外的面板，其中包含进度指示器和[取消运行](#Run-cancellation)的操作链接。
 
 <DocsImage
   src="/img/cloud/runs/run-in-progress-panel.png"
-  alt="Run in progress panel"
+  alt="运行中面板"
 />
 
-## Overview tab
+## 概览标签页
 
-By default the Run Details page will be open to the Overview tab. Here you can
-see the run metrics we consider most critical.
+默认情况下，运行详情页面将打开到概览标签页。在这里，您可以看到我们认为最关键的运行指标。
 
-### Run duration
+### 运行持续时间
 
-This graph visualizes how long your tests took to run compared to previous runs,
-with the currently selected run highlighted. Run status is indicated by the
-color of the bars, which may be filtered by status with the dropdown to the top
-right of that graph. Hovering over a run displays a popover with more
-information.
+此图表可视化您的测试运行时间与之前运行的比较，当前选定的运行会高亮显示。运行状态由条形图的颜色表示，可以通过图表右上角的下拉菜单按状态进行过滤。将鼠标悬停在运行上会显示一个弹出窗口，其中包含更多信息。
 
-At the bottom of the run duration graph you may see one or more blue boxes.
-These represent points in time when configuration settings were changed,
-possibly impacting test performance. Hovering over them reveals the specific
-changes made.
+在运行持续时间图表的底部，您可能会看到一个或多个蓝色框。这些表示配置设置更改的时间点，可能影响测试性能。将鼠标悬停在它们上会显示所做的具体更改。
 
-<DocsImage src="/img/cloud/runs/run-duration.png" alt="Run duration panel" />
+<DocsImage src="/img/cloud/runs/run-duration.png" alt="运行持续时间面板" />
 
-### Recommendations
+### 建议
 
-To the right of the run duration graph you may see a box with our
-recommendations for improving the performance of your test suite. Our
-[Smart Orchestration](/cloud/features/smart-orchestration/overview) features can
-help you run fewer, more relevant, and faster tests, depending on the details of
-your test suite.
+在运行持续时间图表的右侧，您可能会看到一个包含我们建议的框，用于改进测试套件的性能。我们的[智能编排](/cloud/features/smart-orchestration/overview)功能可以帮助您运行更少、更相关和更快的测试，具体取决于您的测试套件的细节。
 
-The algorithm we use to calculate the details of these recommendations is a
-sophisticated and quite detailed model of your test suite, but fundamentally we
-look at up to 100 of your most recent tests and simulate what those test runs
-would have looked like with different Smart Orchestration configurations. From
-there we calculate a figure totalling the differences in duration between the
-simulated tests and the actual tests as they happened.
+我们用于计算这些建议细节的算法是一个复杂且非常详细的测试套件模型，但基本上我们会查看您最近的100个测试，并模拟这些测试运行在不同智能编排配置下的表现。从那里，我们计算出一个数字，总计模拟测试与实际测试之间的持续时间差异。
 
-<DocsImage src="/img/cloud/runs/recommendations.png" alt="Recommendations" />
+<DocsImage src="/img/cloud/runs/recommendations.png" alt="建议" />
 
-### Tests for Review
+### 待审查测试
 
-The Tests for Review panel consolidates disparate test results into a single
-view, focusing attention on the specs producing the most relevant results.
+待审查测试面板将不同的测试结果整合到一个视图中，重点关注产生最相关结果的规范文件。
 
-It orders results by:
+它按以下顺序排列结果：
 
-- **Failed** - when a failure occurred in the test or a hook associated with the
-  test
-- **Flaky** - when a test failed one or more attempts before finally passing
-- **Modified** - when the test body has changed from a previously recorded tests
+- **失败** - 当测试或与测试关联的钩子中发生失败时
+- **不稳定** - 当测试在最终通过之前失败了一次或多次尝试时
+- **已修改** - 当测试体与之前记录的测试相比发生了变化时
 
-The panel shows these tests broken down by spec, with a badge clearly indicating the reason the result was considered notable. Access run artifacts with a mouse hover to quickly expose the [Test Replay](/cloud/features/test-replay), [screenshots](/app/guides/screenshots-and-videos#Screenshots),
-[videos](/app/guides/screenshots-and-videos#Videos), and CI logs generated by this test.
+该面板按规范文件分解这些测试，并有一个徽章清楚地表明结果被认为值得注意的原因。通过鼠标悬停访问运行工件，快速暴露[测试回放](/cloud/features/test-replay)、[截图](/app/guides/screenshots-and-videos#Screenshots)、[视频](/app/guides/screenshots-and-videos#Videos)和此测试生成的CI日志。
 
-Clicking on a specific test opens the
-[test detail sidebar](#Test-detail-sidebar).
+点击特定测试将打开[测试详情侧边栏](#Test-detail-sidebar)。
 
-<DocsImage src="/img/cloud/runs/tests-for-review.png" alt="Tests for Review" />
+<DocsImage src="/img/cloud/runs/tests-for-review.png" alt="待审查测试" />
 
-## Test Results tab
+## 测试结果标签页
 
-On the Test Results tab, detailed results for the entire test run can be browsed
-and examined. At the top of the page are dropdowns for you to sort and filter
-results by a wide range of metrics, like
-[test statuses](/app/core-concepts/writing-and-organizing-tests#Test-statuses)
-or [flaky tests](/cloud/features/flaky-test-management).
+在测试结果标签页上，可以浏览和检查整个测试运行的详细结果。页面顶部有下拉菜单，供您按各种指标（如[测试状态](/app/core-concepts/writing-and-organizing-tests#Test-statuses)或[不稳定测试](/cloud/features/flaky-test-management)）排序和过滤结果。
 
-<DocsImage src="/img/cloud/runs/test-results.png" alt="Test Results tab" />
+<DocsImage src="/img/cloud/runs/test-results.png" alt="测试结果标签页" />
 
-## Specs tab
+## 规范文件标签页
 
-Another way to look at your run is by "zooming out" to the spec file level,
-which is the purpose of the Specs tab. Remember, a spec file is a single file
-that can contain one or more test(s).
+另一种查看运行的方式是“放大”到规范文件级别，这是规范文件标签页的目的。请记住，规范文件是一个可以包含一个或多个测试的单个文件。
 
-This tab lets you view spec results collected into
-[run groups](/cloud/features/smart-orchestration/parallelization#Grouping-test-runs).
-You can switch between views, focusing either on run order, spec duration or
-[parallelization](/cloud/features/smart-orchestration/parallelization) (per
-machine) using the Views button bar in the top right.
+此标签页允许您查看收集到[运行组](/cloud/features/smart-orchestration/parallelization#Grouping-test-runs)中的规范结果。您可以使用右上角的视图按钮栏在视图之间切换，重点关注运行顺序、规范持续时间或[并行化](/cloud/features/smart-orchestration/parallelization)（每台机器）。
 
-In all of these views, spec results may be clicked to open those tests in the
-Test Results tab.
+在所有这些视图中，可以点击规范结果以在测试结果标签页中打开这些测试。
 
 <DocsImage
   src="/img/cloud/runs/specs-view-switcher.png"
-  alt="Specs view switcher"
+  alt="规范文件视图切换器"
 />
 
-### Timeline View
+### 时间线视图
 
-The Timeline View charts your spec files as they ran relative to each other.
-This is especially helpful when you want to visualize how your tests ran in
-[parallel](/cloud/features/smart-orchestration/parallelization).
+时间线视图将您的规范文件相对于彼此运行的时间绘制成图表。这在您想要可视化测试如何在[并行](/cloud/features/smart-orchestration/parallelization)中运行时特别有用。
 
-<DocsImage src="/img/cloud/runs/specs-timeline.png" alt="Specs Timeline View" />
+<DocsImage src="/img/cloud/runs/specs-timeline.png" alt="规范文件时间线视图" />
 
-### Bar Chart View
+### 条形图视图
 
-The Bar Chart View charts the lengths of each spec file. This view is helpful to
-determine which spec files are using up a lot of run time and could be split up
-or simplified.
+条形图视图绘制了每个规范文件的长度。此视图有助于确定哪些规范文件占用了大量运行时间，可以拆分或简化。
 
 <DocsImage
   src="/img/cloud/runs/specs-bar-chart.png"
-  alt="Specs Bar Chart View"
+  alt="规范文件条形图视图"
 />
 
-### Machines View
+### 机器视图
 
-If your tests are parallelized, the Machines View shows which and how many specs
-were run on each parallel process. This view lets you see how work is being
-distributed, and provides hard data for decisions about increasing or decreasing
-your CI [parallelization](/cloud/features/smart-orchestration/parallelization)
-capacity.
+如果您的测试是并行化的，机器视图显示每个并行进程上运行了哪些以及多少规范文件。此视图让您看到工作是如何分配的，并为增加或减少CI[并行化](/cloud/features/smart-orchestration/parallelization)容量的决策提供硬数据。
 
-<DocsImage src="/img/cloud/runs/specs-machines.png" alt="Specs Machines View" />
+<DocsImage src="/img/cloud/runs/specs-machines.png" alt="规范文件机器视图" />
 
-## Errors tab
+## 错误标签页
 
-The Errors tab simply aggregates any errors thrown during tests in this run.
-Expanding specific errors gives more information and a link through to the
-[test detail sidebar](#Test-detail-sidebar).
+错误标签页简单地聚合了此运行期间测试中抛出的任何错误。展开特定错误会提供更多信息和指向[测试详情侧边栏](#Test-detail-sidebar)的链接。
 
-<DocsImage src="/img/cloud/runs/errors.png" alt="Errors tab" />
+<DocsImage src="/img/cloud/runs/errors.png" alt="错误标签页" />
 
-## Test detail sidebar
+## 测试详情侧边栏
 
-Every test in the run has all its details surfaced in a special sidebar. This
-sidebar may contain all or fewer of the sections detailed below. In addition it
-may also contain details of runtime environment, failure and flake rates over
-time, performance breakdowns, listings of the test code itself, and more.
+运行中的每个测试的所有细节都在一个特殊的侧边栏中展示。此侧边栏可能包含下面详述的所有或部分部分。此外，它还可能包含运行时环境的详细信息、随时间变化的失败和不稳定率、性能分解、测试代码本身的列表等。
 
-### Header
+### 标题
 
-Contains the title of the failed test, and the spec it's located in. May also
-have labels indicating test status or other pertinent information, and shortcuts
-to raise tickets on integrated project management systems or view artifacts.
+包含失败测试的标题及其所在的规范文件。还可能具有指示测试状态或其他相关信息的标签，以及快捷方式以在集成的项目管理系统上提出问题或查看工件。
 
-<DocsImage src="/img/cloud/runs/sidebar-header.png" alt="Test sidebar header" />
+<DocsImage src="/img/cloud/runs/sidebar-header.png" alt="测试侧边栏标题" />
 
-### Test Intent Summary :sparkles:
+### 测试意图摘要 :sparkles:
 
-The Test Intent Summary is a Cypress Cloud AI capability. It is an AI-generated summary of the test's purpose to help you understand the goal of a test without needing to review each command or watch the entire Test Replay. This allows you to immediately focus your goal, whether it be reviewing the test or debugging an issue, saving you time.
+测试意图摘要是Cypress Cloud的一项AI功能。它是AI生成的测试目的摘要，帮助您理解测试的目标，而无需查看每个命令或观看整个测试回放。这使您可以立即专注于您的目标，无论是审查测试还是调试问题，节省您的时间。
 
 <DocsImage
   src="/img/cloud/runs/sidebar-test-intent-summary.png"
-  alt="Test details sidebar AI-generated Test Intent Summary"
+  alt="测试详情侧边栏AI生成的测试意图摘要"
 />
 
-### Attempts and errors
+### 尝试和错误
 
-Stack traces, error message, and point-of-failure code frames for each attempt
-of a test. View or debug artifacts of each particular attempt.
+每次测试尝试的堆栈跟踪、错误消息和失败点代码帧。查看或调试每次特定尝试的工件。
 
 <DocsImage
   src="/img/cloud/runs/sidebar-errors.png"
-  alt="Test sidebar attempts and errors"
+  alt="测试侧边栏尝试和错误"
 />
 
-### Previous runs
+### 先前运行
 
-A graphical history of previous runs of this test, indicating failures and
-successes on the current branch.
+此测试先前运行的图形历史，指示当前分支上的失败和成功。
 
 <DocsImage
   src="/img/cloud/runs/sidebar-previous-runs.png"
-  alt="Test sidebar previous Runs"
+  alt="测试侧边栏先前运行"
 />
 
-### Artifacts
+### 工件
 
-[Screenshots](/app/guides/screenshots-and-videos#Screenshots),
-[videos](/app/guides/screenshots-and-videos#Videos) and CI logs generated by
-this test. Both screenshots taken during failures and screenshots taken using
-the [`cy.screenshot()`](/api/commands/screenshot) command will show up here.
-Video can be downloaded.
+此测试生成的[截图](/app/guides/screenshots-and-videos#Screenshots)、[视频](/app/guides/screenshots-and-videos#Videos)和CI日志。失败期间拍摄的截图和使用[`cy.screenshot()`](/api/commands/screenshot)命令拍摄的截图都会显示在这里。视频可以下载。
 
 <DocsImage
   src="/img/cloud/runs/sidebar-artifacts.png"
-  alt="Test sidebar artifacts"
+  alt="测试侧边栏工件"
 />
 
-CI logs from the Cypress standard output include details and summaries of your
-tests for each spec file based on the [reporter](/app/tooling/reporters) you
-have set. By default it is the `spec` reporter.
+来自Cypress标准输出的CI日志包括基于您设置的[报告器](/app/tooling/reporters)的每个规范文件的测试详细信息和摘要。默认情况下是`spec`报告器。
 
 <DocsImage
   src="/img/cloud/runs/standard-output-of-recorded-test-run.png"
-  alt="standard output"
+  alt="标准输出"
 />
 
-### Test Code History
+### 测试代码历史
 
-Shows git commits that included changes to the current test, providing insights
-into the development of this test, helping to diagnose test failures, and track
-down regressions. Expanding a specific commit shows the diff at that point in
-time.
+显示包含当前测试更改的git提交，提供对此测试开发的见解，帮助诊断测试失败并跟踪回归。展开特定提交会显示该时间点的差异。
 
-Note that the diff is based on the state of the code **after** transpilation,
-since we are not currently collecting source maps.
+请注意，差异基于**转译后**的代码状态，因为我们目前不收集源映射。
 
 <DocsImage
   src="/img/cloud/runs/sidebar-test-code-history.png"
-  alt="Test sidebar code history"
+  alt="测试侧边栏代码历史"
 />
 
-## Run cancellation
+## 取消运行
 
-You can cancel a run currently in progress from Cypress Cloud. Runs can only be
-canceled by members of the project.
+您可以从Cypress Cloud取消当前正在进行的运行。只有项目成员才能取消运行。
 
-### To cancel a run
+### 取消运行
 
-- Click on a run in progress from the run list
-- Click on <Icon name="ban" /> Cancel run\*\* in the upper-right corner of the
-  run details page
-- Click **Yes, cancel this run** to confirm. **Note: this cannot be undone**
+- 从运行列表中点击正在进行的运行
+- 点击运行详情页面右上角的<Icon name="ban" /> 取消运行\*\*
+- 点击**是，取消此运行**以确认。**注意：此操作无法撤销**
 
-### What happens when a run is canceled?
+### 取消运行时会发生什么？
 
-- The run status will update to canceled.
-- A message will appear on the run details page showing the time of cancellation
-  and the user that canceled the run.
-- The run will display as **Canceled** in the associated GitHub pull request if
-  [GitHub Integration](/cloud/integrations/source-control/github) is
-  enabled.
-- Any tests recorded to completion will be available to view in the run details
-  page.
-- Any tests recorded to completion will still count towards your monthly test
-  results limit.
-- If you have Analytics enabled, canceled runs will appear in the
-  [Runs over time](/cloud/features/analytics/project-analytics#Run-status) chart.
-- Any incomplete calls to
-  [cypress run --record](/app/references/command-line#cypress-run) for the run
-  will be marked as canceled and not run.
-- Any existing calls to
-  [cypress run --record](/app/references/command-line#cypress-run) for the run
-  will exit with an error like below.
+- 运行状态将更新为已取消。
+- 运行详情页面上将显示一条消息，显示取消时间和取消运行的用户。
+- 如果启用了[GitHub集成](/cloud/integrations/source-control/github)，运行将在关联的GitHub拉取请求中显示为**已取消**。
+- 任何记录到完成的测试将在运行详情页面中可供查看。
+- 任何记录到完成的测试仍将计入您的月度测试结果限制。
+- 如果您启用了分析功能，已取消的运行将出现在[随时间变化的运行](/cloud/features/analytics/project-analytics#Run-status)图表中。
+- 任何对[cypress run --record](/app/references/command-line#cypress-run)的不完整调用将被标记为已取消且不会运行。
+- 任何对[cypress run --record](/app/references/command-line#cypress-run)的现有调用将退出并显示如下错误。
 
   <DocsImage
     src="/img/cloud/runs/cancel-run-error.png"
-    alt="cancel-run-error"
+    alt="取消运行错误"
   />
 
 :::tip
 
-<Icon name="check-circle" color="green" /> See our [Auto Cancellation](/cloud/features/smart-orchestration/run-cancellation)
-guide to learn how to improve developer resolution time, reduce your monthly CI bill
-and free up CI resources with `Auto Cancellation`.
+<Icon name="check-circle" color="green" /> 请参阅我们的[自动取消](/cloud/features/smart-orchestration/run-cancellation)指南，了解如何通过`自动取消`提高开发人员解决时间、减少月度CI账单并释放CI资源。
 
 :::
 
-## Archive run
+## 归档运行
 
-Runs that have been canceled or are in an errored state can be archived from
-Cypress Cloud.
+已取消或处于错误状态的运行可以从Cypress Cloud归档。
 
-### To archive a run
+### 归档运行
 
-- In the cancellation or error message, click **Archive this run**.
+- 在取消或错误消息中，点击**归档此运行**。
   <DocsImage
     src="/img/cloud/runs/archive-run-within-cancelation-msg.png"
-    alt="cancel-run-error"
+    alt="取消运行错误"
   />
 
-### What happens when a run is archived?
+### 归档运行时会发生什么？
 
-- The archived run will no longer display in the runs list or
-  [Analytics](/cloud/features/analytics/project-analytics) reporting.
-- Archived runs can be accessed by the URL to that run. The format is:
-  `https://cloud.cypress.io/projects/{project ID}/runs/{run number}`
-- Any tests recorded to Cypress Cloud will still count towards your monthly test
-  results limit, even when it has been archived.
+- 归档的运行将不再显示在运行列表或[分析](/cloud/features/analytics/project-analytics)报告中。
+- 归档的运行可以通过该运行的URL访问。格式为：
+  `https://cloud.cypress.io/projects/{项目ID}/runs/{运行编号}`
+- 任何记录到Cypress Cloud的测试仍将计入您的月度测试结果限制，即使它已被归档。
 
-### To restore an archived run
+### 恢复归档的运行
 
-- Visit the archived run. The archived run can be accessed by the URL of the
-  run. The format is:
-  `https://cloud.cypress.io/projects/{project ID}/runs/{run number}`
-- Click <Icon name="history" /> Restore from archive\*\*
+- 访问归档的运行。归档的运行可以通过该运行的URL访问。格式为：
+  `https://cloud.cypress.io/projects/{项目ID}/runs/{运行编号}`
+- 点击<Icon name="history" /> 从归档中恢复\*\*
   <DocsImage
     src="/img/cloud/runs/restore-from-archive.png"
-    alt="restore-from-archive"
+    alt="从归档中恢复"
   />
 
 ## Cypress App
 
-### Specs
+### 规范文件
 
-For even more visibility into your test results, information about recent runs
-is surfaced in the [Cypress app](/app/core-concepts/open-mode). Aggregate
-results of your latest runs are shown on the
-[Specs](/app/core-concepts/open-mode#Specs) page while more detailed
-information about specific runs can be found on the
-[Runs](/app/core-concepts/open-mode#Runs) page.
+为了更深入地了解您的测试结果，有关最近运行的信息会在[Cypress app](/app/core-concepts/open-mode)中展示。您最近运行的聚合结果显示在[规范文件](/app/core-concepts/open-mode#Specs)页面上，而有关特定运行的更详细信息可以在[运行](/app/core-concepts/open-mode#Runs)页面上找到。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/spec-explorer.png"
-  alt="Specs"
+  alt="规范文件"
 />
 
-### Runs
+### 运行
 
-This screen shows detailed information about the most recently recorded
-[test runs](#Latest-Runs) to Cypress Cloud, showing the latest first.
+此屏幕显示最近记录到Cypress Cloud的[测试运行](#Latest-Runs)的详细信息，最新的运行显示在最前面。
 
-The [Runs](/app/core-concepts/open-mode#Runs) page uses Git to show runs
-for your branch. If no runs are found for your current branch, all runs for your
-project are shown as a fallback. The title of each run is taken from the
-[git commit message](https://www.educative.io/edpresso/git-commit-message-simply-explained)
-for that change, and clicking on it will take you to the corresponding run page
-in Cypress Cloud.
+[运行](/app/core-concepts/open-mode#Runs)页面使用Git显示您分支的运行。如果未找到当前分支的运行，则会显示项目中所有运行作为后备。每个运行的标题取自该更改的[git提交消息](https://www.educative.io/edpresso/git-commit-message-simply-explained)，点击它将带您到Cypress Cloud中相应的运行页面。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/recorded-runs.jpg"
-  alt="Recorded Runs"
+  alt="记录的运行"
 />
 
-### Debug
+### 调试
 
-The [Debug](/app/core-concepts/open-mode#Debug) page allows you to easily
-debug failed CI test runs from within the Cypress app. From this page, you can
-review, rerun, and debug failed CI test runs that are recorded to Cypress
-Cloud - all without leaving the Cypress app.
+[调试](/app/core-concepts/open-mode#Debug)页面允许您轻松地从Cypress app中调试失败的CI测试运行。从此页面，您可以审查、重新运行和调试记录到Cypress Cloud的失败CI测试运行 - 所有这些都无需离开Cypress app。
 
-<DocsImage src="/img/app/core-concepts/open-mode/debug-page.png" alt="Debug" />
+<DocsImage src="/img/app/core-concepts/open-mode/debug-page.png" alt="调试" />
 
-### Notifications
+### 通知
 
-Cypress Cloud can notify you about recorded test runs on your branch directly in
-the app through system notifications.
+Cypress Cloud可以通过系统通知直接在app中通知您有关记录到您分支的测试运行。
 
 <DocsImage
   src="/img/cloud/runs/app-notification.jpg"
-  alt="App notification on macOS"
+  alt="macOS上的app通知"
 />
 
-Clicking the notification will take you to the [debug](#Debug) page in the
-Cypress app.
+点击通知将带您到Cypress app中的[调试](#Debug)页面。
 
 :::info
 
-In-app notifications are available in Cypress `v12.17.0` and above and requires
-macOS or Linux. Windows support is coming soon.
+应用内通知在Cypress `v12.17.0`及以上版本中可用，需要macOS或Linux。Windows支持即将推出。
 
 :::
 
-#### Configure Notifications
+#### 配置通知
 
-To enable notifications, in the Cypress app, go to Settings, then down to Device
-Settings, and click the **Enable desktop notifications** button. Your system may
-then prompt you to allow notifications.
+要启用通知，在Cypress app中，转到设置，然后到设备设置，点击**启用桌面通知**按钮。您的系统可能会提示您允许通知。
 
 <DocsImage
   src="/img/cloud/runs/enable-notifications.jpg"
-  alt="Enable notifications"
+  alt="启用通知"
 />
 
-You can receive notifications for the following events:
+您可以接收以下事件的通知：
 
-- When a recorded run starts on your current commit in Cypress Cloud
-- When a recorded run starts to fail on your current commit in Cypress Cloud
-- And when a recorded run completes on your current commit in Cypress Cloud,
-  which you can customize the events to notify you when a run passes, fails, is
-  canceled or has an error.
+- 当记录到您当前提交的运行在Cypress Cloud中开始时
+- 当记录到您当前提交的运行在Cypress Cloud中开始失败时
+- 以及当记录到您当前提交的运行在Cypress Cloud中完成时，您可以自定义通知事件，以便在运行通过、失败、取消或出错时通知您。
 
 :::note
 
-Note: You will only receive notifications for runs that are running on the same
-commit that your current branch's head is on locally.
+注意：您只会收到运行在本地当前分支头所在的同一提交上的通知。
 
 :::
 
-Click the **Send test notification** button to test that notifications are
-working properly on your system.
+点击**发送测试通知**按钮以测试通知在您的系统上是否正常工作。
 
-#### Troubleshooting Notifications
+#### 通知故障排除
 
-If you are not receiving notifications, please check the following:
+如果您没有收到通知，请检查以下内容：
 
-- That the recorded run is being recorded to Cypress Cloud.
-- In your system settings, make sure that notifications are enabled for the
-  Cypress app.
-- That your local project is currently on the git commit that the test run being
-  recorded is sending notifications for.
+- 记录到Cypress Cloud的运行是否正在记录。
+- 在您的系统设置中，确保为Cypress app启用了通知。
+- 您的本地项目当前是否在测试运行记录通知所发送的git提交上。

@@ -1,82 +1,82 @@
 ---
-title: 'Accessibility score | Cypress Documentation'
-description: 'Cypress produces a top-line percentage score that indicates a general sense of accessibility for a project.'
-sidebar_label: Accessibility score
+title: '无障碍评分 | Cypress 文档'
+description: 'Cypress 会生成一个总体百分比评分，用于反映项目的整体无障碍水平。'
+sidebar_label: 无障碍评分
 sidebar_position: 40
 ---
 
 <ProductHeading product="accessibility" />
 
-# Accessibility score
+# 无障碍评分
 
-Cypress provides a top-line percentage score to give a general sense of accessibility for your project. This score, calculated for a run, reflects the **average score** of **all application snapshots** captured during the run. It is based on the ratio of passing versus failing accessibility checks for each snapshot, with results weighted by the severity of the issues.
+Cypress 提供总体百分比评分，用于反映项目的整体无障碍水平。该评分针对每次测试运行计算，反映了运行期间捕获的所有应用程序快照的平均得分。其计算基于每个快照中通过/未通过的无障碍检查比例，并根据问题严重程度进行加权。
 
-## Severity levels
+## 严重级别
 
-Severity levels in Cypress Accessibility align with the Axe Core® impact classification. Developed by Deque Systems, this classification helps prioritize accessibility issues by highlighting those likely to create the most substantial barriers for users (such as missing label text) so they can be addressed first. You can learn more about the Axe Core® impact classification in the [Axe Core® documentation](https://github.com/dequelabs/axe-core/blob/develop/doc/issue_impact.md).
+Cypress Accessibility 的严重级别与 Axe Core® 影响分类保持一致。这套由 Deque Systems 开发的分类标准通过突出最可能对用户造成重大障碍的问题（如缺失标签文本），帮助优先处理无障碍问题。您可以在 [Axe Core® 文档](https://github.com/dequelabs/axe-core/blob/develop/doc/issue_impact.md) 中了解更多关于影响分类的信息。
 
-_Note: WCAG standards do not categorize Success Criteria by severity; all failures require resolution for compliance. However, Axe Core® impact levels are helpful for prioritizing fixes to maximize usability improvements quickly._
+_注：WCAG 标准并未按严重性对成功准则进行分类；所有失败项都需要解决才能达标。但 Axe Core® 影响级别有助于优先修复问题，从而快速实现最大的可用性改进。_
 
-## Scoring algorithm
+## 评分算法
 
-The accessibility score calculation applies the following weights to failed accessibility checks in a snapshot.
+无障碍评分计算会对快照中未通过的无障碍检查应用以下权重。
 
-| Severity of Issue | Weight |
+| 问题严重性       | 权重 |
 | ----------------- | ------ |
-| Critical          | 10     |
-| Serious           | 7      |
-| Moderate          | 3      |
-| Minor             | 1      |
+| 严重（Critical）  | 10     |
+| 重大（Serious）   | 7      |
+| 中等（Moderate）  | 3      |
+| 轻微（Minor）     | 1      |
 
-### Score Calculation Process
+### 评分计算流程
 
-1. **Snapshot Score:**
+1. **快照得分：**
 
-- Calculate the total weight of passed checks.
-- Calculate the total weight of failed checks.
-- Compute the score as: `Score = (Passed Weights) / (Passed Weights + Failed Weights)`
+- 计算通过检查的总权重
+- 计算未通过检查的总权重
+- 按公式计算得分：`得分 = (通过权重) / (通过权重 + 未通过权重)`
 
-**Note**: Incomplete and Ignored element statuses do not have any effect on your score. Only clear failures of a rule are counted.
+**注意**：未完成（Incomplete）和已忽略（Ignored）元素状态不会影响评分。只有明确的规则失败才会被计入。
 
-2. **View Score:**
+2. **视图得分：**
 
-- Average the scores of all snapshots within the View.
+- 计算视图中所有快照得分的平均值
 
-3. **Run Score:**
+3. **运行得分：**
 
-- Average the scores of all snapshots in the run.
+- 计算运行中所有快照得分的平均值
 
-## Interpreting your scores
+## 解读评分
 
-Accessibility scores should be viewed in the context of your specific project and your goals. There is no single number that can tell you the accessibility of your application. For example:
+无障碍评分应结合具体项目和目标来理解。没有任何单一数字能完全反映应用程序的无障碍水平。例如：
 
-- A score of 99% may indicate progress if the previous score was lower, but a single failure could represent a significant barrier (e.g., an inaccessible login page).
-- Even a 100% score does not guarantee full compliance or user-friendliness but indicates that Axe Core® detected no violations in the tested scope.
+- 如果先前得分较低，99% 的分数可能表明取得了进展，但单个失败项可能代表重大障碍（例如无法访问的登录页面）
+- 即使是 100% 的分数也不能保证完全合规或用户友好，仅表示 Axe Core® 在测试范围内未检测到违规
 
-The key value of the score is that the calculation is repeated consistently across runs - Cypress is not trying to catch anything "in the moment" during test execution. This means that changes in the score reliably reflect accessibility improvements or regressions.
+评分的核心价值在于计算方式在多次运行中保持一致——Cypress 不会在测试执行期间临时捕捉任何内容。这意味着分数的变化能可靠反映无障碍改进或退步。
 
-In general, the ideal state is a clean 100% score in your Cypress Accessibility report, which you can achieve with a combination of fixing existing issues and ignoring things you know you won't fix.
+一般来说，理想状态是在 Cypress Accessibility 报告中获得 100% 的干净分数，这可以通过修复现有问题和忽略已知不会修复的问题来实现。
 
-## What a 100% score means
+## 100% 分数的含义
 
-A 100% score with Cypress Accessibility means:
+Cypress Accessibility 的 100% 分数表示：
 
-- No Axe Core® violations were detected in the tested scope.
-- Up to 57% of issues typically identified in manual audits have been addressed ([source](https://www.deque.com/blog/automated-testing-study-identifies-57-percent-of-digital-accessibility-issues/)).
-- While not a guarantee of full compliance, it reflects that the team has actively considered accessibility and is well-positioned to address user-reported issues or findings from manual audits.
+- 在测试范围内未检测到 Axe Core® 违规
+- 通常通过手动审计发现的约 57% 问题已得到解决（[来源](https://www.deque.com/blog/automated-testing-study-identifies-57-percent-of-digital-accessibility-issues/)）
+- 虽然不能保证完全合规，但表明团队已积极考虑无障碍需求，并为解决用户报告问题或手动审计发现做好了准备
 
-Reaching a 100% score, also known as "Axe-clean," signals that the application likely meets basic usability needs for disabled users, providing a foundation for further usability enhancements.
+达到 100% 分数（也称为 "Axe-clean"）意味着应用程序很可能满足残障用户的基本使用需求，为进一步的可用性增强奠定了基础。
 
-## Improving Accessibility scores
+## 提升无障碍评分
 
-### Address Violations
+### 解决违规问题
 
-Most accessibility violations can be resolved through HTML and CSS adjustments. Each violation in Cypress Accessibility includes a "Learn More" link to understand the impact of the issue on users and get step-by-step guidance to fix it.
+大多数无障碍违规问题可以通过 HTML 和 CSS 调整来解决。Cypress Accessibility 中的每个违规项都包含 "了解更多" 链接，帮助理解问题对用户的影响，并提供分步修复指导。
 
-Refer to the [Inspecting Violation Details section](/accessibility/core-concepts/inspecting-violation-details) for more information on understanding and addressing violations.
+有关理解和解决违规问题的更多信息，请参阅 [检查违规详情部分](/accessibility/core-concepts/inspecting-violation-details)。
 
-### Ignore Non-relevant Issues
+### 忽略非相关问题
 
-For issues you decide not to fix, update your [configuration](/accessibility/configuration/overview) to ignore them. This keeps the score focused on actionable issues while maintaining visibility into ignored elements for transparency.
+对于决定不修复的问题，请更新 [配置](/accessibility/configuration/overview) 将其忽略。这可以使评分聚焦于可操作的问题，同时保持对已忽略元素的透明度。
 
-By actively addressing violations and maintaining a clean score, your team can ensure consistent progress towards a more accessible application.
+通过积极解决违规问题并保持干净的评分，您的团队可以确保持续推进应用程序的无障碍改进。

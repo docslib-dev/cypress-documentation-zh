@@ -1,6 +1,6 @@
 ---
-title: 'getCookie | Cypress Documentation'
-description: Get a browser cookie by its name in Cypress.
+title: 'getCookie | Cypress 文档'
+description: 在Cypress中通过名称获取浏览器cookie。
 sidebar_label: getCookie
 ---
 
@@ -8,88 +8,87 @@ sidebar_label: getCookie
 
 # getCookie
 
-Get a browser cookie by its name.
+通过名称获取浏览器cookie。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.getCookie(name)
 cy.getCookie(name, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.getCookie('auth_key') // Get cookie with name 'auth_key'
+cy.getCookie('auth_key') // 获取名为'auth_key'的cookie
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **name _(String)_**
 
-The name of the cookie to get. Required.
+要获取的cookie名称。必需。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `cy.getCookie()`.
+传入选项对象以更改`cy.getCookie()`的默认行为。
 
-| Option    | Default                                                     | Description                                                                         |
-| --------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `domain`  | Hostname of the current URL                                 | Retrieves the cookie from the specified domain                                      |
-| `log`     | `true`                                                      | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`responseTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.getCookie()` to resolve before [timing out](#Timeouts)         |
+| 选项      | 默认值                                                   | 描述                                                                         |
+| --------- | ------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `domain`  | 当前URL的主机名                                         | 从指定域名获取cookie                                                        |
+| `log`     | `true`                                                  | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令           |
+| `timeout` | [`responseTimeout`](/app/references/configuration#Timeouts) | 等待`cy.getCookie()`解析的超时时间，超过则[超时](#Timeouts)                  |
 
 <HeaderYields />
 
-`cy.getCookie()` yields a cookie object with the following properties:
+`cy.getCookie()`返回一个包含以下属性的cookie对象：
 
 - `domain`
-- `expiry` _(if specified)_
-- `hostOnly` _(if specified)_
+- `expiry` _(如果指定)_
+- `hostOnly` _(如果指定)_
 - `httpOnly`
 - `name`
 - `path`
-- `sameSite` _(if specified)_
+- `sameSite` _(如果指定)_
 - `secure`
 - `value`
 
-`cy.getCookie()` is not a query. It will not retry, or wait for the requested
-cookie to exist.
+`cy.getCookie()`不是查询命令。它不会重试或等待请求的cookie存在。
 
-#### When a cookie matching the name could not be found:
+#### 当找不到匹配名称的cookie时：
 
-`cy.getCookie()` yields `null`.
+`cy.getCookie()`返回`null`。
 
-## Examples
+## 示例
 
-### Session id
+### 会话ID
 
-#### Get `session_id` cookie after logging in
+#### 登录后获取`session_id` cookie
 
-In this example, on first login, our server sends us back a session cookie.
+在此示例中，首次登录时，服务器会返回一个会话cookie。
 
 ```javascript
-// assume we just logged in
+// 假设我们刚刚登录
 cy.contains('Login').click()
 cy.url().should('include', 'profile')
-// retries until cookie with value=189jd09su
-// is found or default command timeout ends
+// 重试直到找到value=189jd09su的cookie
+// 或达到默认命令超时
 cy.getCookie('session_id')
   .should('have.property', 'value', '189jd09su')
   .then((cookie) => {
-    // cookie is an object with "domain", "name" and other properties
+    // cookie是一个包含"domain"、"name"等属性的对象
   })
 ```
 
-You can check the cookie existence without comparing any of its properties
+你可以检查cookie是否存在而不比较其任何属性
 
 ```javascript
 cy.getCookie('my-session-cookie').should('exist')
 ```
 
-If you need the cookie value, for example to use in a subsequent call
+如果需要cookie值，例如用于后续调用
 
 ```js
 let cookie
@@ -97,13 +96,12 @@ let cookie
 cy.getCookie('session_id')
   .should('exist')
   .then((c) => {
-    // save cookie until we need it
+    // 保存cookie以备后用
     cookie = c
   })
 
-// some time later, force the "cy.request"
-// to run ONLY after the cookie has been set
-// by placing it inside ".then"
+// 稍后，通过将其放在".then"中
+// 确保仅在cookie设置后执行"cy.request"
 cy.get('#submit')
   .click()
   .then(() => {
@@ -116,71 +114,68 @@ cy.get('#submit')
   })
 ```
 
-#### Using `cy.getCookie()` to test logging in
+#### 使用`cy.getCookie()`测试登录
 
 :::info
 
-Check out our example recipes using `cy.getCookie()` to test
-[logging in using HTML web forms](/app/references/recipes#Logging-In),
-[logging in using XHR web forms](/app/references/recipes#Logging-In) and
-[logging in with single sign on](/app/references/recipes#Logging-In)
+查看我们使用`cy.getCookie()`测试的示例配方：
+[使用HTML网页表单登录](/app/references/recipes#Logging-In)、
+[使用XHR网页表单登录](/app/references/recipes#Logging-In)和
+[使用单点登录](/app/references/recipes#Logging-In)
 
 :::
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.getCookie()` requires being chained off of `cy`.
+- `cy.getCookie()`需要链式调用`cy`。
 
 <HeaderAssertions />
 
-- `cy.getCookie()` will only run assertions you have chained once, and will not
-  [retry](/app/core-concepts/retry-ability).
+- `cy.getCookie()`只会运行一次你链式添加的断言，不会
+  [重试](/app/core-concepts/retry-ability)。
 
 <HeaderTimeouts />
 
-- `cy.getCookie()` should never time out.
+- `cy.getCookie()`不应超时。
 
 :::caution
 
-Because `cy.getCookie()` is asynchronous it is technically possible for there to
-be a timeout while talking to the internal Cypress automation APIs. But for
-practical purposes it should never happen.
+由于`cy.getCookie()`是异步的，理论上在与Cypress内部自动化API通信时可能会超时。但实际上这种情况几乎不会发生。
 
 :::
 
-## Command Log
+## 命令日志
 
-**_Get a browser cookie and make assertions about the object_**
+**_获取浏览器cookie并对对象进行断言_**
 
 ```javascript
 cy.getCookie('fakeCookie1').should('have.property', 'value', '123ABC')
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/getcookie/get-browser-cookie-and-make-assertions-about-object.png"
-  alt="Command Log getcookie"
+  alt="命令日志 getcookie"
 />
 
-When clicking on `getCookie` within the command log, the console outputs the
-following:
+当点击命令日志中的`getCookie`时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/getcookie/inspect-cookie-object-properties-in-console.png"
-  alt="Console Log getcookie"
+  alt="控制台日志 getcookie"
 />
 
-## History
+## 历史
 
-| Version                                  | Changes                                                                                            |
-| ---------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| [5.0.0](/app/references/changelog#5-0-0) | Removed `experimentalGetCookiesSameSite` and made `sameSite` property always available.            |
-| [4.3.0](/app/references/changelog#4-3-0) | Added `sameSite` property when the `experimentalGetCookiesSameSite` configuration value is `true`. |
+| 版本                                  | 变更                                                                                            |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------- |
+| [5.0.0](/app/references/changelog#5-0-0) | 移除`experimentalGetCookiesSameSite`并使`sameSite`属性始终可用。            |
+| [4.3.0](/app/references/changelog#4-3-0) | 当配置值`experimentalGetCookiesSameSite`为`true`时添加`sameSite`属性。 |
 
-## See also
+## 另请参阅
 
 - [Cypress Cookies API](/api/cypress-api/cookies)
 - [`cy.clearCookie()`](/api/commands/clearcookie)

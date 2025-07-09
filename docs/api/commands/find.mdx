@@ -1,6 +1,6 @@
 ---
-title: 'find | Cypress Documentation'
-description: Get the descendent DOM elements of a specific selector in Cypress.
+title: 'find | Cypress 文档'
+description: 在 Cypress 中获取特定选择器的后代 DOM 元素。
 sidebar_label: find
 slug: /api/commands/find
 ---
@@ -9,63 +9,63 @@ slug: /api/commands/find
 
 # find
 
-Get the descendent DOM elements of a specific selector.
+获取特定选择器的后代 DOM 元素。
 
 :::info
 
-The querying behavior of this command matches exactly how
-[`.find()`](http://api.jquery.com/find) works in jQuery.
+该命令的查询行为与 jQuery 中的
+[`.find()`](http://api.jquery.com/find) 完全一致。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .find(selector)
 .find(selector, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('.article').find('footer') // Yield 'footer' within '.article'
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.find('.progress') // Errors, cannot be chained off 'cy'
-cy.exec('node start').find() // Errors, 'exec' does not yield DOM element
+cy.get('.article').find('footer') // 获取 '.article' 内的 'footer' 元素
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
-<Icon name="angle-right" /> **selector _(String selector)_**
+```javascript
+cy.find('.progress') // 错误，不能直接链式调用 'cy'
+cy.exec('node start').find() // 错误，'exec' 不返回 DOM 元素
+```
 
-A selector used to filter matching descendent DOM elements.
+### 参数
 
-<Icon name="angle-right" /> **options _(Object)_**
+<Icon name="angle-right" /> **selector _(字符串选择器)_**
 
-Pass in an options object to change the default behavior of `.find()`.
+用于过滤匹配的后代 DOM 元素的选择器。
 
-| Option             | Default                                                                        | Description                                                                                                  |
-| ------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
-| `log`              | `true`                                                                         | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log)                          |
-| `timeout`          | [`defaultCommandTimeout`](/app/references/configuration#Timeouts)              | Time to wait for `.find()` to resolve before [timing out](#Timeouts)                                         |
-| `includeShadowDom` | [`includeShadowDom` config option value](/app/references/configuration#Global) | Whether to traverse shadow DOM boundaries and include elements within the shadow DOM in the yielded results. |
+<Icon name="angle-right" /> **options _(对象)_**
+
+传入一个选项对象以改变 `.find()` 的默认行为。
+
+| 选项                | 默认值                                                                        | 描述                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `log`               | `true`                                                                         | 在 [命令日志](/app/core-concepts/open-mode#Command-Log) 中显示该命令                                 |
+| `timeout`           | [`defaultCommandTimeout`](/app/references/configuration#Timeouts)              | 等待 `.find()` 解析的 [超时时间](#Timeouts)                                                         |
+| `includeShadowDom`  | [`includeShadowDom` 配置选项值](/app/references/configuration#Global)          | 是否遍历 shadow DOM 边界并在结果中包含 shadow DOM 中的元素。                                        |
 
 <HeaderYields />
 
-- `.find()` yields the new DOM element(s) it found.
-- `.find()` is a query, and it is _safe_ to chain further commands.
+- `.find()` 返回它找到的新 DOM 元素。
+- `.find()` 是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### Selector
+### 选择器
 
-#### Get li's within parent
+#### 获取父元素中的 li 元素
 
 ```html
 <ul id="parent">
@@ -75,59 +75,58 @@ Pass in an options object to change the default behavior of `.find()`.
 ```
 
 ```javascript
-// yields [<li class="first"></li>, <li class="second"></li>]
+// 返回 [<li class="first"></li>, <li class="second"></li>]
 cy.get('#parent').find('li')
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.find()` requires being chained off a command that yields DOM element(s).
+- `.find()` 必须链式调用在返回 DOM 元素的命令之后。
 
 <HeaderAssertions />
 
-- `.find()` will automatically [retry](/app/core-concepts/retry-ability)
-  until the element(s)
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.find()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed.
+- `.find()` 会自动 [重试](/app/core-concepts/retry-ability)
+  直到元素
+  [存在于 DOM 中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)。
+- `.find()` 会自动 [重试](/app/core-concepts/retry-ability)
+  直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `.find()` can time out waiting for the element(s) to
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.find()` can time out waiting for assertions you've added to pass.
+- `.find()` 可能会因等待元素
+  [存在于 DOM 中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions) 而超时。
+- `.find()` 可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Find the li's within the nav_**
+**_在导航中查找 li 元素_**
 
 ```javascript
 cy.get('.left-nav>.nav').find('>li')
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/find/find-li-of-uls-in-test.png"
-  alt="Command Log find"
+  alt="命令日志 find"
 />
 
-When clicking on the `find` command within the command log, the console outputs
-the following:
+当点击命令日志中的 `find` 命令时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/find/find-in-console-shows-list-and-yields.png"
   alt="console.log find"
 />
 
-## History
+## 历史
 
-| Version                                  | Changes                          |
-| ---------------------------------------- | -------------------------------- |
-| [5.2.0](/app/references/changelog#5-2-0) | Added `includeShadowDom` option. |
+| 版本                                   | 变更                              |
+| ------------------------------------- | --------------------------------- |
+| [5.2.0](/app/references/changelog#5-2-0) | 添加了 `includeShadowDom` 选项。 |
 
-## See also
+## 另请参阅
 
 - [`cy.get()`](/api/commands/get)

@@ -1,6 +1,6 @@
 ---
-title: 'uncheck | Cypress Documentation'
-description: Uncheck checkbox(es) in Cypress.
+title: 'uncheck | Cypress 文档'
+description: 在 Cypress 中取消勾选复选框。
 sidebar_label: uncheck
 slug: /api/commands/uncheck
 ---
@@ -9,12 +9,11 @@ slug: /api/commands/uncheck
 
 # uncheck
 
-Uncheck checkbox(es).
+取消勾选复选框。
 
-It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried) to
-chain further commands that rely on the subject after `.uncheck()`.
+在 `.uncheck()` 之后继续链式调用依赖该主题的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Syntax
+## 语法
 
 ```javascript
 .uncheck()
@@ -25,114 +24,109 @@ chain further commands that rely on the subject after `.uncheck()`.
 .uncheck(values, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('[type="checkbox"]').uncheck() // Unchecks checkbox element
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.uncheck('[type="checkbox"]') // Errors, cannot be chained off 'cy'
-cy.get('p:first').uncheck() // Errors, '.get()' does not yield checkbox
+cy.get('[type="checkbox"]').uncheck() // 取消勾选复选框元素
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
+
+```javascript
+cy.uncheck('[type="checkbox"]') // 错误，不能链式调用 'cy'
+cy.get('p:first').uncheck() // 错误，'.get()' 不返回复选框
+```
+
+### 参数
 
 <Icon name="angle-right" /> **value _(String)_**
 
-Value of checkbox that should be unchecked.
+应取消勾选的复选框的值。
 
 <Icon name="angle-right" /> **values _(Array)_**
 
-Values of checkboxes that should be unchecked.
+应取消勾选的复选框的值数组。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `.uncheck()`.
+传入一个选项对象以更改 `.uncheck()` 的默认行为。
 
-| Option                       | Default                                                                     | Description                                                                                                                                     |
+| 选项                       | 默认值                                                                     | 描述                                                                                                                                     |
 | ---------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `animationDistanceThreshold` | [`animationDistanceThreshold`](/app/references/configuration#Actionability) | The distance in pixels an element must exceed over time to be [considered animating](/app/core-concepts/interacting-with-elements#Animations).  |
-| `force`                      | `false`                                                                     | Forces the action, disables [waiting for actionability](#Assertions)                                                                            |
-| `log`                        | `true`                                                                      | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log)                                                             |
-| `scrollBehavior`             | [`scrollBehavior`](/app/references/configuration#Actionability)             | Viewport position to where an element [should be scrolled](/app/core-concepts/interacting-with-elements#Scrolling) before executing the command |
-| `timeout`                    | [`defaultCommandTimeout`](/app/references/configuration#Timeouts)           | Time to wait for `.uncheck()` to resolve before [timing out](#Timeouts)                                                                         |
-| `waitForAnimations`          | [`waitForAnimations`](/app/references/configuration#Actionability)          | Whether to wait for elements to [finish animating](/app/core-concepts/interacting-with-elements#Animations) before executing the command.       |
+| `animationDistanceThreshold` | [`animationDistanceThreshold`](/app/references/configuration#Actionability) | 元素随时间必须超过的像素距离，以被视为[正在动画](/app/core-concepts/interacting-with-elements#Animations)。  |
+| `force`                      | `false`                                                                     | 强制执行操作，禁用[等待可操作性](#Assertions)                                                                            |
+| `log`                        | `true`                                                                      | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示命令                                                             |
+| `scrollBehavior`             | [`scrollBehavior`](/app/references/configuration#Actionability)             | 执行命令前元素[应滚动到的视口位置](/app/core-concepts/interacting-with-elements#Scrolling) |
+| `timeout`                    | [`defaultCommandTimeout`](/app/references/configuration#Timeouts)           | 等待 `.uncheck()` 解析的超时时间，超过则[超时](#Timeouts)                                                                         |
+| `waitForAnimations`          | [`waitForAnimations`](/app/references/configuration#Actionability)          | 执行命令前是否等待元素[完成动画](/app/core-concepts/interacting-with-elements#Animations)。       |
 
 <HeaderYields />
 
-- `.uncheck()` yields the same subject it was given.
-- It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried)
-  to chain further commands that rely on the subject after `.uncheck()`.
+- `.uncheck()` 返回与给定主题相同的主题。
+- 在 `.uncheck()` 之后继续链式调用依赖该主题的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Uncheck all checkboxes
+#### 取消勾选所有复选框
 
 ```javascript
 cy.get(':checkbox').uncheck()
 ```
 
-#### Uncheck element with the id 'saveUserName'
+#### 取消勾选 ID 为 'saveUserName' 的元素
 
 ```javascript
 cy.get('#saveUserName').uncheck()
 ```
 
-### Value
+### 值
 
-#### Uncheck the checkbox with the value of 'ga'
+#### 取消勾选值为 'ga' 的复选框
 
 ```javascript
 cy.get('input[type="checkbox"]').uncheck(['ga'])
 ```
 
-### Values
+### 值数组
 
-#### Uncheck the checkboxes with the values 'ga' and 'ca'
+#### 取消勾选值为 'ga' 和 'ca' 的复选框
 
 ```javascript
 cy.get('[type="checkbox"]').uncheck(['ga', 'ca'])
 ```
 
-## Notes
+## 注意事项
 
-### Actionability
+### 可操作性
 
-#### The element must first reach actionability
+#### 元素必须首先达到可操作状态
 
-`.uncheck()` is an "action command" that follows all the rules of
-[Actionability](/app/core-concepts/interacting-with-elements).
+`.uncheck()` 是一个“操作命令”，遵循[可操作性](/app/core-concepts/interacting-with-elements)的所有规则。
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.uncheck()` requires being chained off a command that yields DOM element(s).
-- `.uncheck()` requires the element to have type `checkbox`.
+- `.uncheck()` 需要链式调用返回 DOM 元素的命令。
+- `.uncheck()` 要求元素的类型为 `checkbox`。
 
 <HeaderAssertions />
 
-- `.uncheck()` will automatically wait for the element to reach an
-  [actionable state](/app/core-concepts/interacting-with-elements).
-- `.uncheck()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed.
+- `.uncheck()` 会自动等待元素达到[可操作状态](/app/core-concepts/interacting-with-elements)。
+- `.uncheck()` 会自动[重试](/app/core-concepts/retry-ability)，直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `.uncheck()` can time out waiting for the element to reach an
-  [actionable state](/app/core-concepts/interacting-with-elements).
-- `.uncheck()` can time out waiting for assertions you've added to pass.
+- `.uncheck()` 可能会因等待元素达到[可操作状态](/app/core-concepts/interacting-with-elements)而超时。
+- `.uncheck()` 可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Uncheck the first checkbox_**
+**_取消勾选第一个复选框_**
 
 ```javascript
 cy.get('[data-js="choose-all"]')
@@ -142,30 +136,29 @@ cy.get('[data-js="choose-all"]')
   .uncheck()
 ```
 
-The commands above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/uncheck/test-unchecking-a-checkbox.png"
-  alt="Command Log uncheck"
+  alt="命令日志 uncheck"
 />
 
-When clicking on `uncheck` within the command log, the console outputs the
-following:
+当点击命令日志中的 `uncheck` 时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/uncheck/console-shows-events-from-clicking-the-checkbox.png"
-  alt="Console Log uncheck"
+  alt="控制台日志 uncheck"
 />
 
-## History
+## 历史版本
 
-| Version                                    | Changes                       |
+| 版本                                    | 变更                       |
 | ------------------------------------------ | ----------------------------- |
-| [6.1.0](/app/references/changelog#6-1-0)   | Added option `scrollBehavior` |
-| [0.6.12](/app/references/changelog#0-6-12) | Added option `force`          |
-| [0.3.3](/app/references/changelog#0-3-3)   | `.uncheck()` command added    |
+| [6.1.0](/app/references/changelog#6-1-0)   | 添加选项 `scrollBehavior` |
+| [0.6.12](/app/references/changelog#0-6-12) | 添加选项 `force`          |
+| [0.3.3](/app/references/changelog#0-3-3)   | 添加 `.uncheck()` 命令    |
 
-## See also
+## 另请参阅
 
 - [`.check()`](/api/commands/check)
 - [`.click()`](/api/commands/click)

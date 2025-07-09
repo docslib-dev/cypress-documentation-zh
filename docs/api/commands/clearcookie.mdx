@@ -1,6 +1,6 @@
 ---
-title: 'clearCookie | Cypress Documentation'
-description: Clear a specific browser cookie in Cypress.
+title: 'clearCookie | Cypress 文档'
+description: 在Cypress中清除特定的浏览器cookie。
 sidebar_label: clearCookie
 ---
 
@@ -8,98 +8,89 @@ sidebar_label: clearCookie
 
 # clearCookie
 
-Clear a specific browser cookie.
+清除特定的浏览器cookie。
 
 :::caution
 
-Cypress automatically clears all cookies _before_ each test to prevent state
-from being shared across tests when
-[test isolation](/app/core-concepts/writing-and-organizing-tests#Test-Isolation)
-is enabled. You shouldn't need to use this command unless you're using it to
-clear a specific cookie inside a single test or test isolation is disabled.
+Cypress会在每次测试_前_自动清除所有cookie，以防止在启用[测试隔离](/app/core-concepts/writing-and-organizing-tests#Test-Isolation)时测试间共享状态。除非你需要在单个测试中清除特定cookie或测试隔离被禁用，否则不应使用此命令。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 cy.clearCookie(name)
 cy.clearCookie(name, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.clearCookie('authId') // clear the 'authId' cookie
+cy.clearCookie('authId') // 清除名为'authId'的cookie
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **name _(String)_**
 
-The name of the cookie to be cleared.
+要清除的cookie名称。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `cy.clearCookie()`.
+传入一个选项对象来改变`cy.clearCookie()`的默认行为。
 
-| Option    | Default                                                     | Description                                                                         |
-| --------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `domain`  | Hostname of the current URL                                 | Clears the cookie from the specified domain                                         |
-| `log`     | `true`                                                      | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`responseTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.clearCookie()` to resolve before [timing out](#Timeouts)       |
+| 选项      | 默认值                                                   | 描述                                                                         |
+| --------- | ------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `domain`  | 当前URL的主机名                                          | 从指定域名清除cookie                                                        |
+| `log`     | `true`                                                  | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令           |
+| `timeout` | [`responseTimeout`](/app/references/configuration#Timeouts) | 等待`cy.clearCookie()`解析的时长，超过则[超时](#Timeouts)                     |
 
 <HeaderYields />
 
-- `cy.clearCookie()` yields `null`.
+- `cy.clearCookie()`返回`null`。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Clear a cookie after logging in <E2EOnlyBadge />
+#### 登录后清除cookie <E2EOnlyBadge />
 
-In this example, on first login, our server sends us back a session cookie.
-After invoking `cy.clearCookie('session_id')`, this clears the session cookie.
-Then upon navigating to an unauthorized page, we asset that our server has
-redirected us back to login.
+在此示例中，首次登录时服务器会返回一个会话cookie。调用`cy.clearCookie('session_id')`后，会清除该会话cookie。然后导航到未授权页面时，我们断言服务器已将我们重定向回登录页。
 
 ```javascript
-// assume we just logged in
-cy.contains('Login').click()
+// 假设我们刚刚登录
+cy.contains('登录').click()
 cy.url().should('include', 'profile')
 cy.clearCookie('session_id')
-cy.visit('/dashboard') // we should be redirected back to login
+cy.visit('/dashboard') // 我们应该被重定向回登录页
 cy.url().should('include', 'login')
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.clearCookie()` requires being chained off of `cy`.
+- `cy.clearCookie()`必须链在`cy`之后调用。
 
 <HeaderAssertions />
 
-- `cy.clearCookie()` cannot have any assertions chained.
+- `cy.clearCookie()`不能链任何断言。
 
 <HeaderTimeouts />
 
-- `cy.clearCookie()` should never time out.
+- `cy.clearCookie()`不应超时。
 
 :::caution
 
-Because `cy.clearCookie()` is asynchronous it is technically possible for there
-to be a timeout while talking to the internal Cypress automation APIs. But for
-practical purposes it should never happen.
+由于`cy.clearCookie()`是异步的，理论上在与Cypress内部自动化API通信时可能会超时。但实际上这种情况几乎不会发生。
 
 :::
 
-## Command Log
+## 命令日志
 
-**_Clearing a cookie after setting a cookie_**
+**_设置cookie后清除cookie_**
 
 ```javascript
 cy.setCookie('foo', 'bar')
@@ -107,22 +98,21 @@ cy.clearCookie('foo')
 cy.getCookie('foo').should('be.null')
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/clearcookie/clear-cookie-in-browser-tests.png"
-  alt="Command Log for clearcookie"
+  alt="清除cookie的命令日志"
 />
 
-When clicking on `clearCookie` within the command log, the console outputs the
-following:
+当点击命令日志中的`clearCookie`时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/clearcookie/cleared-cookie-shown-in-console.png"
-  alt="console.log for clearcookie"
+  alt="清除cookie的控制台日志"
 />
 
-## See also
+## 另请参阅
 
 - [`cy.clearCookies()`](/api/commands/clearcookies)
 - [`cy.clearLocalStorage()`](/api/commands/clearlocalstorage)

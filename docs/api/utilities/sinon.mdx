@@ -1,6 +1,6 @@
 ---
 title: Cypress.sinon
-description: Cypress automatically includes Sinon.JS and exposes it as Cypress.sinon.
+description: Cypress 自动包含 Sinon.JS 并将其暴露为 Cypress.sinon
 sidebar_label: Cypress.sinon
 ---
 
@@ -8,41 +8,34 @@ sidebar_label: Cypress.sinon
 
 # Cypress.sinon
 
-Cypress automatically includes [Sinon.JS](http://sinonjs.org/) and exposes it as
-`Cypress.sinon`. Because commands [`cy.spy`](/api/commands/spy) and
-[`cy.stub`](/api/commands/stub) are already wrapping Sinon methods, the most
-common use for `Cypress.sinon` is to provide flexible
-[matchers](https://sinonjs.org/releases/latest/matchers/) when doing assertions.
+Cypress 自动包含 [Sinon.JS](http://sinonjs.org/) 并将其暴露为 `Cypress.sinon`。由于命令 [`cy.spy`](/api/commands/spy) 和 [`cy.stub`](/api/commands/stub) 已经封装了 Sinon 的方法，`Cypress.sinon` 最常见的用途是在进行断言时提供灵活的 [匹配器](https://sinonjs.org/releases/latest/matchers/)。
 
-## Syntax
+## 语法
 
 ```javascript
 Cypress.sinon.match(value)
 Cypress.sinon.match.<matcher name>
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 Cypress.sinon.match.string
 ```
 
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
 ```javascript
-cy.sinon.match.string // Errors, cannot be chained off 'cy'
+cy.sinon.match.string // 错误，不能链式调用 'cy'
 ```
 
-## Examples
+## 示例
 
 ### `match.string`
 
-This example comes from the recipe
-[Root style](https://github.com/cypress-io/cypress-example-recipes#testing-the-dom).
-Imagine an application code where the method `setProperty` is called to change a
-CSS variable:
+这个示例来自配方 [Root style](https://github.com/cypress-io/cypress-example-recipes#testing-the-dom)。假设应用代码中调用了 `setProperty` 方法来改变 CSS 变量：
 
 ```js
 document.querySelector('input[type=color]').addEventListener('change', (e) => {
@@ -53,9 +46,7 @@ document.querySelector('input[type=color]').addEventListener('change', (e) => {
 })
 ```
 
-We can write a test to confirm that the method `setProperty` was called with two
-strings; we don't care about value of the first string, but we do want to check
-if it was indeed a string.
+我们可以编写一个测试来确认 `setProperty` 方法被调用了两个字符串；我们不关心第一个字符串的值，但我们想检查它是否确实是一个字符串。
 
 ```javascript
 cy.document()
@@ -66,8 +57,8 @@ cy.document()
 
 cy.get('input[type=color]').invoke('val', '#ff0000').trigger('change')
 
-// we don't care about '--background-color' exact
-// value but know it should be a string
+// 我们不关心 '--background-color' 的具体值
+// 但知道它应该是一个字符串
 cy.get('@setColor').should(
   'have.been.calledWith',
   Cypress.sinon.match.string,
@@ -75,13 +66,11 @@ cy.get('@setColor').should(
 )
 ```
 
-## See also
+## 另请参阅
 
-- [Spies, stubs & clocks](https://example.cypress.io/commands/spies-stubs-clocks)
-  example page
-- [Sinon matchers](https://sinonjs.org/releases/latest/matchers/) documentation
-  page
-- [Bundled Libraries](/app/references/bundled-libraries)
+- [Spies, stubs & clocks](https://example.cypress.io/commands/spies-stubs-clocks) 示例页面
+- [Sinon 匹配器](https://sinonjs.org/releases/latest/matchers/) 文档页面
+- [捆绑库](/app/references/bundled-libraries)
 - [`cy.spy()`](/api/commands/spy)
 - [`cy.stub()`](/api/commands/stub)
-- [Stubs, Spies, and Clocks](/app/guides/stubs-spies-and-clocks) guide
+- [Stubs, Spies, and Clocks](/app/guides/stubs-spies-and-clocks) 指南

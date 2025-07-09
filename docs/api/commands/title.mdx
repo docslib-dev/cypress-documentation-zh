@@ -1,6 +1,6 @@
 ---
-title: 'title | Cypress Documentation'
-description: Get the `document.title` property of the page that is currently active in Cypress.
+title: 'title | Cypress 文档'
+description: 获取当前 Cypress 活动页面的 `document.title` 属性。
 sidebar_label: title
 slug: /api/commands/title
 ---
@@ -9,93 +9,91 @@ slug: /api/commands/title
 
 # title
 
-Get the `document.title` property of the page that is currently active.
+获取当前活动页面的 `document.title` 属性。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.title()
 cy.title(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.title() // Yields the documents title as a string
+cy.title() // 以字符串形式返回文档标题
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `cy.title()`.
+传入一个选项对象来改变 `cy.title()` 的默认行为。
 
-| Option    | Default                                                           | Description                                                                         |
-| --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.title()` to resolve before [timing out](#Timeouts)             |
+| 选项      | 默认值                                                           | 描述                                                                         |
+| --------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令           |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 在[超时](#Timeouts)前等待 `cy.title()` 解析的时间                           |
 
 <HeaderYields />
 
-- `cy.title()` 'yields the `document.title` property of the current page.
-- `cy.title()` is a query, and it is _safe_ to chain further commands.
+- `cy.title()` 返回当前页面的 `document.title` 属性。
+- `cy.title()` 是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Assert that the document's title is "My Awesome Application"
+#### 断言文档标题为 "My Awesome Application"
 
 ```javascript
 cy.title().should('eq', 'My Awesome Application')
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.title()` requires being chained off of `cy`.
+- `cy.title()` 必须通过 `cy` 链式调用。
 
 <HeaderAssertions />
 
-- `cy.title()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed
+- `cy.title()` 会自动[重试](/app/core-concepts/retry-ability)，直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `cy.title()` can time out waiting for assertions you've added to pass.
+- `cy.title()` 可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Assert that the document's title includes 'New User'_**
+**_断言文档标题包含 'New User'_**
 
 ```javascript
 cy.title().should('include', 'New User')
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/title/test-title-of-website-or-webapp.png"
   alt="Command Log title"
 />
 
-When clicking on `title` within the command log, the console outputs the
-following:
+当点击命令日志中的 `title` 时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/title/see-the-string-yielded-in-the-console.png"
   alt="Console Log title"
 />
 
-## History
+## 历史
 
-| Version                                    | Changes                    |
-| ------------------------------------------ | -------------------------- |
-| [< 0.3.3](/app/references/changelog#0-3-3) | `cy.title()` command added |
+| 版本                                    | 变更                     |
+| --------------------------------------- | ------------------------ |
+| [< 0.3.3](/app/references/changelog#0-3-3) | 添加了 `cy.title()` 命令 |
 
-## See also
+## 另请参阅
 
 - [`cy.document()`](/api/commands/document)

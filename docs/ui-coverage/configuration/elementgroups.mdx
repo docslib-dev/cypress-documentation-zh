@@ -1,6 +1,6 @@
 ---
-title: 'Element Groups | Cypress UI Coverage'
-description: 'The `elementGroups` configuration allows you to group elements in UI Coverage using custom logic.'
+title: '元素分组 | Cypress UI 覆盖率'
+description: '`elementGroups` 配置允许您使用自定义逻辑对 UI 覆盖率中的元素进行分组。'
 sidebar_label: elementGroups
 sidebar_position: 80
 ---
@@ -9,16 +9,16 @@ sidebar_position: 80
 
 # elementGroups
 
-UI Coverage provides logic to automatically [group](/ui-coverage/core-concepts/element-grouping) elements based on their structure in the DOM. However, there are scenarios where you may want to customize these groups to better align with your application's functionality or testing requirements. The `elementGroups` configuration allows you to define custom logic for grouping elements, improving coverage clarity and simplifying analysis.
+UI 覆盖率提供了基于 DOM 结构自动[分组](/ui-coverage/core-concepts/element-grouping)元素的逻辑。但在某些场景下，您可能需要自定义这些分组以更好地适应应用程序功能或测试需求。`elementGroups` 配置允许您定义元素分组的自定义逻辑，从而提升覆盖率清晰度并简化分析。
 
-## Why use element groups?
+## 为何使用元素分组？
 
-- **Improve Grouping Accuracy**: Ensure elements with shared attributes but different roles are correctly grouped, avoiding misclassification.
-- **Simplify Test Coverage Reports**: Grouping similar elements, like navigation buttons or list items, reduces clutter in reports and provides a more concise view of test coverage.
-- **Highlight Key Areas**: Use meaningful group names to draw attention to critical application areas, such as form controls.
-- **Streamline Dynamic Elements**: Consolidate dynamic or repeated elements, such as items in a carousel or list, into a single logical group.
+- **提高分组准确性**：确保具有共享属性但不同角色的元素被正确分组，避免错误分类。
+- **简化测试覆盖率报告**：将相似元素（如导航按钮或列表项）分组可减少报告中的杂乱信息，提供更简洁的测试覆盖率视图。
+- **突出关键区域**：使用有意义的组名来引起对关键应用区域（如表单控件）的关注。
+- **简化动态元素处理**：将动态或重复元素（如轮播项或列表项）整合为单一逻辑组。
 
-## Syntax
+## 语法
 
 ```json
 {
@@ -33,20 +33,20 @@ UI Coverage provides logic to automatically [group](/ui-coverage/core-concepts/e
 }
 ```
 
-### Options
+### 选项
 
-For every element considered by UI Coverage, the first `elementGroup` rule for which the `selector` property matches the element is used to group the element. Elements that do not match any rules are grouped by the default UI Coverage [element grouping rules](/ui-coverage/core-concepts/element-grouping).
+对于 UI 覆盖率考虑到的每个元素，系统会使用第一个 `selector` 属性匹配该元素的 `elementGroup` 规则进行分组。未匹配任何规则的元素将由默认的 UI 覆盖率[元素分组规则](/ui-coverage/core-concepts/element-grouping)进行分组。
 
-| Option     | Required | Default    | Description                                                                                                                      |
-| ---------- | -------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `selector` | Required |            | A CSS selector to identify elements. Supports standard CSS selector syntax, including IDs, classes, attributes, and combinators. |
-| `name`     | Optional | `selector` | A human-readable name for the group, displayed in UI Coverage reports.                                                           |
+| 选项        | 是否必填 | 默认值     | 描述                                                                                                                      |
+| ----------- | -------- | ---------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `selector`  | 必填     |            | 用于识别元素的 CSS 选择器。支持标准 CSS 选择器语法，包括 ID、类、属性和组合器。                                           |
+| `name`      | 可选     | `selector` | 分组的可读名称，显示在 UI 覆盖率报告中。                                                                                 |
 
-## Examples
+## 示例
 
-### Groups elements by selector
+### 通过选择器分组元素
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -64,23 +64,23 @@ For every element considered by UI Coverage, the first `elementGroup` rule for w
 
 ```xml
 <body>
-  <button data-cy="item-1"></button> <!-- Group: [data-cy^='item-'] -->
-  <button data-cy="item-2"></button> <!-- Group: [data-cy^='item-'] -->
-  <button data-cy="item-3"></button> <!-- Group: [data-cy^='item-'] -->
+  <button data-cy="item-1"></button> <!-- 分组: [data-cy^='item-'] -->
+  <button data-cy="item-2"></button> <!-- 分组: [data-cy^='item-'] -->
+  <button data-cy="item-3"></button> <!-- 分组: [data-cy^='item-'] -->
 </body>
 ```
 
-#### Elements shown in UI
+#### UI 中显示的元素
 
 ```
-[data-cy^='item-'] (3 instances)
+[data-cy^='item-'] (3 个实例)
 ```
 
 ---
 
-### Groups all elements in a container
+### 分组容器内的所有元素
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -106,17 +106,17 @@ For every element considered by UI Coverage, the first `elementGroup` rule for w
 </body>
 ```
 
-#### Elements shown in UI
+#### UI 中显示的元素
 
 ```
-#calendar button (3 instances)
+#calendar button (3 个实例)
 ```
 
 ---
 
-### Groups form controls with labels
+### 分组带标签的表单控件
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -124,7 +124,7 @@ For every element considered by UI Coverage, the first `elementGroup` rule for w
     "elementGroups": [
       {
         "selector": "input[name='animal'], label:has(input[name='animal'])",
-        "name": "Animal Option"
+        "name": "动物选项"
       }
     ]
   }
@@ -144,15 +144,15 @@ For every element considered by UI Coverage, the first `elementGroup` rule for w
 </body>
 ```
 
-#### Elements shown in UI
+#### UI 中显示的元素
 
 ```
-Animal Option (4 instances)
+动物选项 (4 个实例)
 ```
 
-### Groups dynamic elements
+### 分组动态元素
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -170,23 +170,23 @@ Animal Option (4 instances)
 
 ```xml
 <body>
-  <button id="product125">Product 1</button>
-  <button id="product514">Product 2</button>
-  <button id="product256">Product 3</button>
+  <button id="product125">产品 1</button>
+  <button id="product514">产品 2</button>
+  <button id="product256">产品 3</button>
 </body>
 ```
 
-#### Elements shown in UI
+#### UI 中显示的元素
 
 ```
-[id^='product'] (3 instances)
+[id^='product'] (3 个实例)
 ```
 
-### Giving groups custom names
+### 为分组指定自定义名称
 
-Sometimes you may want to group elements by a common attribute but give the group a more descriptive name. In the following example, we group buttons with IDs starting with `listbox-button-` and name the group `Add Button`.
+有时您可能希望通过公共属性分组元素，但为分组指定更具描述性的名称。在以下示例中，我们将 ID 以 `listbox-button-` 开头的按钮分组，并将组命名为 `添加按钮`。
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -194,7 +194,7 @@ Sometimes you may want to group elements by a common attribute but give the grou
     "elementGroups": [
       {
         "selector": "[id^='listbox-button-']",
-        "name": "Add Button"
+        "name": "添加按钮"
       }
     ]
   }
@@ -212,8 +212,8 @@ Sometimes you may want to group elements by a common attribute but give the grou
 </body>
 ```
 
-#### Elements shown in UI
+#### UI 中显示的元素
 
 ```
-Add Button (4 instances)
+添加按钮 (4 个实例)
 ```

@@ -1,51 +1,34 @@
 ---
-title: 'Content Security Policy (CSP) in Cypress'
-description: 'How Cypress handles Content Security Policy (CSP) and how to configure it to work with your application.'
-sidebar_label: 'Content Security Policy'
+title: 'Cypress中的内容安全策略(CSP)'
+description: 'Cypress如何处理内容安全策略(CSP)以及如何配置使其与您的应用程序协同工作'
+sidebar_label: '内容安全策略'
 e2eSpecific: true
 ---
 
 <ProductHeading product="app" />
 
-# Content Security Policy
+# 内容安全策略
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 您将学习到
 
-- How Cypress handles Content Security Policy (CSP)
-- How to configure Cypress to work with your application's CSP
+- Cypress如何处理内容安全策略(CSP)
+- 如何配置Cypress以兼容您应用程序的CSP策略
 
 :::
 
-Content Security Policy (CSP) is a browser security feature that allows you to
-restrict the resources that can be loaded into your application. This can be
-problematic for Cypress, because it needs to inject JavaScript into your
-application in order to run tests and interact with the DOM. This page describes
-how Cypress handles CSP and how to configure it to work with your application.
+内容安全策略(CSP)是浏览器的安全功能，允许您限制可以加载到应用程序中的资源。这对Cypress可能会造成问题，因为它需要向您的应用程序注入JavaScript才能运行测试并与DOM交互。本页介绍Cypress如何处理CSP以及如何配置使其与您的应用程序协同工作。
 
-There are two ways to implement CSP:
+CSP有两种实现方式：
 
-- [Meta tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#http-equiv)
-- [HTTP header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy)
+- [Meta标签](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#http-equiv)
+- [HTTP头](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy)
 
-The `<meta>` tag implementation is fully supported by Cypress without any
-configuration required. This is because Cypress loads the necessary `<script>`
-tags into your application before any `<meta>` tag is parsed. This prevents any
-CSP directives from being applied to the script loaded by Cypress.
+`<meta>`标签的实现方式完全受Cypress支持且无需任何配置。这是因为Cypress会在任何`<meta>`标签被解析之前就将必要的`<script>`标签加载到您的应用程序中。这样可以防止任何CSP指令应用于Cypress加载的脚本。
 
-The second implementation requires you to configure Cypress to allow the headers
-to be sent to your application. By default, Cypress will remove any CSP headers
-from the response before it is sent to the browser. This is done to prevent
-Cypress from being blocked by the browser's CSP implementation.
+第二种实现方式需要您配置Cypress以允许将头部信息发送到您的应用程序。默认情况下，Cypress会在响应发送到浏览器之前移除所有CSP头部。这样做是为了防止Cypress被浏览器的CSP实现所阻止。
 
-For most application tests, this should not cause any issues. However, if you
-are testing your application's CSP implementation, you will need to configure
-Cypress to allow the headers to be sent to the browser. You can do this by
-setting the
-[`experimentalCspAllowList`](/app/references/experiments#Experimental-CSP-Allow-List)
-configuration option.
+对于大多数应用程序测试，这不会造成任何问题。但是，如果您正在测试应用程序的CSP实现，则需要配置Cypress以允许将头部信息发送到浏览器。您可以通过设置[`experimentalCspAllowList`](/app/references/experiments#Experimental-CSP-Allow-List)配置选项来实现。
 
-For more information on CSP, see the
-[Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)
-documentation on MDN.
+有关CSP的更多信息，请参阅MDN上的[内容安全策略](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)文档。

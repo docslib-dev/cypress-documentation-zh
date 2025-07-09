@@ -1,223 +1,217 @@
 ---
-title: 'Install using npm, Yarn, or pnpm | Cypress Documentation'
-description: 'A step-by-step guide on how to install Cypress. Learn the requirements, installation process, and get started with Cypress for end-to-end and component testing'
-sidebar_label: Install Cypress
+title: '使用 npm、Yarn 或 pnpm 安装 | Cypress 文档'
+description: '关于如何安装 Cypress 的逐步指南。了解系统要求、安装流程，并开始使用 Cypress 进行端到端和组件测试'
+sidebar_label: 安装 Cypress
 sidebar_position: 30
 ---
 
 <ProductHeading product="app" />
 
-# Install Cypress
+# 安装 Cypress
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to install Cypress using npm, Yarn, or pnpm
-- System requirements for Cypress
-- How to install Cypress using direct download
-- Advanced installation options
+- 如何使用 npm、Yarn 或 pnpm 安装 Cypress
+- Cypress 的系统要求
+- 如何通过直接下载安装 Cypress
+- 高级安装选项
 
 :::
 
-# Installing Cypress
+# 安装 Cypress
 
-First, make sure you meet the [system requirements](#System-requirements) including
-[operating system](#Operating-System),
-installation of [Node.js](#Nodejs) and
-a supported [package manager](#Package-Manager).
+首先，请确保满足 [系统要求](#System-requirements)，包括
+[操作系统](#Operating-System)、
+安装 [Node.js](#Nodejs) 和
+支持的 [包管理器](#Package-Manager)。
 
-## Install
+## 安装
 
-Install Cypress via your preferred [package manager](#Package-Manager).
-This will install Cypress locally as a dev dependency for your project.
+通过你首选的 [包管理器](#Package-Manager) 安装 Cypress。
+这将把 Cypress 作为开发依赖项安装到你的项目中。
 
 <CypressInstallCommands />
 
-Before installing Cypress, ensure you have a `package.json` file in the root of your project.
-If you need to create the file,
-you can run the `init` command for your [package manager](#Package-Manager).
+在安装 Cypress 之前，请确保项目根目录中有 `package.json` 文件。
+如果需要创建该文件，
+可以运行你的 [包管理器](#Package-Manager) 的 `init` 命令。
 
-System [proxy properties](/app/references/proxy-configuration) `http_proxy`, `https_proxy` and `no_proxy` are respected
-for the download of the Cypress binary.
-You can also use the npm properties
-`npm_config_proxy` and `npm_config_https_proxy`.
-Those have lower priority, so
-they will only be used if the system properties are being resolved to not use a proxy.
+系统 [代理属性](/app/references/proxy-configuration) `http_proxy`、`https_proxy` 和 `no_proxy` 会
+影响 Cypress 二进制文件的下载。
+你也可以使用 npm 属性
+`npm_config_proxy` 和 `npm_config_https_proxy`。
+这些属性的优先级较低，因此
+只有在系统属性解析为不使用代理时才会生效。
 
-### <Icon name="download" /> Direct download
+### <Icon name="download" /> 直接下载
 
-The recommended approach is to install Cypress with `npm` because:
+推荐的方法是使用 `npm` 安装 Cypress，因为：
 
-- Cypress is versioned like any other dependency.
-- It simplifies running Cypress in
-  [Continuous Integration](/app/continuous-integration/overview).
+- Cypress 像其他依赖项一样进行版本管理。
+- 它简化了在
+  [持续集成](/app/continuous-integration/overview) 中运行 Cypress 的过程。
 
-If you're not using Node or a package manager in your project or you want to just try Cypress out
-quickly, you can always
-[download Cypress directly from our CDN](https://download.cypress.io/desktop).
+如果你的项目没有使用 Node 或包管理器，或者你只是想快速试用 Cypress，
+你可以
+[直接从我们的 CDN 下载 Cypress](https://download.cypress.io/desktop)。
 
 :::caution
 
-Recording runs to Cypress Cloud is not possible from the direct download. This
-download is only intended as a quick way to try out Cypress. To record tests to
-Cypress Cloud, you'll need to install Cypress as an package dependency.
+直接下载的版本无法将运行记录到 Cypress Cloud。
+此下载仅用于快速试用 Cypress。要将测试记录到
+Cypress Cloud，你需要将 Cypress 作为包依赖项安装。
 
 :::
 
-The direct download will always grab the latest available version. Your platform
-will be detected automatically.
+直接下载将始终获取最新可用版本。你的平台
+会自动检测。
 
-Then you can manually unzip and double click. Cypress will run without needing
-to install any dependencies.
+然后你可以手动解压并双击运行。Cypress 无需安装
+任何依赖即可运行。
 
 :::info
 
-<strong>Direct downloading for old versions</strong>
+<strong>下载旧版本</strong>
 
-It is possible to download an old version from our CDN by suffixing the URL with
-the desired version (ex.
-[https://download.cypress.io/desktop/12.17.4](https://download.cypress.io/desktop/12.17.4)).
+可以通过在 URL 后附加所需版本号来下载旧版本（例如
+[https://download.cypress.io/desktop/12.17.4](https://download.cypress.io/desktop/12.17.4)）。
 
 :::
 
-### <Icon name="cog" /> Advanced Installation
+### <Icon name="cog" /> 高级安装
 
-If you have more complex requirements, want to level-up your Cypress workflow or
-just need help with troubleshooting, check out our
-[Advanced Installation](/app/references/advanced-installation) reference.
-You can also find instructions to [uninstall Cypress](/app/references/advanced-installation#Uninstall-Cypress) in this reference documentation.
+如果你有更复杂的需求，想要提升 Cypress 工作流程或
+需要故障排除帮助，请查看我们的
+[高级安装](/app/references/advanced-installation) 参考。
+你还可以在此参考文档中找到 [卸载 Cypress](/app/references/advanced-installation#Uninstall-Cypress) 的说明。
 
-### <Icon name="sync-alt" /> Continuous integration
+### <Icon name="sync-alt" /> 持续集成
 
-Please read our
-[Continuous Integration](/app/continuous-integration/overview) docs for
-help installing Cypress in CI. When running in Linux you may need to install some
-[system dependencies](#Linux-Prerequisites)
-or you can use our [Docker images](#Docker-Prerequisites) which have everything you
-need prebuilt.
+请阅读我们的
+[持续集成](/app/continuous-integration/overview) 文档以获取
+在 CI 中安装 Cypress 的帮助。在 Linux 中运行时，你可能需要安装一些
+[系统依赖项](#Linux-Prerequisites)
+或使用我们的 [Docker 镜像](#Docker-Prerequisites)，这些镜像已预装所有必要内容。
 
-## System requirements
+## 系统要求
 
-### Operating System
+### 操作系统
 
-Cypress supports running under these operating systems:
+Cypress 支持在以下操作系统上运行：
 
-- **macOS** 11 and above _(Intel or Apple Silicon 64-bit (x64 or arm64))_
-- **Linux** _(x64 or arm64)_ see also [Linux Prerequisites](#Linux-Prerequisites) down below
-  - Ubuntu 20.04 and above
-  - Debian 11 and above
-  - Fedora 41 and above
-- **Windows** 10 and 11 _(x64)_
-- **Windows** 11 24H2 _(arm64, runs in [x64 emulation](https://learn.microsoft.com/en-us/windows/arm/apps-on-arm-x86-emulation) mode, minimum Cypress [14.5.0](/app/references/changelog#14-5-0) required)_ - preview status
-- **Windows Server** 2019, 2022 and 2025 _(x64)_
+- **macOS** 11 及以上版本 _(Intel 或 Apple Silicon 64 位 (x64 或 arm64))_
+- **Linux** _(x64 或 arm64)_ 另请参阅下方的 [Linux 先决条件](#Linux-Prerequisites)
+  - Ubuntu 20.04 及以上版本
+  - Debian 11 及以上版本
+  - Fedora 41 及以上版本
+- **Windows** 10 和 11 _(x64)_
+- **Windows** 11 24H2 _(arm64，在 [x64 模拟模式](https://learn.microsoft.com/en-us/windows/arm/apps-on-arm-x86-emulation) 下运行，最低需要 Cypress [14.5.0](/app/references/changelog#14-5-0))_ - 预览状态
+- **Windows Server** 2019、2022 和 2025 _(x64)_
 
 ### Node.js
 
-Cypress requires [Node.js](https://nodejs.org/) in order to install. We support the versions listed below:
+Cypress 需要 [Node.js](https://nodejs.org/) 才能安装。我们支持以下版本：
 
-- **Node.js** 18.x, 20.x, 22.x and above
+- **Node.js** 18.x、20.x、22.x 及以上版本
 
-Cypress generally aligns with
-[Node's release schedule](https://github.com/nodejs/Release).
-Accordingly, use of Node.js 18 and 23 with Cypress is deprecated and support is planned for removal in a future release of Cypress.
+Cypress 通常与
+[Node 的发布计划](https://github.com/nodejs/Release) 保持一致。
+因此，使用 Node.js 18 和 23 与 Cypress 已被弃用，并计划在未来的 Cypress 版本中移除支持。
 
-#### Installing Node.js
+#### 安装 Node.js
 
-Follow the instructions on [Download Node.js](https://nodejs.org/en/download/) to download and install [Node.js](https://nodejs.org/).
+按照 [下载 Node.js](https://nodejs.org/en/download/) 上的说明下载并安装 [Node.js](https://nodejs.org/)。
 
 :::tip
 
-<strong>Best Practice</strong>
+<strong>最佳实践</strong>
 
-Use a Node.js version manager as suggested on [Download Node.js](https://nodejs.org/en/download/) to install Node.js,
-or use an alternate Node.js version manager of your choice.
-This allows you to switch between different versions of Node.js easily.
+使用 [下载 Node.js](https://nodejs.org/en/download/) 上建议的 Node.js 版本管理器安装 Node.js，
+或使用你选择的其他 Node.js 版本管理器。
+这样可以轻松切换不同版本的 Node.js。
 
-Note that the [Node.js Snap for Linux](https://github.com/nodejs/snap) version manager is not recommended for use with Cypress.
-Attempting to use it as a non-root user may result in permissions errors.
+请注意，不推荐将 [Node.js Snap for Linux](https://github.com/nodejs/snap) 版本管理器与 Cypress 一起使用。
+尝试以非 root 用户身份使用可能会导致权限错误。
 
 :::
 
-If you are using a [Cypress Docker image](../continuous-integration/overview#Cypress-Docker-variants),
-you will find a fixed version of Node.js is pre-installed in the image.
-You select the Node.js version using the Docker image tag.
+如果你使用的是 [Cypress Docker 镜像](../continuous-integration/overview#Cypress-Docker-variants)，
+你会发现镜像中已预装了固定版本的 Node.js。
+你可以通过 Docker 镜像标签选择 Node.js 版本。
 
-### Package Manager
+### 包管理器
 
-Cypress is [installed](#Install) using one of the following supported package managers:
+Cypress 使用以下支持的包管理器之一进行 [安装](#Install)：
 
-| Package Manager                                  | Version             | Installation instructions                                                                                       |
-| ------------------------------------------------ | ------------------- | --------------------------------------------------------------------------------------------------------------- |
-| [npm](https://docs.npmjs.com/)                   | `8.6.0` and above   | [Downloading and installing Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) |
-| [Yarn 1 (Classic)](https://classic.yarnpkg.com/) | `1.22.22` and above | [Yarn 1 (Classic) Installation](https://classic.yarnpkg.com/en/docs/install)                                    |
-| [Yarn (Modern aka berry)](https://yarnpkg.com/)  | `4.x` and above     | [Yarn Installation](https://yarnpkg.com/getting-started/install)                                                |
-| [pnpm](https://pnpm.io/)                         | `8.x` and above     | [pnpm Installation](https://pnpm.io/installation)                                                               |
+| 包管理器                                  | 版本               | 安装说明                                                                                       |
+| ---------------------------------------- | ------------------ | --------------------------------------------------------------------------------------------- |
+| [npm](https://docs.npmjs.com/)           | `8.6.0` 及以上     | [下载并安装 Node.js 和 npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) |
+| [Yarn 1 (Classic)](https://classic.yarnpkg.com/) | `1.22.22` 及以上 | [Yarn 1 (Classic) 安装](https://classic.yarnpkg.com/en/docs/install)                          |
+| [Yarn (Modern aka berry)](https://yarnpkg.com/)  | `4.x` 及以上      | [Yarn 安装](https://yarnpkg.com/getting-started/install)                                      |
+| [pnpm](https://pnpm.io/)                 | `8.x` 及以上       | [pnpm 安装](https://pnpm.io/installation)                                                     |
 
-#### Yarn Configuration
+#### Yarn 配置
 
-[Yarn (Modern)](https://yarnpkg.com/) configuration using [nodeLinker: "node-modules"](https://yarnpkg.com/configuration/yarnrc#nodeLinker)
-is preferred. Cypress [Component Testing](/app/core-concepts/testing-types#What-is-Component-Testing) is not currently compatible with the default setting [nodeLinker: "pnp"](https://yarnpkg.com/configuration/yarnrc#nodeLinker) which uses [Yarn Plug'n'Play](https://yarnpkg.com/features/pnp).
+推荐使用 [Yarn (Modern)](https://yarnpkg.com/) 配置 [nodeLinker: "node-modules"](https://yarnpkg.com/configuration/yarnrc#nodeLinker)。
+Cypress [组件测试](/app/core-concepts/testing-types#What-is-Component-Testing) 目前与默认设置 [nodeLinker: "pnp"](https://yarnpkg.com/configuration/yarnrc#nodeLinker) 不兼容，该设置使用 [Yarn Plug'n'Play](https://yarnpkg.com/features/pnp)。
 
-#### pnpm Configuration
+#### pnpm 配置
 
-The following configuration options enable Cypress to execute its `postinstall` script so it can install the Cypress binary into the [binary cache](/app/references/advanced-installation#Binary-cache).
-If these configuration options are not set, then Cypress may skip the `postinstall` script execution and Cypress will not run.
+以下配置选项使 Cypress 能够执行其 `postinstall` 脚本，从而将 Cypress 二进制文件安装到 [二进制缓存](/app/references/advanced-installation#Binary-cache) 中。
+如果未设置这些配置选项，Cypress 可能会跳过 `postinstall` 脚本的执行，从而导致无法运行。
 
-The pnpm [side effects cache](https://pnpm.io/settings#sideeffectscache) uses and caches the results of (pre/post)install hooks and is not compatible with Cypress' own caching.
-Disable the pnpm [side effects cache](https://pnpm.io/settings#sideeffectscache), for example using the following command, executed in the root of your Cypress project:
+pnpm 的 [副作用缓存](https://pnpm.io/settings#sideeffectscache) 使用并缓存 (pre/post)install 钩子的结果，与 Cypress 自身的缓存不兼容。
+禁用 pnpm 的 [副作用缓存](https://pnpm.io/settings#sideeffectscache)，例如在 Cypress 项目的根目录中执行以下命令：
 
 ```shell
 pnpm config set side-effects-cache false --location project
 ```
 
-[pnpm@10.0.0](https://github.com/pnpm/pnpm/releases/tag/v10.0.0) and above require allowlisting `cypress`.
-Refer to the [pnpm settings](https://pnpm.io/settings) documentation for additional information.
-In [pnpm@10.4.0](https://github.com/pnpm/pnpm/releases/tag/v10.4.0) and above, the CLI `add` option [--allow-build](https://pnpm.io/cli/add#--allow-build) can be used, for example:
+[pnpm@10.0.0](https://github.com/pnpm/pnpm/releases/tag/v10.0.0) 及以上版本需要将 `cypress` 加入白名单。
+有关更多信息，请参阅 [pnpm 设置](https://pnpm.io/settings) 文档。
+在 [pnpm@10.4.0](https://github.com/pnpm/pnpm/releases/tag/v10.4.0) 及以上版本中，可以使用 CLI `add` 选项 [--allow-build](https://pnpm.io/cli/add#--allow-build)，例如：
 
 ```shell
 pnpm --allow-build=cypress add --save-dev cypress
 ```
 
-### Hardware
+### 硬件
 
-When running Cypress locally, it should run comfortably on any machine that is
-capable of modern web development.
+在本地运行 Cypress 时，它应该可以在任何能够进行现代 Web 开发的机器上流畅运行。
 
-When running Cypress in CI, however, some of the lower-tier configurations might
-not be able to run Cypress reliably, especially when recording videos or doing
-longer test runs.
+然而，在 CI 中运行 Cypress 时，一些低端配置可能无法可靠地运行 Cypress，
+尤其是在录制视频或进行较长测试运行时。
 
-Some issues you might run into in CI that could be a sign of insufficient
-resources are:
+在 CI 中可能会遇到的一些问题可能是资源不足的迹象：
 
-- Exiting early during `cypress run` or abruptly closing (“crashing”)
-- Frozen or missing frames in the video that is captured
-- Increased runtime
+- 在 `cypress run` 期间提前退出或突然关闭（“崩溃”）
+- 捕获的视频中出现冻结或缺失的帧
+- 运行时间增加
 
-When running Cypress in CI, we recommend that you have the following hardware
-requirements:
+在 CI 中运行 Cypress 时，我们建议满足以下硬件要求：
 
 #### CPU
 
-- 2 CPUs minimum to run Cypress
-- 1 additional CPU if video recording is enabled
-- 1 additional CPU per process you run outside of Cypress, such as:
-  - App server (frontend)
-  - App server (backend)
-  - App database
-  - Any additional infrastructure (Redis, Kafka, etc..)
+- 至少 2 个 CPU 来运行 Cypress
+- 如果启用了视频录制，则需要额外 1 个 CPU
+- 每个在 Cypress 之外运行的进程需要额外 1 个 CPU，例如：
+  - 应用服务器（前端）
+  - 应用服务器（后端）
+  - 应用数据库
+  - 任何其他基础设施（Redis、Kafka 等）
 
-### Memory
+### 内存
 
-- 4GB minimum, 8GB+ for longer test runs
+- 最少 4GB，较长测试运行需要 8GB 及以上
 
-### Linux Prerequisites
+### Linux 先决条件
 
-If you're using Linux, you'll want to have the required dependencies installed
-on your system. Depending on your system defaults, these dependencies may already be installed.
-If not, run the command line for your operating system listed below.
-See below under [Docker Prerequisites](#Docker-Prerequisites) for information on [Cypress Docker images](https://github.com/cypress-io/cypress-docker-images). These already include the necessary dependencies.
+如果你使用的是 Linux，你需要在系统上安装必要的依赖项。
+根据系统默认设置，这些依赖项可能已经安装。
+如果未安装，请运行下面列出的适用于你操作系统的命令行。
+有关 [Cypress Docker 镜像](https://github.com/cypress-io/cypress-docker-images) 的信息，请参阅下方的 [Docker 先决条件](#Docker-Prerequisites)。这些镜像已包含所有必要的依赖项。
 
 #### Ubuntu/Debian
 
@@ -225,7 +219,7 @@ See below under [Docker Prerequisites](#Docker-Prerequisites) for information on
 apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb
 ```
 
-For Ubuntu 24.04, and above, use the following command:
+对于 Ubuntu 24.04 及以上版本，使用以下命令：
 
 ```shell
 apt-get install libgtk2.0-0t64 libgtk-3-0t64 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb
@@ -243,22 +237,21 @@ pacman -S gtk2 gtk3 alsa-lib xorg-server-xvfb libxss nss libnotify
 dnf install -y xorg-x11-server-Xvfb gtk3-devel nss alsa-lib
 ```
 
-### Docker Prerequisites
+### Docker 先决条件
 
-[Cypress Docker images](../continuous-integration/overview#Cypress-Docker-variants) are available from
-[Docker Hub](https://hub.docker.com/u/cypress) and the
-[Amazon ECR (Elastic Container Registry) Public Gallery](https://gallery.ecr.aws/cypress-io).
-These images, which are Linux (Debian) based, include all of the required dependencies pre-installed.
+[Cypress Docker 镜像](../continuous-integration/overview#Cypress-Docker-variants) 可从
+[Docker Hub](https://hub.docker.com/u/cypress) 和
+[Amazon ECR (Elastic Container Registry) Public Gallery](https://gallery.ecr.aws/cypress-io) 获取。
+这些基于 Linux (Debian) 的镜像已预装所有必要的依赖项。
 
-If you need Node.js, browser or Cypress version combinations which are not covered by the published Cypress Docker images,
-then the [cypress/factory](https://github.com/cypress-io/cypress-docker-images/tree/master/factory) image
-allows you to generate your own customized Docker image easily.
+如果你需要的 Node.js、浏览器或 Cypress 版本组合不在已发布的 Cypress Docker 镜像中，
+那么 [cypress/factory](https://github.com/cypress-io/cypress-docker-images/tree/master/factory) 镜像
+可以让你轻松生成自定义的 Docker 镜像。
 
-If you are not using a Cypress Docker image, make sure that your base operating system is a Linux system listed in the supported
-[Operating Systems](#Operating-System) above and that Node.js is installed in the image.
-It is recommended to have `unzip` installed. This avoids the Cypress binary installation falling back to a slower unzip method using Node.js.
+如果你不使用 Cypress Docker 镜像，请确保你的基础操作系统是上述支持的
+[操作系统](#Operating-System) 之一，并且镜像中已安装 Node.js。
+建议安装 `unzip`。这样可以避免 Cypress 二进制文件安装回退到使用 Node.js 的较慢解压方法。
 
-## Next Steps
+## 下一步
 
-[Open the app](/app/get-started/open-the-app) and take it for a test
-drive!
+[打开应用](/app/get-started/open-the-app) 并试用吧！

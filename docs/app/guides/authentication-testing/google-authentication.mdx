@@ -1,93 +1,86 @@
 ---
-title: 'Google Authentication: Cypress Guide'
-sidebar_label: 'Google Authentication'
-description: 'Secure testing with seamless integration of Google Authentication, ensuring reliable and protected test scenarios'
+title: 'Google身份验证：Cypress指南'
+sidebar_label: 'Google身份验证'
+description: '通过无缝集成Google身份验证进行安全测试，确保可靠且受保护的测试场景'
 ---
 
 <ProductHeading product="app" />
 
-# Google Authentication
+# Google身份验证
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 您将学习到
 
-- How to set up Cypress to test authentication with Google
-- How to set Google app credentials in Cypress
-- How to create a custom command for Google authentication
-- How to adapt a Google app for testing
+- 如何设置Cypress来测试Google身份验证
+- 如何在Cypress中配置Google应用凭证
+- 如何创建自定义Google身份验证命令
+- 如何为测试适配Google应用
 
 :::
 
-The technique we'll use for testing is to use the
-[Google OAuth 2.0 Playground](https://developers.google.com/oauthplayground) to
-create a refresh token that can be exchanged for an access token and id token
-during the testing phase.
+我们将使用的测试技术是通过
+[Google OAuth 2.0 Playground](https://developers.google.com/oauthplayground)
+创建一个刷新令牌，该令牌可以在测试阶段兑换为访问令牌和ID令牌。
 
-## Google Project and Application Setup
+## Google项目和应用设置
 
-First, a [Google](https://google.com) project is required. If you don't already
-have a project, you can create one using the
-[Google Cloud Console](https://console.cloud.google.com). More information is
-available in the
-[Google Cloud APIs Getting Started](https://cloud.google.com/apis/docs/getting-started#creating_a_google_project).
+首先需要一个[Google](https://google.com)项目。如果还没有项目，可以使用
+[Google Cloud Console](https://console.cloud.google.com)创建一个。更多信息请参考
+[Google Cloud APIs入门指南](https://cloud.google.com/apis/docs/getting-started#creating_a_google_project)。
 
-Next, use the [Google API Console](https://console.developers.google.com/APIs)
-to [create credentials](https://console.developers.google.com/apis/credentials)
-for your web application. In the top navigation, click `Create Credentials` and
-choose `OAuth client ID`.
+接下来，使用[Google API控制台](https://console.developers.google.com/APIs)
+为您的Web应用[创建凭证](https://console.developers.google.com/apis/credentials)。
+在顶部导航中点击`创建凭证`并选择`OAuth客户端ID`。
 
-On the `Create OAuth client ID` page, enter the following:
+在`创建OAuth客户端ID`页面，输入以下内容：
 
-- **Application Type:** Web Application
-- **Name:** Your Web Application Name
-- **Authorized JavaScript origins:** `http://localhost:3000`
-- **Authorized redirect URIs:** `http://localhost:3000/callback` and
+- **应用类型:** Web应用
+- **名称:** 您的Web应用名称
+- **授权JavaScript来源:** `http://localhost:3000`
+- **授权重定向URI:** `http://localhost:3000/callback`和
   `https://developers.google.com/oauthplayground`
 
-Once saved, note the **client ID** and **client secret**. You can find these under the
-"OAuth 2.0 Client IDs" on the
-[Google API Credentials](https://console.developers.google.com/apis/credentials)
-page.
+保存后，记下**客户端ID**和**客户端密钥**。您可以在
+[Google API凭证](https://console.developers.google.com/apis/credentials)
+页面的"OAuth 2.0客户端ID"下找到这些信息。
 
-## Using the Google OAuth 2.0 Playground to Create Testing Credentials
+## 使用Google OAuth 2.0 Playground创建测试凭证
 
 :::info
 
-The refresh token from this process is unique to the authenticated Google user.
-This process must be repeated for each user intended for testing.
+此过程生成的刷新令牌与认证的Google用户唯一对应。
+必须为每个测试用户重复此过程。
 
 :::
 
-Visit the
-[Google OAuth 2.0 Playground](https://developers.google.com/oauthplayground).
-Click the <Icon name="cog" /> icon in the upper right corner to reveal a
-`OAuth 2.0 configuration` panel. In this panel set the following:
+访问
+[Google OAuth 2.0 Playground](https://developers.google.com/oauthplayground)。
+点击右上角的<Icon name="cog" />图标显示
+`OAuth 2.0配置`面板。在此面板中设置以下内容：
 
-- **OAuth flow**: Server-side
-- **Access type**: Offline
-- Check `Use your own OAuth credentials`.
-- **OAuth Client ID**: Your Google Application Client ID
-- **OAuth Client secret**: Your Google Application Client Secret
+- **OAuth流程**: 服务器端
+- **访问类型**: 离线
+- 勾选`使用您自己的OAuth凭证`
+- **OAuth客户端ID**: 您的Google应用客户端ID
+- **OAuth客户端密钥**: 您的Google应用客户端密钥
 
-Select the Google APIs needed for your application under
-**Step 1 (Select & authorize APIs)**, including the
-`https://www.googleapis.com/auth/userinfo.profile` endpoint under
-**Google OAuth2 API v2** at a minimum. Click **Authorize APIs**.
+在**步骤1（选择并授权API）**下选择应用所需的Google API，
+至少包括**Google OAuth2 API v2**下的
+`https://www.googleapis.com/auth/userinfo.profile`端点。点击**授权API**。
 
-Next, sign in with Google credentials to your test Google user account. You'll be redirected back to the
+接下来，使用测试Google用户账号登录。您将被重定向回
 [Google OAuth 2.0 Playground](https://developers.google.com/oauthplayground)
-under **Step 2 (Exchange authorization code for tokens)**. Click the
-**Exchange authorization code for token** button.
+的**步骤2（用授权码兑换令牌）**。点击
+**用授权码兑换令牌**按钮。
 
-You'll be taken to **Step 3 (Configure request to API)**. Note the returned
-refresh token to be used with testing.
+您将进入**步骤3（配置API请求）**。记下返回的
+刷新令牌以供测试使用。
 
-## Setting Google app credentials in Cypress
+## 在Cypress中设置Google应用凭证
 
-To have access to test user credentials within our tests we need to configure
-Cypress to use the [Google](https://google.com) environment variables set in the
-`.env` file.
+为了在测试中使用测试用户凭证，我们需要配置
+Cypress使用`.env`文件中设置的[Google](https://google.com)环境变量。
 
 ```jsx title=".env"
 REACT_APP_GOOGLE_CLIENTID = 'your-client-id'
@@ -98,7 +91,7 @@ GOOGLE_REFRESH_TOKEN = 'your-refresh-token'
 :::cypress-config-example
 
 ```js
-// Populate process.env with values from .env file
+// 从.env文件填充process.env
 require('dotenv').config()
 ```
 
@@ -114,26 +107,26 @@ require('dotenv').config()
 
 :::
 
-## Custom Command for Google Authentication
+## Google身份验证的自定义命令
 
-Next, we'll write a command named `loginByGoogleApi` to perform a programmatic
-login into Google and set an item in `localStorage` with the
-authenticated users details, which we'll use in our application code to verify
-we are authenticated under test.
+接下来，我们将编写一个名为`loginByGoogleApi`的命令，以编程方式
+登录Google并在`localStorage`中设置一个包含
+认证用户详情的项，我们将在应用代码中使用它来验证
+测试中的认证状态。
 
-The `loginByGoogleApi` command will execute the following steps:
+`loginByGoogleApi`命令将执行以下步骤：
 
-1. Use the refresh token from the
+1. 使用来自
    [Google OAuth 2.0 Playground](https://developers.google.com/oauthplayground)
-   to perform the programmatic login, exchanging the refresh token for an
-   `access_token`.
-2. Use the `access_token` returned to get the Google User profile.
-3. Finally the `googleCypress` localStorage item is set with the `access token`
-   and user profile.
+   的刷新令牌执行编程登录，将刷新令牌兑换为
+   `access_token`
+2. 使用返回的`access_token`获取Google用户资料
+3. 最后将`googleCypress` localStorage项设置为包含`访问令牌`
+   和用户资料
 
 ```jsx title="cypress/support/commands.js"
 Cypress.Commands.add('loginByGoogleApi', () => {
-  cy.log('Logging in to Google')
+  cy.log('登录Google')
   cy.request({
     method: 'POST',
     url: 'https://www.googleapis.com/oauth2/v4/token',
@@ -170,18 +163,18 @@ Cypress.Commands.add('loginByGoogleApi', () => {
 })
 ```
 
-With our Google app setup properly, necessary environment variables in place,
-and our `loginByGoogleApi` command implemented, we'll be able to authenticate
-with Google while our app is under test. Below is a test to login as a user via
-Google, complete the onboarding process and logout.
+正确设置Google应用、配置必要的环境变量
+并实现`loginByGoogleApi`命令后，我们就可以在测试应用时
+通过Google进行认证。以下是通过
+Google以用户身份登录、完成引导流程并退出的测试。
 
 :::info
 
-<strong>Try it out</strong>
+<strong>试一试</strong>
 
-The
-[runnable version of this test](https://github.com/cypress-io/cypress-realworld-app/blob/develop/cypress/tests/ui-auth-providers/google.spec.ts)
-is in the <Icon name="github" inline="true" contentType="rwa" />.
+该测试的
+[可运行版本](https://github.com/cypress-io/cypress-realworld-app/blob/develop/cypress/tests/ui-auth-providers/google.spec.ts)
+在<Icon name="github" inline="true" contentType="rwa" />中。
 
 :::
 
@@ -192,49 +185,46 @@ describe('Google', function () {
     cy.loginByGoogleApi()
   })
 
-  it('shows onboarding', function () {
-    cy.contains('Get Started').should('be.visible')
+  it('显示引导页面', function () {
+    cy.contains('开始使用').should('be.visible')
   })
 })
 ```
 
-## Adapting a Google App for Testing
+## 为测试适配Google应用
 
 :::info
 
-<strong>Note</strong>
+<strong>注意</strong>
 
-The previous sections focused on the recommended Google authentication practice
-within Cypress tests. To use this practice it's assumed you're testing an app
-appropriately built or adapted to use Google.
+前面的部分重点介绍了Cypress测试中推荐的Google身份验证实践。
+要使用此实践，假设您正在测试一个适当构建或适配使用Google的应用。
 
-The following sections provides guidance on building or adapting an app to use
-Google authentication.
+以下部分提供了构建或适配应用以使用Google身份验证的指导。
 
 :::
 
-The <Icon name="github" inline="true" contentType="rwa" /> is
-used and provides configuration and runnable code for both the React SPA and the
-Express back end.
+<Icon name="github" inline="true" contentType="rwa" />被
+使用，并为React SPA和Express后端提供了配置和可运行代码。
 
-The front end uses the
-[react-google-login component](https://github.com/anthonyjgrove/react-google-login)
-and the back end uses [express-jwt](https://github.com/auth0/express-jwt) to
-validate the JWT provided by Google.
+前端使用
+[react-google-login组件](https://github.com/anthonyjgrove/react-google-login)，
+后端使用[express-jwt](https://github.com/auth0/express-jwt)来
+验证Google提供的JWT。
 
 :::info
 
-Use the `yarn dev:google` command when starting the
-[Cypress Real World App](https://github.com/cypress-io/cypress-realworld-app).
+启动
+[Cypress Real World App](https://github.com/cypress-io/cypress-realworld-app)时使用`yarn dev:google`命令。
 
 :::
 
-### Adapting the back end
+### 适配后端
 
-In order to validate API requests from the frontend, we install
-[express-jwt](https://github.com/auth0/express-jwt) and
-[jwks-rsa](https://github.com/auth0/node-jwks-rsa) and configure validation for
-JWT's from Google.
+为了验证来自前端的API请求，我们安装
+[express-jwt](https://github.com/auth0/express-jwt)和
+[jwks-rsa](https://github.com/auth0/node-jwks-rsa)并配置对
+来自Google的JWT的验证。
 
 ```jsx title='backend/helpers.ts'
 import jwt from 'express-jwt'
@@ -248,61 +238,60 @@ const googleJwtConfig = {
     jwksRequestsPerMinute: 5,
     jwksUri: 'https://www.googleapis.com/oauth2/v3/certs',
   }),
-  // Validate the audience and the issuer.
+  // 验证受众和颁发者
   audience: process.env.REACT_APP_GOOGLE_CLIENTID,
   issuer: 'accounts.google.com',
   algorithms: ['RS256'],
 }
 ```
 
-Next, we'll define an Express middleware function to be use in our routes to
-verify the Google JWT sent by the front end API requests
-as the `Bearer` token.
+接下来，我们将定义一个Express中间件函数，用于在路由中
+验证前端API请求发送的Google JWT
+作为`Bearer`令牌。
 
 ```jsx title='backend/helpers.ts'
 // ...
 export const checkJwt = jwt(googleJwtConfig).unless({ path: ['/testData/*'] })
 ```
 
-Once this helper is defined, we can use globally to apply to all routes:
+定义此辅助函数后，我们可以全局应用它到所有路由：
 
 ```jsx title='backend/app.ts'
-// initial imports ...
+// 初始导入 ...
 import { checkJwt } from './helpers'
 
 // ...
 if (process.env.REACT_APP_GOOGLE) {
   app.use(checkJwt)
 }
-// routes ...
+// 路由 ...
 ```
 
-### Adapting the front end
+### 适配前端
 
-We need to update our front end React app to allow for authentication with
-Google. As mentioned above, the front end uses the
-[react-google-login component](https://github.com/anthonyjgrove/react-google-login)
-to perform the login.
+我们需要更新前端React应用以允许通过
+Google进行认证。如上所述，前端使用
+[react-google-login组件](https://github.com/anthonyjgrove/react-google-login)
+来执行登录。
 
-First, we create an `AppGoogle.tsx` container to render our application as it is
-authenticated with Google. The component is identical to
-the `App.tsx` component, but has the addition of a `GoogleLogin` component in
-place of the original Sign Up and Sign In components.
+首先，我们创建一个`AppGoogle.tsx`容器来渲染通过Google认证的
+应用。该组件与`App.tsx`组件相同，但增加了
+一个`GoogleLogin`组件替代原来的注册和登录组件。
 
-A `useGoogleLogin` hook is added to send a `GOOGLE` event with the `user` and
-`token` objects to work with the existing authentication layer
-(`authMachine.ts`).
+添加了一个`useGoogleLogin`钩子来发送带有`user`和
+`token`对象的`GOOGLE`事件，与现有的认证层
+(`authMachine.ts`)一起工作。
 
 :::info
 
-The full
-[AppGoogle.tsx component](https://github.com/cypress-io/cypress-realworld-app/blob/develop/src/containers/AppGoogle.tsx)
-is in the <Icon name="github" inline="true" contentType="rwa" />.
+完整的
+[AppGoogle.tsx组件](https://github.com/cypress-io/cypress-realworld-app/blob/develop/src/containers/AppGoogle.tsx)
+在<Icon name="github" inline="true" contentType="rwa" />中。
 
 :::
 
 ```tsx title='containers/AppGoogle.tsx'
-// initial imports ...
+// 初始导入 ...
 import { GoogleLogin, useGoogleLogin } from 'react-google-login'
 // ...
 const AppGoogle = () => {
@@ -330,7 +319,7 @@ const AppGoogle = () => {
           <div className={classes.paper}>
             <GoogleLogin
               clientId={process.env.REACT_APP_GOOGLE_CLIENTID!}
-              buttonText="Login"
+              buttonText="登录"
               cookiePolicy={'single_host_origin'}
             />
           </div>
@@ -342,9 +331,9 @@ const AppGoogle = () => {
 export default AppGoogle
 ```
 
-Next, we update our entry point (`index.tsx`) to conditionally load the
-`AppGoogle` component if we start the application with the `REACT_APP_GOOGLE`
-environment variable set to `true`.
+接下来，我们更新入口点(`index.tsx`)以有条件地加载
+`AppGoogle`组件，如果我们在启动应用时将`REACT_APP_GOOGLE`
+环境变量设置为`true`。
 
 ```tsx title='src/index.tsx'
 import React from 'react'

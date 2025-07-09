@@ -1,5 +1,5 @@
 'use strict';
-// Original: Material Oceanic (by https://github.com/dutchenkoOleg)
+// 原始主题：Material Oceanic (作者 https://github.com/dutchenkoOleg)
 // https://github.com/PrismJS/prism-themes/blob/master/themes/prism-material-oceanic.css
 
 var theme = {

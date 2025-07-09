@@ -1,19 +1,16 @@
 ---
-title: 'Browser Launch Event | Cypress Node Events'
-description: 'The before:browser:launch event gives you the opportunity to modify the browser preferences, install extensions, add and remove command-line arguments, and modify other options before Cypress launches a browser.'
+title: '浏览器启动事件 | Cypress 节点事件'
+description: 'before:browser:launch 事件允许您在 Cypress 启动浏览器前修改浏览器偏好设置、安装扩展、添加或移除命令行参数，以及调整其他选项。'
 sidebar_label: 'before:browser:launch'
 ---
 
 <ProductHeading product="app" />
 
-# Browser Launch Event
+# 浏览器启动事件
 
-Before Cypress launches a browser, it gives you the opportunity to modify the
-browser preferences, install extensions, add and remove command-line arguments,
-and modify other options from the
-[setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin) function.
+在 Cypress 启动浏览器之前，您可以通过 [setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin) 函数修改浏览器偏好设置、安装扩展、添加或移除命令行参数，以及调整其他选项。
 
-## Syntax
+## 语法
 
 <WarningSetupNodeEvents />
 
@@ -29,99 +26,91 @@ on('before:browser:launch', (browser = {}, launchOptions) => {
 
 <Icon name="angle-right" /> **browser _(object)_**
 
-An object describing the browser being launched, with the following properties:
+描述正在启动的浏览器对象，包含以下属性：
 
-| Property       | Type      | Description                                                                                 |
-| -------------- | --------- | ------------------------------------------------------------------------------------------- |
-| `name`         | `string`  | Machine-friendly name, like `chrome`, `electron`, `edge`, or `firefox`.                     |
-| `family`       | `string`  | Rendering engine being used. `chromium` or `firefox`.                                       |
-| `channel`      | `string`  | Release channel of the browser, such as `stable`, `dev`, or `canary`.                       |
-| `displayName`  | `string`  | Human-readable display name for the browser.                                                |
-| `version`      | `string`  | Full version.                                                                               |
-| `path`         | `string`  | Path to the browser on disk. Blank for Electron.                                            |
-| `info`         | `string`  | _(Optional)_ Extra information about the browser (used for display in the browser selector) |
-| `majorVersion` | `number`  | The major version number of the browser.                                                    |
-| `isHeadless`   | `boolean` | Whether the browser is running headlessly.                                                  |
-| `isHeaded`     | `boolean` | Whether the browser displays headed.                                                        |
+| 属性           | 类型      | 描述                                                                                 |
+| -------------- | --------- | ----------------------------------------------------------------------------------- |
+| `name`         | `string`  | 机器友好名称，如 `chrome`、`electron`、`edge` 或 `firefox`。                        |
+| `family`       | `string`  | 使用的渲染引擎。`chromium` 或 `firefox`。                                           |
+| `channel`      | `string`  | 浏览器发布渠道，如 `stable`、`dev` 或 `canary`。                                    |
+| `displayName`  | `string`  | 人类可读的浏览器显示名称。                                                          |
+| `version`      | `string`  | 完整版本号。                                                                        |
+| `path`         | `string`  | 浏览器在磁盘上的路径。Electron 为空。                                               |
+| `info`         | `string`  | _(可选)_ 浏览器的额外信息（用于浏览器选择器显示）                                   |
+| `majorVersion` | `number`  | 浏览器的主版本号。                                                                  |
+| `isHeadless`   | `boolean` | 浏览器是否以无头模式运行。                                                          |
+| `isHeaded`     | `boolean` | 浏览器是否以有界面模式运行。                                                        |
 
 <Icon name="angle-right" /> **launchOptions _(object)_**
 
-Options that can be modified to control how the browser is launched, with the
-following properties:
+可修改的浏览器启动选项对象，包含以下属性：
 
-| Property      | Type       | Description                                                                                                                                                                                                |
-| ------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `preferences` | `object`   | An object describing browser preferences. Differs between browsers. See [Change browser preferences](#Change-browser-preferences) for details.                                                             |
-| `args`        | `string[]` | An array of strings that will be passed as command-line args when the browser is launched. Has no effect on Electron. See [Modify browser launch arguments](#Modify-browser-launch-arguments) for details. |
-| `extensions`  | `string[]` | An array of paths to folders containing unpacked WebExtensions to be loaded before the browser starts. See [Add browser extensions](#Add-browser-extensions) for details.                                  |
-| `env`         | `object`   | An object of environment variables to pass to the launched browser. See [Configure browser environment](#Configure-browser-environment) for details.                                                       |
+| 属性          | 类型       | 描述                                                                                                                                                                                                |
+| ------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `preferences` | `object`   | 描述浏览器偏好的对象。不同浏览器间有差异。详见[修改浏览器偏好设置](#Change-browser-preferences)。                                                                                                   |
+| `args`        | `string[]` | 启动浏览器时作为命令行参数传递的字符串数组。对 Electron 无效。详见[修改浏览器启动参数](#Modify-browser-launch-arguments)。                                                                          |
+| `extensions`  | `string[]` | 包含未打包 WebExtensions 的文件夹路径数组，这些扩展将在浏览器启动前加载。详见[添加浏览器扩展](#Add-browser-extensions)。                                                                            |
+| `env`         | `object`   | 传递给启动浏览器的环境变量对象。详见[配置浏览器环境](#Configure-browser-environment)。                                                                                                              |
 
-## Usage
+## 使用方式
 
-Using the [setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin)
-function you can tap into the `before:browser:launch` event and modify how
-Cypress launches the browser (e.g. modify arguments, user preferences, and
-extensions).
+通过 [setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin) 函数，您可以监听 `before:browser:launch` 事件并修改 Cypress 启动浏览器的方式（例如修改参数、用户偏好和扩展）。
 
-This event will yield you the `browser` object, which gives you information
-about the browser, and the `launchOptions` object, which allows you to modify
-how the browser is launched.
+该事件会提供 `browser` 对象（包含浏览器信息）和 `launchOptions` 对象（允许修改浏览器启动方式）。
 
-The returned `launchOptions` object will become the new launch options for the
-browser.
+返回的 `launchOptions` 对象将成为浏览器的新启动选项。
 
-### Modify browser launch arguments
+### 修改浏览器启动参数
 
-Here are args available for the currently supported browsers:
+当前支持浏览器的可用参数：
 
-- [Chromium-based browsers](https://peter.sh/experiments/chromium-command-line-switches/)
+- [基于 Chromium 的浏览器](https://peter.sh/experiments/chromium-command-line-switches/)
 - [Firefox](https://developer.mozilla.org/docs/Mozilla/Command_Line_Options)
 
-#### Open devtools by default
+#### 默认打开开发者工具
 
 :::cypress-config-plugin-example
 
 ```ts
 on('before:browser:launch', (browser = {}, launchOptions) => {
-  // `args` is an array of all the arguments that will
-  // be passed to browsers when it launches
-  console.log(launchOptions.args) // print all current args
+  // `args` 是启动浏览器时将传递的所有参数数组
+  console.log(launchOptions.args) // 打印所有当前参数
 
   if (browser.family === 'chromium' && browser.name !== 'electron') {
-    // auto open devtools
+    // 自动打开开发者工具
     launchOptions.args.push('--auto-open-devtools-for-tabs')
   }
 
   if (browser.family === 'firefox') {
-    // auto open devtools
+    // 自动打开开发者工具
     launchOptions.args.push('-devtools')
   }
 
   if (browser.name === 'electron') {
-    // auto open devtools
+    // 自动打开开发者工具
     launchOptions.preferences.devTools = true
   }
 
-  // whatever you return here becomes the launchOptions
+  // 返回的内容将成为新的 launchOptions
   return launchOptions
 })
 ```
 
 :::
 
-### Add browser extensions
+### 添加浏览器扩展
 
-**Limitations:**
+**限制：**
 
-- Headless Chrome does not support loading extensions.
-- Chrome-branded browsers (e.g., standard Chrome) version 137 and above no longer support extension loading via this API, due to the removal of the `--load-extension` flag by Chrome. We recommend using Chrome for Testing or Chromium instead. See Cypress Docker image examples for [Chrome for Testing](https://github.com/cypress-io/cypress-docker-images/tree/master/examples/chrome-for-testing) and [Chromium](https://github.com/cypress-io/cypress-docker-images/tree/master/examples/chromium).
-- Electron currently supports only Chrome DevTools extensions.
+- 无头 Chrome 不支持加载扩展。
+- 标准 Chrome 等 Chrome 品牌浏览器 137 及以上版本由于 Chrome 移除了 `--load-extension` 标志，不再支持通过此 API 加载扩展。建议使用 Chrome for Testing 或 Chromium。参见 Cypress Docker 镜像示例：[Chrome for Testing](https://github.com/cypress-io/cypress-docker-images/tree/master/examples/chrome-for-testing) 和 [Chromium](https://github.com/cypress-io/cypress-docker-images/tree/master/examples/chromium)。
+- Electron 目前仅支持 Chrome 开发者工具扩展。
 
 :::cypress-config-plugin-example
 
 ```ts
 on('before:browser:launch', (browser, launchOptions) => {
-  // supply the absolute path to an unpacked extension's folder
+  // 提供未打包扩展文件夹的绝对路径
   launchOptions.extensions.push('Users/jane/path/to/extension')
 
   return launchOptions
@@ -130,12 +119,11 @@ on('before:browser:launch', (browser, launchOptions) => {
 
 :::
 
-### Configure browser environment
+### 配置浏览器环境
 
 :::caution
 
-<Icon name="exclamation-triangle" /> This option is not supported when targeting
-Electron.
+<Icon name="exclamation-triangle" /> 此选项不支持 Electron 目标。
 
 :::
 
@@ -151,18 +139,17 @@ on('before:browser:launch', (browser, launchOptions) => {
 
 :::
 
-### Change browser preferences
+### 修改浏览器偏好设置
 
-Here are preferences available for the currently supported browsers:
+当前支持浏览器的可用偏好设置：
 
-- [Chromium-based browsers](https://src.chromium.org/viewvc/chrome/trunk/src/chrome/common/pref_names.cc?view=markup)
+- [基于 Chromium 的浏览器](https://src.chromium.org/viewvc/chrome/trunk/src/chrome/common/pref_names.cc?view=markup)
 - [Electron](https://github.com/electron/electron/blob/master/docs/api/browser-window.md#new-browserwindowoptions)
-- Firefox: visit `about:config` URL within your Firefox browser to see all
-  available preferences.
+- Firefox：在 Firefox 浏览器中访问 `about:config` URL 查看所有可用偏好设置。
 
 :::info
 
-If you want to ignore Chrome preferences altogether, you can set `IGNORE_CHROME_PREFERENCES` as an environment variable when running Cypress.
+如果想完全忽略 Chrome 偏好设置，可以在运行 Cypress 时设置 `IGNORE_CHROME_PREFERENCES` 环境变量。
 
 :::
 
@@ -171,24 +158,24 @@ If you want to ignore Chrome preferences altogether, you can set `IGNORE_CHROME_
 ```js
 on('before:browser:launch', (browser, launchOptions) => {
   if (browser.family === 'chromium' && browser.name !== 'electron') {
-    // in Chromium, preferences can exist in Local State, Preferences, or Secure Preferences
-    // via launchOptions.preferences, these can be acccssed as `localState`, `default`, and `secureDefault`
+    // 在 Chromium 中，偏好设置可以存在于 Local State、Preferences 或 Secure Preferences 中
+    // 通过 launchOptions.preferences，可以访问 `localState`、`default` 和 `secureDefault`
 
-    // for example, to set `somePreference: true` in Preferences:
+    // 例如，在 Preferences 中设置 `somePreference: true`：
     launchOptions.preferences.default['preference'] = true
 
     return launchOptions
   }
 
   if (browser.family === 'firefox') {
-    // launchOptions.preferences is a map of preference names to values
+    // launchOptions.preferences 是偏好名称到值的映射
     launchOptions.preferences['some.preference'] = true
 
     return launchOptions
   }
 
   if (browser.name === 'electron') {
-    // launchOptions.preferences is a `BrowserWindow` `options` object
+    // launchOptions.preferences 是一个 `BrowserWindow` `options` 对象
     launchOptions.preferences.darkTheme = true
 
     return launchOptions
@@ -198,17 +185,11 @@ on('before:browser:launch', (browser, launchOptions) => {
 
 :::
 
-### Modify Electron app switches
+### 修改 Electron 应用开关
 
-The Cypress Launchpad is an Electron application, and its behavior (and the
-behavior of the bundled-in Electron browser) can be customized using command
-line switches. The supported switches depend on the Electron version, see
-[Electron documentation](https://www.electronjs.org/docs/api/command-line-switches).
+Cypress Launchpad 是一个 Electron 应用程序，其行为（以及内置 Electron 浏览器的行为）可以通过命令行开关进行自定义。支持的开关取决于 Electron 版本，参见 [Electron 文档](https://www.electronjs.org/docs/api/command-line-switches)。
 
-You can pass Electron-specific launch arguments using the
-`ELECTRON_EXTRA_LAUNCH_ARGS` environment variable. For example, to disable HTTP
-browser cache and ignore certificate errors, you can set the environment
-variables before running Cypress like below:
+您可以使用 `ELECTRON_EXTRA_LAUNCH_ARGS` 环境变量传递 Electron 特定的启动参数。例如，要禁用 HTTP 浏览器缓存并忽略证书错误，可以像下面这样在运行 Cypress 前设置环境变量：
 
 #### Linux/OSX
 
@@ -222,36 +203,23 @@ export ELECTRON_EXTRA_LAUNCH_ARGS=--disable-http-cache --lang=es
 set ELECTRON_EXTRA_LAUNCH_ARGS=--disable-http-cache --lang=es
 ```
 
-Cypress already sets some the Electron command line switches internally. See
-file
-[packages/server/lib/environment.js](https://github.com/cypress-io/cypress/blob/develop/packages/server/lib/environment.js).
-There is no way to see all currently set switches after Electron's launch.
+Cypress 已经在内部设置了一些 Electron 命令行开关。参见文件 [packages/server/lib/environment.js](https://github.com/cypress-io/cypress/blob/develop/packages/server/lib/environment.js)。目前无法在 Electron 启动后查看所有已设置的开关。
 
-### See all Chrome browser switches
+### 查看所有 Chrome 浏览器开关
 
-If you are running Cypress tests using a Chromium-based browser, you can see ALL
-currently set command line switches and the browser version information by
-opening a new tab and typing `chrome://version` url.
+如果使用基于 Chromium 的浏览器运行 Cypress 测试，可以通过打开新标签页并输入 `chrome://version` URL 查看所有当前设置的命令行开关和浏览器版本信息。
 
-<DocsImage src="/img/api/chrome-switches.png" alt="See all Chrome switches" />
+<DocsImage src="/img/api/chrome-switches.png" alt="查看所有 Chrome 开关" />
 
-## Examples
+## 示例
 
-### Set screen size when running headless
+### 设置无头模式下的屏幕尺寸
 
-When a browser runs headless, there is no physical display. You can override the
-default screen size of 1280x720 when running headless as shown below. This will
-affect the size of screenshots and videos taken during the run.
+当浏览器以无头模式运行时，没有物理显示器。您可以像下面这样覆盖默认的 1280x720 屏幕尺寸。这将影响运行期间截取的屏幕截图和视频的大小。
 
 :::caution
 
-This setting changes the display size of the screen and does not affect the
-`viewportWidth` and `viewportHeight` set in the
-[Cypress configuration](/app/references/configuration). The `viewportWidth`
-and `viewportHeight` only affect the size of the application under test
-displayed inside the Cypress Test Runner. Read the blog post
-[Generate High-Resolution Videos and Screenshots](https://www.cypress.io/blog/2021/03/01/generate-high-resolution-videos-and-screenshots/)
-for details.
+此设置更改屏幕的显示尺寸，不影响 [Cypress 配置](/app/references/configuration) 中设置的 `viewportWidth` 和 `viewportHeight`。`viewportWidth` 和 `viewportHeight` 仅影响 Cypress 测试运行器中显示的应用程序大小。详情请阅读博客文章 [生成高分辨率视频和屏幕截图](https://www.cypress.io/blog/2021/03/01/generate-high-resolution-videos-and-screenshots/)。
 
 :::
 
@@ -260,26 +228,26 @@ for details.
 ```ts
 on('before:browser:launch', (browser, launchOptions) => {
   if (browser.name === 'chrome' && browser.isHeadless) {
-    // fullPage screenshot size is 1400x1200 on non-retina screens
-    // and 2800x2400 on retina screens
+    // 非视网膜屏幕上的全页截图尺寸为 1400x1200
+    // 视网膜屏幕上为 2800x2400
     launchOptions.args.push('--window-size=1400,1200')
 
-    // force screen to be non-retina (1400x1200 size)
+    // 强制屏幕为非视网膜 (1400x1200 尺寸)
     launchOptions.args.push('--force-device-scale-factor=1')
 
-    // force screen to be retina (2800x2400 size)
+    // 强制屏幕为视网膜 (2800x2400 尺寸)
     // launchOptions.args.push('--force-device-scale-factor=2')
   }
 
   if (browser.name === 'electron' && browser.isHeadless) {
-    // fullPage screenshot size is 1400x1200
+    // 全页截图尺寸为 1400x1200
     launchOptions.preferences.width = 1400
     launchOptions.preferences.height = 1200
   }
 
   if (browser.name === 'firefox' && browser.isHeadless) {
-    // menubars take up height on the screen
-    // so fullPage screenshot size is 1400x1126
+    // 菜单栏会占用屏幕高度
+    // 因此全页截图尺寸为 1400x1126
     launchOptions.args.push('--width=1400')
     launchOptions.args.push('--height=1200')
   }
@@ -290,16 +258,15 @@ on('before:browser:launch', (browser, launchOptions) => {
 
 :::
 
-### Override the device pixel ratio
+### 覆盖设备像素比
 
 :::cypress-config-plugin-example
 
 ```ts
 on('before:browser:launch', (browser, launchOptions) => {
   if (browser.name === 'chrome' && browser.isHeadless) {
-    // force screen to behave like retina
-    // when running Chrome headless browsers
-    // (2560x1440 in size by default)
+    // 在 Chrome 无头浏览器运行时强制屏幕表现为视网膜
+    // (默认尺寸为 2560x1440)
     launchOptions.args.push('--force-device-scale-factor=2')
   }
 
@@ -309,7 +276,7 @@ on('before:browser:launch', (browser, launchOptions) => {
 
 :::
 
-### Start fullscreen
+### 以全屏模式启动
 
 :::cypress-config-plugin-example
 
@@ -331,19 +298,16 @@ on('before:browser:launch', (browser = {}, launchOptions) => {
 
 :::
 
-### Use fake video for webcam testing
+### 使用假视频测试摄像头功能
 
-By default, Cypress passes the Chrome command line switch to enable a fake video
-for a media stream. This is to better enable testing webcam functionality
-without having to have the necessary hardware to test.
+默认情况下，Cypress 会传递 Chrome 命令行开关以启用媒体流的假视频。这是为了在没有必要硬件的情况下更好地测试摄像头功能。
 
 <DocsImage
   src="/img/api/browser-launch-fake-video.gif"
-  alt="Enable fake video for testing"
+  alt="启用假视频进行测试"
 />
 
-You can however send your own video file for testing by passing a Chrome command
-line switch pointing to a video file.
+但是，您可以通过传递指向视频文件的 Chrome 命令行开关来发送自己的视频文件进行测试。
 
 :::cypress-config-plugin-example
 
@@ -365,22 +329,21 @@ on('before:browser:launch', (browser = {}, launchOptions) => {
 
 :::
 
-### Support unique file download mime types
+### 支持独特的文件下载 MIME 类型
 
-Cypress supports a myriad of mime types when testing file downloads, but in case
-you have a unique one, you can add support for it.
+Cypress 支持测试文件下载时的多种 MIME 类型，但如果遇到独特类型，您可以添加支持。
 
 :::cypress-config-plugin-example
 
 ```ts
 on('before:browser:launch', (browser, options) => {
-  // only Firefox requires all mime types to be listed
+  // 只有 Firefox 需要列出所有 MIME 类型
   if (browser.family === 'firefox') {
     const existingMimeTypes =
       options.preferences['browser.helperApps.neverAsk.saveToDisk']
     const myMimeType = 'my/mimetype'
 
-    // prevents the browser download prompt
+    // 防止浏览器下载提示
     options.preferences['browser.helperApps.neverAsk.saveToDisk'] =
       `${existingMimeTypes},${myMimeType}`
 
@@ -393,14 +356,13 @@ on('before:browser:launch', (browser, options) => {
 
 :::info
 
-[Check out our example recipe showing how to download and validate CSV and Excel files.](/app/references/recipes#Testing-the-DOM)
+[查看我们的示例配方，了解如何下载和验证 CSV 和 Excel 文件。](/app/references/recipes#Testing-the-DOM)
 
 :::
 
-### Set a Firefox flag
+### 设置 Firefox 标志
 
-If we need to set a particular Firefox flag, like `browser.send_pings` we can do
-it via preferences
+如果需要设置特定的 Firefox 标志，如 `browser.send_pings`，可以通过偏好设置实现：
 
 :::cypress-config-plugin-example
 
@@ -416,10 +378,10 @@ on('before:browser:launch', (browser = {}, launchOptions) => {
 
 :::
 
-## History
+## 历史记录
 
-| Version                                  | Changes                                                                                          |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| [4.0.0](/app/references/changelog#4-0-0) | New `options` object replaces old `args` as second argument to `before:browser:launch`           |
-| [4.0.0](/app/references/changelog#4-0-0) | All Chromium-based browsers, including Electron, have `chromium` set as their `family` property. |
-| [4.0.0](/app/references/changelog#4-0-0) | Added `channel` property to browser.                                                             |
+| 版本                                   | 变更                                                                                          |
+| -------------------------------------- | -------------------------------------------------------------------------------------------- |
+| [4.0.0](/app/references/changelog#4-0-0) | 新的 `options` 对象取代了 `before:browser:launch` 的第二个参数 `args`                        |
+| [4.0.0](/app/references/changelog#4-0-0) | 所有基于 Chromium 的浏览器（包括 Electron）的 `family` 属性都设置为 `chromium`。             |
+| [4.0.0](/app/references/changelog#4-0-0) | 为浏览器添加了 `channel` 属性。                                                               |

@@ -1,6 +1,6 @@
 ---
-title: 'origin | Cypress Documentation'
-description: Visit multiple domains of different origin in a single test in Cypress.
+title: 'origin | Cypress 文档'
+description: 在Cypress测试中访问多个不同源的域名。
 sidebar_label: origin
 e2eSpecific: true
 ---
@@ -9,169 +9,128 @@ e2eSpecific: true
 
 # origin
 
-Visit multiple different
-[origins](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy#definition_of_an_origin)
-in a single test.
+在单个测试中访问多个不同[源](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy#definition_of_an_origin)的网站。
 
-In normal use, a single Cypress test may only run commands in a single origin, a
-limitation determined by standard web security features of the browser. The
-`cy.origin()` command allows your tests to bypass this limitation.
+通常情况下，单个Cypress测试只能在单一源中运行命令，这是由浏览器的标准Web安全特性决定的限制。`cy.origin()`命令允许你的测试绕过这一限制。
 
 :::caution
 
-<Icon name="exclamation-triangle" /> **Obstructive Third Party Code**
+<Icon name="exclamation-triangle" /> **阻碍性第三方代码**
 
-By default Cypress will search through the response streams coming from your
-server on first party `.html` and `.js` files and replace code that matches
-patterns commonly found in framebusting. When using the `cy.origin()` command,
-the third party code may also need to be modified for framebusting techniques.
-This can be enabled by setting the
-[`experimentalModifyObstructiveThirdPartyCode`](/app/references/experiments)
-flag to `true` in the Cypress configuration. More information about this
-experimental flag can be found on our
-[Cross Origin Testing](/app/guides/cross-origin-testing#Modifying-Obstructive-Third-Party-Code)
-doc.
+默认情况下，Cypress会从服务器返回的第一方`.html`和`.js`文件响应流中搜索并替换常见的框架破坏代码模式。使用`cy.origin()`命令时，第三方代码可能也需要针对框架破坏技术进行修改。可以通过在Cypress配置中将[`experimentalModifyObstructiveThirdPartyCode`](/app/references/experiments)标志设置为`true`来启用此功能。关于这个实验性标志的更多信息可以在我们的[跨源测试](/app/guides/cross-origin-testing#Modifying-Obstructive-Third-Party-Code)文档中找到。
 
 :::
 
 :::info
 
-<strong>Changes in Cypress [v14.0.0](/app/references/changelog#14-0-0)</strong>
+<strong>Cypress [v14.0.0](/app/references/changelog#14-0-0)中的变更</strong>
 
-Cypress no longer injects `document.domain` by default, which means `cy.origin()`
-must now be used to navigate between any two origins in the same test, even if
-the two origins are in the same superdomain.
-This behavior can be disabled by setting the
-[injectDocumentDomain](/app/references/configuration#injectDocumentDomain) configuration option to `true`,
-to allow a smooth transition of tests to the new behavior.
-This configuration option will be removed in a future version of Cypress.
+Cypress默认不再注入`document.domain`，这意味着现在必须在同一测试中使用`cy.origin()`来导航任意两个源，即使这两个源属于同一个超级域名。
+可以通过将[injectDocumentDomain](/app/references/configuration#injectDocumentDomain)配置选项设置为`true`来禁用此行为，以便平滑过渡测试到新行为。
+此配置选项将在未来的Cypress版本中移除。
 
 :::
 
-## Syntax
+## 语法
 
 ```js
 cy.origin(url, callbackFn)
 cy.origin(url, options, callbackFn)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```js
-const hits = getHits() // Defined elsewhere
-// Run commands in secondary origin, passing in serializable values
+const hits = getHits() // 在其他地方定义
+// 在次要源中运行命令，传入可序列化的值
 cy.origin('https://example.cypress.io', { args: { hits } }, ({ hits }) => {
-  // Inside callback baseUrl is https://example.cypress.io
+  // 回调内部baseUrl为https://example.cypress.io
   cy.visit('/history/founder')
-  // Commands are executed in secondary origin
+  // 命令在次要源中执行
   cy.get('h1').contains('About our Founder')
-  // Passed in values are accessed via callback args
+  // 通过回调参数访问传入的值
   cy.get('#hitcounter').contains(hits)
 })
-// Even though we're outside the secondary origin block,
-// we're still on cypress.io so return to baseUrl
+// 即使我们在次要源块外部，
+// 仍然在cypress.io上，所以返回baseUrl
 cy.visit('/')
-// Continue running commands on primary origin
+// 继续在主源上运行命令
 cy.get('h1').contains('My cool site under test')
 ```
 
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
 ```js
 const hits = getHits()
 cy.visit('https://example.cypress.io/history/founder')
-// To interact with cross-origin content, move this inside cy.origin() callback
+// 要与跨源内容交互，将此移到cy.origin()回调内部
 cy.get('h1').contains('Kitchen Sink')
-// Origin must be a precise match including scheme, subdomain and port, i.e. https://www.cypress.io
+// 源必须精确匹配，包括协议、子域名和端口，例如https://www.cypress.io
 cy.origin('https://www.cypress.io', () => {
   cy.visit('/about-us')
   cy.get('h1').contains('About us')
-  // Fails because downloads is not passed in via args
+  // 失败，因为downloads未通过args传入
   cy.contains(downloads)
 })
-// Won't work because still on www.cypress.io
+// 不会工作，因为仍在www.cypress.io上
 cy.get('h1').contains('Kitchen Sink')
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **origin _(String)_**
 
-A string specifying the origin in which the callback is to be executed.
-This should at the very least contain a hostname. It may also include the
-scheme and port number. The path may be included, but is not necessary.
-The hostname must precisely match that of the secondary origin, including
-all subdomains. Query params are not supported. If no scheme is provided,
-the scheme defaults to `https`.
+指定回调执行源的字符串。至少应包含主机名。也可以包含协议和端口号。可以包含路径，但不是必需的。主机名必须精确匹配次要源，包括所有子域名。不支持查询参数。如果未提供协议，默认为`https`。
 
-This argument will be used in two ways:
+此参数将用于两种方式：
 
-1. It uniquely identifies a secondary origin in which the commands in the
-   callback will be executed. Cypress will inject itself into this origin, and
-   then send it code to evaluate in that origin, without violating the browser's
-   same-origin policy.
+1. 它唯一标识一个次要源，回调中的命令将在其中执行。Cypress将自身注入此源，然后向其发送代码在该源中评估，而不会违反浏览器的同源策略。
 
-2. It overrides the `baseUrl` configured in your
-   [global configuration](/app/references/configuration#Global) while inside
-   the callback. So `cy.visit()` and `cy.request()` will use this URL as a
-   prefix, not the configured `baseUrl`.
+2. 它在回调内部覆盖[全局配置](/app/references/configuration#Global)中的`baseUrl`。因此`cy.visit()`和`cy.request()`将使用此URL作为前缀，而不是配置的`baseUrl`。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to control the behavior of `cy.origin()`.
+传入一个选项对象以控制`cy.origin()`的行为。
 
-| option | description                                                                                                                                                                                                    |
-| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| args   | Plain JavaScript object which will be serialized and sent from the primary origin to the secondary origin, where it will be deserialized and passed into the callback function as its first and only argument. |
+| 选项   | 描述                                                                                                                                                                                                     |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| args   | 纯JavaScript对象，将被序列化并从主源发送到次要源，在那里反序列化并作为第一个也是唯一的参数传递给回调函数。                                                                                                |
 
 :::caution
 
-The `args` object is the **only** mechanism via which data may be injected into
-the callback, the callback is **not** a closure and does not retain access to
-the JavaScript context in which it was declared. Values passed into `args`
-**must** be serializable.
+`args`对象是**唯一**可以将数据注入回调的机制，回调**不是**闭包，不保留对其声明时JavaScript上下文的访问权限。传入`args`的值**必须**可序列化。
 
 :::
 
 <Icon name="angle-right" /> **callbackFn _(Function)_**
 
-The function containing the commands to be executed in the secondary origin.
+包含要在次要源中执行的命令的函数。
 
-This function will be stringified, sent to the Cypress instance in the secondary
-origin and evaluated. If the `args` option is specified, the deserialized args
-object will be passed into the function as its first and only argument.
+此函数将被字符串化，发送到次要源中的Cypress实例并评估。如果指定了`args`选项，反序列化的args对象将作为第一个也是唯一的参数传递给函数。
 
-There are a number of limitations placed on commands run inside the callback,
-please see [Callback restrictions](#Callback-restrictions) section below for a
-full list.
+回调内运行的命令有许多限制，请参阅[回调限制](#Callback-restrictions)部分获取完整列表。
 
 <HeaderYields />
 
-- `cy.origin()` yields the value yielded by the last Cypress command in the
-  callback function.
-- If the callback contains no Cypress commands, `cy.origin()` yields the return
-  value of the function.
-- In either of the two cases above, if the value is not serializable, attempting
-  to access the yielded value will throw an error.
+- `cy.origin()`返回回调函数中最后一个Cypress命令产生的值。
+- 如果回调不包含任何Cypress命令，`cy.origin()`返回函数的返回值。
+- 在上述两种情况下，如果值不可序列化，尝试访问返回的值将抛出错误。
 
-## Examples
+## 示例
 
-### Using dynamic data in a secondary origin
+### 在次要源中使用动态数据
 
-Callbacks are executed inside an entirely separate instance of Cypress, so
-arguments must be transmitted to the other instance by means of
-[the structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
-The interface for this mechanism is the `args` option.
+回调在一个完全独立的Cypress实例中执行，因此参数必须通过[结构化克隆算法](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm)传输到另一个实例。此机制的接口是`args`选项。
 
 ```js
 const sentArgs = { username: 'username', password: 'P@55w0rd!' }
 cy.origin(
   'supersecurelogons.com',
-  // Send the args here...
+  // 在这里发送参数...
   { args: sentArgs },
-  // ...and receive them at the other end here!
+  // ...在这里接收它们！
   ({ username, password }) => {
     cy.visit('/login')
     cy.get('input#username').type(username)
@@ -181,105 +140,91 @@ cy.origin(
 )
 ```
 
-### Yielding a value
+### 返回值
 
-Values returned or yielded from the callback function **must** be serializable
-or they will not be returned to the primary origin. For example, the following
-will not work:
+从回调函数返回或产生的值**必须**可序列化，否则它们不会返回到主源。例如，以下代码不会工作：
 
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
 ```js
 cy.origin('https://example.cypress.io', () => {
   cy.visit('/')
-  cy.get('h1') // Yields an element, which can't be serialized...
-}).contains('Kitchen Sink') // ...so this will fail
+  cy.get('h1') // 产生一个元素，无法序列化...
+}).contains('Kitchen Sink') // ...所以这会失败
 ```
 
-Instead, you must explicitly yield a serializable value:
+相反，你必须显式产生一个可序列化的值：
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```js
 cy.origin('https://example.cypress.io', () => {
   cy.visit('/')
-  cy.get('h1').invoke('text') // Yields a string...
+  cy.get('h1').invoke('text') // 产生一个字符串...
 }).should('equal', 'Kitchen Sink') // 👍
 ```
 
-### Navigating to secondary origin with cy.visit
+### 使用cy.visit导航到次要源
 
-When navigating to a secondary origin using `cy.visit()`, you can either
-navigate prior to or after the `cy.origin` block. Errors are no longer thrown on
-cross-origin navigation, but instead when commands interact with a cross-origin
-page.
+当使用`cy.visit()`导航到次要源时，你可以在`cy.origin`块之前或之后导航。跨源导航不再抛出错误，但当命令与跨源页面交互时会抛出错误。
 
 ```js
-// Do things in primary origin...
+// 在主源中执行操作...
 
 cy.origin('example.cypress.io', () => {
-  // Visit https://example.cypress.io/history/founder
+  // 访问https://example.cypress.io/history/founder
   cy.visit('/history/founder')
   cy.get('h1').contains('About our Founder')
 })
 ```
 
-Here the `baseUrl` inside the `cy.origin()` callback is set to `example.cypress.io`
-and the protocol defaults to `https`. When `cy.visit()` is called with the path
-`/history/founder`, the three are concatenated to make
-`https://example.cypress.io/history/founder`.
+这里`cy.origin()`回调内部的`baseUrl`设置为`example.cypress.io`，协议默认为`https`。当调用`cy.visit()`并传入路径`/history/founder`时，三者拼接为`https://example.cypress.io/history/founder`。
 
-#### Alternative navigation
+#### 替代导航方式
 
 ```js
-// Do things in primary origin...
+// 在主源中执行操作...
 
 cy.visit('https://example.cypress.io/history/founder')
 
-// The cy.origin block is required to interact with the cross-origin page.
+// 需要cy.origin块来与跨源页面交互。
 cy.origin('example.cypress.io', () => {
   cy.get('h1').contains('About our Founder')
 })
 ```
 
-Here the cross-origin page is visited prior to the `cy.origin` block, but any
-interactions with the window are performed within the block which can
-communicate with the cross-origin page
+这里跨源页面在`cy.origin`块之前访问，但与窗口的任何交互都在块内执行，该块可以与跨源页面通信。
 
-#### <Icon name="exclamation-triangle" color="red" /> Incorrect Usage
+#### <Icon name="exclamation-triangle" color="red" /> 错误用法
 
 ```js
-// Do things in primary origin...
+// 在主源中执行操作...
 
 cy.visit('https://www.cypress.io/history/founder')
 
-// This command will fail, it's executed on localhost but the application is at cypress.io
+// 此命令将失败，它在localhost上执行但应用程序在cypress.io上
 cy.get('h1').contains('About our Founder, Marvin Acme')
 ```
 
-Here `cy.get('h1')` fails because we are trying to interact with a cross-origin
-page outside of the cy.origin block, due to 'same-origin' restrictions, the
-'localhost' javascript context can't communicate with 'cypress.io'.
+这里`cy.get('h1')`失败，因为我们试图在cy.origin块外部与跨源页面交互，由于"同源"限制，"localhost"的JavaScript上下文无法与"cypress.io"通信。
 
-### Navigating to secondary origin with UI
+### 通过UI导航到次要源
 
-Navigating to a secondary origin by clicking a link or button in the primary
-origin is supported.
+支持通过点击主源中的链接或按钮导航到次要源。
 
 ```js
-// Button in primary origin goes to https://example.cypress.io
+// 主源中的按钮跳转到https://example.cypress.io
 cy.contains('button', 'Go').click()
 
 cy.origin('example.cypress.io', () => {
-  // No cy.visit is needed as the button brought us here
+  // 不需要cy.visit，因为按钮已带我们到这里
   cy.get('h1').contains('CYPRESS')
 })
 ```
 
-### Navigating to multiple secondary origins in succession
+### 连续导航到多个次要源
 
-Callbacks may **not** themselves contain `cy.origin()` calls, so when visiting
-multiple origins, do so at the top level of the test.
+回调本身**不能**包含`cy.origin()`调用，因此当访问多个源时，在测试的顶层进行。
 
 ```js
 cy.origin('example.cypress.com', () => {
@@ -293,51 +238,37 @@ cy.origin('cypress-dx.com', () => {
 })
 ```
 
-### SSO login custom command
+### SSO登录自定义命令
 
-A very common requirement is logging in to a site before running a test. If
-login itself is not the specific focus of the test, it's good to encapsulate
-this functionality in a `login`
-[custom command](/api/cypress-api/custom-commands) so you don't have to
-duplicate this login code in every test. Here's an idealized example of how to
-do this with `cy.origin()`.
+一个非常常见的需求是在运行测试之前登录到网站。如果登录本身不是测试的特定重点，最好将此功能封装在`login`[自定义命令](/api/cypress-api/custom-commands)中，这样就不必在每个测试中重复此登录代码。这是一个理想化的示例，展示如何使用`cy.origin()`实现这一点。
 
-<Icon name="exclamation-triangle" color="#f0ad4e" /> **Inefficient Usage**
+<Icon name="exclamation-triangle" color="#f0ad4e" /> **低效用法**
 
 ```js
 Cypress.Commands.add('login', (username, password) => {
-  // Remember to pass in arguments via `args`
+  // 记得通过`args`传入参数
   const args = { username, password }
   cy.origin('cypress.io', { args }, ({ username, password }) => {
-    // Go to https://example.cypress.com/login
+    // 访问https://example.cypress.com/login
     cy.visit('/login')
     cy.contains('Username').find('input').type(username)
     cy.contains('Password').find('input').type(password)
     cy.get('button').contains('Login').click()
   })
-  // Confirm we're back at the primary origin before continuing
+  // 确认我们回到主源后再继续
   cy.url().should('contain', '/home')
 })
 ```
 
-Having to go through an entire login flow before every test is not very
-performant. Up until now you could get around this problem by putting login code
-in the first test of your file, then performing subsequent tests reusing the
-same session.
+在每个测试之前都要经历整个登录流程并不是很高效。到目前为止，你可以通过将登录代码放在文件的第一个测试中，然后在后续测试中重用相同的会话来避免这个问题。
 
-However, this is no longer possible, since all session state is now cleared
-between tests. So to avoid this overhead we recommend you leverage the
-[`cy.session()`](/api/commands/session) command, which allows you to easily
-cache session information and reuse it across tests. So now let's enhance our
-custom login command with `cy.session()` for a complete syndicated login flow
-with session caching and validation. No mocking, no workarounds, no third-party
-plugins!
+然而，这不再可能，因为现在所有会话状态在测试之间都会被清除。因此，为了避免这种开销，我们建议你利用[`cy.session()`](/api/commands/session)命令，它允许你轻松缓存会话信息并在测试之间重用。现在让我们用`cy.session()`增强我们的自定义登录命令，实现一个完整的联合登录流程，包括会话缓存和验证。无需模拟，无需变通，无需第三方插件！
 
 ```js
 Cypress.Commands.add('login', (username, password) => {
   const args = { username, password }
   cy.session(
-    // Username & password can be used as the cache key too
+    // 用户名和密码也可以用作缓存键
     args,
     () => {
       cy.origin('cypress.io', { args }, ({ username, password }) => {
@@ -357,110 +288,79 @@ Cypress.Commands.add('login', (username, password) => {
 })
 ```
 
-## Learn More
+## 了解更多
 
-### How to Test Multiple Origins
+### 如何测试多个源
 
 <DocsVideo
   src="https://youtube.com/embed/Fohrq5GZSD8"
-  title="How to test multiple domains or origins with Cypress"
+  title="如何使用Cypress测试多个域名或源"
 />
 
-In this video we walk through how to test multiple origins in a single test. We
-also look at how to use the `cy.session()` command to cache session information
-and reuse it across tests.
-The configuration option `experimentalSessionAndOrigin`, mentioned in the video, is not used
-since [Cypress 12.0.0](https://docs.cypress.io/app/references/changelog#12-0-0)
-and the associated functionality is enabled by default.
+在这个视频中，我们逐步介绍如何在单个测试中测试多个源。我们还看看如何使用`cy.session()`命令缓存会话信息并在测试之间重用。
+视频中提到的配置选项`experimentalSessionAndOrigin`自[Cypress 12.0.0](https://docs.cypress.io/app/references/changelog#12-0-0)起不再使用，相关功能默认启用。
 
-## Notes
+## 注意事项
 
-### Serialization
+### 序列化
 
-When entering a `cy.origin()` block, Cypress injects itself at runtime, with all
-your configuration settings, into the requested origin, and sets up
-bidirectional communication with that instance. This coordination model requires
-that any data sent from one instance to another be
-[serialized](https://developer.mozilla.org/en-US/docs/Glossary/Serialization)
-for transmission. It is very important to understand that variables **inside**
-the callback are not shared with the scope **outside** the callback. For example
-this will not work:
+当进入`cy.origin()`块时，Cypress在运行时将所有配置设置注入到请求的源中，并设置与该实例的双向通信。这种协调模型要求从一个实例发送到另一个实例的任何数据都必须[序列化](https://developer.mozilla.org/en-US/docs/Glossary/Serialization)以进行传输。非常重要的是要理解回调**内部**的变量不与回调**外部**的作用域共享。例如，以下代码不会工作：
 
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
 ```js
 const foo = 1
 cy.origin('cypress.io', () => {
   cy.visit('/')
-  // This line will throw a ReferenceError because
-  // `foo` is not defined in the scope of the callback
+  // 此行将抛出ReferenceError，因为
+  // `foo`未在回调作用域中定义
   cy.get('input').type(foo)
 })
 ```
 
-Instead, the variable must be explicitly passed into the callback using the
-`args` option:
+相反，必须使用`args`选项将变量显式传递到回调中：
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```js
 const foo = 1
 cy.origin('cypress.io', { args: { foo } }, ({ foo }) => {
   cy.visit('/')
-  // Now it will pass
+  // 现在会通过
   cy.get('input').type(foo)
 })
 ```
 
-Cypress uses
-[the structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm)
-to transfer the `args` option to the secondary origin. This introduces a number
-of
-[restrictions on the data which may be passed](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm#things_that_dont_work_with_structured_clone)
-into the callback.
+Cypress使用[结构化克隆算法](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm)将`args`选项传输到次要源。这引入了对可以传递到回调中的数据的许多[限制](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm#things_that_dont_work_with_structured_clone)。
 
-### Dependencies / Sharing Code
+### 依赖项/共享代码
 
-Within the `cy.origin()` callback,
-[`Cypress.require()`](/api/cypress-api/require) can be utilized to include
-[npm](https://www.npmjs.com/) packages and other files. It is functionally the
-same as using
-[CommonJS `require()`](https://nodejs.org/api/modules.html#requireid)
-in browser-targeted code.
+在`cy.origin()`回调内部，可以使用[`Cypress.require()`](/api/cypress-api/require)来包含[npm](https://www.npmjs.com/)包和其他文件。它在功能上与在浏览器目标代码中使用[CommonJS `require()`](https://nodejs.org/api/modules.html#requireid)相同。
 
-Note that it is not possible to use
-[CommonJS `require()`](https://nodejs.org/api/modules.html#requireid)
-or
-[ES module `import()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#dynamic_imports)
-within the callback.
+注意，在回调内部无法使用[CommonJS `require()`](https://nodejs.org/api/modules.html#requireid)或[ES模块`import()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#dynamic_imports)。
 
 :::caution
 
-Using `Cypress.require()` within the callback requires enabling the
-[`experimentalOriginDependencies`](/app/references/experiments) option in the
-Cypress configuration.
+在回调内部使用`Cypress.require()`需要在Cypress配置中启用[`experimentalOriginDependencies`](/app/references/experiments)选项。
 
 :::
 
-Read more in the [`Cypress.require()` doc](/api/cypress-api/require) itself.
+更多信息请参阅[`Cypress.require()`文档](/api/cypress-api/require)本身。
 
-#### Example
+#### 示例
 
 ```js
 cy.origin('cypress.io', () => {
   const _ = Cypress.require('lodash')
   const utils = Cypress.require('../support/utils')
 
-  // ... use lodash and utils ...
+  // ... 使用lodash和utils ...
 })
 ```
 
-#### Custom commands
+#### 自定义命令
 
-This makes it possible to share custom commands between tests run in primary and
-secondary origins. We recommend this pattern for setting up your
-[support file](/app/core-concepts/writing-and-organizing-tests#Support-file)
-and setting up custom commands to run within the `cy.origin()` callback:
+这使得可以在主源和次要源运行的测试之间共享自定义命令。我们建议使用以下模式设置你的[支持文件](/app/core-concepts/writing-and-organizing-tests#Support-file)并设置在`cy.origin()`回调内运行的自定义命令：
 
 `cypress/support/commands.js`:
 
@@ -473,14 +373,14 @@ Cypress.Commands.add('clickLink', (label) => {
 `cypress/support/e2e.js`:
 
 ```js
-// makes custom commands available to all Cypress tests in this spec,
-// outside of cy.origin() callbacks
+// 使自定义命令可用于此规范中的所有Cypress测试，
+// 在cy.origin()回调外部
 import './commands'
 
-// code we only want run per test, so it shouldn't be run as part of
-// the execution of cy.origin() as well
+// 我们只想每个测试运行的代码，所以它不应该作为
+// cy.origin()执行的一部分运行
 beforeEach(() => {
-  // ... code to run before each test ...
+  // ... 每个测试前运行的代码 ...
 })
 ```
 
@@ -488,9 +388,8 @@ beforeEach(() => {
 
 ```js
 before(() => {
-  // makes custom commands available to all subsequent cy.origin('cypress.io)
-  // calls in this spec. put it in your support file to make them available to
-  // all specs
+  // 使自定义命令可用于此规范中所有后续的cy.origin('cypress.io')调用。
+  // 将其放在支持文件中可使它们对所有规范可用
   cy.origin('cypress.io', () => {
     Cypress.require('../support/commands')
   })
@@ -504,17 +403,15 @@ it('tests cypress.io', () => {
 })
 ```
 
-#### Shared execution context
+#### 共享执行上下文
 
-The JavaScript execution context is persisted between `cy.origin()` callbacks
-that share the same origin. This can be utilized to share code between
-successive `cy.origin()` calls.
+JavaScript执行上下文在共享相同源的`cy.origin()`回调之间保持持久。这可以用于在连续的`cy.origin()`调用之间共享代码。
 
 ```js
 before(() => {
   cy.origin('cypress.io', () => {
-    // makes commands defined in this file available to all callbacks
-    // for cypress.io
+    // 使此文件中定义的命令对所有回调可用
+    // 对于cypress.io
     Cypress.require('../support/commands')
   })
 })
@@ -533,46 +430,41 @@ it('also uses cy.origin() + custom command', () => {
   })
 
   cy.origin('cypress-dx.com', () => {
-    // WARNING: cy.clickLink() will not be available because it is a
-    // different origin
+    // 警告：cy.clickLink()将不可用，因为它是
+    // 不同的源
   })
 })
 ```
 
-### Callback restrictions
+### 回调限制
 
-Because of the way in which the callback is transmitted and executed, there are
-certain limitations on what code may be run inside it. In particular, the
-following Cypress commands will throw errors if used in the callback:
+由于回调传输和执行的方式，回调内可以运行的代码有一些限制。特别是，以下Cypress命令如果在回调中使用会抛出错误：
 
 - `cy.origin()`
 - [`cy.intercept()`](/api/commands/intercept)
 - [`cy.session()`](/api/commands/session)
 
-### Other limitations
+### 其他限制
 
-There are other testing scenarios which are not currently covered by
-`cy.origin()`:
+还有其他测试场景目前不被`cy.origin()`覆盖：
 
-- It cannot run commands
-  [in a different browser window](/app/references/trade-offs#Multiple-browsers-open-at-the-same-time)
-- It cannot run commands in a different browser tab
-- It cannot run commands
-  [inside an `<iframe>` element](/app/faq#How-do-I-test-elements-inside-an-iframe)
+- 它无法在[不同的浏览器窗口](/app/references/trade-offs#Multiple-browsers-open-at-the-same-time)中运行命令
+- 它无法在不同的浏览器标签页中运行命令
+- 它无法在[`<iframe>`元素内部](/app/faq#How-do-I-test-elements-inside-an-iframe)运行命令
 
-## History
+## 历史
 
-| Version                                     | Changes                                                                                                     |
-| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| [14.0.0](/app/references/changelog#14-0-0)  | `cy.origin()` is now required when navigating between origins in the same test, rather than superdomains.   |
-| [12.6.0](/app/references/changelog#10-7-0)  | Support for `Cypress.require()` added and support for CommonJS `require()` and ES module `import()` removed |
-| [10.11.0](/app/references/changelog#10-7-0) | Support for CommonJS `require()` and ES module `import()` added and support for `Cypress.require()` removed |
-| [10.7.0](/app/references/changelog#10-7-0)  | Support for `Cypress.require()` added                                                                       |
+| 版本                                      | 变更                                                                                                      |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| [14.0.0](/app/references/changelog#14-0-0) | `cy.origin()`现在需要在同一测试中导航不同源时使用，而不是超级域名。                                       |
+| [12.6.0](/app/references/changelog#10-7-0) | 添加了对`Cypress.require()`的支持，并移除了对CommonJS `require()`和ES模块`import()`的支持                 |
+| [10.11.0](/app/references/changelog#10-7-0) | 添加了对CommonJS `require()`和ES模块`import()`的支持，并移除了对`Cypress.require()`的支持                |
+| [10.7.0](/app/references/changelog#10-7-0) | 添加了对`Cypress.require()`的支持                                                                        |
 
-## See also
+## 另请参阅
 
-- [Easily test multi-domain workflows with cy.origin](https://cypress.io/blog/2022/04/25/cypress-9-6-0-easily-test-multi-domain-workflows-with-cy-origin/)
-- [Custom Commands](/api/cypress-api/custom-commands)
+- [使用cy.origin轻松测试多域名工作流](https://cypress.io/blog/2022/04/25/cypress-9-6-0-easily-test-multi-domain-workflows-with-cy-origin/)
+- [自定义命令](/api/cypress-api/custom-commands)
 - [`Cypress.require()`](/api/cypress-api/require)
 - [`cy.session()`](/api/commands/session)
 - [`cy.visit()`](/api/commands/visit)

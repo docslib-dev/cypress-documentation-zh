@@ -1,6 +1,6 @@
 ---
-title: 'reload | Cypress Documentation'
-description: Reload the page in Cypress.
+title: 'reload | Cypress 文档'
+description: 在 Cypress 中重新加载页面。
 sidebar_label: reload
 e2eSpecific: true
 ---
@@ -9,9 +9,9 @@ e2eSpecific: true
 
 # reload
 
-Reload the page.
+重新加载页面。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.reload()
@@ -20,40 +20,37 @@ cy.reload(options)
 cy.reload(forceReload, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 cy.reload()
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **forceReload _(Boolean)_**
 
-Whether to reload the current page without using the cache. `true` forces the
-reload without cache.
+是否在不使用缓存的情况下重新加载当前页面。`true` 表示强制不使用缓存重新加载。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-| Option    | Default                                                     | Description                                                                                                                                                                                        |
-| --------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `log`     | `true`                                                      | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log)                                                                                                                |
-| `timeout` | [`pageLoadTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.reload()` to resolve before [timing out](#Timeouts) Note: Network requests are limited by the underlying operating system, and may still time out if this value is increased. |
+| 选项       | 默认值                                                     | 描述                                                                                                                                                                                        |
+| ---------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `log`      | `true`                                                      | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令                                                                                                                |
+| `timeout`  | [`pageLoadTimeout`](/app/references/configuration#Timeouts) | 等待 `cy.reload()` 解析的超时时间，超过则[超时](#Timeouts)。注意：网络请求受底层操作系统限制，即使增加此值仍可能超时。 |
 
 <HeaderYields />
 
-- `cy.reload()` yields the `window` object after the page finishes loading.
-- It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried)
-  to chain further commands that rely on the yielded `window` after
-  `cy.reload()`.
+- `cy.reload()` 在页面加载完成后返回 `window` 对象。
+- 在 `cy.reload()` 后继续链式调用依赖于返回的 `window` 对象的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Reload the page as if the user clicked 'Refresh'
+#### 像用户点击“刷新”一样重新加载页面
 
 ```javascript
 cy.visit('http://localhost:3000/admin')
@@ -62,58 +59,56 @@ cy.reload()
 cy.get('#undo-btn').click().should('not.be.visible')
 ```
 
-### Force Reload
+### 强制重新加载
 
-#### Reload the page without using the cache
+#### 不使用缓存重新加载页面
 
 ```javascript
 cy.visit('http://localhost:3000/admin')
 cy.reload(true)
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.reload()` requires being chained off of `cy`.
-- `cy.reload()` requires the response to be `content-type: text/html`.
-- `cy.reload()` requires the response code to be `2xx` after following
-  redirects.
-- `cy.reload()` requires the load `load` event to eventually fire.
+- `cy.reload()` 必须通过 `cy` 链式调用。
+- `cy.reload()` 要求响应为 `content-type: text/html`。
+- `cy.reload()` 要求在遵循重定向后响应码为 `2xx`。
+- `cy.reload()` 要求最终触发 `load` 事件。
 
 <HeaderAssertions />
 
-- `cy.reload()` will automatically wait for assertions you have chained to pass.
+- `cy.reload()` 会自动等待链式断言通过。
 
 <HeaderTimeouts />
 
-- `cy.reload()` can time out waiting for the page to fire its `load` event.
-- `cy.reload()` can time out waiting for assertions you've added to pass.
+- `cy.reload()` 可能因等待页面触发 `load` 事件而超时。
+- `cy.reload()` 可能因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Reload the page_**
+**_重新加载页面_**
 
 ```javascript
 cy.reload()
 ```
 
-The commands above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/reload/test-page-after-reload-button.png"
-  alt="Command Log reload"
+  alt="命令日志 reload"
 />
 
-When clicking on `reload` within the command log, the console outputs the
-following:
+当点击命令日志中的 `reload` 时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/reload/command-log-for-reload-cypress.png"
-  alt="Console Log reload"
+  alt="控制台日志 reload"
 />
 
-## See also
+## 另请参阅
 
 - [`cy.go()`](/api/commands/go)
 - [`cy.visit()`](/api/commands/visit)

@@ -1,103 +1,103 @@
 ---
-title: 'Accessibility Run-level Reports | Cypress Documentation'
-description: 'Review the main areas to pay attention to when first reviewing an accessibility report for a Cypress run.'
+title: '无障碍运行级别报告 | Cypress 文档'
+description: '首次查看Cypress运行的无障碍报告时需要注意的主要方面。'
 sidebar_position: 10
-sidebar_label: Run-level reports
+sidebar_label: 运行级别报告
 ---
 
 <ProductHeading product="accessibility" />
 
-# Run-level reports
+# 运行级别报告
 
-This guide highlights the three main areas to focus on when reviewing an accessibility report for a Cypress run. It also explains key terms and definitions used in these reports.
+本指南重点介绍了在查看Cypress运行的无障碍报告时需要关注的三个主要领域，并解释了报告中使用的关键术语和定义。
 
-## Run summary
+## 运行摘要
 
 <DocsImage
   src="/img/accessibility/core-concepts/cypress-accessibility-summary-metrics.png"
   width="60%"
-  alt="A heading reads Cypress Accessibility, above some summary metrics that are describe in detail in this document's text."
+  alt="标题显示为Cypress无障碍，上方是摘要指标，本文档的正文部分会详细描述这些指标。"
 />
 
-The Run Summary provides top-line metrics for a quick overview of accessibility in the tested run. Clicking any metric navigates to detailed reports, including live DOM snapshots for each issue.
+运行摘要提供了顶层指标，用于快速概览测试运行中的无障碍情况。点击任何指标可导航至详细报告，包括每个问题的实时DOM快照。
 
-**Key metrics include:**
+**关键指标包括:**
 
-- **Overall Score**: A combined accessibility score for the entire run.
-- **Failed Elements**: Total elements failing at least one accessibility rule.
-- **Inconclusive Elements**: Elements requiring manual review due to inconclusive accessibility checks.
-- **Ignored Elements**: Elements ignored by your configuration but with failed or inconclusive checks.
-- **Rule Severity Chart**: A mini chart showing the Axe Core® severity levels (critical, serious, moderate, minor) for failed rules.
-- **Total Failed Rules**: The cumulative count of failed rules.
+- **总体评分**: 整个运行的综合无障碍评分。
+- **失败元素**: 至少违反一条无障碍规则的元素总数。
+- **不确定元素**: 由于无障碍检查不确定而需要手动审查的元素。
+- **忽略元素**: 被配置忽略但仍存在失败或不确定检查的元素。
+- **规则严重性图表**: 显示失败规则的Axe Core®严重级别（严重、重要、中等、轻微）的迷你图表。
+- **总失败规则数**: 失败规则的累计计数。
 
-Each term is defined further below for clarity.
+下文将进一步定义每个术语以明确含义。
 
-## Views
+## 视图
 
-A View represents a collection of snapshots from the tested application, grouped by pages (via URLs) or components (via Component Testing paths). Views are configurable and provide structured insights into the application.
+视图代表被测应用程序的快照集合，按页面（通过URL）或组件（通过组件测试路径）分组。视图可配置，并提供对应用程序的结构化洞察。
 
 <DocsImage
   src="/img/accessibility/core-concepts/cypress-accessibility-views-dashboard.png"
-  alt="The Cypress Accessibility Views List, in context in Cypress Cloud, reflecting a run of the Cypress Realworld App where violations of accessibility rules were detected on multiple pages."
+  alt="Cypress无障碍视图列表，在Cypress Cloud中展示，反映了Cypress Realworld App运行的多个页面上检测到的无障碍规则违规情况。"
 />
 
-### Snapshots
+### 快照
 
-The number of snapshots captured for a View. A Snapshot represents the live HTML and CSS state of the application at a specific moment during a recorded test. Multiple snapshots are captured as tests interact with elements, modify state, or load dynamic content.
+为视图捕获的快照数量。快照表示在记录测试期间应用程序在特定时刻的实时HTML和CSS状态。当测试与元素交互、修改状态或加载动态内容时，会捕获多个快照。
 
-### Score
+### 评分
 
-The overall score for a View is a weighted ratio of passed versus failed checks across all snapshots, reflecting the general accessibility level for that segment of the application. This produces a top-line percentage score that indicates a general sense of accessibility for a project. Learn more in the [Accessibility Score section](/accessibility/core-concepts/accessibility-score)..
+视图的总体评分是所有快照中通过检查与失败检查的加权比率，反映了该部分应用程序的总体无障碍水平。这产生一个顶层百分比评分，指示项目的总体无障碍情况。了解更多信息，请参阅[无障碍评分部分](/accessibility/core-concepts/accessibility-score)。.
 
-### Elements
+### 元素
 
-The count of elements in a View categorized as:
+视图中元素的计数，分类为:
 
-- **Failed:** Elements violating at least one rule. These affect your accessibility score.
-- **Inconclusive:** Elements had at least one check marked "incomplete" by Axe Core® during the run. These represent checks that couldn't be completed for technical reasons, or items that need manual review to confirm if there is an accessibility issue. These do not affect your accessibility score.
-- **Ignored:** Elements with failed or incomplete checks that were excluded via CSS selectors in your [configuration](/accessibility/configuration/elementfilters) but still processed. They do not affect your accessibility score.
+- **失败:** 违反至少一条规则的元素。这些会影响您的无障碍评分。
+- **不确定:** 元素在运行期间被Axe Core®标记为"未完成"的检查。这些代表由于技术原因无法完成的检查，或需要手动审查以确认是否存在无障碍问题的项目。这些不会影响您的无障碍评分。
+- **忽略:** 通过[配置](/accessibility/configuration/elementfilters)中的CSS选择器排除但仍被处理的失败或未完成检查的元素。它们不会影响您的无障碍评分。
 
-### Failed rules
+### 失败规则
 
-Failed rules are displayed with severity charts (critical, serious, moderate, minor) and total counts, enabling quick identification of areas with the most significant issues.
+失败规则显示带有严重性图表（严重、重要、中等、轻微）和总计数，便于快速识别问题最严重的区域。
 
-### Severity
+### 严重性
 
-Severity levels correspond to Axe Core® impact levels for each rule, providing context on the criticality of detected issues. It's important to note that these levels were created by Deque Systems, the creators of Axe Core, and not a part of the Web Content Accessibility Guidelines themselves. Learn more in the [Axe Core® documentation](https://github.com/dequelabs/axe-core/blob/develop/doc/issue_impact.md).
+严重性级别对应于Axe Core®对每条规则的影响级别，提供检测问题关键性的上下文。需要注意的是，这些级别是由Axe Core的创建者Deque Systems制定的，而不是Web内容无障碍指南本身的一部分。了解更多信息，请参阅[Axe Core®文档](https://github.com/dequelabs/axe-core/blob/develop/doc/issue_impact.md)。
 
-## Rules
+## 规则
 
-This section lists all Axe Core® rules enabled during the run, detailing their outcomes.
+此部分列出了运行期间启用的所有Axe Core®规则，详细说明了它们的结果。
 
 <DocsImage
   src="/img/accessibility/core-concepts/cypress-accessibility-rules-list.png"
-  alt="The Cypress Accessibility rules list showing multiple accessibility rules failing in this run of the Cypress Realworld App."
+  alt="Cypress无障碍规则列表，显示在此次Cypress Realworld App运行中多个无障碍规则失败的情况。"
 />
 
-Attributes for each rule include:
+每条规则的属性包括:
 
-- **Status Icon**: An icon representing the overall status for the rule, which can be any one of these:
-  - **Passed**: All elements passed checks or were ignored.
-  - **Failed**: At least one element failed.
-  - **Inconclusive**: At least one element was labelled "incomplete" by Axe Core® and requires manual review, but no elements were failed.
-  - **Inapplicable**: No applicable elements detected for this rule.
-  - **Ignored by config**: The rule was excluded at the project level.
-- **Description**: A summary of the rule.
-- **Severity**: The Axe Core® severity level for the rule.
-- **Counts**: The counts of failed, inconclusive, and ignored elements for the rule.
+- **状态图标**: 表示规则总体状态的图标，可以是以下任意一种:
+  - **通过**: 所有元素通过检查或被忽略。
+  - **失败**: 至少一个元素失败。
+  - **不确定**: 至少一个元素被Axe Core®标记为"未完成"并需要手动审查，但没有元素失败。
+  - **不适用**: 未检测到适用于此规则的元素。
+  - **被配置忽略**: 规则在项目级别被排除。
+- **描述**: 规则的摘要。
+- **严重性**: 规则的Axe Core®严重级别。
+- **计数**: 规则的失败、不确定和忽略元素的计数。
 
-## Filtering
+## 筛选
 
-You can filter Views and Rules in accessibility reports by:
+您可以通过以下方式筛选无障碍报告中的视图和规则:
 
-- **Rule severity**: Critical, serious, moderate, or minor.
-- **Rules**: WCAG 2.1 A, WCAG 2.1 AA, or Best Practices.
-- **Element status**: Failed, inconclusive, or other (other includes ignored elements and rules, 100% passing views and rules, and inapplicable rules).
-- **Name**: Search for specific URLs or paths to filter the views or specific names to filter rules.
+- **规则严重性**: 严重、重要、中等或轻微。
+- **规则**: WCAG 2.1 A、WCAG 2.1 AA或最佳实践。
+- **元素状态**: 失败、不确定或其他（其他包括忽略的元素和规则、100%通过的视图和规则，以及不适用的规则）。
+- **名称**: 搜索特定的URL或路径以筛选视图，或搜索特定名称以筛选规则。
 
-This allows a full understanding of what Cypress evaluated during the run, while enabling targeted analysis of critical issues.
+这样可以全面了解Cypress在运行期间评估的内容，同时能够有针对性地分析关键问题。
 
 <DocsImage
   src="/img/accessibility/core-concepts/cypress-accessibility-filter-views-and-rules.png"
-  alt="The Cypress Accessibility dropdown filter showing rule severity, rules, element state as well as a search bar"
+  alt="Cypress无障碍下拉筛选器，显示规则严重性、规则、元素状态以及搜索栏"
 />

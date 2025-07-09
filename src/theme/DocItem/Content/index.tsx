@@ -9,14 +9,13 @@ import ComponentOnlyBadge from "@site/src/components/component-only-badge"
 import s from "./style.module.css";
 
 /**
- Title can be declared inside md content or declared through
- front matter and added manually. To make both cases consistent,
- the added title is added under the same div.markdown block
- See https://github.com/facebook/docusaurus/pull/4882#issuecomment-853021120
+ 标题可以在md内容中声明，也可以通过front matter手动添加。
+ 为了使这两种情况保持一致，添加的标题会被放在同一个div.markdown块下
+ 参见 https://github.com/facebook/docusaurus/pull/4882#issuecomment-853021120
 
- We render a "synthetic title" if:
- - user doesn't ask to hide it with front matter
- - the markdown content does not already contain a top-level h1 heading
+ 我们会在以下情况渲染"合成标题":
+ - 用户没有通过front matter要求隐藏标题
+ - markdown内容中尚未包含顶级h1标题
 */
 
 function useSyntheticTitle() {

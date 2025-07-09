@@ -1,100 +1,76 @@
 ---
-title: Setup
-description: Learn how to set up your project to record tests in Cypress Cloud.
+title: 设置
+description: 学习如何配置项目以在Cypress Cloud中记录测试。
 sidebar_position: 20
 ---
 
 <ProductHeading product="cloud" />
 
-# Set up your project to record in Cypress Cloud
+# 配置项目以在Cypress Cloud中记录测试
 
 :::info
 
 <CloudFreePlan />
 :::
 
-Once complete, come back here for information on how to integrate your app with
-Cypress Cloud.
+完成后，请返回此处了解如何将您的应用与Cypress Cloud集成。
 
-## Setup
+## 设置
 
-When you configure the open source Cypress app to record tests to Cypress Cloud,
-you'll see data from your project's latest recorded runs.
+当您配置开源Cypress应用将测试记录到Cypress Cloud时，您将看到项目最新记录运行的数据。
 
-You typically want to record when running tests in
-[Continuous Integration](/app/continuous-integration/overview), but you
-can also record your tests when running locally.
+通常在[持续集成](/app/continuous-integration/overview)中运行测试时需要记录，但您也可以在本地运行时记录测试。
 
 :::tip
 
-<Icon name="check-circle" color="green" /> Make sure to [install](/app/get-started/install-cypress)
-and [open](/app/get-started/open-the-app) the Cypress app to get started recording!
+<Icon name="check-circle" color="green" /> 确保先[安装](/app/get-started/install-cypress)并[打开](/app/get-started/open-the-app)Cypress应用以开始记录！
 
 :::
 
-### Set up a project to record
+### 设置项目记录
 
-1. Click on the **Runs** tab of your project within
-   [Cypress](/app/core-concepts/open-mode).
-2. Click **Connect to Cypress Cloud**.
-3. You will need to log in to record your tests, so you'll be prompted to log in
-   to Cypress Cloud here if you haven't already done so.
+1. 在[Cypress](/app/core-concepts/open-mode)中点击您项目的**Runs**选项卡
+2. 点击**Connect to Cypress Cloud**
+3. 记录测试需要登录，因此如果尚未登录，系统会提示您登录Cypress Cloud
    <DocsImage
      src="/img/cloud/projects/setup-a-project-1.jpg"
-     alt="Connect to Cloud"
+     alt="连接Cloud"
    />
-4. Choose who owns the project. You can personally own it or select an
-   organization you're a member of. If you don't have any organizations, click
-   **Manage organizations**. Organizations work just like they do in GitHub and
-   enable you to separate your personal and work projects.
-   [Read more about organizations](/cloud/account-management/organizations).
+4. 选择项目所有者。您可以选择个人所有或您所属的组织。如果没有组织，点击**Manage organizations**。组织功能与GitHub类似，可帮助您区分个人和工作项目。[了解更多关于组织的信息](/cloud/account-management/organizations)
    <DocsImage
      src="/img/cloud/projects/setup-a-project-2.jpg"
-     alt="Choose an Organization"
+     alt="选择组织"
    />
-5. If you don't have any existing projects, you'll have the opportunity to
-   create a new one here. If you have existing projects and want to create a new
-   one, you can click **Create new** to make a new one.
+5. 如果没有现有项目，可以在此创建新项目。如果有现有项目但想新建，点击**Create new**
 
-   - Fill in the name of your project (this is only for display purposes and can
-     be changed later).
-   - Choose whether this project is Public or Private. See more about
-     [Public-vs-Private project settings](/cloud/account-management/projects#Public-vs-Private).
+   - 填写项目名称（仅用于显示，后续可修改）
+   - 选择项目是公开还是私有。了解更多关于[公开与私有项目设置](/cloud/account-management/projects#Public-vs-Private)
      <DocsImage
        src="/img/cloud/projects/setup-a-project-3.jpg"
-       alt="Create a New Project"
+       alt="创建新项目"
      />
 
-6. Alternatively, if you've already created a project in Cypress Cloud, you can
-   link your project by selecting it from the dropdown. Make sure to select a
-   clean project that has not previously been linked to an existing project.
+6. 如果已在Cypress Cloud创建项目，可以从下拉列表中选择链接项目。确保选择未链接过其他项目的干净项目
    <DocsImage
      src="/img/cloud/projects/setup-a-project-4.jpg"
-     alt="Choose a Project"
+     alt="选择项目"
    />
-7. Click **Setup Project**.
-8. Now you should see a view explaining how to record your first run with your
-   record key.
+7. 点击**Setup Project**
+8. 现在您将看到说明视图，展示如何使用记录密钥记录首次运行
    <DocsImage
      src="/img/cloud/projects/setup-a-project-5.jpg"
-     alt="Record Instructions"
+     alt="记录说明"
    />
-9. After setting up your project, Cypress inserts a unique
-   [projectId](/cloud/account-management/projects#Project-ID) into your Cypress configuration file. If you're
-   using source control, we recommend that you check your configuration file,
-   including the `projectId`, into source control.
-10. Within [Continuous Integration](/app/continuous-integration/overview)
-    or from your local computer's terminal, pass the displayed
-    [Record Key](/cloud/account-management/projects#Record-key) while running the
-    [cypress run](/app/references/command-line#cypress-run) command.
+9. 设置项目后，Cypress会将唯一的[projectId](/cloud/account-management/projects#Project-ID)插入到Cypress配置文件中。如果使用源代码控制，建议将配置文件（包括`projectId`）提交到源代码控制
+10. 在[持续集成](/app/continuous-integration/overview)环境或本地终端运行时，传递显示的[记录密钥](/cloud/account-management/projects#Record-key)并运行[cypress run](/app/references/command-line#cypress-run)命令
 
-    Provide record key directly:
+    直接提供记录密钥：
 
     ```shell
     cypress run --record --key <record key>
     ```
 
-    Or set record key as environment variable:
+    或将记录密钥设为环境变量：
 
     ```shell
     export CYPRESS_RECORD_KEY=<record key>
@@ -104,18 +80,16 @@ and [open](/app/get-started/open-the-app) the Cypress app to get started recordi
     cypress run --record
     ```
 
-### View your recorded run
+### 查看记录运行
 
-🎉 Your tests are now recording! As soon as tests finish running, you will see
-them in [Cypress Cloud](https://on.cypress.io/cloud) and in the _Runs_ tab of
-[Cypress](/app/core-concepts/open-mode).
+🎉 您的测试现在正在记录！测试运行完成后，您可以在[Cypress Cloud](https://on.cypress.io/cloud)和[Cypress](/app/core-concepts/open-mode)的_Runs_选项卡中查看它们。
 
 <DocsImage
   src="/img/cloud/projects/cloud-runs-list.png"
-  alt="Cloud Screenshot"
+  alt="Cloud截图"
 />
 
 <DocsImage
   src="/img/cloud/projects/runs-list-in-desktop-gui.jpg"
-  alt="Runs List"
+  alt="运行列表"
 />

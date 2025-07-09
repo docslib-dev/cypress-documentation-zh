@@ -1,81 +1,81 @@
 ---
-sidebar_label: Reduce test duplication
-title: 'Reduce test duplication | Cypress UI Coverage Documentation'
-description: 'Optimize your test suite by identifying and consolidating duplicate tests with Cypress UI Coverage.'
+sidebar_label: 减少测试重复
+title: '减少测试重复 | Cypress UI覆盖率文档'
+description: '通过Cypress UI覆盖率识别并整合重复测试，优化测试套件。'
 sidebar_position: 30
 ---
 
 <ProductHeading product="ui-coverage" />
 
-# Reduce test duplication
+# 减少测试重复
 
-Efficient test suites not only maximize coverage but also avoid redundant tests that slow down development and CI pipelines. Cypress UI Coverage provides insights into areas where elements have been tested multiple times, helping you optimize your test strategy and reduce duplication. This guide explains how to identify and address test duplication for streamlined and effective testing.
+高效的测试套件不仅需要最大化覆盖率，还应避免冗余测试拖慢开发和CI流程。Cypress UI覆盖率可帮助您洞察被多次测试的元素区域，从而优化测试策略并减少重复。本指南将介绍如何识别和处理测试重复，实现精简高效的测试。
 
-## Identify & Consolidate Duplicate Tests
+## 识别与整合重复测试
 
-UI Coverage reports in Cypress Cloud highlight elements that have been tested multiple times across a run. To identify duplication:
+Cypress Cloud中的UI覆盖率报告会高亮显示在运行中被多次测试的元素。识别重复的步骤如下：
 
-1. Navigate to the **Tested elements** section within the **UI Coverage** tab in your test run.
-1. Locate tested elements that have a large number of interactions.
-1. Review the Snapshots within the view to identify duplicate tests that interact with the tested element.
+1. 在测试运行的**UI覆盖率**标签页中，导航至**已测试元素**部分
+1. 定位具有大量交互的元素
+1. 查看视图中的快照，识别与该元素交互的重复测试
 
 <DocsImage
   src="/img/ui-coverage/guides/cypress-ui-coverage-tested-elements-with-high-interactions.png"
-  alt="Cypress Cloud screenshot showing the Welcome Screen of the Cypress App with the Continue button highlighted and the number of snapshots it appears in"
+  alt="Cypress Cloud截图显示Cypress应用的欢迎界面，其中Continue按钮被高亮并标注了它在快照中出现的次数"
 />
 
-### Common Signs of Duplication
+### 常见的重复迹象
 
-- **Repeated Interactions**: Elements interacted with in multiple snapshots or across different tests.
-- **Overlapping Tests**: Multiple tests cover the same workflows or user journeys.
-- **Excessive Setup Steps**: Repeated setup steps across tests that interact with the same elements.
+- **重复交互**：在多个快照或不同测试中被交互的元素
+- **测试重叠**：多个测试覆盖相同工作流或用户旅程
+- **过多准备步骤**：跨测试中对相同元素重复执行准备步骤
 
-### Example: Welcome Screen Duplication
+### 示例：欢迎界面重复
 
-In the example below, the launchpad within Cypress App shows that the **Continue** button on the Welcome Screen has been interacted with **184 times** in **327 snapshots**. This indicates that many tests interact with this element. Clicking through to some of the Test Replay's of the snapshots however reveal that most of our tests are not concerned with the behavior of the Welcome Screen - we're just passing through to get to our other tests. This highlights an opportunity to reduce test duplication.
+下例显示Cypress应用启动器中，欢迎界面的**Continue**按钮在**327个快照**中被交互了**184次**。这表明许多测试都会与该元素交互。但查看部分测试回放快照后发现，大多数测试并不关注欢迎界面的行为——我们只是通过它进入其他测试。这提示了减少测试重复的机会。
 
 <DocsImage
   src="/img/ui-coverage/guides/cypress-ui-coverage-test-duplication-welcome-screen-example.png"
-  alt="Cypress Cloud screenshot showing the snapshots and interactions of a button with many snapshots and interactions"
+  alt="Cypress Cloud截图显示一个具有大量快照和交互次数的按钮"
 />
 
-Now we can focus on consolidating tests and optimizing our test suite to avoid unnecessary duplication.
+现在我们可以专注于整合测试并优化测试套件，避免不必要的重复。
 
 ```js
-// This example is simplified for demonstration purposes
-// In a real-world scenario, you would change the properties that are checked
-// to hide or display the welcome screen for first-time users
+// 此示例为演示目的进行了简化
+// 实际场景中，您需要修改检查属性
+// 来控制是否显示首次用户的欢迎界面
 Cypress.Commands.add('skipWelcome', () => {
   cy.setCookie('welcome', 'dismissed')
 })
 
-it('shows welcome page', () => {
+it('显示欢迎页面', () => {
   cy.visit('/')
   cy.contains('Welcome')
   cy.get('[data-cy="continue"]').click()
   cy.contains('Projects')
 })
 
-it('shows projects page', () => {
+it('显示项目页面', () => {
   cy.skipWelcome()
   cy.visit('/')
   cy.contains('Projects')
 })
 ```
 
-After updating our tests and recording a new run, we can visit the **Tested elements** section to see the impact of our changes. The **Continue** button now appears in fewer snapshots and less interactions, indicating that we've successfully reduced duplication.
+更新测试并记录新运行后，我们可以查看**已测试元素**部分观察改动效果。**Continue**按钮现在出现的快照和交互次数减少，表明我们成功降低了重复。
 
 <DocsImage
   src="/img/ui-coverage/guides/cypress-ui-coverage-test-duplication-example-after.png"
-  alt="Cypress Cloud screenshot showing the snapshots and interactions of a tested element after reducing test duplication"
+  alt="Cypress Cloud截图显示减少测试重复后元素的快照和交互情况"
 />
 
-## Monitor and Prevent Duplication
+## 监控与预防重复
 
-### Document Your Testing Strategy
+### 记录测试策略
 
-Maintain a clear testing strategy that outlines:
+维护清晰的测试策略文档，明确说明：
 
-- The scope and purpose of each test suite.
-- Which workflows and components each test covers.
-- Guidelines for avoiding overlap in new tests.
+- 每个测试套件的范围和目的
+- 各测试覆盖的工作流和组件
+- 避免新测试重叠的指导原则

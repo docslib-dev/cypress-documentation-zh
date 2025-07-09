@@ -1,6 +1,6 @@
 ---
-title: 'its | Cypress Documentation'
-description: Get a property's value on the previously yielded subject in Cypress.
+title: 'its | Cypress 文档'
+description: 在 Cypress 中获取先前生成主题的属性值。
 sidebar_label: its
 slug: /api/commands/its
 ---
@@ -9,89 +9,89 @@ slug: /api/commands/its
 
 # its
 
-Get a property's value on the previously yielded subject.
+获取先前生成主题的属性值。
 
 :::info
 
-If you want to call a `function` on the previously yielded subject, use
-[`.invoke()`](/api/commands/invoke).
+如果想在先前生成的主题上调用`函数`，请使用
+[`.invoke()`](/api/commands/invoke)。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .its(propertyName)
 .its(propertyName, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.wrap({ width: '50' }).its('width') // Get the 'width' property
-cy.window().its('sessionStorage') // Get the 'sessionStorage' property
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.its('window') // Errors, cannot be chained off 'cy'
-cy.clearCookies().its('length') // Errors, 'clearCookies' does not yield Object
+cy.wrap({ width: '50' }).its('width') // 获取 'width' 属性
+cy.window().its('sessionStorage') // 获取 'sessionStorage' 属性
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
+
+```javascript
+cy.its('window') // 错误，不能从 'cy' 链式调用
+cy.clearCookies().its('length') // 错误，'clearCookies' 不返回对象
+```
+
+### 参数
 
 <Icon name="angle-right" /> **propertyName _(String, Number)_**
 
-Index, name of property or name of nested properties (with dot notation) to get.
+要获取的属性索引、名称或嵌套属性名称（使用点表示法）。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `.its()`.
+传入选项对象以更改 `.its()` 的默认行为。
 
-| Option    | Default                                                           | Description                                                                         |
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.its()` to resolve before [timing out](#Timeouts)                 |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 等待 `.its()` 解析的超时时间，超过则[超时](#Timeouts)                 |
 
 <HeaderYields />
 
-- `.its()` 'yields the value of the property.
-- `.its()` is a query, and it is _safe_ to chain further commands.
+- `.its()` 返回属性的值。
+- `.its()` 是一个查询，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### Objects
+### 对象
 
-#### Get property
+#### 获取属性
 
 ```javascript
 cy.wrap({ age: 52 }).its('age').should('eq', 52) // true
 ```
 
-### Arrays
+### 数组
 
-#### Get index
+#### 获取索引
 
 ```javascript
 cy.wrap(['Wai Yan', 'Yu']).its(1).should('eq', 'Yu') // true
 ```
 
-### DOM Elements
+### DOM 元素
 
-#### Get the `length` property of a DOM element
+#### 获取 DOM 元素的 `length` 属性
 
 ```javascript
-cy.get('ul li') // this yields us a jquery object
-  .its('length') // calls 'length' property returning that value
-  .should('be.gt', 2) // ensure the length is greater than 2
+cy.get('ul li') // 这会返回一个 jquery 对象
+  .its('length') // 调用 'length' 属性并返回值
+  .should('be.gt', 2) // 确保长度大于 2
 ```
 
-### Requests
+### 请求
 
-#### Get the `user` object of the response's `body`
+#### 获取响应 `body` 中的 `user` 对象
 
 ```javascript
 cy
@@ -100,7 +100,7 @@ cy
   .then(user => ...)
 ```
 
-alternatively, use destructuring
+或者使用解构
 
 ```javascript
 cy
@@ -109,17 +109,17 @@ cy
   .then(({user}) => ...)
 ```
 
-### Strings
+### 字符串
 
-#### Get `length` of title
+#### 获取标题的 `length`
 
 ```javascript
 cy.title().its('length').should('eq', 24)
 ```
 
-### Functions
+### 函数
 
-#### Get function as property
+#### 获取函数作为属性
 
 ```javascript
 const fn = () => {
@@ -129,14 +129,13 @@ const fn = () => {
 cy.wrap({ getNum: fn }).its('getNum').should('be.a', 'function')
 ```
 
-#### Access function properties
+#### 访问函数属性
 
-You can access functions to then drill into their own properties instead of
-invoking them.
+可以访问函数以深入其自身属性，而不是调用它们。
 
 ```javascript
-// Your app code
-// a basic Factory constructor
+// 应用代码
+// 一个基本的工厂构造函数
 const Factory = (arg) => {
   // ...
 }
@@ -145,27 +144,27 @@ Factory.create = (arg) => {
   return new Factory(arg)
 }
 
-// assign it to the window
+// 将其赋值给 window
 window.Factory = Factory
 ```
 
 ```javascript
-cy.window() // yields window object
-  .its('Factory') // yields Factory function
-  .invoke('create', 'arg') // now invoke properties on it
+cy.window() // 返回 window 对象
+  .its('Factory') // 返回 Factory 函数
+  .invoke('create', 'arg') // 现在调用其属性
 ```
 
-#### Use `.its()` to test `window.fetch`
+#### 使用 `.its()` 测试 `window.fetch`
 
 :::info
 
-[Check out our example recipe on testing `window.fetch` using `.its()`](/app/references/recipes#Stubbing-and-spying)
+[查看我们使用 `.its()` 测试 `window.fetch` 的示例配方](/app/references/recipes#Stubbing-and-spying)
 
 :::
 
-### Nested Properties
+### 嵌套属性
 
-You can drill into nested properties by using _dot notation_.
+可以使用_点表示法_深入嵌套属性。
 
 ```javascript
 const user = {
@@ -179,43 +178,42 @@ const user = {
 cy.wrap(user).its('contacts.work.name').should('eq', 'Kamil') // true
 ```
 
-### Existence
+### 存在性
 
-#### Wait for some property to exist on `window`
+#### 等待 `window` 上的某个属性存在
 
 ```javascript
 cy.window()
   .its('globalProp')
   .then((globalProp) => {
-    // do something now that window.globalProp exists
+    // 现在 window.globalProp 存在，可以执行操作
   })
 ```
 
-#### Assert that a property does not exist on `window`
+#### 断言 `window` 上不存在某个属性
 
 ```javascript
 cy.window().its('evilProp').should('not.exist')
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.its()` requires being chained off a previous command.
+- `.its()` 需要从先前的命令链式调用。
 
 <HeaderAssertions />
 
-- `.its()` will automatically [retry](/app/core-concepts/retry-ability) until
-  it has a property that is not `null` or `undefined`.
+- `.its()` 会自动[重试](/app/core-concepts/retry-ability)，直到属性不是 `null` 或 `undefined`。
 
 <HeaderTimeouts />
 
-- `.its()` can time out waiting for the property to exist.
-- `.its()` can time out waiting for assertions you've added to pass.
+- `.its()` 可能会因等待属性存在而超时。
+- `.its()` 可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Get `responseBody` of aliased route_**
+**_获取别名路由的 `responseBody`_**
 
 ```javascript
 cy.intercept('/comments', { fixture: 'comments.json' }).as('getComments')
@@ -231,31 +229,30 @@ cy.wait('@getComments')
   )
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/its/xhr-response-its-response-body-for-testing.png"
   alt="Command Log for its"
 />
 
-When clicking on `its` within the command log, the console outputs the
-following:
+点击命令日志中的 `its` 时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/its/response-body-yielded-with-its-command-log.png"
   alt="Console Log for its"
 />
 
-## History
+## 历史
 
-| Version                                  | Changes                                                       |
+| 版本                                  | 变更                                                       |
 | ---------------------------------------- | ------------------------------------------------------------- |
-| [3.8.0](/app/references/changelog#3-8-0) | Added support for `options` argument                          |
-| [3.7.0](/app/references/changelog#3-7-0) | Added support for arguments of type Number for `propertyName` |
+| [3.8.0](/app/references/changelog#3-8-0) | 添加了对 `options` 参数的支持                          |
+| [3.7.0](/app/references/changelog#3-7-0) | 添加了对 `propertyName` 参数类型为 Number 的支持 |
 
-## See also
+## 另请参阅
 
 - [`.invoke()`](/api/commands/invoke)
 - [`.then()`](/api/commands/then)
 - [`cy.wrap()`](/api/commands/wrap)
-- [Adding custom properties to the global `window` with the right TypeScript type](https://github.com/bahmutov/test-todomvc-using-app-actions#intellisense)
+- [使用正确的 TypeScript 类型向全局 `window` 添加自定义属性](https://github.com/bahmutov/test-todomvc-using-app-actions#intellisense)

@@ -1,42 +1,30 @@
 ---
-title: Load Balancing
-description: Cypress will automatically balance your spec files across the available machines in your CI provider.
+title: 负载均衡
+description: Cypress 会自动在 CI 提供商的可用机器间平衡您的测试文件。
 sidebar_position: 30
 ---
 
 <ProductHeading product="cloud" />
 
-# Load Balancing
+# 负载均衡
 
-## Balance strategy
+## 平衡策略
 
-Cypress will automatically balance your spec files across the available machines
-in your CI provider. Cypress calculates which spec file to run based on the data
-collected from previous runs. This ensures that your spec files run as fast as
-possible, with no need for manual configuration.
+Cypress 会自动在 CI 提供商的可用机器间平衡您的测试文件。Cypress 会根据历史运行数据计算每个测试文件的分配方案，确保测试文件能以最快速度运行，无需手动配置。
 
-As more and more tests are recorded to the Cloud, Cypress can better predict how
-long a given spec file will take to run. To prevent irrelevant data from
-affecting the duration prediction, Cypress doesn't use old historical run data
-regarding the spec file.
+随着越来越多的测试记录被上传至云端，Cypress 能更准确地预测每个测试文件的运行时长。为防止过时的历史数据影响预测结果，Cypress 不会使用与测试文件相关的陈旧运行数据。
 
-### Spec duration history analysis
+### 测试文件时长历史分析
 
 <DocsImage
   src="/img/app/parallelization/load-balancing.png"
-  alt="Spec duration forecasting"
+  alt="测试文件时长预测"
 />
 
-With a duration estimation for each spec file of a test run, Cypress can
-distribute spec files to available CI resources in descending order of spec run
-duration. In this manner, the most time-consuming specs start first which
-minimizes the overall test run duration.
+通过获取测试运行中每个测试文件的时长预估，Cypress 可以按照测试文件运行时长的降序顺序，将它们分配到可用的 CI 资源上。这种方式能让最耗时的测试优先开始，从而最小化整体测试运行时间。
 
 :::info
 
-Duration estimation is done separately for every browser the spec file is tested
-against. This is helpful since performance characteristics vary by browser, and
-therefore it is perfectly acceptable to see different duration estimates for
-each browser a spec file was tested against.
+时长预估会针对测试文件运行的每个浏览器单独计算。由于不同浏览器的性能特征存在差异，因此同一个测试文件在不同浏览器下的预估时长不同是完全正常的。
 
 :::

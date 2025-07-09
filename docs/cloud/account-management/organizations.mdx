@@ -1,117 +1,101 @@
 ---
-title: 'Manage organizations | Cypress Cloud'
-description: 'Learn how to create projects, manage users, access billing and usage information, leverage third party integrations, and apply org-level settings.'
-sidebar_label: Organizations
+title: '管理组织 | Cypress Cloud'
+description: '了解如何创建项目、管理用户、访问账单和使用信息、利用第三方集成以及应用组织级别的设置。'
+sidebar_label: 组织管理
 sidebar_position: 10
 ---
 
 <ProductHeading product="cloud" />
 
-# Organizations
+# 组织管理
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 您将学习到
 
-- How to create and manage organizations
-- How to locate your Organization ID
-- How to integrate source control providers, issue management, and team communications with your org
+- 如何创建和管理组织
+- 如何查找您的组织ID
+- 如何为您的组织集成源代码管理提供商、问题管理和团队沟通工具
 
 :::
 
-Organizations are used to group and manage projects. Here you can create
-projects, manage users, access billing and usage information, leverage third
-party integrations, and apply org-level settings.
+组织用于分组和管理项目。在这里您可以创建项目、管理用户、访问账单和使用信息、利用第三方集成以及应用组织级别的设置。
 
-## Organization ID
+## 组织ID
 
-An Organization's ID is a unique identifier in
-[UUID](https://tools.ietf.org/html/rfc4122) format that can be found under the
-"Organization settings" section of Cypress Cloud. This ID is used frequently by
-the Support, Success, and Sales teams to reference an Organization.
+组织ID是一个采用[UUID](https://tools.ietf.org/html/rfc4122)格式的唯一标识符，可在Cypress Cloud的"组织设置"部分找到。支持、成功和销售团队经常使用此ID来引用组织。
 
-To locate your Organization's ID, go to "Organization settings" then
-Organization ID. Click on the clipboard icon to copy the ID for easy sharing
-with Cypress teams.
+要查找您的组织ID，请转到"组织设置"，然后查看组织ID。点击剪贴板图标可复制ID，方便与Cypress团队共享。
 
 <DocsImage
   src="/img/cloud/organizations/cypress-organization-UUID.gif"
-  alt="Locate UUID gif"
+  alt="定位UUID动图"
 />
 
-## Managing Organizations
+## 管理组织
 
-### Create Org
+### 创建组织
 
-You can create an organization from within
-[Cypress Cloud](https://on.cypress.io/cloud) by opening the organization
-switcher and clicking **<Icon name="plus" /> Create new organization**.
+您可以通过打开组织切换器并点击**<Icon name="plus" /> 创建新组织**，在[Cypress Cloud](https://on.cypress.io/cloud)中创建组织。
 
 <DocsImage
   src="/img/cloud/organizations/create-org.jpg"
-  alt="Create new organization"
+  alt="创建新组织"
 />
 
-### Manage Projects
+### 管理项目
 
-Once you create an organization, a new "Default Project" will be created for you. From here, you can adjust your [Project Settings](/cloud/account-management/projects#Project-settings) to fit your needs.
+创建组织后，系统会为您创建一个新的"默认项目"。您可以在此调整[项目设置](/cloud/account-management/projects#Project-settings)以满足需求。
 
-### Manage Users and Teams
+### 管理用户和团队
 
-Organization owner or admin roles can [invite Cypress Cloud users](/cloud/account-management/users) to their organization. Those invited can be [assigned to a team](/cloud/account-management/teams). A team can help you control which users have access to specific projects and tests.
+组织所有者或管理员角色可以[邀请Cypress Cloud用户](/cloud/account-management/users)加入其组织。被邀请的用户可以[分配到团队](/cloud/account-management/teams)。团队可帮助您控制哪些用户有权访问特定项目和测试。
 
-### Manage Cloud AI
+### 管理Cloud AI
 
-[Cloud AI](/cloud/faq#What-is-Cloud-AI) is enabled by default for all users on any Cloud plan.
+[Cloud AI](/cloud/faq#What-is-Cloud-AI)默认对所有Cloud计划的用户启用。
 
-Organization admins and owners can enable and disable the AI capabilities for their entire organization from the organization settings.
+组织管理员和所有者可以从组织设置中为整个组织启用或禁用AI功能。
 
 <DocsImage
   src="/img/faq/questions/cypress-ai-org-setting.png"
-  alt="Image showing the Cypress AI organization setting"
+  alt="显示Cypress AI组织设置的图片"
 />
 
-### Delete Org
+### 删除组织
 
-You can delete organizations that you own as long as they do not have any
-projects in the organization. You must first
-[delete](/cloud/account-management/projects#Delete-Project) or
-[transfer ownership](/cloud/account-management/projects#Transfer-ownership)
-of your projects your projects to another organization before you can delete the
-organization.
+只要组织中没有任何项目，您就可以删除您拥有的组织。在删除组织之前，您必须先[删除](/cloud/account-management/projects#Delete-Project)或[转移所有权](/cloud/account-management/projects#Transfer-ownership)将项目转移到另一个组织。
 
 <DocsImage
   src="/img/cloud/organizations/remove-organization-dialog.jpg"
-  alt="Delete Organization"
+  alt="删除组织"
   width="80%"
 />
 
-## Integrations
+## 集成
 
-Owner and admin roles can integrate Cypress Cloud with many third party tools
-under **Organization > Integrations** and edit those settings from within the
-**Project settings** page.
+所有者和管理员角色可以在**组织 > 集成**下将Cypress Cloud与许多第三方工具集成，并从**项目设置**页面编辑这些设置。
 
-See our integration guides to learn more:
+查看我们的集成指南了解更多信息：
 
-### Source Control Providers
+### 源代码管理提供商
 
 {/* prettier-ignore-start */}
 
-- <Logo src="/img/logo/github.svg" alt="GitHub Logo"/> [GitHub integration guide](/cloud/integrations/source-control/github)
-- <Logo src="/img/logo/gitlab.svg" alt="GitLab Logo" /> [GitLab integration guide](/cloud/integrations/source-control/gitlab)
-- <Logo src="/img/logo/bitbucket.svg" alt="Bitbucket Logo" /> [Bitbucket integration guide](/cloud/integrations/source-control/bitbucket)
+- <Logo src="/img/logo/github.svg" alt="GitHub Logo"/> [GitHub集成指南](/cloud/integrations/source-control/github)
+- <Logo src="/img/logo/gitlab.svg" alt="GitLab Logo" /> [GitLab集成指南](/cloud/integrations/source-control/gitlab)
+- <Logo src="/img/logo/bitbucket.svg" alt="Bitbucket Logo" /> [Bitbucket集成指南](/cloud/integrations/source-control/bitbucket)
 
-### Issue Management
+### 问题管理
 
-- <Logo src="/img/logo/jira.svg" alt="Jira Logo" /> [Jira integration guide](/cloud/integrations/jira)
+- <Logo src="/img/logo/jira.svg" alt="Jira Logo" /> [Jira集成指南](/cloud/integrations/jira)
 
-### Team Communication
+### 团队沟通
 
-- <Logo src="/img/logo/slack.svg" alt="Slack Logo" /> [Cypress integration for Slack guide](/cloud/integrations/slack)
-- <Logo src="/img/logo/ms-teams.svg" alt="Microsoft Teams Logo" /> [Cypress integration for Microsoft Teams guide](/cloud/integrations/teams)
+- <Logo src="/img/logo/slack.svg" alt="Slack Logo" /> [Slack的Cypress集成指南](/cloud/integrations/slack)
+- <Logo src="/img/logo/ms-teams.svg" alt="Microsoft Teams Logo" /> [Microsoft Teams的Cypress集成指南](/cloud/integrations/teams)
 
-### Enterprise SSO Authentication
+### 企业SSO认证
 
 - [Okta](/cloud/account-management/enterprise-sso#Okta)
 - [SAML](/cloud/account-management/enterprise-sso#SAML)

@@ -1,6 +1,6 @@
 ---
-title: 'focus | Cypress Documentation'
-description: Focus on a DOM element in Cypress.
+title: 'focus | Cypress 文档'
+description: 在Cypress中聚焦DOM元素。
 sidebar_label: focus
 ---
 
@@ -8,61 +8,59 @@ sidebar_label: focus
 
 # focus
 
-Focus on a DOM element.
+聚焦一个DOM元素。
 
-It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried) to
-chain further commands that rely on the subject after `.focus()`.
+在`.focus()`之后继续链式调用依赖于目标元素的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Syntax
+## 语法
 
 ```javascript
 .focus()
 .focus(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('input').first().focus() // Focus on the first input
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.focus('#search') // Errors, cannot be chained off 'cy'
-cy.window().focus() // Errors, 'window' does not yield DOM element
+cy.get('input').first().focus() // 聚焦第一个输入框
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
-<Icon name="angle-right" /> **options _(Object)_**
+```javascript
+cy.focus('#search') // 错误，不能从'cy'开始链式调用
+cy.window().focus() // 错误，'window'不返回DOM元素
+```
 
-Pass in an options object to change the default behavior of `.focus()`.
+### 参数
 
-| Option    | Default                                                           | Description                                                                         |
+<Icon name="angle-right" /> **options _(对象)_**
+
+传入选项对象以改变`.focus()`的默认行为。
+
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.focus()` to resolve before [timing out](#Timeouts)               |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 在[超时](#Timeouts)前等待`.focus()`解析的时间               |
 
 <HeaderYields />
 
-- `.focus()` yields the same subject it was given.
-- It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried)
-  to chain further commands that rely on the subject after `.focus()`.
+- `.focus()`返回与输入相同的目标元素。
+- 在`.focus()`之后继续链式调用依赖于目标元素的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Focus on an input
+#### 聚焦输入框
 
 ```javascript
 cy.get('[type="input"]').focus()
 ```
 
-#### Focus, type, and blur a textarea
+#### 聚焦、输入并失焦文本域
 
 ```javascript
 cy.get('textarea').focus()
@@ -70,92 +68,78 @@ cy.get('textarea').type('Nice Product!')
 cy.get('textarea').blur()
 ```
 
-## Notes
+## 注意事项
 
-### Actionability
+### 可操作性
 
-#### Focus is not an action command
+#### Focus不是动作命令
 
-`.focus()` is not implemented like other action commands, and does not follow
-the same rules of
-[waiting for actionability](/app/core-concepts/interacting-with-elements).
+`.focus()`的实现方式与其他动作命令不同，不遵循[等待可操作性](/app/core-concepts/interacting-with-elements)的相同规则。
 
-`.focus()` is a helpful command used as a shortcut. Normally there's no way for
-a user to "focus" an element without causing another action or side effect.
-Typically the user would have to click or tab to this element.
+`.focus()`是一个有用的快捷命令。通常用户无法在不引起其他动作或副作用的情况下"聚焦"一个元素。通常用户需要通过点击或Tab键来聚焦元素。
 
-Oftentimes using `.focus()` directly is more concise and conveys what you're
-trying to test.
+很多时候直接使用`.focus()`更简洁，并能准确表达你想要测试的内容。
 
-If you want the other guarantees of waiting for an element to become actionable,
-you should use a different command like [`.click()`](/api/commands/click).
+如果你需要等待元素变为可操作的其他保证，应该使用其他命令如[`.click()`](/api/commands/click)。
 
-### Blur Events
+### 失焦事件
 
-#### Cypress blurs other focused elements first
+#### Cypress会先使其他聚焦元素失焦
 
-If there is currently a different DOM element with focus, Cypress issues a
-`blur` event to that element before running the `.focus()` command.
+如果当前有其他DOM元素处于聚焦状态，Cypress会先向该元素发出`blur`事件，然后再执行`.focus()`命令。
 
-### Focusable
+### 可聚焦性
 
-#### Can only be called on a valid focusable element
+#### 只能在有效的可聚焦元素上调用
 
-Ensure the element you are trying to call `.focus()` on is a
-[focusable element](https://www.w3.org/TR/html5/editing.html#focusable).
+确保你尝试调用`.focus()`的元素是一个[可聚焦元素](https://www.w3.org/TR/html5/editing.html#focusable)。
 
-### Timeouts {#Notes-Timeouts}
+### 超时 {#Notes-Timeouts}
 
-#### Can time out because your browser did not receive any focus events
+#### 可能因浏览器未收到任何聚焦事件而超时
 
-If you see this error, you may want to ensure that the main browser window is
-currently focused. This means not being focused in debugger or any other window
-when the command is run.
+如果看到此错误，你可能需要确保主浏览器窗口当前处于聚焦状态。这意味着在运行命令时不要聚焦在调试器或其他窗口上。
 
-Internally Cypress does account for this, and will polyfill the blur events when
-necessary to replicate what the browser does. Unfortunately the browser will
-still behave differently when not in focus - for instance it may throttle async
-events. Your best bet here is to keep Cypress focused when working on a test.
+Cypress内部会处理这种情况，必要时会模拟浏览器发出的失焦事件。遗憾的是当浏览器窗口不处于聚焦状态时，其行为仍会有所不同——例如可能会限制异步事件。最佳做法是在运行测试时保持Cypress窗口处于聚焦状态。
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.focus()` requires being chained off a command that yields DOM element(s).
-- `.focus()` requires the element to be able to receive focus.
+- `.focus()`需要链式调用在返回DOM元素的命令之后。
+- `.focus()`要求元素能够接收焦点。
 
 <HeaderAssertions />
 
-- `.focus()` will automatically wait for assertions you have chained to pass.
+- `.focus()`会自动等待链式断言通过。
 
 <HeaderTimeouts />
 
-- `.focus()` can time out waiting for assertions you've added to pass.
+- `.focus()`可能因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Focus the textarea_**
+**_聚焦文本域_**
 
 ```javascript
 cy.get('[name="comment"]').focus()
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/focus/get-input-then-focus.png"
-  alt="Command Log focus"
+  alt="命令日志 focus"
 />
 
-When clicking on the `focus` command within the command log, the console outputs
-the following:
+当点击命令日志中的`focus`命令时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/focus/console-log-textarea-that-was-focused-on.png"
   alt="console.log focus"
 />
 
-## See also
+## 另请参阅
 
 - [`.blur()`](/api/commands/blur)
 - [`.click()`](/api/commands/click)

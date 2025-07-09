@@ -1,6 +1,6 @@
 ---
-title: 'parents | Cypress Documentation'
-description: Get the parent DOM elements of a set of DOM elements in Cypress.
+title: 'parents | Cypress 文档'
+description: 在 Cypress 中获取一组 DOM 元素的父级 DOM 元素。
 sidebar_label: parents
 slug: /api/commands/parents
 ---
@@ -9,20 +9,17 @@ slug: /api/commands/parents
 
 # parents
 
-Get the parent DOM elements of a set of DOM elements.
+获取一组 DOM 元素的父级 DOM 元素。
 
-Please note that `.parents()` travels multiple levels up the DOM tree as opposed
-to the [.parent ()](/api/commands/parent) command which travels a single level
-up the DOM tree.
+请注意，`.parents()` 会向上遍历 DOM 树的多个层级，这与仅向上遍历单个层级的 [.parent()](/api/commands/parent) 命令不同。
 
 :::info
 
-The querying behavior of this command matches exactly how
-[`.parents()`](http://api.jquery.com/parents) works in jQuery.
+此命令的查询行为与 jQuery 中的 [`.parents()`](http://api.jquery.com/parents) 完全一致。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .parents()
@@ -31,98 +28,94 @@ The querying behavior of this command matches exactly how
 .parents(selector, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('aside').parents() // Yield parents of aside
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.parents() // Errors, cannot be chained off 'cy'
-cy.clock().parents() // Errors, 'clock' does not yield DOM elements
+cy.get('aside').parents() // 获取 aside 的父元素
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
-<Icon name="angle-right" /> **selector _(String selector)_**
+```javascript
+cy.parents() // 错误，不能从 'cy' 链式调用
+cy.clock().parents() // 错误，'clock' 不返回 DOM 元素
+```
 
-A selector used to filter matching DOM elements.
+### 参数
 
-<Icon name="angle-right" /> **options _(Object)_**
+<Icon name="angle-right" /> **selector _(字符串选择器)_**
 
-Pass in an options object to change the default behavior of `.parents()`.
+用于过滤匹配 DOM 元素的选择器。
 
-| Option    | Default                                                           | Description                                                                         |
+<Icon name="angle-right" /> **options _(对象)_**
+
+传入一个选项对象以改变 `.parents()` 的默认行为。
+
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.parents()` to resolve before [timing out](#Timeouts)             |
+| `log`     | `true`                                                            | 在 [命令日志](/app/core-concepts/open-mode#Command-Log) 中显示该命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 在 [超时](#Timeouts) 前等待 `.parents()` 解析的时间             |
 
 <HeaderYields />
 
-- `.parents()` yields the new DOM element(s) it found.
-- `.parents()` is a query, and it is _safe_ to chain further commands.
+- `.parents()` 返回找到的新 DOM 元素。
+- `.parents()` 是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Get the parents of the active li
+#### 获取活动 li 的父元素
 
 ```html
 <ul class="main-nav">
-  <li>Overview</li>
+  <li>概述</li>
   <li>
-    Getting started
+    入门指南
     <ul class="sub-nav">
-      <li>Install</li>
-      <li class="active">Build</li>
-      <li>Test</li>
+      <li>安装</li>
+      <li class="active">构建</li>
+      <li>测试</li>
     </ul>
   </li>
 </ul>
 ```
 
 ```javascript
-// yields [.sub-nav, li, .main-nav]
+// 返回 [.sub-nav, li, .main-nav]
 cy.get('li.active').parents()
 ```
 
-### Selector
+### 选择器
 
-#### Get the parents with class `main-nav` of the active li
+#### 获取活动 li 的带有 `main-nav` 类的父元素
 
 ```javascript
-// yields [.main-nav]
+// 返回 [.main-nav]
 cy.get('li.active').parents('.main-nav')
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.parents()` requires being chained off a command that yields DOM element(s).
+- `.parents()` 必须链式调用自返回 DOM 元素的命令。
 
 <HeaderAssertions />
 
-- `.parents()` will automatically [retry](/app/core-concepts/retry-ability)
-  until the element(s)
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.parents()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed.
+- `.parents()` 会自动 [重试](/app/core-concepts/retry-ability)，直到元素 [存在于 DOM 中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)。
+- `.parents()` 会自动 [重试](/app/core-concepts/retry-ability)，直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `.parents()` can time out waiting for the element(s) to
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.parents()` can time out waiting for assertions you've added to pass.
+- `.parents()` 可能会因等待元素 [存在于 DOM 中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions) 而超时。
+- `.parents()` 可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Get the parents of the active `li`_**
+**_获取活动 `li` 的父元素_**
 
 ```javascript
 cy.get('li.active').parents()
@@ -130,18 +123,17 @@ cy.get('li.active').parents()
 
 <DocsImage
   src="/img/api/parents/get-all-parents-of-a-dom-element.png"
-  alt="Command Log parents"
+  alt="命令日志 parents"
 />
 
-When clicking on the `parents` command within the command log, the console
-outputs the following:
+在命令日志中点击 `parents` 命令时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/parents/parents-elements-displayed-in-devtools-console.png"
-  alt="Console Log parents"
+  alt="控制台日志 parents"
 />
 
-## See also
+## 另请参阅
 
 - [`.children()`](/api/commands/children)
 - [`.parent()`](/api/commands/parent)

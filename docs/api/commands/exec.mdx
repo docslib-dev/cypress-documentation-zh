@@ -1,107 +1,104 @@
 ---
-title: 'exec | Cypress Documentation'
-description: Execute a system command in Cypress.
-sidebar_label: exec
+title: 'exec | Cypress 文档'
+description: '在 Cypress 中执行系统命令'
+sidebar_label: 'exec'
 ---
 
 <ProductHeading product="app" />
 
 # exec
 
-Execute a system command.
+执行系统命令。
 
 :::caution
 
-<strong>Anti-Pattern</strong>
+<strong>反模式</strong>
 
-Don't try to start a web server from `cy.exec()`.
+不要尝试通过 `cy.exec()` 启动 web 服务器。
 
-Read about [best practices](/app/core-concepts/best-practices#Web-Servers) here.
+阅读关于[最佳实践](/app/core-concepts/best-practices#Web-Servers)的内容。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 cy.exec(command)
 cy.exec(command, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 cy.exec('npm run build')
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **command _(String)_**
 
-The system command to be executed from the project root (the directory that
-contains the [Cypress configuration file](/app/references/configuration)).
+从项目根目录（包含 [Cypress 配置文件](/app/references/configuration)的目录）执行的系统命令。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `cy.exec()`.
+传入选项对象以改变 `cy.exec()` 的默认行为。
 
-| Option              | Default                                                 | Description                                                                                                                                                  |
-| ------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `log`               | `true`                                                  | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log)                                                                          |
-| `env`               | `{}`                                                    | Object of environment variables to set before the command executes (e.g. `{USERNAME: 'johndoe'}`). Will be merged with existing system environment variables |
-| `failOnNonZeroExit` | `true`                                                  | whether to fail if the command exits with a non-zero code                                                                                                    |
-| `timeout`           | [`execTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.exec()` to resolve before [timing out](#Timeouts)                                                                                       |
+| 选项                | 默认值                                                 | 描述                                                                                                                                                  |
+| ------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `log`               | `true`                                                  | 在 [命令日志](/app/core-concepts/open-mode#Command-Log) 中显示命令                                                                                   |
+| `env`               | `{}`                                                    | 执行命令前设置的环境变量对象（例如 `{USERNAME: 'johndoe'}`）。将与现有系统环境变量合并                                                              |
+| `failOnNonZeroExit` | `true`                                                  | 如果命令以非零代码退出是否失败                                                                                                                       |
+| `timeout`           | [`execTimeout`](/app/references/configuration#Timeouts) | 等待 `cy.exec()` 解析的超时时间 [超时](#Timeouts)                                                                                                    |
 
 <HeaderYields />
 
-`cy.exec()` yields an object with the following properties:
+`cy.exec()` 返回一个包含以下属性的对象：
 
 - `code`
 - `stdout`
 - `stderr`
 
-## Examples
+## 示例
 
-### Command
+### 命令
 
-`cy.exec()` provides an escape hatch for running arbitrary system commands, so
-you can take actions necessary for your test outside the scope of Cypress. This
-is great for:
+`cy.exec()` 提供了执行任意系统命令的逃生舱口，因此你可以在 Cypress 范围之外执行测试所需的操作。这适用于：
 
-- Running build scripts
-- Seeding your test database
-- Starting processes
-- Killing processes
+- 运行构建脚本
+- 初始化测试数据库
+- 启动进程
+- 终止进程
 
-#### Run a build command
+#### 运行构建命令
 
 ```javascript
 cy.exec('npm run build').then((result) => {
-  // yields the 'result' object
+  // 返回 'result' 对象
   // {
   //   code: 0,
-  //   stdout: "Files successfully built",
+  //   stdout: "文件构建成功",
   //   stderr: ""
   // }
 })
 ```
 
-#### Seed the database and assert it was successful
+#### 初始化数据库并断言成功
 
 ```javascript
 cy.exec('rake db:seed').its('code').should('eq', 0)
 ```
 
-#### Run an arbitrary script and assert its output
+#### 运行任意脚本并断言输出
 
 ```javascript
 cy.exec('npm run my-script')
   .its('stdout')
-  .should('contain', 'Done running the script')
+  .should('contain', '脚本运行完成')
 ```
 
-#### Write to a file to create a fixture from response body
+#### 写入文件以从响应体创建 fixture
 
 ```javascript
 cy.intercept('POST', '/comments').as('postComment')
@@ -114,22 +111,20 @@ cy.wait('@postComment').then(({ response }) => {
 })
 ```
 
-### Options
+### 选项
 
-#### Change the timeout
+#### 修改超时时间
 
-You can increase the time allowed to execute the command, although _we don't
-recommend executing commands that take a long time to exit_.
+你可以增加执行命令的允许时间，尽管 _我们不建议执行需要很长时间才能退出的命令_。
 
-Cypress will _not_ continue running any other commands until `cy.exec()` has
-finished, so a long-running command will drastically slow down your test cycle.
+Cypress _不会_ 继续运行任何其他命令，直到 `cy.exec()` 完成，因此长时间运行的命令会显著减慢测试周期。
 
 ```javascript
-// will fail if script takes longer than 20 seconds to finish
+// 如果脚本执行超过 20 秒将失败
 cy.exec('npm run build', { timeout: 20000 })
 ```
 
-#### Choose to not fail on non-zero exit and assert on code and stderr
+#### 选择在非零退出时不失败并断言 code 和 stderr
 
 ```javascript
 cy.exec('man bear pig', { failOnNonZeroExit: false }).then((result) => {
@@ -138,7 +133,7 @@ cy.exec('man bear pig', { failOnNonZeroExit: false }).then((result) => {
 })
 ```
 
-#### Specify environment variables
+#### 指定环境变量
 
 ```javascript
 cy.exec('echo $USERNAME', { env: { USERNAME: 'johndoe' } })
@@ -146,40 +141,34 @@ cy.exec('echo $USERNAME', { env: { USERNAME: 'johndoe' } })
   .should('contain', 'johndoe')
 ```
 
-## Notes
+## 注意事项
 
-### Commands Must Exit
+### 命令必须退出
 
-#### Commands that do not exit are not supported
+#### 不支持不退出的命令
 
-`cy.exec()` does not support commands that don't exit, such as:
+`cy.exec()` 不支持不退出的命令，例如：
 
-- Starting a `rails server`
-- A task that runs a watch
-- Any process that needs to be manually interrupted to stop
+- 启动 `rails server`
+- 运行监视的任务
+- 任何需要手动中断才能停止的进程
 
-A command must exit within the `execTimeout` or Cypress will kill the command's
-process and fail the current test.
+命令必须在 `execTimeout` 内退出，否则 Cypress 将终止命令进程并使当前测试失败。
 
-### Reset timeout via `Cypress.config()`
+### 通过 `Cypress.config()` 重置超时
 
-You can change the timeout of `cy.exec()` for the remainder of the tests by
-setting the new values for `execTimeout` within
-[Cypress.config()](/api/cypress-api/config).
+你可以通过 [Cypress.config()](/api/cypress-api/config) 设置 `execTimeout` 的新值来更改剩余测试的 `cy.exec()` 超时时间。
 
 ```js
 Cypress.config('execTimeout', 30000)
 Cypress.config('execTimeout') // => 30000
 ```
 
-### Set timeout in the test configuration
+### 在测试配置中设置超时
 
-You can configure the `cy.exec()` timeout within a suite or test by passing the
-new configuration value within the
-[test configuration](/app/references/configuration#Test-Configuration).
+你可以在套件或测试中通过 [测试配置](/app/references/configuration#Test-Configuration) 传递新的配置值来配置 `cy.exec()` 的超时时间。
 
-This will set the timeout throughout the duration of the tests, then return it
-to the default `execTimeout` when complete.
+这将在测试期间设置超时时间，完成后将其恢复为默认的 `execTimeout`。
 
 ```js
 describe('has data available from database', { execTimeout: 90000 }, () => {
@@ -187,7 +176,7 @@ describe('has data available from database', { execTimeout: 90000 }, () => {
     cy.exec('rake db:seed')
   })
 
-  // tests
+  // 测试
 
   after(() => {
     cy.exec('rake db:reset')
@@ -195,27 +184,25 @@ describe('has data available from database', { execTimeout: 90000 }, () => {
 })
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.exec()` requires being chained off of `cy`.
-- `cy.exec()` requires the executed system command to eventually exit.
-- `cy.exec()` requires that the exit code be `0` when `failOnNonZeroExit` is
-  `true`.
+- `cy.exec()` 需要链式调用 `cy`。
+- `cy.exec()` 需要执行的系统命令最终退出。
+- `cy.exec()` 要求当 `failOnNonZeroExit` 为 `true` 时退出代码为 `0`。
 
 <HeaderAssertions />
 
-- `cy.exec()` will only run assertions you have chained once, and will not
-  [retry](/app/core-concepts/retry-ability).
+- `cy.exec()` 只会运行一次你链式调用的断言，不会 [重试](/app/core-concepts/retry-ability)。
 
 <HeaderTimeouts />
 
-- `cy.exec()` can time out waiting for the system command to exist.
+- `cy.exec()` 可能会因等待系统命令退出而超时。
 
-## Command Log
+## 命令日志
 
-**_List the contents of your package.json file_**
+**_列出 package.json 文件的内容_**
 
 ```javascript
 if (Cypress.platform === 'win32') {
@@ -225,19 +212,18 @@ if (Cypress.platform === 'win32') {
 }
 ```
 
-The command above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <DocsImage src="/img/api/exec/exec-cat-in-shell.png" alt="Command Log exec" />
 
-When clicking on the `exec` command within the command log, the console outputs
-the following:
+当点击命令日志中的 `exec` 命令时，控制台输出如下：
 
 <DocsImage
   src="/img/api/exec/console-shows-code-shell-stderr-and-stdout-for-exec.png"
   alt="console.log exec"
 />
 
-## See also
+## 另请参阅
 
 - [`cy.readFile()`](/api/commands/readfile)
 - [`cy.request()`](/api/commands/request)

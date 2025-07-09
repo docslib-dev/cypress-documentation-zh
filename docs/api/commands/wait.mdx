@@ -1,6 +1,6 @@
 ---
-title: 'wait | Cypress Documentation'
-description: Wait for a number of milliseconds or wait for an aliased resource to resolve before moving on to the next command in Cypress.
+title: 'wait | Cypress 文档'
+description: 在继续执行Cypress中的下一个命令之前，等待指定的毫秒数或等待别名的资源解析完成。
 sidebar_label: wait
 ---
 
@@ -8,10 +8,9 @@ sidebar_label: wait
 
 # wait
 
-Wait for a number of milliseconds or wait for an aliased resource to resolve
-before moving on to the next command.
+在继续执行下一个命令之前，等待指定的毫秒数或等待别名的资源解析完成。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.wait(time)
@@ -23,7 +22,7 @@ cy.wait(aliases, options)
 ```
 
 ```typescript
-// Specifying request and response types for aliased intercepts
+// 为别名的拦截请求指定请求和响应类型
 type UserReq = {}
 type UserRes = {}
 type ActivityReq = {}
@@ -32,21 +31,21 @@ type ActivityRes = {}
 cy.intercept('/users/*').as('getUsers')
 cy.intercept('/activities/*').as('getActivities')
 
-// As templated types:
+// 作为模板类型：
 cy.wait<UserReq, UserRes>('@getUsers').then(({ request, response }) => {
-  request.body // will be of type UserReq
-  response.body // will be of type UserRes
+  request.body // 类型为 UserReq
+  response.body // 类型为 UserRes
 })
 
-// As inferred types, with type `Interception` available in `cypress/types/net-stubbing`
+// 作为推断类型，使用 `cypress/types/net-stubbing` 中的 `Interception` 类型
 cy.wait('@getUsers').then(
   ({ request, response }: Interception<UserReq, UserRes>) => {
-    request.body // will be of type UserReq
-    response.body // will be of type UserRes
+    request.body // 类型为 UserReq
+    response.body // 类型为 UserRes
   }
 )
 
-// When passing an array of aliases, types must be inferred:
+// 当传递别名数组时，必须推断类型：
 cy.wait(['@getUsers', 'getActivities']).then(
   (
     interceptions: Array<
@@ -54,154 +53,143 @@ cy.wait(['@getUsers', 'getActivities']).then(
     >
   ) => {
     interceptions.forEach(({ request, response }) => {
-      request.body // will be of type UserReq | ActivityReq
-      response.body // will be of type UserRes | ActivityRes
+      request.body // 类型为 UserReq | ActivityReq
+      response.body // 类型为 UserRes | ActivityRes
     })
   }
 )
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 cy.wait(500)
 cy.wait('@getProfile')
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **time _(Number)_**
 
-The amount of time to wait in milliseconds.
+等待的毫秒数。
 
 <Icon name="angle-right" /> **alias _(String)_**
 
-An aliased route as defined using the [`.as()`](/api/commands/as) command and
-referenced with the `@` character and the name of the alias.
+使用 [`.as()`](/api/commands/as) 命令定义的别名路由，并通过 `@` 字符和别名名称引用。
 
 :::info
 
-<strong>Core Concept</strong>
+<strong>核心概念</strong>
 
-[You can read more about aliasing routes in our Core Concept Guide](/app/guides/network-requests#Waiting).
+[您可以在我们的核心概念指南中了解更多关于别名路由的信息](/app/guides/network-requests#Waiting)。
 
 :::
 
 <Icon name="angle-right" /> **aliases _(Array)_**
 
-An array of aliased routes as defined using the [`.as()`](/api/commands/as)
-command and referenced with the `@` character and the name of the alias.
+使用 [`.as()`](/api/commands/as) 命令定义的别名路由数组，并通过 `@` 字符和别名名称引用。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `cy.wait()`.
+传入一个选项对象以更改 `cy.wait()` 的默认行为。
 
-| Option            | Default                                                                                                                 | Description                                                                         |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`             | `true`                                                                                                                  | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout`         | [`requestTimeout`](/app/references/configuration#Timeouts), [`responseTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.wait()` to resolve before [timing out](#Timeouts)              |
-| `requestTimeout`  | [`requestTimeout`](/app/references/configuration#Timeouts)                                                              | Overrides the global `requestTimeout` for this request. Defaults to `timeout`.      |
-| `responseTimeout` | [`responseTimeout`](/app/references/configuration#Timeouts)                                                             | Overrides the global `responseTimeout` for this request. Defaults to `timeout`.     |
+| 选项               | 默认值                                                                                                                 | 描述                                                                         |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `log`              | `true`                                                                                                                | 在 [命令日志](/app/core-concepts/open-mode#Command-Log) 中显示命令           |
+| `timeout`          | [`requestTimeout`](/app/references/configuration#Timeouts), [`responseTimeout`](/app/references/configuration#Timeouts) | 等待 `cy.wait()` 解析的超时时间，超过则 [超时](#Timeouts)                     |
+| `requestTimeout`   | [`requestTimeout`](/app/references/configuration#Timeouts)                                                              | 覆盖此请求的全局 `requestTimeout`。默认为 `timeout`。                        |
+| `responseTimeout`  | [`responseTimeout`](/app/references/configuration#Timeouts)                                                             | 覆盖此请求的全局 `responseTimeout`。默认为 `timeout`。                       |
 
 <HeaderYields />
 
-#### When given a `time` argument:
+#### 当给定 `time` 参数时：
 
-- `cy.wait()` yields the same subject it was given.
-- It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried)
-  to chain further commands that rely on the subject after `.wait()`.
+- `cy.wait()` 返回与传入时相同的主题。
+- 在 `.wait()` 之后链接依赖于该主题的进一步命令是 [不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-#### When given an `alias` argument:
+#### 当给定 `alias` 参数时：
 
-- `cy.wait()` 'yields an object containing the HTTP request and response
-  properties of the request.
+- `cy.wait()` 返回一个包含请求的HTTP请求和响应属性的对象。
 
-## Examples
+## 示例
 
-### Time
+### 时间
 
-#### Wait for an arbitrary period of milliseconds:
+#### 等待任意毫秒数：
 
 ```js
-cy.wait(2000) // wait for 2 seconds
+cy.wait(2000) // 等待2秒
 ```
 
 :::caution
 
-<strong>Anti-Pattern</strong>
+<strong>反模式</strong>
 
-You almost **never** need to wait for an arbitrary period of time. There are
-always better ways to express this in Cypress.
+您几乎 **不需要** 等待任意时间。在Cypress中总有更好的表达方式。
 
-Read about
-[best practices](/app/core-concepts/best-practices#Unnecessary-Waiting) here.
+阅读关于 [最佳实践](/app/core-concepts/best-practices#Unnecessary-Waiting) 的更多信息。
 
 :::
 
-Additionally, it is often much easier to use [`cy.debug()`](/api/commands/debug)
-or [`cy.pause()`](/api/commands/pause) when debugging your test code.
+此外，在调试测试代码时，使用 [`cy.debug()`](/api/commands/debug) 或 [`cy.pause()`](/api/commands/pause) 通常更加方便。
 
-### Alias
+### 别名
 
-For a detailed explanation of aliasing,
-[read more about waiting on routes here](/app/guides/network-requests#Waiting).
+关于别名的详细解释，[请阅读更多关于等待路由的信息](/app/guides/network-requests#Waiting)。
 
-#### Wait for a specific request to respond
+#### 等待特定请求响应
 
 :::visit-mount-example
 
 ```js
-// Wait for the alias 'getAccount' to respond
-// without changing or stubbing its response
+// 等待别名 'getAccount' 响应
+// 不更改或存根其响应
 cy.intercept('/accounts/*').as('getAccount')
 -{cy.visit('/accounts/123')::cy.mount(<Account />)}-
 cy.wait('@getAccount').then((interception) => {
-  // we can now access the low level interception
-  // that contains the request body,
-  // response body, status, etc
+  // 现在可以访问包含请求体、
+  // 响应体、状态等的低级拦截对象
 })
 ```
 
 :::
 
-#### Wait automatically increments responses
+#### 等待自动递增的响应
 
-Each time we use `cy.wait()` for an alias, Cypress waits for the next nth
-matching request.
+每次我们使用 `cy.wait()` 等待一个别名时，Cypress会等待第n个匹配的请求。
 
 ```javascript
-// stub an empty response to requests for books
+// 存根对书籍请求的空响应
 cy.intercept('GET', '/books', []).as('getBooks')
 cy.get('#search').type('Peter Pan')
 
-// wait for the first response to finish
+// 等待第一个响应完成
 cy.wait('@getBooks')
 
-// the results should be empty because we
-// responded with an empty array first
+// 结果应为空，因为我们
+// 首先返回了一个空数组
 cy.get('#book-results').should('be.empty')
 
-// now the request (aliased again as `getBooks`) will return one book
+// 现在请求（再次别名为 `getBooks`）将返回一本书
 cy.intercept('GET', '/books', [{ name: 'Peter Pan' }]).as('getBooks')
 
 cy.get('#search').type('Peter Pan')
 
-// when we wait for 'getBooks' again, Cypress will
-// automatically know to wait for the 2nd response
+// 当我们再次等待 'getBooks' 时，Cypress
+// 会自动知道等待第二个响应
 cy.wait('@getBooks')
 
-// we responded with one book the second time
+// 第二次我们返回了一本书
 cy.get('#book-results').should('have.length', 1)
 ```
 
-### Aliases
+### 别名数组
 
-#### You can pass an array of aliases that will be waited on before resolving.
+#### 可以传递一个别名数组，Cypress会在解析前等待所有请求完成。
 
-When passing an array of aliases to `cy.wait()`, Cypress will wait for all
-requests to complete within the given `requestTimeout` and `responseTimeout`.
+当传递一个别名数组给 `cy.wait()` 时，Cypress会在给定的 `requestTimeout` 和 `responseTimeout` 内等待所有请求完成。
 
 :::visit-mount-example
 
@@ -213,7 +201,7 @@ cy.intercept('/comments/*').as('getComments')
 
 cy.wait(['@getUsers', '@getActivities', '@getComments']).then(
   (interceptions) => {
-    // interceptions will now be an array of matching requests
+    // interceptions 现在是一个匹配请求的数组
     // interceptions[0] <-- getUsers
     // interceptions[1] <-- getActivities
     // interceptions[2] <-- getComments
@@ -223,7 +211,7 @@ cy.wait(['@getUsers', '@getActivities', '@getComments']).then(
 
 :::
 
-#### Using [`.spread()`](/api/commands/spread) to spread the array into multiple arguments.
+#### 使用 [`.spread()`](/api/commands/spread) 将数组展开为多个参数。
 
 ```javascript
 cy.intercept('/users/*').as('getUsers')
@@ -231,103 +219,84 @@ cy.intercept('/activities/*').as('getActivities')
 cy.intercept('/comments/*').as('getComments')
 cy.wait(['@getUsers', '@getActivities', '@getComments']).spread(
   (getUsers, getActivities, getComments) => {
-    // each interception is now an individual argument
+    // 每个拦截现在是一个单独的参数
   }
 )
 ```
 
-## Notes
+## 注意事项
 
-### Nesting
+### 嵌套
 
-Cypress automatically waits for the network call to complete before proceeding
-to the next command.
+Cypress会自动等待网络调用完成后再继续执行下一个命令。
 
 ```js
-// Anti-pattern: placing Cypress commands inside .then callbacks
+// 反模式：将Cypress命令放在.then回调中
 cy.wait('@alias')
   .then(() => {
     cy.get(...)
   })
 
-// Recommended practice: write Cypress commands serially
+// 推荐做法：按顺序编写Cypress命令
 cy.wait('@alias')
 cy.get(...)
 
-// Example: assert status from cy.intercept() before proceeding
+// 示例：在继续之前从cy.intercept()断言状态
 cy.wait('@alias').its('response.statusCode').should('eq', 200)
 cy.get(...)
 ```
 
-Read
-[Guide: Introduction to Cypress](/app/core-concepts/introduction-to-cypress#Commands-Run-Serially)
+阅读 [指南：Cypress简介](/app/core-concepts/introduction-to-cypress#Commands-Run-Serially)
 
-### Timeouts {#Notes-Timeouts}
+### 超时 {#Notes-Timeouts}
 
-#### `requestTimeout` and `responseTimeout`
+#### `requestTimeout` 和 `responseTimeout`
 
-When used with an alias, `cy.wait()` goes through two separate "waiting"
-periods.
+当与别名一起使用时，`cy.wait()` 会经历两个独立的“等待”阶段。
 
-The first period waits for a matching request to leave the browser. This
-duration is configured by the
-[`requestTimeout`](/app/references/configuration#Timeouts) option - which has
-a default of `5000` ms.
+第一个阶段等待匹配的请求离开浏览器。此持续时间由 [`requestTimeout`](/app/references/configuration#Timeouts) 选项配置，默认值为 `5000` 毫秒。
 
-This means that when you begin waiting for an aliased request, Cypress will wait
-up to 5 seconds for a matching request to be created. If no matching request is
-found, you will get an error message that looks like this:
+这意味着当您开始等待一个别名的请求时，Cypress将等待最多5秒以创建匹配的请求。如果未找到匹配的请求，您将看到类似以下的错误消息：
 
 <DocsImage
   src="/img/api/wait/error-for-no-matching-route-when-waiting-in-test.png"
-  alt="Error for no matching request"
+  alt="未找到匹配请求的错误"
 />
 
-Once Cypress detects that a matching request has begun its request, it then
-switches over to the 2nd waiting period. This duration is configured by the
-[`responseTimeout`](/app/references/configuration#Timeouts) option - which
-has a default of `30000` ms.
+一旦Cypress检测到匹配的请求已开始，它将切换到第二个等待阶段。此持续时间由 [`responseTimeout`](/app/references/configuration#Timeouts) 选项配置，默认值为 `30000` 毫秒。
 
-This means Cypress will now wait up to 30 seconds for the external server to
-respond to this request. If no response is detected, you will get an error
-message that looks like this:
+这意味着Cypress现在将等待最多30秒以获取外部服务器对此请求的响应。如果未检测到响应，您将看到类似以下的错误消息：
 
 <DocsImage
   src="/img/api/wait/timeout-error-when-waiting-for-route-response.png"
-  alt="Timeout error for request wait"
+  alt="等待请求响应的超时错误"
 />
 
-This gives you the best of both worlds - a fast error feedback loop when
-requests never go out and a much longer duration for the actual external
-response.
+这为您提供了两全其美的方案——当请求从未发出时快速反馈错误，以及实际外部响应的更长等待时间。
 
-#### Using an Array of Aliases
+#### 使用别名数组
 
-When passing an array of aliases to `cy.wait()`, Cypress will wait for all
-requests to complete within the given `requestTimeout` and `responseTimeout`.
+当传递一个别名数组给 `cy.wait()` 时，Cypress会在给定的 `requestTimeout` 和 `responseTimeout` 内等待所有请求完成。
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- When passed a `time` argument `cy.wait()` can be chained off of `cy` or off
-  another command.
-- When passed an `alias` argument `cy.wait()` requires being chained off of
-  `cy`.
+- 当传递 `time` 参数时，`cy.wait()` 可以链接到 `cy` 或另一个命令。
+- 当传递 `alias` 参数时，`cy.wait()` 必须链接到 `cy`。
 
 <HeaderAssertions />
 
-- `cy.wait()` will only run assertions you have chained once, and will not
-  [retry](/app/core-concepts/retry-ability).
+- `cy.wait()` 只会运行您链接的断言一次，并且不会 [重试](/app/core-concepts/retry-ability)。
 
 <HeaderTimeouts />
 
-- `cy.wait()` can time out waiting for the request to go out.
-- `cy.wait()` can time out waiting for the response to return.
+- `cy.wait()` 可能会因等待请求发出而超时。
+- `cy.wait()` 可能会因等待响应返回而超时。
 
-## Command Log
+## 命令日志
 
-**_Wait for the PUT to users to resolve._**
+**_等待对用户的PUT请求解析。_**
 
 ```javascript
 cy.intercept('PUT', /users/, {}).as('userPut')
@@ -335,7 +304,7 @@ cy.get('form').submit()
 cy.wait('@userPut').its('request.url').should('include', 'users')
 ```
 
-The `cy.wait()` will display in the Command Log as:
+`cy.wait()` 将在命令日志中显示为：
 
 <!-- Code to reproduce screenshot:
 it('assets/img/api/wait/command-log-when-waiting-for-aliased-route.png', () => {
@@ -349,25 +318,24 @@ it('assets/img/api/wait/command-log-when-waiting-for-aliased-route.png', () => {
 
 <DocsImage
   src="/img/api/wait/command-log-when-waiting-for-aliased-route.png"
-  alt="Command Log wait"
+  alt="命令日志等待"
 />
 
-When clicking on `wait` within the command log, the console outputs the
-following:
+当点击命令日志中的 `wait` 时，控制台将输出以下内容：
 
 <DocsImage
   src="/img/api/wait/wait-console-log-displays-all-the-data-of-the-route-request-and-response.png"
-  alt="Console Log wait"
+  alt="控制台日志等待"
 />
 
-## History
+## 历史
 
-| Version                                    | Changes                                             |
-| ------------------------------------------ | --------------------------------------------------- |
-| [3.1.3](/app/references/changelog#3-1-3)   | Added `requestTimeout` and `responseTimeout` option |
-| [< 0.3.3](/app/references/changelog#0-3-3) | `cy.wait()` command added                           |
+| 版本                                    | 变更                                               |
+| -------------------------------------- | ------------------------------------------------- |
+| [3.1.3](/app/references/changelog#3-1-3)   | 添加了 `requestTimeout` 和 `responseTimeout` 选项 |
+| [< 0.3.3](/app/references/changelog#0-3-3) | 添加了 `cy.wait()` 命令                          |
 
-## See also
+## 另请参阅
 
 - [`.as()`](/api/commands/as)
 - [`cy.intercept()`](/api/commands/intercept)

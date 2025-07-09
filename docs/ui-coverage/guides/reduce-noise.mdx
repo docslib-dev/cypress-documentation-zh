@@ -1,23 +1,23 @@
 ---
-sidebar_label: Reduce noise
-title: 'Reduce noise | Cypress UI Coverage Documentation'
-description: 'Learn how to exclude irrelevant elements from your UI Coverage reports to focus on meaningful insights.'
+sidebar_label: 减少干扰
+title: '减少干扰 | Cypress UI覆盖率文档'
+description: '了解如何从UI覆盖率报告中排除无关元素，聚焦关键洞察。'
 sidebar_position: 60
 ---
 
 <ProductHeading product="ui-coverage" />
 
-# Reduce noise
+# 减少干扰
 
-A clean and focused UI Coverage report enables you to make informed decisions about your testing strategy. Cypress UI Coverage provides tools to reduce noise in your reports by properly grouping elements, special attribute handling, and grouping views that share common URL patterns. This guide explains how and why to create a streamlined report.
+一份清晰聚焦的UI覆盖率报告能帮助您制定更明智的测试策略。Cypress UI Coverage通过元素分组、特殊属性处理和URL模式视图分组等功能，有效减少报告中的干扰信息。本指南将介绍如何创建简洁高效的覆盖率报告。
 
-## Group views by URL patterns
+## 按URL模式分组视图
 
-Cypress attempts to groups views with similar URL patterns (like when a URL contains a user ID) to provide a more consolidated view of coverage metrics.
+Cypress会自动将具有相似URL模式的视图（例如包含用户ID的URL）分组，以提供更统一的覆盖率指标。
 
-Customozing views with similar URL patterns allows you to consolidate coverage metrics for pages you know are related. To add or modify the configuration for your project, navigate to the **App Quality** tab in your project settings and add an **viewGroups** configuration.
+通过配置相似URL模式的视图，您可以合并已知相关页面的覆盖率数据。要添加或修改项目配置，请前往项目设置的**应用质量**选项卡，添加**viewGroups**配置。
 
-### Example: Grouping user profiles
+### 示例：用户资料分组
 
 ```
 https://cypress.io/users/alice
@@ -36,15 +36,15 @@ https://cypress.io/users/bob#baz
 }
 ```
 
-To learn more about the configuration options, refer to the [Views](/ui-coverage/configuration/views) documentation.
+更多配置选项请参考[视图配置](/ui-coverage/configuration/views)文档。
 
-## Group similar elements
+## 分组相似元素
 
-Grouping elements improves clarity by reducing repetitive entries for elements with the same functionality. This is especially useful for elements like buttons, links, or form fields that appear across multiple views. By grouping similar elements, you can focus on the overall coverage of a specific element type rather than individual instances.
+通过将功能相同的元素归类，可以减少重复条目，提升报告清晰度。这对按钮、链接或表单字段等跨视图出现的元素特别有用。分组后您可以关注某类元素的整体覆盖率，而非单个实例。
 
-### Example: Grouping dynamic IDs
+### 示例：动态ID分组
 
-In the example below, the UI Coverage report shows multiple buttons that represent the same button due to a dynamically generated ID. By grouping these buttons, you can reduce noise and see the total coverage for the buttons with similar functionality in your application.
+下例中，由于动态生成的ID，UI覆盖率报告会显示多个实际功能相同的按钮。通过分组配置可以合并这些条目。
 
 ```html
 <nav>
@@ -54,7 +54,7 @@ In the example below, the UI Coverage report shows multiple buttons that represe
 </nav>
 ```
 
-To add or modify the configuration for your project, navigate to the **App Quality** tab in your project settings and add an **elementGroups** configuration under **uiCoverage**.
+在项目设置的**应用质量**选项卡中，于**uiCoverage**下添加**elementGroups**配置：
 
 ```json
 {
@@ -68,21 +68,21 @@ To add or modify the configuration for your project, navigate to the **App Quali
 }
 ```
 
-Now instead of 3 separate elements in the UI Coverage report, the report will show a single entry for all buttons with the `nav-button` ID prefix, simplifying the view and providing a clearer picture of the coverage.
+配置后，报告将显示单个合并条目而非3个独立按钮：
 
 ```
-nav [id^=nav-button] (3 instances)
+nav [id^=nav-button] (3个实例)
 ```
 
-To learn more about the configuration options, refer to the [Element Groups](/ui-coverage/configuration/elementgroups) documentation.
+完整配置选项请参阅[元素分组](/ui-coverage/configuration/elementgroups)文档。
 
-## Configure attribute handling
+## 配置属性处理
 
-Attribute configuration ensures that Cypress surfaces element attributes that are most meaningful to your project.
+通过属性配置可以指定Cypress应关注哪些对项目有实际意义的元素属性。
 
-### Define significant attributes
+### 定义关键属性
 
-Specify which attributes Cypress should prioritize when identifying elements. To add or modify the configuration for your project, navigate to the **App Quality** tab in your project settings and add an **significantAttributes** configuration under **uiCoverage**.
+指定Cypress识别元素时应优先考虑的属性。在项目设置的**应用质量**选项卡中，于**uiCoverage**下添加**significantAttributes**配置：
 
 ```json
 {
@@ -92,11 +92,11 @@ Specify which attributes Cypress should prioritize when identifying elements. To
 }
 ```
 
-To learn more about the configuration options, refer to the [Significant Attributes](/ui-coverage/configuration/significantattributes) documentation.
+详情请参考[关键属性](/ui-coverage/configuration/significantattributes)文档。
 
-### Use Attribute Filters
+### 使用属性过滤器
 
-Exclude auto-generated or irrelevant attributes that add unnecessary noise. To add or modify the configuration for your project, navigate to the **App Quality** tab in your project settings and add an **attributeFilters** configuration under **uiCoverage**.
+排除自动生成或无意义的干扰属性。在**uiCoverage**下添加**attributeFilters**配置：
 
 ```json
 {
@@ -117,4 +117,4 @@ Exclude auto-generated or irrelevant attributes that add unnecessary noise. To a
 }
 ```
 
-To learn more about the configuration options, refer to the [Attribute Filters](/ui-coverage/configuration/attributefilters) documentation.
+完整配置说明请查看[属性过滤器](/ui-coverage/configuration/attributefilters)文档。

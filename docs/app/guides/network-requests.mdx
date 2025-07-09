@@ -1,256 +1,203 @@
 ---
-title: 'Network Requests: Cypress Guide'
-description: 'Strategies for testing network requests in Cypress, stubbing and waiting for network responses, and best practices for testing GraphQL queries and mutations.'
-sidebar_label: Network Requests
+title: '网络请求：Cypress指南'
+description: 'Cypress中测试网络请求的策略、模拟和等待网络响应的方法，以及测试GraphQL查询和变更的最佳实践。'
+sidebar_label: 网络请求
 ---
 
 <ProductHeading product="app" />
 
-# Network Requests
+# 网络请求
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学习到
 
-- Strategies for testing network requests in Cypress
-- How to stub and wait for network responses
-- Best practices for testing GraphQL queries and mutations
+- 在Cypress中测试网络请求的策略
+- 如何模拟和等待网络响应
+- 测试GraphQL查询和变更的最佳实践
 
 :::
 
 :::tip
 
-**Note:** If you're looking for a resource to make an HTTP request take a look
-at [cy.request()](/api/commands/request)
+**注意：** 如果你需要发起HTTP请求，请查看 [cy.request()](/api/commands/request)
 
 :::
 
-## Testing Strategies
+## 测试策略
 
-Cypress helps you test the entire lifecycle of HTTP requests within your
-application. Cypress provides you access to the objects with information about
-the request, enabling you to make assertions about its properties. Additionally
-you can even stub and mock a request's response.
+Cypress帮助你测试应用程序中HTTP请求的整个生命周期。Cypress提供对请求信息对象的访问，使你能够对其属性进行断言。此外，你甚至可以模拟和篡改请求的响应。
 
-**_Common testing scenarios:_**
+**_常见测试场景：_**
 
-- Asserting on a request's body
-- Asserting on a request's url
-- Asserting on a request's headers
-- Stubbing a response's body
-- Stubbing a response's status code
-- Stubbing a response's headers
-- Delaying a response
-- Waiting for a response to happen
+- 对请求体进行断言
+- 对请求URL进行断言
+- 对请求头进行断言
+- 模拟响应体
+- 模拟响应状态码
+- 模拟响应头
+- 延迟响应
+- 等待响应发生
 
-Within Cypress, you have the ability to choose whether to stub responses or
-allow them to actually hit your server. You can also mix and match within the
-same test by choosing to stub certain requests, while allowing others to hit
-your server.
+在Cypress中，你可以选择是模拟响应还是让请求实际到达你的服务器。你还可以在同一测试中混合使用这两种策略，选择模拟某些请求，同时让其他请求到达服务器。
 
-Let's investigate both strategies, why you would use one versus the other, and
-why you should regularly use both.
+让我们探讨这两种策略，为什么你会选择其中一种而不是另一种，以及为什么你应该经常同时使用两者。
 
-### Use Server Responses
+### 使用服务器响应
 
-Requests that are not stubbed actually reach your server. By _not_ stubbing your
-responses, you are writing true _end-to-end_ tests. This means you are driving
-your application the same way a real user would.
+未被模拟的请求实际上会到达你的服务器。通过_不_模拟响应，你正在编写真正的_端到端_测试。这意味着你以与真实用户相同的方式驱动应用程序。
 
-> When requests are not stubbed, this guarantees that the _contract_ between
-> your client and server is working correctly.
+> 当请求未被模拟时，这保证了你的客户端和服务器之间的_契约_正常工作。
 
-In other words, you can have confidence your server is sending the correct data
-in the correct structure to your client to consume. It is a good idea to have
-_end-to-end_ tests around your application's _critical paths_. These typically
-include user login, signup, or other critical paths such as billing.
+换句话说，你可以确信你的服务器正在以正确的结构向客户端发送正确的数据。围绕应用程序的_关键路径_编写_端到端_测试是一个好主意。这些通常包括用户登录、注册或其他关键路径，如计费。
 
-**_There are downsides to not stubbing responses you should be aware of:_**
+**_不模拟响应有一些缺点需要注意：_**
 
-- Since no responses are stubbed, that means **your server has to actually send
-  real responses**. This can be problematic because you may have to _seed a
-  database_ before every test to generate state. For instance, if you were
-  testing _pagination_, you'd have to seed the database with every object that
-  it takes to replicate this feature in your application.
-- Since real responses go through every single layer of your server
-  (controllers, models, views, etc) the tests are often **much slower** than
-  stubbed responses.
+- 由于没有响应被模拟，这意味着**你的服务器必须实际发送真实响应**。这可能会有问题，因为你可能需要在每次测试之前_播种数据库_以生成状态。例如，如果你正在测试_分页_，你必须用生成此功能所需的所有对象来播种数据库。
+- 由于真实响应会经过服务器的每一层（控制器、模型、视图等），测试通常**比模拟响应慢得多**。
 
-If you are writing a traditional server-side application where most of the
-responses are HTML you will likely have few stubbed responses. However, most
-modern applications that serve JSON can take advantage of stubbing.
+如果你正在编写一个传统的服务器端应用程序，其中大多数响应是HTML，你可能会有很少的模拟响应。然而，大多数提供JSON的现代应用程序可以利用模拟。
 
 :::tip
 
-<strong>Benefits</strong>
+<strong>优点</strong>
 
-- More likely to work in production
-- Test coverage around server endpoints
-- Great for traditional server-side HTML rendering
+- 更可能在生产环境中工作
+- 对服务器端点的测试覆盖
+- 非常适合传统的服务器端HTML渲染
 
 :::
 
 :::danger
 
-<strong>Downsides</strong>
+<strong>缺点</strong>
 
-- Requires seeding data
-- Much slower
-- Harder to test edge cases
+- 需要播种数据
+- 速度慢得多
+- 难以测试边缘情况
 
 :::
 
 :::info
 
-<strong>Suggested Use</strong>
+<strong>建议使用</strong>
 
-- Use sparingly
-- Great for the _critical paths_ of your application
-- Helpful to have one test around the _happy path_ of a feature
+- 谨慎使用
+- 非常适合应用程序的_关键路径_
+- 有助于围绕功能的_快乐路径_编写一个测试
 
 :::
 
-### Stub Responses
+### 模拟响应
 
-Stubbing responses enables you to control every aspect of the response,
-including the response `body`, the `status`, `headers`, and even network
-`delay`. Stubbing is extremely fast, most responses will be returned in less
-than 20ms.
+模拟响应使你能够控制响应的各个方面，包括响应`体`、`状态`、`头`，甚至网络`延迟`。模拟非常快，大多数响应将在不到20毫秒的时间内返回。
 
 :::note
 
-Stubbing responses is a great way to control the data that is returned to your
-client.
+模拟响应是控制返回给客户端数据的好方法。
 
 :::
 
-You don't have to do any work on the server. Your application will have no idea
-its requests are being stubbed, so there are _no code changes_ needed.
+你不需要在服务器上做任何工作。你的应用程序不会知道它的请求被模拟了，因此不需要_任何代码更改_。
 
 :::tip
 
-<strong>Benefits</strong>
+<strong>优点</strong>
 
-- Control of response bodies, status, and headers
-- Can force responses to take longer to simulate network delay
-- No code changes to your server or client code
-- Fast, < 20ms response times
+- 控制响应体、状态和头
+- 可以强制响应花费更长时间以模拟网络延迟
+- 无需更改服务器或客户端代码
+- 快速，响应时间< 20毫秒
 
 :::
 
 :::danger
 
-<strong>Downsides</strong>
+<strong>缺点</strong>
 
-- No guarantee your stubbed responses match the actual data the server sends
-- No test coverage on some server endpoints
-- Not as useful if you're using traditional server side HTML rendering
-
-:::
-
-:::info
-
-<strong>Suggested Use</strong>
-
-- Use for the vast majority of tests
-- Mix and match, typically have one true end-to-end test, and then stub the rest
-- Perfect for JSON APIs
+- 不能保证模拟响应与实际服务器发送的数据匹配
+- 某些服务器端点没有测试覆盖
+- 如果你使用传统的服务器端HTML渲染，效果不佳
 
 :::
 
 :::info
 
-### <Icon name="graduation-cap" /> Real World Example
+<strong>建议使用</strong>
 
-The Cypress <Icon name="github" inline="true" contentType="rwa" /> end-to-end
-tests predominately rely on server responses, and only stub network responses
-[on a few occasions](https://github.com/cypress-io/cypress-realworld-app/blob/07a6483dfe7ee44823380832b0b23a4dacd72504/cypress/tests/ui/notifications.spec.ts#L250-L264)
-to conveniently **create edge-case** or **hard-to-create application states**.
-
-This practice allows the project to achieve full
-[code-coverage](/app/tooling/code-coverage) for the front end _and back end_
-of the app, but this has also required creating intricate database seeding or
-test data factory scripts that can generate appropriate data in compliance with
-the business-logic of the app.
-
-Check out any of the
-[Real World App test suites](https://github.com/cypress-io/cypress-realworld-app/tree/develop/cypress/tests/ui)
-to see Cypress network handling in action.
+- 用于绝大多数测试
+- 混合使用，通常有一个真正的端到端测试，然后模拟其余部分
+- 非常适合JSON API
 
 :::
-
-## Stubbing
-
-Cypress enables you to stub a response and control the `body`, `status`,
-`headers`, or even delay.
-
-[`cy.intercept()`](/api/commands/intercept) is used to control the behavior of
-HTTP requests. You can statically define the body, HTTP status code, headers,
-and other response characteristics.
 
 :::info
 
-See [cy.intercept()](/api/commands/intercept) for more information and for
-examples on stubbing responses.
+### <Icon name="graduation-cap" /> 真实世界示例
+
+Cypress <Icon name="github" inline="true" contentType="rwa" /> 端到端测试主要依赖服务器响应，仅在[少数情况下](https://github.com/cypress-io/cypress-realworld-app/blob/07a6483dfe7ee44823380832b0b23a4dacd72504/cypress/tests/ui/notifications.spec.ts#L250-L264)模拟网络响应，以方便**创建边缘情况**或**难以创建的应用程序状态**。
+
+这种做法使项目能够实现应用程序前端和后端的完整[代码覆盖率](/app/tooling/code-coverage)，但这也需要创建复杂的数据库播种或测试数据工厂脚本，以生成符合应用程序业务逻辑的适当数据。
+
+查看[真实世界应用程序测试套件](https://github.com/cypress-io/cypress-realworld-app/tree/develop/cypress/tests/ui)中的任何一个，以了解Cypress网络处理的实际应用。
 
 :::
 
-## Routing
+## 模拟
+
+Cypress使你能够模拟响应并控制`体`、`状态`、`头`或甚至`延迟`。
+
+[`cy.intercept()`](/api/commands/intercept)用于控制HTTP请求的行为。你可以静态定义响应体、HTTP状态码、头和其他响应特性。
+
+:::info
+
+有关模拟响应的更多信息和示例，请参见[cy.intercept()](/api/commands/intercept)。
+
+:::
+
+## 路由
 
 ```javascript
 cy.intercept(
   {
-    method: 'GET', // Route all GET requests
-    url: '/users/*', // that have a URL that matches '/users/*'
+    method: 'GET', // 路由所有GET请求
+    url: '/users/*', // 匹配URL为'/users/*'的请求
   },
-  [] // and force the response to be: []
-).as('getUsers') // and assign an alias
+  [] // 强制响应为: []
+).as('getUsers') // 并分配一个别名
 ```
 
-When you use [`cy.intercept()`](/api/commands/intercept) to define a route,
-Cypress displays this under "Routes" in the Command Log.
+当你使用[`cy.intercept()`](/api/commands/intercept)定义路由时，Cypress会在命令日志中的“路由”下显示此信息。
 
 <DocsImage
   src="/img/app/network-requests/v10/server-routing-table.png"
-  alt="Routing Table"
+  alt="路由表"
 />
 
-When a new test runs, Cypress will restore the default behavior and remove all
-routes and stubs. For a complete reference of the API and options, refer to the
-documentation for [`cy.intercept()`](/api/commands/intercept).
+当新测试运行时，Cypress将恢复默认行为并删除所有路由和模拟。有关API和选项的完整参考，请参阅[`cy.intercept()`](/api/commands/intercept)的文档。
 
-## Fixtures
+## 固定数据
 
-A fixture is a fixed set of data located in a file that is used in your tests.
-The purpose of a test fixture is to ensure that there is a well known and fixed
-environment in which tests are run so that results are repeatable. Fixtures are
-accessed within tests by calling the [`cy.fixture()`](/api/commands/fixture)
-command.
+固定数据是位于文件中用于测试的一组固定数据。测试固定数据的目的是确保测试运行在一个已知且固定的环境中，从而使结果可重复。固定数据通过调用[`cy.fixture()`](/api/commands/fixture)命令在测试中访问。
 
-With Cypress, you can stub network requests and have it respond instantly with
-fixture data.
+使用Cypress，你可以模拟网络请求并立即用固定数据响应。
 
-When stubbing a response, you typically need to manage potentially large and
-complex JSON objects. Cypress allows you to integrate fixture syntax directly
-into responses.
+在模拟响应时，你通常需要管理潜在的大而复杂的JSON对象。Cypress允许你将固定数据语法直接集成到响应中。
 
 ```javascript
-// we set the response to be the activites.json fixture
+// 我们将响应设置为activites.json固定数据
 cy.intercept('GET', '/activities/*', { fixture: 'activities.json' })
 ```
 
-### Organizing
+### 组织
 
-Cypress automatically scaffolds out a suggested folder structure for organizing
-your fixtures on every new project. By default it will create an `example.json`
-file when you add your project to Cypress.
+Cypress在每次新项目时自动搭建出建议的文件夹结构来组织你的固定数据。默认情况下，当你将项目添加到Cypress时，它会创建一个`example.json`文件。
 
 ```text
 /cypress/fixtures/example.json
 ```
 
-Your fixtures can be further organized within additional folders. For instance,
-you could create another folder called `images` and add images:
+你的固定数据可以在其他文件夹中进一步组织。例如，你可以创建另一个名为`images`的文件夹并添加图片：
 
 ```text
 /cypress/fixtures/images/cats.png
@@ -258,28 +205,23 @@ you could create another folder called `images` and add images:
 /cypress/fixtures/images/birds.png
 ```
 
-To access the fixtures nested within the `images` folder, include the folder in
-your [`cy.fixture()`](/api/commands/fixture) command.
+要访问嵌套在`images`文件夹中的固定数据，请在[`cy.fixture()`](/api/commands/fixture)命令中包含文件夹。
 
 ```javascript
-cy.fixture('images/dogs.png') // yields dogs.png as Base64
+cy.fixture('images/dogs.png') // 以Base64形式返回dogs.png
 ```
 
-## Waiting
+## 等待
 
-Whether or not you choose to stub responses, Cypress enables you to
-declaratively [`cy.wait()`](/api/commands/wait) for requests and their
-responses.
+无论你是否选择模拟响应，Cypress都使你能够声明性地[`cy.wait()`](/api/commands/wait)等待请求及其响应。
 
 :::info
 
-This following section utilizes a concept known as
-[Aliasing](/app/core-concepts/variables-and-aliases). If you're new to
-Cypress you might want to check that out first.
+以下部分使用了一个称为[别名](/app/core-concepts/variables-and-aliases)的概念。如果你是Cypress的新手，你可能想先看看这个。
 
 :::
 
-Here is an example of aliasing requests and then subsequently waiting on them:
+以下是别名请求然后等待它们的示例：
 
 :::visit-mount-example
 
@@ -287,25 +229,21 @@ Here is an example of aliasing requests and then subsequently waiting on them:
 cy.intercept('/activities/*', { fixture: 'activities' }).as('getActivities')
 cy.intercept('/messages/*', { fixture: 'messages' }).as('getMessages')
 
--{// visiting the dashboard should make requests that match
-// the two routes above
-cy.visit('http://localhost:8888/dashboard')::// mounting the dashboard should make requests that match
-// the two routes above
+-{// 访问仪表板应发出匹配上述两个路由的请求
+cy.visit('http://localhost:8888/dashboard')::// 挂载仪表板应发出匹配上述两个路由的请求
 cy.mount(<Dashboard />)}-
 
-// pass an array of Route Aliases that forces Cypress to wait
-// until it sees a response for each request that matches
-// each of these aliases
+// 传递一个路由别名数组，强制Cypress等待
+// 直到看到每个匹配这些别名的请求的响应
 cy.wait(['@getActivities', '@getMessages'])
 
-// these commands will not run until the wait command resolves above
+// 这些命令在wait命令解析之前不会运行
 cy.get('h1').should('contain', 'Dashboard')
 ```
 
 :::
 
-If you would like to check the response data of each response of an aliased
-route, you can use several `cy.wait()` calls.
+如果你想检查别名路由的每个响应的响应数据，你可以使用多个`cy.wait()`调用。
 
 ```javascript
 cy.intercept({
@@ -315,55 +253,45 @@ cy.intercept({
 
 cy.visit('/')
 cy.wait('@apiCheck').then((interception) => {
-  assert.isNotNull(interception.response.body, '1st API call has data')
+  assert.isNotNull(interception.response.body, '第一次API调用有数据')
 })
 
 cy.wait('@apiCheck').then((interception) => {
-  assert.isNotNull(interception.response.body, '2nd API call has data')
+  assert.isNotNull(interception.response.body, '第二次API调用有数据')
 })
 
 cy.wait('@apiCheck').then((interception) => {
-  assert.isNotNull(interception.response.body, '3rd API call has data')
+  assert.isNotNull(interception.response.body, '第三次API调用有数据')
 })
 ```
 
-Waiting on an aliased route has big advantages:
+等待别名路由有很大的优势：
 
-1. Tests are more robust with much less flake.
-2. Failure messages are much more precise.
-3. You can assert about the underlying request object.
+1. 测试更健壮，减少了不稳定性。
+2. 失败消息更精确。
+3. 你可以对底层请求对象进行断言。
 
-Let's investigate each benefit.
+让我们探讨每个好处。
 
-### Flake
+### 不稳定性
 
-One advantage of declaratively waiting for responses is that it decreases test
-flake. You can think of [`cy.wait()`](/api/commands/wait) as a guard that
-indicates to Cypress when you expect a request to be made that matches a
-specific routing alias. This prevents the next commands from running until
-responses come back and it guards against situations where your requests are
-initially delayed.
+声明性地等待响应的一个优势是它减少了测试的不稳定性。你可以将[`cy.wait()`](/api/commands/wait)视为一个守卫，向Cypress指示你期望何时发出匹配特定路由别名的请求。这防止了下一个命令在响应返回之前运行，并防止了你的请求最初被延迟的情况。
 
-**_Auto-complete Example:_**
+**_自动完成示例：_**
 
-What makes this example below so powerful is that Cypress will automatically
-wait for a request that matches the `getSearch` alias. Instead of forcing
-Cypress to test the _side effect_ of a successful request (the display of the
-Book results), you can test the actual _cause_ of the results.
+下面这个示例的强大之处在于，Cypress会自动等待匹配`getSearch`别名的请求。而不是强制Cypress测试成功请求的_副作用_（书籍结果的显示），你可以测试结果的_实际原因_。
 
 ```javascript
 cy.intercept('/search*', [{ item: 'Book 1' }, { item: 'Book 2' }]).as(
   'getSearch'
 )
 
-// our autocomplete field is throttled
-// meaning it only makes a request after
-// 500ms from the last keyPress
+// 我们的自动完成字段被节流
+// 意味着它只在最后一次按键后500毫秒发出请求
 cy.get('[data-testid="autocomplete"]').type('Book')
 
-// wait for the request + response
-// thus insulating us from the
-// throttled request
+// 等待请求+响应
+// 从而使我们免受节流请求的影响
 cy.wait('@getSearch')
 
 cy.get('[data-testid="results"]')
@@ -373,56 +301,44 @@ cy.get('[data-testid="results"]')
 
 :::info
 
-### <Icon name="graduation-cap" /> Real World Example
+### <Icon name="graduation-cap" /> 真实世界示例
 
-The Cypress <Icon name="github" inline="true" contentType="rwa" /> has various
-tests for testing an auto-complete field within a large user journey test that
-properly await requests triggered upon auto-complete input changes. Check out
-the example:
+Cypress <Icon name="github" inline="true" contentType="rwa" /> 有各种测试，用于测试大型用户旅程测试中的自动完成字段，这些测试正确地等待了自动完成输入更改触发的请求。查看示例：
 
 - <Icon
     name="github"
     inline="true"
     url="https://github.com/cypress-io/cypress-realworld-app/blob/07a6483dfe7ee44823380832b0b23a4dacd72504/cypress/tests/ui/new-transaction.spec.ts#L36-L50"
-    callout="Auto-complete test code"
+    callout="自动完成测试代码"
   />
 - <Icon
     name="video"
     inline="true"
     url="https://cloud.cypress.io/projects/7s5okt/runs/2352/test-results/3bf064fd-6959-441c-bf31-a9f276db0627/video"
-    callout="Auto-complete test run video recording"
+    callout="自动完成测试运行视频记录"
   />
 
 - <Icon
     name="video"
     url="https://cloud.cypress.io/projects/7s5okt/runs/2352/test-results/3bf064fd-6959-441c-bf31-a9f276db0627/video"
-    callout="Auto-complete test run video recording"
-  /> in Cypress Dashboard.
+    callout="自动完成测试运行视频记录"
+  /> 在Cypress仪表板中。
 
 :::
 
-### Failures
+### 失败
 
-In our example above, we added an assertion to the display of the search
-results.
+在我们上面的示例中，我们添加了对搜索结果显示的断言。
 
-**_The search results working are coupled to a few things in our application:_**
+**_搜索结果的正常工作与我们的应用程序中的几个方面相关：_**
 
-1. Our application making a request to the correct URL.
-2. Our application correctly processing the response.
-3. Our application inserting the results into the DOM.
+1. 我们的应用程序向正确的URL发出请求。
+2. 我们的应用程序正确处理响应。
+3. 我们的应用程序将结果插入到DOM中。
 
-In this example, there are many possible sources of failure. In most testing
-tools, if our request failed to go out, we would normally only ever get an error
-once we attempt to find the results in the DOM and see that there is no matching
-element. This is problematic because it's unknown _why_ the results failed to be
-displayed. Was there a problem with our rendering code? Did we modify or change
-an attribute such as an `id` or `class` on an element? Perhaps our server sent
-us different Book items.
+在这个示例中，有许多可能的失败来源。在大多数测试工具中，如果我们的请求未能发出，我们通常只会在尝试在DOM中查找结果并发现没有匹配元素时得到一个错误。这是有问题的，因为不知道_为什么_结果未能显示。是我们的渲染代码有问题吗？我们是否修改或更改了元素的属性，如`id`或`class`？也许我们的服务器向我们发送了不同的书籍项。
 
-With Cypress, by adding a [`cy.wait()`](/api/commands/wait), you can more easily
-pinpoint your specific problem. If the response never came back, you'll receive
-an error like this:
+使用Cypress，通过添加[`cy.wait()`](/api/commands/wait)，你可以更容易地定位特定问题。如果响应从未返回，你会收到如下错误：
 
 <!--
 To reproduce the following screenshot:
@@ -434,34 +350,28 @@ it('test', () => {
 
 <DocsImage
   src="/img/app/network-requests/v10/clear-source-of-failure.png"
-  alt="Wait Failure"
+  alt="等待失败"
 />
 
-Now we know exactly why our test failed. It had nothing to do with the DOM.
-Instead we can see that either our request never went out or a request went out
-to the wrong URL.
+现在我们确切地知道为什么我们的测试失败了。它与DOM无关。相反，我们可以看到要么我们的请求从未发出，要么请求发到了错误的URL。
 
-### Assertions
+### 断言
 
-Another benefit of using [`cy.wait()`](/api/commands/wait) on requests is that
-it allows you to access the actual request object. This is useful when you want
-to make assertions about this object.
+使用[`cy.wait()`](/api/commands/wait)等待请求的另一个好处是，它允许你访问实际的请求对象。这在你想对这个对象进行断言时非常有用。
 
-In our example above we can assert about the request object to verify that it
-sent data as a query string in the URL. Although we're mocking the response, we
-can still verify that our application sends the correct request.
+在我们上面的示例中，我们可以对请求对象进行断言，以验证它是否在URL中作为查询字符串发送了数据。尽管我们模拟了响应，但我们仍然可以验证我们的应用程序是否发送了正确的请求。
 
 ```javascript
-// any request to "/search/*" endpoint will
-// automatically receive an array with two book objects
+// 任何对"/search/*"端点的请求将
+// 自动接收包含两个书籍对象的数组
 cy.intercept('/search/*', [{ item: 'Book 1' }, { item: 'Book 2' }]).as(
   'getSearch'
 )
 
 cy.get('[data-testid="autocomplete"]').type('Book')
 
-// this yields us the interception cycle object
-// which includes fields for the request and response
+// 这为我们提供了拦截周期对象
+// 其中包括请求和响应的字段
 cy.wait('@getSearch').its('request.url').should('include', '/search?query=Book')
 
 cy.get('[data-testid="results"]')
@@ -469,30 +379,28 @@ cy.get('[data-testid="results"]')
   .and('contain', 'Book 2')
 ```
 
-**_The interception object that [`cy.wait()`](/api/commands/wait) yields you has
-everything you need to make assertions including:_**
+**_[`cy.wait()`](/api/commands/wait)产生的拦截对象包含了你进行断言所需的一切，包括：_**
 
 - URL
-- Method
-- Status Code
-- Request Body
-- Request Headers
-- Response Body
-- Response Headers
+- 方法
+- 状态码
+- 请求体
+- 请求头
+- 响应体
+- 响应头
 
-**Examples**
+**示例**
 
 ```javascript
-// spy on POST requests to /users endpoint
+// 监视对/users端点的POST请求
 cy.intercept('POST', '/users').as('new-user')
 
-// trigger network calls by manipulating web app's
-// user interface, then
+// 通过操作web应用程序的用户界面触发网络调用，然后
 cy.wait('@new-user').should('have.property', 'response.statusCode', 201)
 
-// we can grab the completed interception object
-// again to run more assertions using cy.get(<alias>)
-cy.get('@new-user') // yields the same interception object
+// 我们可以再次获取完成的拦截对象
+// 使用cy.get(<alias>)运行更多断言
+cy.get('@new-user') // 产生相同的拦截对象
   .its('request.body')
   .should(
     'deep.equal',
@@ -503,14 +411,12 @@ cy.get('@new-user') // yields the same interception object
     })
   )
 
-// and we can place multiple assertions in a
-// single "should" callback
+// 我们还可以在单个"should"回调中放置多个断言
 cy.get('@new-user').should(({ request, response }) => {
   expect(request.url).to.match(/\/users$/)
   expect(request.method).to.equal('POST')
-  // it is a good practice to add assertion messages
-  // as the 2nd argument to expect()
-  expect(response.headers, 'response headers').to.include({
+  // 在expect()的第二个参数中添加断言消息是一个好习惯
+  expect(response.headers, '响应头').to.include({
     'cache-control': 'no-cache',
     expires: '-1',
     'content-type': 'application/json; charset=utf-8',
@@ -519,38 +425,30 @@ cy.get('@new-user').should(({ request, response }) => {
 })
 ```
 
-**Tip:** you can inspect the full request cycle object by logging it to the
-console
+**提示：** 你可以通过将其记录到控制台来检查完整的请求周期对象
 
 ```javascript
 cy.wait('@new-user').then(console.log)
 ```
 
-## Working with GraphQL
+## 使用GraphQL
 
-The strategies below follow best known practices for waiting and asserting
-against GraphQL queries or mutations.
+以下策略遵循等待和断言GraphQL查询或变更的最佳实践。
 
-Waiting and asserting on GraphQL API requests rely on matching a query or
-mutation name in the POST body.
+等待和断言GraphQL API请求依赖于匹配POST体中的查询或变更名称。
 
-Using [cy.intercept()](/api/commands/intercept) we can override the response to
-a GraphQL query or mutation by declaring an intercept at the beginning of the
-test or closer to the expectation.
+使用[cy.intercept()](/api/commands/intercept)，我们可以通过在测试开始时或接近期望时声明拦截来覆盖GraphQL查询或变更的响应。
 
-### Alias multiple queries or mutations
+### 别名多个查询或变更
 
-In the `beforeEach`, we will use [cy.intercept()](/api/commands/intercept) to
-capture all requests for a GraphQL endpoint (e.g. `/graphql`), use conditionals
-to match the query or mutation and set an alias for using `req.alias`.
+在`beforeEach`中，我们将使用[cy.intercept()](/api/commands/intercept)捕获对GraphQL端点（例如`/graphql`）的所有请求，使用条件匹配查询或变更，并使用`req.alias`设置别名。
 
-First, we'll create a set of utility functions to help match and alias our
-queries and mutations.
+首先，我们将创建一组实用函数来帮助匹配和别名我们的查询和变更。
 
 ```js
 // utils/graphql-test-utils.js
 
-// Utility to match GraphQL mutation based on the operation name
+// 根据操作名称匹配GraphQL变更的实用函数
 export const hasOperationName = (req, operationName) => {
   const { body } = req
   return (
@@ -559,14 +457,14 @@ export const hasOperationName = (req, operationName) => {
   )
 }
 
-// Alias query if operationName matches
+// 如果operationName匹配，则别名查询
 export const aliasQuery = (req, operationName) => {
   if (hasOperationName(req, operationName)) {
     req.alias = `gql${operationName}Query`
   }
 }
 
-// Alias mutation if operationName matches
+// 如果operationName匹配，则别名变更
 export const aliasMutation = (req, operationName) => {
   if (hasOperationName(req, operationName)) {
     req.alias = `gql${operationName}Mutation`
@@ -574,22 +472,21 @@ export const aliasMutation = (req, operationName) => {
 }
 ```
 
-In our test file, we can import these utilities and use them to alias the
-queries and mutations for our tests in a `beforeEach`.
+在我们的测试文件中，我们可以导入这些实用函数并在`beforeEach`中使用它们来为我们的测试别名查询和变更。
 
 ```js
 // app.cy.js
 import { aliasQuery, aliasMutation } from '../utils/graphql-test-utils'
 
-context('Tests', () => {
+context('测试', () => {
   beforeEach(() => {
     cy.intercept('POST', 'http://localhost:3000/graphql', (req) => {
-      // Queries
+      // 查询
       aliasQuery(req, 'GetLaunchList')
       aliasQuery(req, 'LaunchDetails')
       aliasQuery(req, 'GetMyTrips')
 
-      // Mutations
+      // 变更
       aliasMutation(req, 'Login')
       aliasMutation(req, 'BookTrips')
     })
@@ -598,26 +495,25 @@ context('Tests', () => {
 })
 ```
 
-### Expectations for Query or Mutation Results
+### 查询或变更结果的期望
 
-Expectations can be made against the response of an intercepted GraphQL query or
-mutation using [cy.wait()](/api/commands/wait).
+可以使用[cy.wait()](/api/commands/wait)对拦截的GraphQL查询或变更的响应进行期望。
 
 ```js
 // app.cy.js
 import { aliasQuery } from '../utils/graphql-test-utils'
 
-context('Tests', () => {
+context('测试', () => {
   beforeEach(() => {
     cy.intercept('POST', 'http://localhost:3000/graphql', (req) => {
-      // Queries
+      // 查询
       aliasQuery(req, 'Login')
 
       // ...
     })
   })
 
-  it('should verify login data', () => {
+  it('应验证登录数据', () => {
     cy.wait('@gqlLoginQuery')
       .its('response.body.data.login')
       .should('have.property', 'id')
@@ -626,34 +522,33 @@ context('Tests', () => {
 })
 ```
 
-### Modifying a Query or Mutation Response
+### 修改查询或变更响应
 
-In the test below, the response is modified to test the UI for a single page of
-results.
+在下面的测试中，修改响应以测试单页结果的UI。
 
 ```js
 // app.cy.js
 import { hasOperationName, aliasQuery } from '../utils/graphql-test-utils'
 
-context('Tests', () => {
+context('测试', () => {
   beforeEach(() => {
     cy.intercept('POST', 'http://localhost:3000/graphql', (req) => {
-      // Queries
+      // 查询
       aliasQuery(req, 'GetLaunchList')
 
       // ...
     })
   })
 
-  it('should not display the load more button on the launches page', () => {
+  it('在启动页面不应显示加载更多按钮', () => {
     cy.intercept('POST', 'http://localhost:3000/graphql', (req) => {
       if (hasOperationName(req, 'GetLaunchList')) {
-        // Declare the alias from the initial intercept in the beforeEach
+        // 从beforeEach中的初始拦截声明别名
         req.alias = 'gqlGetLaunchListQuery'
 
-        // Set req.fixture or use req.reply to modify portions of the response
+        // 使用req.fixture或req.reply修改部分响应
         req.reply((res) => {
-          // Modify the response body directly
+          // 直接修改响应体
           res.body.data.launches.hasMore = false
           res.body.data.launches.launches =
             res.body.data.launches.launches.slice(5)
@@ -661,7 +556,7 @@ context('Tests', () => {
       }
     })
 
-    // Must visit after cy.intercept
+    // 必须在cy.intercept之后访问
     cy.visit('/')
 
     cy.wait('@gqlGetLaunchListQuery')
@@ -672,16 +567,14 @@ context('Tests', () => {
       })
 
     cy.get('#launch-list').its('length').should('be.gte', 1).and('be.lt', 20)
-    cy.contains('button', 'Load More').should('not.exist')
+    cy.contains('button', '加载更多').should('not.exist')
   })
 })
 ```
 
-## Command Log
+## 命令日志
 
-By default, Cypress logs all `XMLHttpRequest`s and `fetch`es made by the
-application under test in the Command Log. Here is an example of what this looks
-like:
+默认情况下，Cypress在命令日志中记录被测应用程序发出的所有`XMLHttpRequest`和`fetch`请求。以下是一个示例：
 
 <!-- Code to reproduce screenshot:
     cy.visit('https://jsonplaceholder.cypress.io')
@@ -693,38 +586,30 @@ like:
 
 <DocsImage
   src="/img/app/network-requests/command-log-requests.png"
-  alt="Screenshot of fetch and XHR requests"
+  alt="fetch和XHR请求的截图"
 />
 
 :::info
 
-**Note:** Logging can be disabled by passing `{ log: false }` with the static
-response.
+**注意：** 可以通过在静态响应中传递`{ log: false }`来禁用日志记录。
 
 ```js
 cy.intercept('/users*', { body: ['user1', 'user2'], log: false }).as('getUsers')
 ```
 
-To disable logs for all xhr/fetch requests, checkout our
-[example](/api/commands/intercept#Disabling-logs-for-a-request) on the intercept
-api page.
+要禁用所有xhr/fetch请求的日志，请查看我们在intercept api页面上的[示例](/api/commands/intercept#Disabling-logs-for-a-request)。
 
 :::
 
-The circular indicator on the left side indicates if the request went to the
-destination server or not. If the circle is solid, the request went to the
-destination server; if it is outlined, the response was stubbed by
-`cy.intercept()` and not sent outbound.
+左侧的圆形指示器指示请求是否到达了目标服务器。如果圆圈是实心的，请求到达了目标服务器；如果是空心的，响应被`cy.intercept()`模拟且未发出。
 
-If we re-run our previous test to make the same requests, but this time, add a
-`cy.intercept()` to stub the response to `/users`, we can see that the indicator
-changes. After adding the following line:
+如果我们重新运行之前的测试以发出相同的请求，但这次添加一个`cy.intercept()`来模拟对`/users`的响应，我们可以看到指示器发生了变化。添加以下行后：
 
 ```js
 cy.intercept('/users*', ['user1', 'user2']).as('getUsers')
 ```
 
-The Command Log will look like this:
+命令日志将如下所示：
 
 <!-- Code to reproduce screenshot:
     cy.intercept('/users*', ['user1', 'user2']).as('getUsers')
@@ -737,22 +622,17 @@ The Command Log will look like this:
 
 <DocsImage
   src="/img/app/network-requests/command-log-stubbed.png"
-  alt="Screenshot of stubbed fetch and unstubbed XHR requests"
+  alt="模拟的fetch和未模拟的XHR请求的截图"
 />
 
-The `fetch` request now has an open circle, to indicate that it has been
-stubbed. Also, note that the alias for the `cy.intercept()` is now displayed on
-the right-hand side of the Command Log. If you mouse over the alias, you can see
-more information about how the request was handled:
+`fetch`请求现在有一个空心圆圈，表示它已被模拟。另外，注意`cy.intercept()`的别名现在显示在命令日志的右侧。如果将鼠标悬停在别名上，你可以看到有关如何处理请求的更多信息：
 
 <DocsImage
   src="/img/app/network-requests/command-log-stubbed-tooltip.png"
-  alt="Screenshot of stubbed fetch request with tooltip and unstubbed XHR request"
+  alt="带有工具提示的模拟fetch请求和未模拟XHR请求的截图"
 />
 
-Additionally, the request will be flagged if the request and/or response was
-modified by a `cy.intercept()` handler function. If we add this code to modify
-outgoing requests to `/users`:
+此外，如果请求和/或响应被`cy.intercept()`处理函数修改，请求将被标记。如果我们添加以下代码来修改对`/users`的传出请求：
 
 ```js
 cy.intercept('/users*', (req) => {
@@ -760,8 +640,7 @@ cy.intercept('/users*', (req) => {
 }).as('addAuthHeader')
 ```
 
-The request log for `/users` will reflect that the `req` object was modified,
-but the request was still fulfilled from the destination (filled indicator):
+`/users`的请求日志将反映`req`对象已被修改，但请求仍由目标服务器完成（实心指示器）：
 
 <!-- Code to reproduce screenshot:
     cy.intercept('/users*', (req) => {
@@ -775,32 +654,23 @@ but the request was still fulfilled from the destination (filled indicator):
 
 <DocsImage
   src="/img/app/network-requests/command-log-req-modified.png"
-  alt="Screenshot of request that has had the req modified"
+  alt="修改了req的请求的截图"
 />
 
-As you can see, "req modified" is displayed in the badge, to indicate the
-request object was modified. "res modified" and "req + res modified" can also be
-displayed, depending on if `res` was modified inside of a `req.continue()`
-callback.
+如你所见，“req modified”显示在徽章中，表示请求对象已被修改。“res modified”和“req + res modified”也可以显示，具体取决于`res`是否在`req.continue()`回调中被修改。
 
-As with all command logs, logs for network requests can be clicked to display
-additional information in the Console. For example, after clicking the previous
-request for `/users?limit=100` and opening Developer Tools, we can see the
-following:
+与所有命令日志一样，可以通过单击网络请求的日志在控制台中显示其他信息。例如，在单击之前的`/users?limit=100`请求并打开开发者工具后，我们可以看到以下内容：
 
 <DocsImage
   src="/img/app/network-requests/request-console-props.png"
-  alt="Screenshot of request that has had the req modified"
+  alt="修改了req的请求的截图"
 />
 
-## See also
+## 另请参阅
 
-- [`cy.intercept()` docs](/api/commands/intercept)
-- [Network requests in Kitchen Sink example](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/cypress/e2e/2-advanced-examples/network_requests.cy.js)
-- [See how to make a request with `cy.request()`](/api/commands/request)
-- [Real World App (RWA)](https://github.com/cypress-io/cypress-realworld-app)
-  test suites to see Cypress network handling in action.
-- Read the blog post
-  [Asserting Network Calls from Cypress Tests](https://www.cypress.io/blog/2019/12/23/asserting-network-calls-from-cypress-tests/)
-- If you want to test the application in offline mode, read
-  [Testing an Application in Offline Network Mode](https://www.cypress.io/blog/2020/11/12/testing-application-in-offline-network-mode/)
+- [`cy.intercept()`文档](/api/commands/intercept)
+- [Kitchen Sink示例中的网络请求](https://github.com/cypress-io/cypress-example-kitchensink/blob/master/cypress/e2e/2-advanced-examples/network_requests.cy.js)
+- [了解如何使用`cy.request()`发起请求](/api/commands/request)
+- [真实世界应用程序(RWA)](https://github.com/cypress-io/cypress-realworld-app)测试套件，了解Cypress网络处理的实际应用。
+- 阅读博客文章[从Cypress测试中断言网络调用](https://www.cypress.io/blog/2019/12/23/asserting-network-calls-from-cypress-tests/)
+- 如果你想在离线模式下测试应用程序，请阅读[在离线网络模式下测试应用程序](https://www.cypress.io/blog/2020/11/12/testing-application-in-offline-network-mode/)

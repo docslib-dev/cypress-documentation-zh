@@ -1,50 +1,44 @@
 ---
-title: 'Enterprise SSO | Cypress Cloud'
-description: 'Configure SSO with Okta, SAML, or Azure AD in Cypress for your Cloud organization.'
-sidebar_label: Enterprise SSO
+title: '企业级SSO | Cypress Cloud'
+description: '为您的Cypress Cloud组织配置Okta、SAML或Azure AD的SSO集成'
+sidebar_label: 企业级SSO
 sidebar_position: 40
 ---
 
 <ProductHeading product="cloud" plan="business" />
 
-# Enterprise SSO
+# 企业级SSO
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 您将学习到
 
-- How to enable Enterprise SSO for your organization
-- How to configure SSO with Okta, SAML, or Azure AD
+- 如何为您的组织启用企业级SSO
+- 如何配置Okta、SAML或Azure AD的SSO集成
 
 :::
 
-## Getting Started
+## 开始准备
 
-**You need two things to get started:**
+**您需要满足两个前提条件：**
 
-- A Cypress Cloud account with a [Business or Enterprise paid pricing plans](https://www.cypress.io/pricing)
-- You must be an **owner** of your Cypress Cloud organization.
+- 拥有[Cypress Cloud商业版或企业版付费计划](https://www.cypress.io/pricing)账户
+- 您必须是Cypress Cloud组织的**所有者**
 
-## Enable SSO
+## 启用SSO
 
-1. Log in to [Cypress Cloud](https://cloud.cypess.io) and navigate to the **Integrations** page for your
-   organization.
-2. Scroll down to the **Enterprise SSO** section. Select your SSO provider and
-   take note of the information provided and required. Keep this window open and
-   continue to the
-   [configuration instructions for your specific SSO provider](#SSO-Provider-Configuration)
-   below.
+1. 登录[Cypress Cloud](https://cloud.cypess.io)，进入组织的**集成**页面
+2. 滚动至**企业级SSO**部分，选择您的SSO提供商并记录提供的必需信息。保持此窗口打开，继续阅读下方[对应SSO提供商的配置指南](#SSO-Provider-Configuration)
 
-## SSO Provider Configuration
+## SSO提供商配置
 
-Follow the instructions below for your specific SSO provider.
+根据您的SSO提供商选择对应配置指南。
 
 :::caution
 
-<strong>Smart Card Authentication</strong>
+<strong>智能卡认证</strong>
 
-For Smart Card implementation, please reach out to
-support at support@cypress.io for assistance.
+如需实现智能卡认证，请联系support@cypress.io获取技术支持
 
 :::
 
@@ -54,16 +48,14 @@ support at support@cypress.io for assistance.
 
 ### **Okta**
 
-Cypress Cloud can integrate with Okta via SAML. In addition to the documentation
-below, refer to
-[Okta's official documentation for setting up a new SAML application.](https://developer.okta.com/docs/guides/saml-application-setup/overview/)
+Cypress Cloud支持通过SAML与Okta集成。除以下文档外，请参考[Okta官方SAML应用配置指南](https://developer.okta.com/docs/guides/saml-application-setup/overview/)
 
-1. Log into your Okta dashboard and head to the **Admin** section.
+1. 登录Okta仪表盘，进入**Admin**模块
    <DocsImage
      src="/img/cloud/sso/okta-admin-cypress-sso-setup.png"
      alt="Okta Admin"
    />
-1. Create a new SAML-based Web application.
+1. 创建基于SAML的Web应用
    <DocsImage
      src="/img/cloud/sso/okta-add-application-step1-cypress-sso.png"
      alt="Create Okta SAML App"
@@ -73,84 +65,61 @@ below, refer to
      alt="Create Okta SAML App"
      width={600}
    />
-1. Supply the following information requested in the Okta setup wizard:
-   - **App name:** `Cypress Cloud`
-   - **App logo:** [Cypress logo download](https://on.cypress.io/logo)
-   - **Single sign on URL:** The URL provided in Cypress Cloud
-   - **Audience URI:** The URI provided in Cypress Cloud
-   - **Attribute statements:** Add the attribute statements described in Cypress
-     Cloud
-1. Click **Next** then select **I'm an Okta customer** and click **Finish**.
-1. Click the **View Setup Instructions** button in the middle of the page.
-   Cypress Cloud needs the information provided here:
-   - Copy the Identity Provider Single sign-on URL to Cypress Cloud.
-   - Download the certificate and upload that to Cypress Cloud.
-1. Navigate to the **Assignments** tab and grant your users access to Cypress
-   Cloud.
-1. [Save Configuration](#Save-Configuration).
+1. 在Okta设置向导中提供以下信息：
+   - **应用名称:** `Cypress Cloud`
+   - **应用图标:** [Cypress logo下载](https://on.cypress.io/logo)
+   - **单点登录URL:** Cypress Cloud提供的URL
+   - **受众URI:** Cypress Cloud提供的URI
+   - **属性声明:** 添加Cypress Cloud描述的属性声明
+1. 点击**Next**，选择**I'm an Okta customer**后点击**Finish**
+1. 点击页面中央的**View Setup Instructions**按钮，将以下信息填入Cypress Cloud：
+   - 复制身份提供商的单点登录URL
+   - 下载证书并上传至Cypress Cloud
+1. 进入**Assignments**标签页，为用户授权访问Cypress Cloud
+1. [保存配置](#Save-Configuration)
 
 ### **SAML**
 
-Cypress Cloud can integrate with your identity provider via SAML. In addition to
-the documentation below, refer to your provider's official documentation for
-configuring a SAML integration.
+Cypress Cloud支持通过SAML与您的身份提供商集成。除以下文档外，请参考您提供商的官方SAML集成配置指南。
 
 <DocsImage src="/img/cloud/sso/enterprise-SSO-SAML.png" alt="SAML SSO" />
 
-1. Log into the admin interface for your identity provider.
-1. Work through the setup wizard supplying the information requested:
-   - **App name:** `Cypress Cloud`
-   - **App logo:** [Cypress logo download](https://on.cypress.io/logo)
-   - **Single sign on URL:** Collect the URL provided by Cypress Cloud
-   - **Audience URI:** Collect the URI provided by Cypress Cloud
-   - Add a custom mapping of **AttributeStatements** with the following:
-   - `User.Email`: User's email
-   - `User.FirstName`: User's first name
-   - `User.LastName`: User's last name
-1. Collect the sign-on URL and certificate from your identity provider. Supply
-   that to Cypress Cloud.
-1. [Save Configuration](#Save-Configuration).
+1. 登录身份提供商的管理界面
+1. 在设置向导中提供以下信息：
+   - **应用名称:** `Cypress Cloud`
+   - **应用图标:** [Cypress logo下载](https://on.cypress.io/logo)
+   - **单点登录URL:** 获取Cypress Cloud提供的URL
+   - **受众URI:** 获取Cypress Cloud提供的URI
+   - 添加以下自定义**属性声明**映射：
+   - `User.Email`: 用户邮箱
+   - `User.FirstName`: 用户名字
+   - `User.LastName`: 用户姓氏
+1. 从身份提供商获取登录URL和证书，填入Cypress Cloud
+1. [保存配置](#Save-Configuration)
 
 ### **Azure AD**
 
-Cypress Cloud can integrate with your identity provider via Azure AD. In
-addition to the documentation below, refer to the Microsoft Guides for
-[configuring an application](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app).
+Cypress Cloud支持与Azure AD集成。除以下文档外，请参考微软官方[应用配置指南](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
 
-1. Log into the Azure portal and create a new Application.
-1. Work through the application setup, supplying the following information when
-   requested:
-   - **App name:** `Cypress Cloud`
-   - **App logo:** [Cypress logo download](https://on.cypress.io/logo)
-   - **Login URL:** Collect the URL provided by Cypress Cloud
-1. Collect the `Client ID` for your application provided in the Application
-   overview page.
-1. Go to **Certificates and Secrets** in your Azure Application and create a new
-   secret that does not expire. Copy this newly-created secret and paste it in
-   the `Azure Client Secret` field in Cypress Cloud.
-1. Under **API Permissions** in Azure AD, ensure the application has access to
-   **User.Read** permissions
-1. Enter the domain used for your Active Directory, as well as the list of SSO
-   domains you wish to allow user to authenticate with, in Cypress Cloud. This
-   is used for SSO discovery from the login screen.
-1. [Save Configuration](#Save-Configuration).
+1. 登录Azure门户并创建新应用
+1. 在应用设置中提供以下信息：
+   - **应用名称:** `Cypress Cloud`
+   - **应用图标:** [Cypress logo下载](https://on.cypress.io/logo)
+   - **登录URL:** 获取Cypress Cloud提供的URL
+1. 记录应用概览页面的`Client ID`
+1. 进入应用的**Certificates and Secrets**模块，创建永不过期的新密钥，将其填入Cypress Cloud的`Azure Client Secret`字段
+1. 在Azure AD的**API Permissions**模块中确保应用具有**User.Read**权限
+1. 在Cypress Cloud中输入您的Active Directory域名及允许SSO登录的域名列表，用于登录页面的SSO发现
+1. [保存配置](#Save-Configuration)
 
-## Save Configuration
+## 保存配置
 
-Return to Cypress Cloud and click **Save Configuration**. Cypress Cloud will
-attempt to authenticate.
+返回Cypress Cloud点击**Save Configuration**，系统将尝试认证连接。
 
-🎉 Your integration is now complete! You can invite all of the users in your
-organization to sign in through your SSO provider.
+🎉 集成已完成！您现在可以邀请组织成员通过SSO提供商登录。
 
-## Notes
+## 注意事项
 
-- Once SSO is successfully set up, users will need to be invited via your SSO
-  provider, as the Cypress Cloud invitation option will be disabled.
-- All SSO Users are initially added with the
-  [User Role](/cloud/account-management/users#User-roles) of Member. If a
-  User needs different User Role permissions, this can be changed via Cypress
-  Cloud by a current member with the role of Owner or Admin.
-- SSO users are separate accounts from Google/GitHub or email/password users. If
-  there are duplicate users, duplicates can be removed by any
-  [Owner or Admin](/cloud/account-management/users#User-roles).
+- SSO成功配置后，用户必须通过SSO提供商邀请，Cypress Cloud的邀请选项将禁用
+- 所有SSO用户初始角色均为[普通成员](/cloud/account-management/users#User-roles)。如需变更权限，需由当前所有者或管理员在Cypress Cloud中调整
+- SSO用户是与Google/GitHub或邮箱密码用户独立的账户。如存在重复账户，可由[所有者或管理员](/cloud/account-management/users#User-roles)移除

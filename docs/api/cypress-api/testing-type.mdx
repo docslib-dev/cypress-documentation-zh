@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.testingType | Cypress Documentation'
-description: Get the current testing type in Cypress.
+title: 'Cypress.testingType | Cypress 文档'
+description: 获取当前 Cypress 中的测试类型。
 sidebar_label: testingType
 ---
 
@@ -8,32 +8,30 @@ sidebar_label: testingType
 
 # Cypress.testingType
 
-`Cypress.testingType` returns the current testing type, determined by your
-selection in the Cypress Launchpad. The `Cypress.testingType` returns `e2e` for
-[E2E Testing](/app/core-concepts/testing-types#What-is-E2E-Testing) or
-`component` for
-[Component Testing](/app/core-concepts/testing-types#What-is-Component-Testing).
+`Cypress.testingType` 返回当前测试类型，该类型由您在 Cypress Launchpad 中的选择决定。`Cypress.testingType` 会返回 `e2e` 表示
+[端到端测试](/app/core-concepts/testing-types#What-is-E2E-Testing) 或 `component` 表示
+[组件测试](/app/core-concepts/testing-types#What-is-Component-Testing)。
 
-## Syntax
+## 语法
 
 ```javascript
-Cypress.testingType // returns 'e2e' or 'component'
+Cypress.testingType // 返回 'e2e' 或 'component'
 ```
 
-## Examples
+## 示例
 
-### Testing Type
+### 测试类型
 
 ```javascript
-it('is running component testing mode', () => {
+it('正在运行组件测试模式', () => {
   expect(Cypress.testingType).to.equal('component')
 })
 ```
 
-### Conditionals
+### 条件判断
 
 ```javascript
-it('does something differently', () => {
+it('执行不同的操作', () => {
   if (Cypress.testingType === 'e2e') {
     cy.exec('something')
   } else {
@@ -42,8 +40,8 @@ it('does something differently', () => {
 })
 ```
 
-## History
+## 历史版本
 
-| Version                                  | Changes                     |
+| 版本                                      | 变更                        |
 | ---------------------------------------- | --------------------------- |
-| [7.0.0](/app/references/changelog#7-0-0) | Added `Cypress.testingType` |
+| [7.0.0](/app/references/changelog#7-0-0) | 新增 `Cypress.testingType` 功能 |

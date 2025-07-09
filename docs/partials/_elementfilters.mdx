@@ -1,16 +1,14 @@
-The `elementFilters` property allows you to specify selectors for elements that should be excluded from reports.
+`elementFilters` 属性允许您指定应从报告中排除的元素选择器。
 
-## Why use element filters?
+## 为什么使用元素过滤器？
 
-- **Ignoring 3rd Party Components**: Libraries or widgets that are not part of your application logic may be excluded from reports.
-- **Streamlining Reports**: Reducing noise by filtering out non-essential elements makes reports more actionable.
+- **忽略第三方组件**：不属于应用程序逻辑的库或小部件可以从报告中排除。
+- **精简报告**：通过过滤非必要元素减少干扰，使报告更具可操作性。
 
-## Syntax
+## 语法
 
 :::info
-**Note:** setting `elementFilters` impacts both Accessibility and UI Coverage
-reports if set at the root of the configuration. Nesting this property under an `accessibility` or `uiCoverage` key is
-supported, if you need to split them up.
+**注意：** 如果在配置的根节点设置 `elementFilters`，将同时影响无障碍和UI覆盖率报告。如需分开设置，可将此属性嵌套在 `accessibility` 或 `uiCoverage` 键下。
 :::
 
 ```json
@@ -24,20 +22,20 @@ supported, if you need to split them up.
 }
 ```
 
-### Options
+### 选项
 
-The first `elementFilters` rule for which the selector property matches the element is used to either include or exclude the element based on the `include` value. Elements that do not match any rules are included by default.
+第一个匹配元素选择器的 `elementFilters` 规则将根据 `include` 值决定是否包含该元素。未匹配任何规则的元素默认会被包含。
 
-| Option     | Required | Default | Description                                                                                                                      |
-| ---------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `selector` | Required |         | A CSS selector to identify elements. Supports standard CSS selector syntax, including IDs, classes, attributes, and combinators. |
-| `include`  | Optional | `true`  | A boolean indicating whether the matched elements should be included in the report.                                              |
+| 选项        | 必填     | 默认值   | 描述                                                                                                                      |
+| ----------- | -------- | -------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `selector`  | 是       |          | 用于识别元素的CSS选择器。支持标准CSS选择器语法，包括ID、类、属性和组合器。                                                |
+| `include`   | 否       | `true`   | 布尔值，指示匹配的元素是否应包含在报告中。                                                                              |
 
-## Examples
+## 示例
 
-### Excluding a specific element
+### 排除特定元素
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -54,12 +52,12 @@ The first `elementFilters` rule for which the selector property matches the elem
 
 ```xml
 <body>
-  <button id="button-1">Included</button>
-  <button id="button-2">Excluded</button>
+  <button id="button-1">包含</button>
+  <button id="button-2">排除</button>
 </body>
 ```
 
-#### Elements shown in UI
+#### 界面显示的元素
 
 ```
 #button-1
@@ -67,9 +65,9 @@ The first `elementFilters` rule for which the selector property matches the elem
 
 ---
 
-### Excluding all elements in a container
+### 排除容器内所有元素
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -87,15 +85,15 @@ The first `elementFilters` rule for which the selector property matches the elem
 ```xml
 <body>
   <main>
-    <button id="start">Included</button>
+    <button id="start">包含</button>
   </main>
   <footer>
-    <a href="#">Excluded</a>
+    <a href="#">排除</a>
   </footer>
 </body>
 ```
 
-#### Elements shown in UI
+#### 界面显示的元素
 
 ```
 #start
@@ -103,9 +101,9 @@ The first `elementFilters` rule for which the selector property matches the elem
 
 ---
 
-### Including only elements in a specific container
+### 仅包含特定容器内的元素
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -130,20 +128,20 @@ The first `elementFilters` rule for which the selector property matches the elem
     <input id="name" />
   </form>
   <footer>
-    <a href="#">Excluded</a>
+    <a href="#">排除</a>
   </footer>
 </body>
 ```
 
-#### Elements shown in UI
+#### 界面显示的元素
 
 ```
 #name
 ```
 
-### Excluding Elements by Attribute
+### 按属性排除元素
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -162,20 +160,20 @@ The first `elementFilters` rule for which the selector property matches the elem
     <img src="icon.png" />
   </button>
   <button data-role="primary">
-    View
+    查看
   </button>
 </body>
 ```
 
-#### Elements shown in UI
+#### 界面显示的元素
 
 ```
 [data-role="primary"]
 ```
 
-### Excluding dynamic elements by pattern
+### 按模式排除动态元素
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -192,12 +190,12 @@ The first `elementFilters` rule for which the selector property matches the elem
 
 ```xml
 <body>
-  <button class="cancel">Cancel</button>
-  <button class="auth908283794">Login</button>
+  <button class="cancel">取消</button>
+  <button class="auth908283794">登录</button>
 </body>
 ```
 
-#### Elements shown in UI
+#### 界面显示的元素
 
 ```
 .cancel

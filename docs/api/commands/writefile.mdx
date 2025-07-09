@@ -1,6 +1,6 @@
 ---
-title: 'writeFile | Cypress Documentation'
-description: Write to a file with the specified contents in Cypress.
+title: 'writeFile | Cypress 文档'
+description: 使用Cypress向指定文件写入内容。
 sidebar_label: writeFile
 ---
 
@@ -8,9 +8,9 @@ sidebar_label: writeFile
 
 # writeFile
 
-Write to a file with the specified contents.
+向指定文件写入内容。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.writeFile(filePath, contents)
@@ -19,29 +19,27 @@ cy.writeFile(filePath, contents, options)
 cy.writeFile(filePath, contents, encoding, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
 cy.writeFile('menu.json')
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **filePath _(String)_**
 
-A path to a file within the project root (the directory that contains the
-[Cypress configuration file](/app/references/configuration))
+项目根目录（包含[Cypress配置文件](/app/references/configuration)的目录）中的文件路径。
 
-<Icon name="angle-right" /> **contents _(String, Array, Object or Buffer)_**
+<Icon name="angle-right" /> **contents _(String, Array, Object 或 Buffer)_**
 
-The contents to be written to the file.
+要写入文件的内容。
 
 <Icon name="angle-right" /> **encoding _(String)_**
 
-The encoding to be used when writing to the file. The following encodings are
-supported:
+写入文件时使用的编码。支持以下编码：
 
 - `'ascii'`
 - `'base64'`
@@ -56,40 +54,36 @@ supported:
 - `'utf-16le'`
 - `null`
 
-Using `null` explicitly will allows you to write a `Buffer` directly, without
-first encoding it as a string.
+显式使用`null`可以直接写入`Buffer`，而无需先将其编码为字符串。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `cy.writeFile()`.
+传入一个选项对象以更改`cy.writeFile()`的默认行为。
 
-| Option     | Default                                                           | Description                                                                                         |
-| ---------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| `log`      | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log)                 |
-| `flag`     | `w`                                                               | File system flag as used with [`fs.writeFile`](https://nodejs.org/api/fs.html#fs_file_system_flags) |
-| `encoding` | `utf8`                                                            | The encoding to be used when writing to the file                                                    |
-| `timeout`  | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.writeFile()` to resolve before [timing out](#Timeouts)                           |
+| 选项       | 默认值                                                           | 描述                                                                                         |
+| ---------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `log`      | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令                          |
+| `flag`     | `w`                                                               | 文件系统标志，与[`fs.writeFile`](https://nodejs.org/api/fs.html#fs_file_system_flags)相同    |
+| `encoding` | `utf8`                                                            | 写入文件时使用的编码                                                                         |
+| `timeout`  | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 等待`.writeFile()`解析的时长，超过则[超时](#Timeouts)                                        |
 
 :::info
 
-To use encoding with other options, have your options object be your third
-parameter and include encoding there. This is the same behavior as
-[`fs.writeFile`](https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback).
+要将编码与其他选项一起使用，请将选项对象作为第三个参数，并在其中包含编码。这与[`fs.writeFile`](https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback)的行为相同。
 
 :::
 
 <HeaderYields />
 
-- `cy.writeFile()` yields `null`.
+- `cy.writeFile()`返回`null`。
 
-## Examples
+## 示例
 
-### Text
+### 文本
 
-#### Write some text to a `txt` file
+#### 向`txt`文件写入文本
 
-If the path to the file does not exist, the file and its path will be created.
-If the file already exists, it will be over-written.
+如果文件路径不存在，将创建该文件及其路径。如果文件已存在，将被覆盖。
 
 ```javascript
 cy.writeFile('path/to/message.txt', 'Hello World')
@@ -98,7 +92,7 @@ cy.readFile('path/to/message.txt').then((text) => {
 })
 ```
 
-`{projectRoot}/path/to/message.txt` will be created with the following contents:
+`{projectRoot}/path/to/message.txt`将创建并包含以下内容：
 
 ```text
  "Hello World"
@@ -106,9 +100,9 @@ cy.readFile('path/to/message.txt').then((text) => {
 
 ### JSON
 
-#### Write JSON to a file
+#### 向文件写入JSON
 
-JavaScript arrays and objects are stringified and formatted into text.
+JavaScript数组和对象将被字符串化并格式化为文本。
 
 ```javascript
 cy.writeFile('path/to/data.json', { name: 'Eliza', email: 'eliza@example.com' })
@@ -117,7 +111,7 @@ cy.readFile('path/to/data.json').then((user) => {
 })
 ```
 
-`{projectRoot}/path/to/data.json` will be created with the following contents:
+`{projectRoot}/path/to/data.json`将创建并包含以下内容：
 
 ```json
 {
@@ -126,34 +120,34 @@ cy.readFile('path/to/data.json').then((user) => {
 }
 ```
 
-#### Write response data to a fixture file
+#### 将响应数据写入fixture文件
 
 ```javascript
 cy.request('https://jsonplaceholder.typicode.com/users').then((response) => {
   cy.writeFile('cypress/fixtures/users.json', response.body)
 })
 
-// our fixture file is now generated and can be used
+// 现在可以生成并使用我们的fixture文件
 cy.fixture('users').then((users) => {
   expect(users[0].name).to.exist
 })
 ```
 
-### Encoding
+### 编码
 
-#### Specify the encoding as a String
+#### 将编码指定为字符串
 
 ```javascript
 cy.writeFile('path/to/ascii.txt', 'Hello World', 'ascii'))
 ```
 
-`{projectRoot}/path/to/message.txt` will be created with the following contents:
+`{projectRoot}/path/to/message.txt`将创建并包含以下内容：
 
 ```text
 Hello World
 ```
 
-#### Specify the encoding as part of the options object
+#### 在选项对象中指定编码
 
 ```javascript
 cy.writeFile('path/to/ascii.txt', 'Hello World', {
@@ -162,43 +156,41 @@ cy.writeFile('path/to/ascii.txt', 'Hello World', {
 })
 ```
 
-### Flags
+### 标志
 
-#### Append contents to the end of a file
+#### 向文件末尾追加内容
 
 ```javascript
 cy.writeFile('path/to/message.txt', 'Hello World', { flag: 'a+' })
 ```
 
-Note that appending assumes plain text file. If you want to merge a JSON object
-for example, you need to read it first, add new properties, then write the
-combined result back.
+注意，追加操作假定文件为纯文本文件。如果要合并JSON对象，需要先读取它，添加新属性，然后将合并后的结果写回。
 
 ```javascript
 const filename = '/path/to/file.json'
 
 cy.readFile(filename).then((obj) => {
   obj.id = '1234'
-  // write the merged object
+  // 写入合并后的对象
   cy.writeFile(filename, obj)
 })
 ```
 
-Similarly, if you need to push new items to an array
+类似地，如果需要向数组推送新项：
 
 ```javascript
 const filename = '/path/to/list.json'
 
 cy.readFile(filename).then((list) => {
   list.push({ item: 'example' })
-  // write the merged array
+  // 写入合并后的数组
   cy.writeFile(filename, list)
 })
 ```
 
 ### Buffer
 
-#### Write a buffer directly without encoding as a string
+#### 直接写入Buffer而不编码为字符串
 
 ```javascript
 const filename = '/path/to/file.png'
@@ -209,56 +201,52 @@ cy.readFile(filename, null).then((obj) => {
 })
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.writeFile()` requires being chained off of `cy`.
-- `cy.writeFile()` requires the file be successfully written to disk. Anything
-  preventing this such as OS permission issues will cause it to fail.
+- `cy.writeFile()`必须链接到`cy`。
+- `cy.writeFile()`要求文件必须成功写入磁盘。任何阻止此操作的情况（如操作系统权限问题）都会导致失败。
 
 <HeaderAssertions />
 
-- `cy.writeFile()` will only run assertions you have chained once, and will not
-  [retry](/app/core-concepts/retry-ability).
+- `cy.writeFile()`只会运行一次链式断言，不会[重试](/app/core-concepts/retry-ability)。
 
 <HeaderTimeouts />
 
-- `cy.writeFile()` can time out when the content being written takes a
-  significant amount of time to encode.
+- `cy.writeFile()`在写入内容需要大量时间编码时可能会超时。
 
-## Command Log
+## 命令日志
 
-**_Write an array to a file_**
+**_向文件写入数组_**
 
 ```javascript
 cy.writeFile('info.log', ['foo', 'bar', 'baz'])
 ```
 
-The command above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/writefile/write-data-to-system-file-for-testing.png"
-  alt="Command Log writeFile"
+  alt="命令日志 writeFile"
 />
 
-When clicking on the `writeFile` command within the command log, the console
-outputs the following:
+当点击命令日志中的`writeFile`命令时，控制台输出如下：
 
 <DocsImage
   src="/img/api/writefile/console-log-shows-contents-written-to-file.png"
-  alt="Console Log writeFile"
+  alt="控制台日志 writeFile"
 />
 
-## History
+## 历史
 
-| Version                                  | Changes                                                  |
-| ---------------------------------------- | -------------------------------------------------------- |
-| [9.2.0](/app/references/changelog#9-2-0) | Added `timeout` option                                   |
-| [4.0.0](/app/references/changelog#4-0-0) | `cy.writeFile()` now yields `null` instead of `contents` |
-| [3.1.1](/app/references/changelog#3-1-1) | Added `flag` option and appending with `a+`              |
-| [1.0.0](/app/references/changelog#1-0-0) | `cy.writeFile()` command added                           |
+| 版本                                      | 变更                                                   |
+| ---------------------------------------- | ----------------------------------------------------- |
+| [9.2.0](/app/references/changelog#9-2-0) | 添加了`timeout`选项                                   |
+| [4.0.0](/app/references/changelog#4-0-0) | `cy.writeFile()`现在返回`null`而不是`contents`        |
+| [3.1.1](/app/references/changelog#3-1-1) | 添加了`flag`选项和通过`a+`追加内容的功能              |
+| [1.0.0](/app/references/changelog#1-0-0) | 添加了`cy.writeFile()`命令                            |
 
-## See also
+## 另请参阅
 
 - [`cy.readFile()`](/api/commands/readfile)

@@ -8,14 +8,14 @@ import {
 } from '@cypress-design/react-icon'
 
 function useNavbarItems() {
-  // TODO temporary casting until ThemeConfig type is improved
+  // TODO 临时类型转换，待ThemeConfig类型完善后移除
   return useThemeConfig().navbar.items
 }
-// The primary menu displays the navbar items
+// 主导航菜单显示导航栏项
 export default function NavbarMobilePrimaryMenu() {
   const mobileSidebar = useNavbarMobileSidebar()
-  // TODO how can the order be defined for mobile?
-  // Should we allow providing a different list of items?
+  // TODO 如何定义移动端的排序？
+  // 是否应该允许提供不同的项目列表？
   const items = useNavbarItems() as any[]
   return (
     <ul className="menu__list">

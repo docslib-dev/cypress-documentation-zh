@@ -1,48 +1,48 @@
 ---
-sidebar_label: Maximize coverage
-title: 'Maximize coverage | Cypress Accessibility Documentation'
-description: "Expand accessibility testing by combining Cypress Accessibility's automated checks with custom assertions tailored to your application."
+sidebar_label: 最大化覆盖率
+title: '最大化覆盖率 | Cypress无障碍性文档'
+description: "通过将Cypress Accessibility的自动化检查与针对应用程序定制的自定义断言相结合，扩展无障碍性测试范围。"
 sidebar_position: 70
 ---
 
 <ProductHeading product="accessibility" />
 
-# Maximize coverage
+# 最大化覆盖率
 
-As you become more familiar with accessibility violations and their underlying principles, you'll notice the connection between generic, automated checks (e.g., Axe Core®) and the specific user-facing behaviors of your application. Often, the insights gained from Cypress Accessibility's automated checks can guide you to create custom assertions tailored to your application's unique requirements.
+随着您对无障碍性违规及其基本原则越来越熟悉，您会注意到通用自动化检查（如Axe Core®）与应用程序面向用户的具体行为之间的联系。通常，从Cypress Accessibility的自动化检查中获得的见解可以指导您创建针对应用程序独特需求定制的自定义断言。
 
-## Examples
+## 示例
 
-### Button Accessibility Test
+### 按钮无障碍性测试
 
-For example, Cypress Accessibility might flag a button with a missing accessible name. While adding any text might satisfy Axe Core's rule, the actual text should align with your application's context. Once you address the issue in your codebase, you can enhance your Cypress tests by asserting the specific text, ensuring that future developers understand its importance as part of the application's specification.
+例如，Cypress Accessibility可能会标记一个缺少可访问名称的按钮。虽然添加任何文本可能满足Axe Core的规则，但实际文本应与应用程序的上下文保持一致。一旦您在代码库中解决了这个问题，就可以通过断言特定文本来增强Cypress测试，确保未来的开发人员理解其作为应用程序规范一部分的重要性。
 
 ```js
-describe('Button Accessibility Test', () => {
-  it('should have the correct accessible name for the button', () => {
-    // Visit the page containing the button
+describe('按钮无障碍性测试', () => {
+  it('按钮应具有正确的可访问名称', () => {
+    // 访问包含按钮的页面
     cy.visit('/your-page-url')
 
-    // Select the button by its identifier
+    // 通过标识符选择按钮
     cy.get('[data-test-id="submit-button"]')
-      // Ensure the button has an accessible name
+      // 确保按钮具有可访问名称
       .should('have.attr', 'aria-label', 'Submit Form')
-      // Optionally, assert the button contains the visible text
+      // 可选，断言按钮包含可见文本
       .and('contain', 'Submit')
   })
 })
 ```
 
-This principle can extend to larger and more complex scenarios.
+这一原则可以扩展到更大更复杂的场景中。
 
-## Accessibility "hotspots"
+## 无障碍性"热点"
 
-Each violation detected by Cypress Accessibility serves as a signal that accessibility might not have been adequately considered in a specific area of your application. Since Cypress Accessibility provides full DOM visibility for every violation, you can efficiently perform manual checks on related patterns in the UI. This approach often reveals accessibility "hotspots", where usability issues may exist that automated tools cannot detect.
+Cypress Accessibility检测到的每个违规都表明在应用程序的特定区域可能没有充分考虑无障碍性。由于Cypress Accessibility为每个违规提供完整的DOM可见性，您可以高效地对UI中的相关模式进行手动检查。这种方法通常会揭示无障碍性"热点"，即可能存在自动化工具无法检测到的可用性问题。
 
-Conducting manual audits in these areas can uncover deeper usability challenges. These findings can then be cataloged, addressed, and regression-tested using Cypress automation.
+在这些区域进行手动审计可以发现更深层次的可用性挑战。这些发现可以被记录、解决，并使用Cypress自动化进行回归测试。
 
-## Combining testing approaches
+## 结合测试方法
 
-A hybrid approach that combines Cypress Accessibility's always-on automated checks with custom assertions can significantly improve long-term accessibility quality. This approach ensures accessibility regressions are caught and fixed, regardless of whether they were initially detected automatically or through manual review.
+将Cypress Accessibility始终开启的自动化检查与自定义断言相结合的混合方法，可以显著提高长期的无障碍性质量。这种方法确保无障碍性回归无论最初是通过自动检测还是手动审查发现的，都能被捕获和修复。
 
-Automated tools like Axe Core® are estimated to detect approximately 57% of common accessibility issues. By incorporating manual insights and user feedback into your Cypress test suite, you can achieve far greater coverage. Explicit assertions on top of automated error detection empower your pipeline to deliver consistent, actionable feedback about accessibility regressions.
+据估计，像Axe Core®这样的自动化工具可以检测大约57%的常见无障碍性问题。通过将手动见解和用户反馈纳入Cypress测试套件，您可以实现更大的覆盖率。在自动化错误检测基础上添加显式断言，使您的流水线能够提供关于无障碍性回归的一致、可操作的反馈。

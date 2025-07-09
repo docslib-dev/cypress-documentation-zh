@@ -1,6 +1,6 @@
 ---
-title: 'focused | Cypress Documentation'
-description: Get the DOM element that is currently focused in Cypress.
+title: 'focused | Cypress 文档'
+description: 获取当前在Cypress中获得焦点的DOM元素。
 sidebar_label: focused
 slug: /api/commands/focused
 ---
@@ -9,108 +9,102 @@ slug: /api/commands/focused
 
 # focused
 
-Get the DOM element that is currently focused.
+获取当前获得焦点的DOM元素。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.focused()
 cy.focused(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.focused() // Yields the element currently in focus
+cy.focused() // 返回当前获得焦点的元素
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `cy.focused()`.
+传入一个选项对象来改变`cy.focused()`的默认行为。
 
-| Option    | Default                                                           | Description                                                                         |
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.focused()` to resolve before [timing out](#Timeouts)           |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 在[超时](#Timeouts)前等待`cy.focused()`解析的时间           |
 
 <HeaderYields />
 
-- `cy.focused()` yields the DOM element it found.
-- `cy.focused()` is a query, and it is _safe_ to chain further commands.
+- `cy.focused()`返回找到的DOM元素。
+- `cy.focused()`是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Get the element that is focused
+#### 获取获得焦点的元素
 
 ```javascript
 cy.focused().then(($el) => {
-  // do something with $el
+  // 对$el进行操作
 })
 ```
 
-#### Blur the element with focus
+#### 对获得焦点的元素执行blur操作
 
 ```javascript
 cy.focused().blur()
 ```
 
-#### Make an assertion on the focused element
+#### 对获得焦点的元素进行断言
 
 ```javascript
 cy.focused().should('have.attr', 'name', 'username')
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.focused()` requires being chained off a command that yields DOM
-  element(s).
+- `cy.focused()`需要链式调用一个返回DOM元素的命令。
 
 <HeaderAssertions />
 
-- `cy.focused()` will automatically [retry](/app/core-concepts/retry-ability)
-  until the element(s)
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `cy.focused()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed.
+- `cy.focused()`会自动[重试](/app/core-concepts/retry-ability)直到元素[存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)。
+- `cy.focused()`会自动[重试](/app/core-concepts/retry-ability)直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `cy.focused()` can time out waiting for the element(s) to
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `cy.focused()` can time out waiting for assertions you've added to pass.
+- `cy.focused()`可能会因等待元素[存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)而超时。
+- `cy.focused()`可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Make an assertion on the focused element_**
+**_对获得焦点的元素进行断言_**
 
 ```javascript
 cy.focused().should('have.attr', 'name').and('eq', 'num')
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/focused/make-assertion-about-focused-element.png"
-  alt="Command Log focused"
+  alt="命令日志 focused"
 />
 
-When clicking on the `focused` command within the command log, the console
-outputs the following:
+当点击命令日志中的`focused`命令时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/focused/currently-focused-element-in-an-input.png"
-  alt="console focused"
+  alt="控制台 focused"
 />
 
-## See also
+## 另请参阅
 
 - [`.blur()`](/api/commands/blur)
 - [`.focus()`](/api/commands/focus)

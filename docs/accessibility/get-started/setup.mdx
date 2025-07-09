@@ -1,61 +1,61 @@
 ---
-sidebar_label: Get Started
-title: 'Get Started | Cypress Accessibility Documentation'
-description: 'Set up Cypress Accessibility by recording a run. No code changes or configuration required.'
+sidebar_label: 快速入门
+title: '快速入门 | Cypress 无障碍测试文档'
+description: '通过记录测试运行来设置 Cypress 无障碍测试。无需更改代码或配置。'
 sidebar_position: 20
 ---
 
 <ProductHeading product="accessibility" />
 
-# Get Started
+# 快速入门
 
-You don't need to make any changes to your code or your test setup. If you record test runs to the Cypress Cloud with Test Replay, you're ready to start using Cypress Accessibility.
-You'll start your free trial with personalized support from our sales team and your existing test data to instantly see full accessibility reports for all your Cypress projects.
-From there, you can integrate with CI to set your own standards for handling the results.
+您无需对代码或测试设置进行任何更改。如果您使用 Test Replay 将测试运行记录到 Cypress Cloud，就可以开始使用 Cypress 无障碍测试功能。
+您将通过销售团队的个性化支持开始免费试用，利用现有测试数据立即查看所有 Cypress 项目的完整无障碍报告。
+之后，您可以集成 CI 来设置自己的结果处理标准。
 
-## 1. Request a trial
+## 1. 申请试用
 
-Get started with a free trial of Cypress Accessibility. You'll receive a personalized demo using your existing test data to see where testing gaps exist for all of your Cypress projects.
+开始免费试用 Cypress 无障碍测试功能。您将获得个性化演示，使用现有测试数据查看所有 Cypress 项目中存在的测试盲点。
 
 <Btn
-  label="Request trial ➜"
+  label="申请试用 ➜"
   className="!mb-0"
   variant="indigo-dark"
   href="https://www.cypress.io/accessibility?utm_medium=get-started-page&utm_source=docs.cypress.io&utm_content=Request%20trial"
 />
 
-## 2. Record a run
+## 2. 记录测试运行
 
-Cypress Accessibility generates reports using [Test Replay](/cloud/features/test-replay) data and requires Cypress v13+. No additional configuration or instrumentation is required to get started.
+Cypress 无障碍测试使用 [Test Replay](/cloud/features/test-replay) 数据生成报告，需要 Cypress v13+ 版本。开始使用无需额外配置或插桩。
 
-[Record a run](/cloud/get-started/setup) to the Cypress Cloud with Test Replay to start using Cypress Accessibility.
+使用 Test Replay [记录测试运行](/cloud/get-started/setup) 到 Cypress Cloud 即可开始使用无障碍测试功能。
 
-## 3. View your Accessibility results
+## 3. 查看无障碍测试结果
 
-After recording a test run, you can view your Accessibility results in the Cypress Cloud via the **Accessibility** tab.
+记录测试运行后，您可以在 Cypress Cloud 的 **无障碍测试** 选项卡中查看结果。
 
 <DocsImage
   src="/img/accessibility/core-concepts/cypress-accessibility-views-dashboard.png"
-  alt="The Cypress Accessibility Views List, in context in Cypress Cloud, reflecting a run of the Cypress Realworld App where violations of accessibility rules were detected on multiple pages."
+  alt="Cypress 无障碍测试视图列表，在 Cypress Cloud 中显示 Cypress Realworld App 的运行结果，检测到多个页面存在无障碍规则违规。"
 />
 
-## 4. Customize your results
+## 4. 自定义结果
 
-Cypress Accessibility provides flexible configuration options to customize your reports. You can configure:
+Cypress 无障碍测试提供灵活的配置选项来自定义报告。您可以配置：
 
-- [Element filters](/accessibility/configuration/elementfilters): specify selectors for elements that should be excluded from Accessibility scans
-- [View filters](/accessibility/configuration/viewfilters): specify URL patterns for URLs that should be excluded from Accessibility scans. Excluding a URL also excludes all links to that URL.
-- [Views](/accessibility/configuration/views): specify URL patterns that represent views
+- [元素过滤器](/accessibility/configuration/elementfilters)：指定应从无障碍扫描中排除的元素选择器
+- [视图过滤器](/accessibility/configuration/viewfilters)：指定应从无障碍扫描中排除的 URL 模式。排除 URL 也会排除指向该 URL 的所有链接
+- [视图](/accessibility/configuration/views)：指定代表视图的 URL 模式
 
-To add or modify the configuration for your project, navigate to the **App Quality** tab in your project settings.
+要添加或修改项目配置，请导航至项目设置中的 **应用质量** 选项卡。
 
 <DocsImage
   src="/img/accessibility/configuration/cypress-accessibility-configuration-editor.png"
-  alt="The Cypress Cloud UI showing the configuration editor"
+  alt="Cypress Cloud 用户界面显示配置编辑器"
 />
 
-## 5. Check out our detailed guides
+## 5. 查看详细指南
 
-Cypress Accessibility supports many different accessibility automation workflows that might not be obvious at first glance, such as production monitoring of large content-managed websites. There is also an API for programmatic access to the results from each run, and a report comparison feature in Branch Review that allows for reviewing only the new violations discovered in a certain run. The guides walk you through many of the scenarios and use cases supported by Cypress Accessibility in detail so you can see how you might apply the results in your own team.
+Cypress 无障碍测试支持许多可能不太明显的不同无障碍自动化工作流，例如大型内容管理网站的生产环境监控。还提供了 API 用于编程访问每次运行的结果，以及 Branch Review 中的报告比较功能，可以仅审查特定运行中发现的新违规项。这些指南详细介绍了 Cypress 无障碍测试支持的许多场景和用例，帮助您了解如何在自己的团队中应用这些结果。
 
-Learn more about [how to maximize the impact of Cypress Accessibility](/accessibility/guides/introduction) for your organization.
+详细了解 [如何最大化 Cypress 无障碍测试的影响力](/accessibility/guides/introduction) 为您的组织服务。

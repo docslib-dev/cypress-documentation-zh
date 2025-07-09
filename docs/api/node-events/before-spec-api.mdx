@@ -1,25 +1,22 @@
 ---
-title: 'Before Spec Event | Cypress Node Events'
-description: 'The before:spec event fires before a spec file is run in Cypress.'
+title: 'Before Spec 事件 | Cypress 节点事件'
+description: 'before:spec 事件会在 Cypress 运行 spec 文件前触发。'
 sidebar_label: 'before:spec'
 ---
 
 <ProductHeading product="app" />
 
-# Before Spec Event
+# Before Spec 事件
 
-The `before:spec` event fires before a spec file is run. When running cypress
-via `cypress open`, the event will fire when the browser launches.
+`before:spec` 事件会在运行 spec 文件前触发。当通过 `cypress open` 运行 Cypress 时，该事件会在浏览器启动时触发。
 
-## Syntax
+## 语法
 
 <WarningSetupNodeEvents />
 
 :::caution
 
-⚠️ When running via `cypress open`, the `before:spec` event only fires if the
-[experimentalInteractiveRunEvents flag](/app/references/configuration#Experiments)
-is enabled.
+⚠️ 通过 `cypress open` 运行时，只有在启用 [experimentalInteractiveRunEvents 标志](/app/references/configuration#Experiments) 时才会触发 `before:spec` 事件。
 
 :::
 
@@ -35,26 +32,25 @@ on('before:spec', (spec) => {
 
 <Icon name="angle-right" /> **spec _(Object)_**
 
-Details of the spec file, including the following properties:
+Spec 文件的详细信息，包含以下属性：
 
-| Property   | Description                                                                                |
-| ---------- | ------------------------------------------------------------------------------------------ |
-| `name`     | The base name of the spec file (e.g. `login.cy.js`)                                        |
-| `relative` | The path to the spec file, relative to the project root (e.g. `cypress/e2e/login.cy.js`)   |
-| `absolute` | The absolute path to the spec file (e.g. `/Users/janelane/my-app/cypress/e2e/login.cy.js`) |
+| 属性       | 描述                                                                                     |
+| ---------- | ---------------------------------------------------------------------------------------- |
+| `name`     | spec 文件的基础名称（例如 `login.cy.js`）                                                |
+| `relative` | spec 文件相对于项目根目录的路径（例如 `cypress/e2e/login.cy.js`）                        |
+| `absolute` | spec 文件的绝对路径（例如 `/Users/janelane/my-app/cypress/e2e/login.cy.js`）             |
 
-## Usage
+## 用法
 
-You can return a promise from the `before:spec` event handler and it will be
-awaited before Cypress proceeds running the spec.
+你可以从 `before:spec` 事件处理函数中返回一个 promise，Cypress 会等待该 promise 完成后再继续运行 spec。
 
-### Log the relative spec path to stdout before the spec is run
+### 在 spec 运行前将相对路径输出到 stdout
 
 :::cypress-config-plugin-example
 
 ```ts
 on('before:spec', (spec) => {
-  // spec will look something like this:
+  // spec 对象结构示例：
   // {
   //   name: 'login.cy.js',
   //   relative: 'cypress/e2e/login.cy.js',
@@ -66,10 +62,10 @@ on('before:spec', (spec) => {
 
 :::
 
-## See also
+## 另请参阅
 
 - [After Spec API](/api/node-events/after-spec-api)
 - [Before Run API](/api/node-events/before-run-api)
 - [After Run API](/api/node-events/after-run-api)
-- [How to use Plugins](/app/plugins/plugins-guide)
-- [Node Events Overview](/api/node-events/overview)
+- [如何使用插件](/app/plugins/plugins-guide)
+- [节点事件概览](/api/node-events/overview)

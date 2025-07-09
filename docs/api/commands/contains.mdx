@@ -1,6 +1,6 @@
 ---
-title: 'contains | Cypress Documentation'
-description: Get the DOM element containing the text in Cypress.
+title: 'contains | Cypress 文档'
+description: 在Cypress中获取包含指定文本的DOM元素。
 sidebar_label: contains
 slug: /api/commands/contains
 ---
@@ -9,11 +9,9 @@ slug: /api/commands/contains
 
 # contains
 
-Get the DOM element containing the text. DOM elements can contain _more_ than
-the desired text and still match. Additionally, Cypress
-[prefers some DOM elements](#Notes) over the deepest element found.
+获取包含指定文本的DOM元素。DOM元素可以包含_更多_文本但仍能匹配。此外，Cypress会[优先选择某些DOM元素](#注意事项)而非找到的最深层元素。
 
-## Syntax
+## 语法
 
 ```javascript
 .contains(content)
@@ -21,7 +19,7 @@ the desired text and still match. Additionally, Cypress
 .contains(selector, content)
 .contains(selector, content, options)
 
-// ---or---
+// ---或---
 
 cy.contains(content)
 cy.contains(content, options)
@@ -29,485 +27,448 @@ cy.contains(selector, content)
 cy.contains(selector, content, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('.nav').contains('About') // Yield el in .nav containing 'About'
-cy.contains('Hello') // Yield first el in document containing 'Hello'
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.title().contains('My App') // Errors, 'title' does not yield DOM element
-cy.getCookies().contains('_key') // Errors, 'getCookies' does not yield DOM element
+cy.get('.nav').contains('About') // 获取.nav中包含'About'的元素
+cy.contains('Hello') // 获取文档中第一个包含'Hello'的元素
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
-<Icon name="angle-right" /> **content _(String, Number, RegExp)_**
+```javascript
+cy.title().contains('My App') // 错误，'title'不返回DOM元素
+cy.getCookies().contains('_key') // 错误，'getCookies'不返回DOM元素
+```
 
-Get the DOM element containing the content.
+### 参数
 
-<Icon name="angle-right" /> **selector _(String selector)_**
+<Icon name="angle-right" /> **content _(字符串, 数字, 正则表达式)_**
 
-Specify a selector to filter DOM elements containing the text. Cypress will
-_ignore_ its [default preference order](#Notes) for the specified selector.
-Using a selector allows you to return more _shallow_ elements (higher in the
-tree) that contain the specific text.
+获取包含该内容的DOM元素。
 
-<Icon name="angle-right" /> **options _(Object)_**
+<Icon name="angle-right" /> **selector _(字符串选择器)_**
 
-Pass in an options object to change the default behavior of `.contains()`.
+指定一个选择器来筛选包含文本的DOM元素。Cypress会_忽略_其对指定选择器的[默认优先级顺序](#注意事项)。使用选择器可以返回包含特定文本的更_浅层_元素（树中更高层）。
 
-| Option             | Default                                                                        | Description                                                                                                  |
-| ------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
-| `matchCase`        | `true`                                                                         | Check case sensitivity                                                                                       |
-| `log`              | `true`                                                                         | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log)                          |
-| `timeout`          | [`defaultCommandTimeout`](/app/references/configuration#Timeouts)              | Time to wait for `.contains()` to resolve before [timing out](#Timeouts)                                     |
-| `includeShadowDom` | [`includeShadowDom` config option value](/app/references/configuration#Global) | Whether to traverse shadow DOM boundaries and include elements within the shadow DOM in the yielded results. |
+<Icon name="angle-right" /> **options _(对象)_**
+
+传入一个选项对象以改变`.contains()`的默认行为。
+
+| 选项             | 默认值                                                                        | 描述                                                                                                  |
+| ---------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `matchCase`      | `true`                                                                         | 检查大小写敏感                                                                                       |
+| `log`            | `true`                                                                         | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示命令                                      |
+| `timeout`        | [`defaultCommandTimeout`](/app/references/configuration#Timeouts)              | 等待`.contains()`解析的[超时时间](#超时)                                                             |
+| `includeShadowDom` | [`includeShadowDom`配置选项值](/app/references/configuration#Global) | 是否遍历Shadow DOM边界并在返回结果中包含Shadow DOM中的元素。                                         |
 
 <HeaderYields />
 
-- `.contains()` yields the new DOM element it found.
-- `.contains()` is a query, and it is _safe_ to chain further commands.
+- `.contains()`返回找到的新DOM元素。
+- `.contains()`是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### Content
+### 内容
 
-#### Find the first element containing some text
+#### 查找第一个包含某文本的元素
 
 ```html
 <ul>
-  <li>apples</li>
-  <li>oranges</li>
-  <li>bananas</li>
+  <li>苹果</li>
+  <li>橙子</li>
+  <li>香蕉</li>
 </ul>
 ```
 
 ```javascript
-// yields <li>apples</li>
-cy.contains('apples')
+// 返回<li>苹果</li>
+cy.contains('苹果')
 ```
 
-#### Find the `input[type='submit']` by value
+#### 通过值查找`input[type='submit']`
 
-Get the form element and search in its descendants for the content "submit the
-form!"
+获取表单元素并在其子元素中搜索内容"提交表单！"
 
 ```html
 <div id="main">
   <form>
     <div>
-      <label>name</label>
+      <label>姓名</label>
       <input name="name" />
     </div>
     <div>
-      <label>age</label>
+      <label>年龄</label>
       <input name="age" />
     </div>
-    <input type="submit" value="submit the form!" />
+    <input type="submit" value="提交表单！" />
   </form>
 </div>
 ```
 
 ```javascript
-// yields input[type='submit'] element then clicks it
-cy.get('form').contains('submit the form!').click()
+// 返回input[type='submit']元素并点击它
+cy.get('form').contains('提交表单！').click()
 ```
 
-### Number
+### 数字
 
-#### Find the first element containing a number
+#### 查找第一个包含数字的元素
 
-Even though the `<span>` is the deepest element that contains a "4", Cypress
-automatically yields `<button>` elements over spans because of its
-[preferred element order](#Preferences).
+尽管`<span>`是包含"4"的最深层元素，但Cypress会因其[元素优先级顺序](#优先级)自动返回`<button>`元素而非span。
 
 ```html
 <button class="btn btn-primary" type="button">
-  Messages <span class="badge">4</span>
+  消息 <span class="badge">4</span>
 </button>
 ```
 
 ```javascript
-// yields <button>
+// 返回<button>
 cy.contains(4)
 ```
 
-### Regular Expression
+### 正则表达式
 
-#### Find the first element with text matching the regular expression
+#### 查找第一个文本匹配正则表达式的元素
 
 ```html
 <ul>
-  <li>apples</li>
-  <li>oranges</li>
-  <li>bananas</li>
+  <li>苹果</li>
+  <li>橙子</li>
+  <li>香蕉</li>
 </ul>
 ```
 
 ```javascript
-// yields <li>bananas</li>
+// 返回<li>香蕉</li>
 cy.contains(/^b\w+/)
 ```
 
-### Selector
+### 选择器
 
-#### Specify a selector to return a specific element
+#### 指定选择器返回特定元素
 
-Technically the `<html>`, `<body>`, `<ul>`, and first `<li>` in the example
-below all contain "apples".
+从技术上讲，下面的`<html>`、`<body>`、`<ul>`和第一个`<li>`都包含"苹果"。
 
-Normally Cypress would return the first `<li>` since that is the _deepest_
-element that contains "apples".
+通常Cypress会返回第一个`<li>`，因为这是包含"苹果"的_最深层_元素。
 
-To override the element that is yielded we can pass 'ul' as the selector.
+为了覆盖返回的元素，我们可以传递'ul'作为选择器。
 
 ```html
 <html>
   <body>
     <ul>
-      <li>apples</li>
-      <li>oranges</li>
-      <li>bananas</li>
+      <li>苹果</li>
+      <li>橙子</li>
+      <li>香蕉</li>
     </ul>
   </body>
 </html>
 ```
 
 ```javascript
-// yields <ul>...</ul>
-cy.contains('ul', 'apples')
+// 返回<ul>...</ul>
+cy.contains('ul', '苹果')
 ```
 
-#### Keep the form as the subject
+#### 保持表单作为主题
 
-Here's an example that uses the selector to ensure that the `<form>` remains the
-[subject](/app/core-concepts/introduction-to-cypress#Subject-Management) for
-future chaining.
+以下示例使用选择器确保`<form>`在后续链式调用中保持[主题](/app/core-concepts/introduction-to-cypress#主题管理)。
 
 ```html
 <form>
   <div>
-    <label>name</label>
+    <label>姓名</label>
     <input name="name" />
   </div>
-  <button type="submit">Proceed</button>
+  <button type="submit">继续</button>
 </form>
 ```
 
 ```javascript
-cy.get('form') // yields <form>...</form>
-  .contains('form', 'Proceed') // yields <form>...</form>
-  .submit() // yields <form>...</form>
+cy.get('form') // 返回<form>...</form>
+  .contains('form', '继续') // 返回<form>...</form>
+  .submit() // 返回<form>...</form>
 ```
 
-Without the explicit selector the subject would change to be the `<button>`.
-Using the explicit selector ensures that chained commands will have the `<form>`
-as the subject.
+如果没有显式选择器，主题会变为`<button>`。使用显式选择器确保链式命令的主题是`<form>`。
 
-### Case Sensitivity
+### 大小写敏感
 
-Here's an example using the `matchCase` option to ignore case sensitivity.
+以下示例使用`matchCase`选项忽略大小写敏感。
 
 ```html
-<div>Capital Sentence</div>
+<div>大写句子</div>
 ```
 
 ```js
-cy.get('div').contains('capital sentence') // fail
-cy.get('div').contains('capital sentence', { matchCase: false }) // pass
+cy.get('div').contains('小写句子') // 失败
+cy.get('div').contains('小写句子', { matchCase: false }) // 成功
 ```
 
-## Notes
+## 注意事项
 
-### Scopes
+### 作用域
 
-`.contains()` acts differently whether it's starting a series of commands or
-being chained off an existing series.
+`.contains()`的行为取决于它是开始一个命令序列还是链式调用现有序列。
 
-#### When starting a series of commands:
+#### 当开始一个命令序列时：
 
-This queries the entire `document` for the content.
+这会查询整个`document`中的内容。
 
 ```javascript
-cy.contains('Log In')
+cy.contains('登录')
 ```
 
-#### When chained to an existing series of commands
+#### 当链式调用现有命令序列时
 
-This will query inside of the `<#checkout-container>` element.
+这会在`<#checkout-container>`元素内部查询。
 
 ```javascript
-cy.get('#checkout-container').contains('Buy Now')
+cy.get('#checkout-container').contains('立即购买')
 ```
 
-#### Be wary of chaining multiple contains
+#### 注意链式调用多个contains
 
-Let's imagine a scenario where you click a button to delete a user and a dialog
-appears asking you to confirm this deletion.
+假设一个场景：点击按钮删除用户，然后出现对话框要求确认删除。
 
 ```javascript
-// This doesn't work as intended
-cy.contains('Delete User').click().contains('Yes, Delete!').click()
+// 这样无法按预期工作
+cy.contains('删除用户').click().contains('确认删除！').click()
 ```
 
-Because the second `.contains()` is chained off of a command that yielded the
-`<button>`, Cypress will look inside of the `<button>` for the new content.
+因为第二个`.contains()`链式调用了返回`<button>`的命令，Cypress会在`<button>`内部查找新内容。
 
-In other words, Cypress will look inside of the `<button>` containing "Delete
-User" for the content: "Yes, Delete!", which is not what we intended.
+换句话说，Cypress会在包含"删除用户"的`<button>`中查找内容："确认删除！"，这不是我们想要的。
 
-What you want to do is call `cy` again, which automatically creates a new chain
-scoped to the `document`.
+正确做法是再次调用`cy`，这会自动创建一个新的链式作用域到`document`。
 
 ```javascript
-cy.contains('Delete User').click()
-cy.contains('Yes, Delete!').click()
+cy.contains('删除用户').click()
+cy.contains('确认删除！').click()
 ```
 
-### Leading, trailing, duplicate whitespaces aren't ignored in `<pre>` tag
+### `<pre>`标签中的前导、尾随和重复空格不会被忽略
 
-Unlike other tags, `<pre>` doesn't ignore leading, trailing, or duplicate
-whitespaces as shown below:
+与其他标签不同，`<pre>`不会忽略前导、尾随或重复空格，如下所示：
 
 ```html
-<!--Code for test-->
-<h2>Other tags</h2>
-<p>Hello, World !</p>
+<!--测试代码-->
+<h2>其他标签</h2>
+<p>你好，世界！</p>
 
-<h2>Pre tag</h2>
-<pre>                 Hello,           World      !</pre>
+<h2>Pre标签</h2>
+<pre>                 你好，           世界      ！</pre>
 ```
 
-Rendered result:
+渲染结果：
 
 <DocsImage
   src="/img/api/contains/contains-pre-exception.png"
-  alt="The result of pre tag"
+  alt="pre标签的结果"
 />
 
-To reflect this behavior, Cypress also doesn't ignore them.
+为了反映这种行为，Cypress也不会忽略它们。
 
 ```js
-// test result for above code
+// 上述代码的测试结果
 
-cy.get('p').contains('Hello, World !') // pass
-cy.get('p').contains('           Hello,          World   !') // fail
+cy.get('p').contains('你好，世界！') // 成功
+cy.get('p').contains('           你好，          世界   ！') // 失败
 
-cy.get('pre').contains('Hello, World !') // fail
-cy.get('pre').contains('                 Hello,           World      !') // pass
+cy.get('pre').contains('你好，世界！') // 失败
+cy.get('pre').contains('                 你好，           世界      ！') // 成功
 ```
 
-### Non-breaking space
+### 不间断空格
 
-You can use a space character in `cy.contains()` to match text in the HTML that
-uses a non-breaking space entity `&nbsp;`.
+你可以在`cy.contains()`中使用空格字符来匹配HTML中使用不间断空格实体`&nbsp;`的文本。
 
 ```html
-<span>Hello&nbsp;world</span>
+<span>你好&nbsp;世界</span>
 ```
 
 ```javascript
-// finds the span element
-cy.contains('Hello world')
+// 找到span元素
+cy.contains('你好 世界')
 ```
 
-**Tip:** read about assertions against a text with non-breaking space entities
-in
-[How do I get an element's text contents?](/app/faq#How-do-I-get-an-elements-text-contents)
+**提示：** 阅读关于对包含不间断空格实体的文本进行断言的更多信息，请参见[如何获取元素的文本内容？](/app/faq#如何获取元素的文本内容)
 
-### Single Element
+### 单个元素
 
-#### Only the _first_ matched element will be returned
+#### 仅返回_第一个_匹配的元素
 
 ```html
 <ul id="header">
-  <li>Welcome, Jane Lane</li>
+  <li>欢迎，简·莱恩</li>
 </ul>
 <div id="main">
-  <span>These users have 10 connections with Jane Lane</span>
+  <span>这些用户与简·莱恩有10个连接</span>
   <ul>
-    <li>Jamal</li>
-    <li>Patricia</li>
+    <li>贾马尔</li>
+    <li>帕特丽夏</li>
   </ul>
 </div>
 ```
 
-The below example will return the `<li>` in the `#header` since that is the
-_first_ element that contains the text "Jane Lane".
+以下示例会返回`#header`中的`<li>`，因为这是_第一个_包含文本"简·莱恩"的元素。
 
 ```javascript
-// yields #header li
-cy.contains('Jane Lane')
+// 返回#header li
+cy.contains('简·莱恩')
 ```
 
-If you wanted to select the `<span>` instead, you could narrow the elements
-yielded before the `.contains()`.
+如果想选择`<span>`，可以在`.contains()`之前缩小返回的元素范围。
 
 ```javascript
-// yields <span>
-cy.get('#main').contains('Jane Lane')
+// 返回<span>
+cy.get('#main').contains('简·莱恩')
 ```
 
-### Default `<input type="submit">` labels
+### 默认的`<input type="submit">`标签
 
-When the `value` attribute is omitted from an `<input type="submit">`, the
-default label is used and can be locale-dependent.
-[More info at MDN.](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/submit#omitting_the_value_attribute)
+当`<input type="submit">`省略`value`属性时，会使用默认标签，这可能与地区相关。
+[更多信息见MDN。](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/submit#omitting_the_value_attribute)
 
-When this happens, the `value` is an empty string, and there is no programmatic
-way for Cypress to filter elements by the label displayed by the user agent.
-This can cause unexpected failures when using `cy.contains()` with submit
-buttons.
+此时`value`为空字符串，Cypress无法通过用户代理显示的标签以编程方式筛选元素。这可能导致在使用`cy.contains()`与提交按钮时出现意外失败。
 
-The solution in this case is to:
+解决方案是：
 
 ```js
- // assert the empty string
+ // 断言空字符串
  cy.get('input').should('have.value', '')
 
- // ---or---
+ // ---或---
 
- // if possible, set the `value` attribute
- <input type=submit value="Submit" />
+ // 如果可能，设置`value`属性
+ <input type=submit value="提交" />
 ```
 
-### Preferences
+### 优先级
 
-#### Element preference order
+#### 元素优先级顺序
 
-`.contains()` defaults to preferring elements higher in the tree when they are:
+`.contains()`默认优先选择树中更高层的元素，当它们是：
 
 - `input[type='submit']`
 - `button`
 - `a`
 - `label`
 
-Cypress will ignore this element preference order if you pass a selector
-argument to `.contains()`.
+如果向`.contains()`传递选择器参数，Cypress会忽略此元素优先级顺序。
 
-#### Favor of `<button>` over other deeper elements
+#### 优先选择`<button>`而非其他更深层的元素
 
-Even though the `<span>` is the deepest element that contains "Search", Cypress
-yields `<button>` elements over spans.
+尽管`<span>`是包含"搜索"的最深层元素，Cypress会返回`<button>`元素而非span。
 
 ```html
 <form>
   <button>
     <i class="fa fa-search"></i>
-    <span>Search</span>
+    <span>搜索</span>
   </button>
 </form>
 ```
 
 ```javascript
-// yields <button>
-cy.contains('Search').children('i').should('have.class', 'fa-search')
+// 返回<button>
+cy.contains('搜索').children('i').should('have.class', 'fa-search')
 ```
 
-#### Favor of `<a>` over other deeper elements
+#### 优先选择`<a>`而非其他更深层的元素
 
-Even though the `<span>` is the deepest element that contains "Sign Out",
-Cypress yields anchor elements over spans.
+尽管`<span>`是包含"退出登录"的最深层元素，Cypress会返回锚元素而非span。
 
 ```html
 <nav>
   <a href="/users">
-    <span>Users</span>
+    <span>用户</span>
   </a>
   <a href="/signout">
-    <span>Sign Out</span>
+    <span>退出登录</span>
   </a>
 </nav>
 ```
 
 ```javascript
-// yields <a>
-cy.get('nav').contains('Sign Out').should('have.attr', 'href', '/signout')
+// 返回<a>
+cy.get('nav').contains('退出登录').should('have.attr', 'href', '/signout')
 ```
 
-#### Favor of `<label>` over other deeper elements
+#### 优先选择`<label>`而非其他更深层的元素
 
-Even though the `<span>` is the deepest element that contains "Age", Cypress
-yields `<label>` elements over `<span>`.
+尽管`<span>`是包含"年龄"的最深层元素，Cypress会返回`<label>`元素而非`<span>`。
 
 ```html
 <form>
   <label>
-    <span>Name:</span>
+    <span>姓名：</span>
     <input name="name" />
   </label>
   <label>
-    <span>Age:</span>
+    <span>年龄：</span>
     <input name="age" />
   </label>
 </form>
 ```
 
 ```javascript
-// yields label
-cy.contains('Age').find('input').type('29')
+// 返回label
+cy.contains('年龄').find('input').type('29')
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.contains()` can be chained off of `cy` or off a command that yields DOM
-  element(s).
+- `.contains()`可以链式调用`cy`或返回DOM元素的命令。
 
 <HeaderAssertions />
 
-- `.contains()` will automatically [retry](/app/core-concepts/retry-ability)
-  until the element(s)
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.contains()`will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed.
+- `.contains()`会自动[重试](/app/core-concepts/retry-ability)直到元素在DOM中存在。
+- `.contains()`会自动[重试](/app/core-concepts/retry-ability)直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `.contains()` can time out waiting for the element(s) to
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.contains()` can time out waiting for assertions you've added to pass.
+- `.contains()`可能因等待元素[存在于DOM中](/app/core-concepts/introduction-to-cypress#隐式断言)而超时。
+- `.contains()`可能因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Element contains text "New User"_**
+**_元素包含文本"新用户"_**
 
 ```javascript
-cy.get('h1').contains('New User')
+cy.get('h1').contains('新用户')
 ```
 
-The commands above will display in the Command Log as:
+以上命令会在命令日志中显示为：
 
 <DocsImage
   src="/img/api/contains/find-el-that-contains-text.png"
-  alt="Command Log contains"
+  alt="命令日志contains"
 />
 
-When clicking on the `contains` command within the command log, the console
-outputs the following:
+点击命令日志中的`contains`命令时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/contains/see-elements-found-from-contains-in-console.png"
   alt="console.log contains"
 />
 
-## History
+## 历史记录
 
-| Version                                  | Changes                               |
-| ---------------------------------------- | ------------------------------------- |
-| [5.2.0](/app/references/changelog#5-2-0) | Added `includeShadowDom` option.      |
-| [4.0.0](/app/references/changelog#4-0-0) | Added support for option `matchCase`. |
+| 版本                                   | 变更                                  |
+| -------------------------------------- | ------------------------------------- |
+| [5.2.0](/app/references/changelog#5-2-0) | 添加`includeShadowDom`选项。         |
+| [4.0.0](/app/references/changelog#4-0-0) | 添加对`matchCase`选项的支持。        |
 
-## See also
+## 另请参阅
 
 - [`cy.get()`](/api/commands/get)
 - [`.invoke()`](/api/commands/invoke)
 - [`.within()`](/api/commands/within)
-- [Retry-ability](/app/core-concepts/retry-ability)
+- [重试能力](/app/core-concepts/retry-ability)

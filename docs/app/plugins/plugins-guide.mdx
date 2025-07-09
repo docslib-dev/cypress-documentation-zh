@@ -1,34 +1,34 @@
 ---
-title: 'How to use Cypress Plugins'
-description: 'Learn how to install and use Cypress plugins.'
-sidebar_label: 'How to use Plugins'
+title: '如何使用Cypress插件'
+description: '学习如何安装和使用Cypress插件。'
+sidebar_label: '如何使用插件'
 sidebar_position: 10
 ---
 
 <ProductHeading product="app" />
 
-# How to use Cypress Plugins
+# 如何使用Cypress插件
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to install a plugin
-- How to use a plugin
+- 如何安装插件
+- 如何使用插件
 
 :::
 
-Cypress maintains a curated list of plugins created by us and the community.
-Plugins from our [official list](/app/plugins/plugins-list) are npm modules. This enables them to
-be versioned and updated separately without needing to update Cypress itself.
+Cypress维护了一个由我们和社区创建的精选插件列表。
+来自我们[官方列表](/app/plugins/plugins-list)的插件都是npm模块。这使得它们可以
+独立进行版本控制和更新，而无需更新Cypress本身。
 
-You can install any published plugin using npm:
+你可以使用npm安装任何已发布的插件：
 
 <Tabs>
   <TabItem value="npm">
 
 ```shell
-npm install <plugin name> --save-dev
+npm install <插件名称> --save-dev
 ```
 
   </TabItem>
@@ -36,7 +36,7 @@ npm install <plugin name> --save-dev
   <TabItem value="yarn">
 
 ```shell
-yarn add <plugin name> --dev
+yarn add <插件名称> --dev
 ```
 
   </TabItem>
@@ -44,29 +44,29 @@ yarn add <plugin name> --dev
   <TabItem value="pnpm">
 
 ```shell
-pnpm add --save-dev <plugin name>
+pnpm add --save-dev <插件名称>
 ```
 
   </TabItem>
 </Tabs>
 
-## Using a plugin
+## 使用插件
 
-Add your plugin to the
+将你的插件添加到[Cypress配置](/app/references/configuration)中的
 [`setupNodeEvents`](/app/references/configuration#setupNodeEvents)
-function in the [Cypress configuration](/app/references/configuration). Please follow any additional instructions provided by the plugin's documentation.
-Here's an example of what this might look like:
+函数。请遵循插件文档提供的任何额外说明。
+以下是一个示例：
 
 :::cypress-config-plugin-example
 
 ```ts
-// bind to the event we care about
-on('<event>', (arg1, arg2) => {
-  // plugin stuff here
+// 绑定我们关心的事件
+on('<事件>', (arg1, arg2) => {
+  // 插件相关操作在这里
 })
 ```
 
 :::
 
-For information on writing plugins, please check out our
-[Node Events Overview](/api/node-events/overview).
+有关编写插件的信息，请查看我们的
+[Node Events概述](/api/node-events/overview)。

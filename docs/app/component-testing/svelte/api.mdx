@@ -1,6 +1,6 @@
 ---
 title: Svelte API
-description: API for mounting Svelte components in Cypress tests.
+description: 在Cypress测试中挂载Svelte组件的API
 sidebar_position: 40
 sidebar_label: API
 ---
@@ -9,7 +9,7 @@ sidebar_label: API
 
 # Svelte API
 
-## Methods
+## 方法
 
 ### mount
 
@@ -19,11 +19,11 @@ import { mount } from 'cypress/svelte'
 
 <table class="api-table table-list">
   <tr>
-    <td>Description</td>
-    <td>Mounts a Svelte component inside the Cypress browser</td>
+    <td>描述</td>
+    <td>在Cypress浏览器中挂载Svelte组件</td>
   </tr>
   <tr>
-    <td>Signature</td>
+    <td>签名</td>
     <td>
       mount(Component: Component&lt;Record&lt;string, any&gt;, Record&lt;string,
       any&gt;, any&gt;, options?: MountOptions):
@@ -31,33 +31,33 @@ import { mount } from 'cypress/svelte'
     </td>
   </tr>
   <tr>
-    <td>Returns</td>
+    <td>返回值</td>
     <td>Cypress.Chainable&lt;MountReturn&gt;</td>
   </tr>
 </table>
 
 <table class="api-table">
-  <caption>mount Parameters</caption>
+  <caption>mount 参数</caption>
   <thead>
-    <td>Name</td>
-    <td>Type</td>
-    <td>Description</td>
+    <td>名称</td>
+    <td>类型</td>
+    <td>描述</td>
   </thead>
   <tr>
     <td>component</td>
     <td>
       Component&lt;Record&lt;string, any&gt;, Record&lt;string, any&gt;, any&gt;
     </td>
-    <td>Svelte component being mounted</td>
+    <td>要挂载的Svelte组件</td>
   </tr>
   <tr>
     <td>options</td>
-    <td>MountOptions (optional)</td>
-    <td>options to customize the component being mounted</td>
+    <td>MountOptions (可选)</td>
+    <td>用于自定义挂载组件的选项</td>
   </tr>
 </table>
 
-#### Example
+#### 示例
 
 ```js
 import Counter from './Counter.svelte'
@@ -69,54 +69,54 @@ it('should render', () => {
 })
 ```
 
-## Interfaces
+## 接口
 
 ### MountOptions
 
 <table class="api-table">
-  <caption>members</caption>
+  <caption>成员</caption>
   <thead>
-    <td>Name</td>
-    <td>Type</td>
-    <td>Description</td>
+    <td>名称</td>
+    <td>类型</td>
+    <td>描述</td>
   </thead>
   <tr>
     <td>anchor</td>
-    <td>Element (optional)</td>
+    <td>Element (可选)</td>
     <td></td>
   </tr>
   <tr>
     <td>context</td>
-    <td>Map&lt;any, any&gt; (optional)</td>
+    <td>Map&lt;any, any&gt; (可选)</td>
     <td></td>
   </tr>
   <tr>
     <td>intro</td>
-    <td>boolean (optional)</td>
+    <td>boolean (可选)</td>
     <td></td>
   </tr>
   <tr>
     <td>log</td>
-    <td>boolean (optional)</td>
+    <td>boolean (可选)</td>
     <td></td>
   </tr>
   <tr>
     <td>props</td>
-    <td>Record&lt;string any&gt; (optional)</td>
+    <td>Record&lt;string any&gt; (可选)</td>
     <td></td>
   </tr>
 </table>
 
 ### MountReturn
 
-Type that the `mount` function yields
+`mount`函数返回的类型
 
 <table class="api-table">
-  <caption>members</caption>
+  <caption>成员</caption>
   <thead>
-    <td>Name</td>
-    <td>Type</td>
-    <td>Description</td>
+    <td>名称</td>
+    <td>类型</td>
+    <td>描述</td>
   </thead>
   <tr>
     <td>component</td>

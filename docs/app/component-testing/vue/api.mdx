@@ -1,6 +1,6 @@
 ---
 title: Vue API
-description: API for mounting Vue components in Cypress tests.
+description: 在Cypress测试中挂载Vue组件的API
 sidebar_position: 40
 sidebar_label: API
 ---
@@ -9,7 +9,7 @@ sidebar_label: API
 
 # Vue API
 
-## Methods
+## 方法
 
 ### mount
 
@@ -19,15 +19,13 @@ import { mount } from 'cypress/vue'
 
 <table class="api-table table-list">
   <tr>
-    <td>Description</td>
+    <td>描述</td>
     <td>
-      Used for mounting Vue components in isolation. It is responsible for
-      rendering the component within Cypress's sandboxed iframe and handling any
-      framework-specific cleanup.
+      用于独立挂载Vue组件。负责在Cypress的沙盒iframe中渲染组件，并处理任何框架特定的清理工作。
     </td>
   </tr>
   <tr>
-    <td>Signature</td>
+    <td>签名</td>
     <td>
       mount(originalComponent: &lbrace; new (...args: any[]): {}; __vccOpts:
       any; &rbrace;, options?: MountOptions):
@@ -37,50 +35,50 @@ import { mount } from 'cypress/vue'
 </table>
 
 <table class="api-table">
-  <caption>mount Parameters</caption>
+  <caption>mount参数</caption>
   <thead>
-    <td>Name</td>
-    <td>Type</td>
-    <td>Description</td>
+    <td>名称</td>
+    <td>类型</td>
+    <td>描述</td>
   </thead>
   <tr>
     <td>originalComponent</td>
     <td>new (...args: any[])</td>
-    <td>The component to mount in test</td>
+    <td>要在测试中挂载的组件</td>
   </tr>
   <tr>
     <td>options</td>
-    <td>MountOptions (optional)</td>
-    <td>The options for mounting the component</td>
+    <td>MountOptions (可选)</td>
+    <td>挂载组件的选项</td>
   </tr>
 </table>
 
-## Interfaces
+## 接口
 
 ### MountOptions
 
-([Vue 3 MountingOptions](https://test-utils.vuejs.org/api/#mount) or
+([Vue 3 MountingOptions](https://test-utils.vuejs.org/api/#mount) 或
 [Vue Test Utils](https://test-utils.vuejs.org/))
 
 ### MountReturn
 
-Type that the `mount` function yields
+`mount`函数返回的类型
 
 <table class="api-table">
-  <caption>members</caption>
+  <caption>成员</caption>
   <thead>
-    <td>Name</td>
-    <td>Type</td>
-    <td>Description</td>
+    <td>名称</td>
+    <td>类型</td>
+    <td>描述</td>
   </thead>
   <tr>
     <td>wrapper</td>
     <td>VueWrapper</td>
-    <td>The Vue Test Utils `wrapper`</td>
+    <td>Vue Test Utils的`wrapper`</td>
   </tr>
   <tr>
     <td>component</td>
     <td>VueComponent</td>
-    <td>The component instance</td>
+    <td>组件实例</td>
   </tr>
 </table>

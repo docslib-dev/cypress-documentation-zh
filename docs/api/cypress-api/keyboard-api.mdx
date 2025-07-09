@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.Keyboard | Cypress Documentation'
-description: Set the default values for how the .type() command is executed in Cypress.
+title: 'Cypress.Keyboard | Cypress 文档'
+description: 设置 .type() 命令在 Cypress 中执行的默认值。
 sidebar_label: Keyboard
 sidebar_position: 150
 ---
@@ -9,48 +9,47 @@ sidebar_position: 150
 
 # Cypress.Keyboard
 
-The Keyboard API allows you to access available `Keys` for use with [`cy.press()`](/api/commands/press) or to set the default values for how the
-[.type()](/api/commands/type) command is executed.
+Keyboard API 允许你访问可用的 `Keys` 以配合 [`cy.press()`](/api/commands/press) 使用，或设置 [.type()](/api/commands/type) 命令执行的默认值。
 
-## Syntax
+## 语法
 
 ```javascript
 Cypress.Keyboard.Keys(key)
 Cypress.Keyboard.defaults(options)
 ```
 
-### Keys Arguments
+### Keys 参数
 
 <Icon name="angle-right" /> **key _(String)_**
 
-The key available for `cy.press()`.
+可用于 `cy.press()` 的按键。
 
-The following keys are supported:
+支持的按键如下：
 
-| Reference                   | Value   |
-| --------------------------- | ------- |
-| `Cypress.Keyboard.Keys.TAB` | `"Tab"` |
+| 参考                          | 值      |
+| ---------------------------- | ------- |
+| `Cypress.Keyboard.Keys.TAB`  | `"Tab"` |
 
-### defaults Arguments
+### defaults 参数
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-An object containing the following:
+包含以下属性的对象：
 
-| Option           | Default | Description                                                                                                                                                    |
-| ---------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `keystrokeDelay` | `10`    | The delay, in milliseconds, between keystrokes while typing with [.type()](/api/commands/type). Set to `0` to remove the delay. Must be a non-negative number. |
+| 选项              | 默认值  | 描述                                                                                                                                                     |
+| ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `keystrokeDelay`  | `10`    | 使用 [.type()](/api/commands/type) 输入时按键之间的延迟时间（毫秒）。设为 `0` 可移除延迟。必须为非负数。                                                  |
 
-## Examples
+## 示例
 
-### Press tab key
+### 按下 Tab 键
 
 ```javascript
 cy.press(Cypress.Keyboard.Keys.TAB)
 cy.get('input.second').should('have.focus')
 ```
 
-### Slow down typing by increasing the keystroke delay
+### 通过增加按键延迟来减慢输入速度
 
 ```javascript
 Cypress.Keyboard.defaults({
@@ -58,7 +57,7 @@ Cypress.Keyboard.defaults({
 })
 ```
 
-### Remove the keystroke delay
+### 移除按键延迟
 
 ```javascript
 Cypress.Keyboard.defaults({
@@ -66,44 +65,42 @@ Cypress.Keyboard.defaults({
 })
 ```
 
-## Notes
+## 注意事项
 
-### Where to put Keyboard configuration
+### Keyboard 配置的放置位置
 
 <SupportFileConfiguration />
 
-### Set the keystroke delay in test configuration
+### 在测试配置中设置按键延迟
 
-The keystroke delay can also be set via
-[test configuration](/app/core-concepts/writing-and-organizing-tests#Test-Configuration),
-which can be useful when setting it for a single test or a subset of tests.
+按键延迟也可以通过[测试配置](/app/core-concepts/writing-and-organizing-tests#Test-Configuration)设置，这在为单个测试或一组测试设置时非常有用。
 
 ```javascript
 it(
-  'removes keystroke delay for all typing in this test',
+  '在本测试中移除所有输入的按键延迟',
   { keystrokeDelay: 0 },
   () => {
-    cy.get('input').eq(0).type('fast typing')
-    cy.get('input').eq(1).type('more fast typing')
+    cy.get('input').eq(0).type('快速输入')
+    cy.get('input').eq(1).type('更快的输入')
   }
 )
 
 describe(
-  'removes keystroke delay in all tests in this suite',
+  '在本套件中所有测试中移除按键延迟',
   { keystrokeDelay: 0 },
   () => {
-    it('types fast in the first input', () => {
-      cy.get('input').eq(0).type('fast typing')
+    it('在第一个输入框中快速输入', () => {
+      cy.get('input').eq(0).type('快速输入')
     })
 
-    it('types fast in the second input', () => {
-      cy.get('input').eq(1).type('more fast typing')
+    it('在第二个输入框中快速输入', () => {
+      cy.get('input').eq(1).type('更快的输入')
     })
   }
 )
 ```
 
-## See also
+## 另请参阅
 
 - [`cy.press()`](/api/commands/press)
 - [`.type()`](/api/commands/type)

@@ -1,201 +1,198 @@
 ---
-title: Test Replay
-description: Test Replay in Cypress Cloud allows developers to accurately and efficiently debug failed and flaky continuous integration test runs. It captures every test run detail, enabling developers to replay it and inspect the DOM, network requests, console logs, JavaScript errors, and element rendering as they happened in CI.
+title: 测试回放
+description: Cypress Cloud中的测试回放功能让开发者能准确高效地调试持续集成中失败和不稳定的测试运行。它捕获每次测试运行的细节，使开发者能够回放并检查DOM、网络请求、控制台日志、JavaScript错误和元素渲染，就像在CI中发生的那样。
 sidebar_position: 40
 ---
 
 <ProductHeading product="cloud" />
 
-# Test Replay
+# 测试回放
 
 :::info
 
-##### <Icon name="question-circle" color="#0097A8" /> What you'll learn
+##### <Icon name="question-circle" color="#0097A8" /> 你将学到
 
-- How Test Replay captures and replays test commands, network requests, console logs, JavaScript errors, and element rendering
-- How to view and debug tests with Test Replay in Cypress Cloud
+- 测试回放如何捕获和回放测试命令、网络请求、控制台日志、JavaScript错误及元素渲染
+- 如何在Cypress Cloud中使用测试回放查看和调试测试
 
 :::
 
-Test Replay in Cypress Cloud allows developers to accurately and efficiently debug failed and flaky [continuous integration](/app/continuous-integration/overview) test runs. It captures every test run detail, enabling developers to replay it and inspect the DOM, network requests, console logs, JavaScript errors, and element rendering as they happened during `cypress run`.
+Cypress Cloud中的测试回放功能让开发者能准确高效地调试失败和不稳定的[持续集成](/app/continuous-integration/overview)测试运行。它捕获每次测试运行的细节，使开发者能够回放并检查DOM、网络请求、控制台日志、JavaScript错误和元素渲染，就像在`cypress run`期间发生的那样。
 
 <DocsVideo
   src="https://youtube.com/embed/vFLShoCM8pA"
-  title="Test Replay Product Demo"
+  title="测试回放功能演示"
 />
 
-## Key Benefits
+## 核心优势
 
-Test failures in CI have historically been captured through screenshots, videos, and stack trace outputs,
-but these artifacts provide limited information. Developers often need more context to understand the
-root cause of failures, requiring them to reproduce the issue locally, which may not always
-be possible due to environmental or network conditions.
-This knowledge gap between test failures and debugging capabilities leads to increased debugging
-time and potentially deploying unresolved bugs to production. Test Replay solves these problems by providing the following features.
+CI中的测试失败传统上通过截图、视频和堆栈跟踪输出捕获，
+但这些工件提供的信息有限。开发者通常需要更多上下文来理解
+失败的根本原因，这要求他们在本地重现问题，但由于环境或网络条件，
+这并不总是可行的。
+测试失败与调试能力之间的知识鸿沟导致调试时间增加，
+并可能将未解决的缺陷部署到生产环境。测试回放通过提供以下功能解决了这些问题。
 
-<Icon name="star" color="#69D3A7" /> Time travel to the exact moment of test failure
-during runs that happened during Continuous Integration
+<Icon name="star" color="#69D3A7" /> 时间旅行到持续集成运行期间测试失败的确切时刻
 
-<Icon name="star" color="#69D3A7" /> Inspect the DOM, network requests, console logs,
-JavaScript errors, and element rendering
+<Icon name="star" color="#69D3A7" /> 检查DOM、网络请求、控制台日志、
+JavaScript错误和元素渲染
 
-<Icon name="star" color="#69D3A7" /> Debug failed and flaky test runs with more context
-and accuracy
+<Icon name="star" color="#69D3A7" /> 以更多上下文和准确性调试失败和不稳定的测试运行
 
-<Icon name="star" color="#69D3A7" /> Eliminate the need to reproduce test failures
-locally
+<Icon name="star" color="#69D3A7" /> 消除本地重现测试失败的需求
 
-<Icon name="star" color="#69D3A7" /> Shareable and collaborative debugging experience
+<Icon name="star" color="#69D3A7" /> 可共享和协作的调试体验
 
-Test Replay complements the existing visual artifacts provided by Cypress Cloud. It eliminates the need for
-local test replication by enabling developers to time-travel to the exact moment of test failure.
-Developers gain access to previously inaccessible details and feedback loops, enabling
-faster and more accurate debugging, and instilling confidence in handling test failures in CI.
-Replacing video recordings with Test Replay provides a superior debugging experience that is
-sharable and supports team collaboration with efficient workflows.
+测试回放是对Cypress Cloud现有可视化工件的补充。它通过让开发者时间旅行到测试失败的确切时刻，
+消除了本地测试复制的需求。
+开发者可以访问以前无法获取的细节和反馈循环，实现
+更快更准确的调试，并增强处理CI中测试失败的信心。
+用测试回放替代视频录制提供了更优越的调试体验，
+可共享并支持团队协作的高效工作流。
 
 <DocsVideo
   src="https://youtube.com/embed/hX9Br8QSYgc"
-  title="Unlocking the Power of Test Replay!"
+  title="解锁测试回放的强大功能！"
 />
 
-## Get Started
+## 开始使用
 
 :::success
 
-Test Replay is available to **all** Cypress Cloud plans
-at no additional cost, subject to usage limits.
+测试回放功能对**所有**Cypress Cloud计划开放，
+不额外收费，但受使用限制约束。
 
 <CloudFreePlan />
 
 :::
 
-### 1. Record Test Runs
+### 1. 记录测试运行
 
-All you need to do is [record test runs](/cloud/get-started/setup) and log in to your Cypress Cloud
-account to leverage Test Replay's debugging capabilities. No additional configuration
-or changes to your existing tests are required.
+你只需[记录测试运行](/cloud/get-started/setup)并登录Cypress Cloud账户，
+即可利用测试回放的调试能力。无需额外配置
+或修改现有测试。
 
-### 2. Access Test Replay
+### 2. 访问测试回放
 
-Accessing the replay of your test is as simple as reviewing any other test artifact in Cypress Cloud.
+访问测试回放与查看Cypress Cloud中的其他测试工件一样简单。
 
-Hover on a [test for review](/cloud/features/recorded-runs#Tests-for-Review) under a run's **Overview**.
+在运行的**概览**下悬停[待审查测试](/cloud/features/recorded-runs#Tests-for-Review)。
 
 <DocsImage
   src="/img/cloud/features/test-replay/replay_row_magnified.jpg"
-  alt="Run overview row"
+  alt="运行概览行"
 />
 
-Or navigate to the [test detail sidebar](/cloud/features/recorded-runs#Test-detail-sidebar) header or above each attempt in the errors panel. The header option will replay the first failing test while the option above each attempt will replay the affiliated test.
+或导航至[测试详情侧边栏](/cloud/features/recorded-runs#Test-detail-sidebar)标题或错误面板中每次尝试上方。标题选项将回放首次失败的测试，而每次尝试上方的选项将回放关联的测试。
 
 <DocsImage
   src="/img/cloud/features/test-replay/replay_sidebar_magnified.jpg"
-  alt="Run sidebar"
+  alt="运行侧边栏"
   width="60%"
 />
 
-### 3. Debug With Test Replay
+### 3. 使用测试回放调试
 
-Both options above display the Test Replay interface, which we'll unpack from top to bottom in more detail below.
+上述两个选项都会显示测试回放界面，下面我们将从上到下详细解析。
 
-#### Run header
+#### 运行标题
 
-The left side of the header displays the Cypress Cloud test run ID number (#), with the Git branch name along with the spec, platform and browser information. Hovering on this exposes additional test metadata.
+标题左侧显示Cypress Cloud测试运行ID号(#)，包含Git分支名以及规范、平台和浏览器信息。悬停在此处可查看额外的测试元数据。
 
 <DocsImage
   src="/img/cloud/features/test-replay/test-replay-header.jpg"
-  alt="Test Replay header"
+  alt="测试回放标题"
 />
 
-#### Command Log
+#### 命令日志
 
-The left side of the screen displays the [command log](/app/core-concepts/open-mode#Command-Log) just like in the Cypress app, where you can step through, inspect and [time travel](/app/core-concepts/open-mode#Time-traveling) debug your test.
+屏幕左侧显示[命令日志](/app/core-concepts/open-mode#Command-Log)，与Cypress应用中一样，你可以逐步执行、检查并通过[时间旅行](/app/core-concepts/open-mode#Time-traveling)调试测试。
 
 <DocsImage
   src="/img/cloud/features/test-replay/command-log.png"
-  alt="Test Replay Developer Tools panel"
+  alt="测试回放开发者工具面板"
   width="60%"
 />
 
-#### Developer Tools
+#### 开发者工具
 
-Dive into network-level traffic, console events and inspect the application under test just as you can in the browser.
+深入网络层流量、控制台事件并检查被测应用，就像在浏览器中一样。
 
 <DocsImage
   src="/img/cloud/features/test-replay/dev-tools.png"
-  alt="Test Replay Developer Tools panel"
+  alt="测试回放开发者工具面板"
   width="60%"
 />
 
-#### Replay Controls
+#### 回放控制
 
-Toggle each test attempt, play back errors at a variety of speeds or scrub through the captured error by dragging the playhead along the timeline.
+切换每次测试尝试，以不同速度播放错误或通过拖动播放头沿时间线滑动查看捕获的错误。
 
 <DocsImage
   src="/img/cloud/features/test-replay/scrubber.png"
-  alt="Test Replay scrubber controls"
+  alt="测试回放滑动控制"
 />
 
-## How Test Replay Works
+## 测试回放工作原理
 
-Our aim is to create an impactful debugging experience that covers the most ground for users.
-Cypress captures a wide range of data during end-to-end and component test runs.
-This data is then uploaded and stored in Cypress Cloud and replayed for debugging through Test Replay.
+我们的目标是创建一个覆盖用户最多场景的高效调试体验。
+Cypress在端到端和组件测试运行期间捕获广泛的数据。
+这些数据随后上传并存储在Cypress Cloud中，通过测试回放进行调试。
 
-### What is captured
+### 捕获内容
 
-- Test commands
-- Network requests
-- Console logs
-- JavaScript errors
-- Element rendering
-- DOM mutations
-- CSS styles
-- SVG elements
+- 测试命令
+- 网络请求
+- 控制台日志
+- JavaScript错误
+- 元素渲染
+- DOM变更
+- CSS样式
+- SVG元素
 - Iframes
 - Shadow DOM
-- Canvas elements (v13.5.0+, please contact us at support@cypress.io to enable capturing canvas elements)
+- Canvas元素(v13.5.0+，请联系support@cypress.io启用canvas元素捕获)
 
-### What is not captured
+### 未捕获内容
 
-Currently Test Replay does not support the following:
+目前测试回放不支持以下内容：
 
-- Tests recorded in Cypress App below v13.
-- WebKit browser (Safari) tests ([see issue](https://github.com/cypress-io/cypress/issues/28895))
-- Firefox browser tests ([see issue](https://github.com/cypress-io/cypress/issues/28894))
-- Video elements ([see issue](https://github.com/cypress-io/cypress/issues/29903))
-- Audio elements ([see issue](https://github.com/cypress-io/cypress/issues/29905))
-- Objects that do not have `type="image/svg+xml"` ([see issue](https://github.com/cypress-io/cypress/issues/29904))
-- Shadow DOM elements with `slotAssignment="manual"` ([see issue](https://github.com/cypress-io/cypress/issues/29107))
-- Shadow DOM canvases ([see issue](https://github.com/cypress-io/cypress/issues/30438))
-- Server sent events ([see issue](https://github.com/cypress-io/cypress/issues/29908))
-- Web sockets ([see issue](https://github.com/cypress-io/cypress/issues/29907))
-- `localStorage` & `sessionStorage` ([see issue](https://github.com/cypress-io/cypress/issues/29909))
-- Cookies ([see issue](https://github.com/cypress-io/cypress/issues/29910))
-- Network traffic from `cy.request()` ([see issue](https://github.com/cypress-io/cypress/issues/30575))
-- Console props of Cypress commands outside of `cy.request()` ([see issue](https://github.com/cypress-io/cypress/issues/29911))
+- 在v13以下版本的Cypress应用中记录的测试
+- WebKit浏览器(Safari)测试([查看问题](https://github.com/cypress-io/cypress/issues/28895))
+- Firefox浏览器测试([查看问题](https://github.com/cypress-io/cypress/issues/28894))
+- 视频元素([查看问题](https://github.com/cypress-io/cypress/issues/29903))
+- 音频元素([查看问题](https://github.com/cypress-io/cypress/issues/29905))
+- 不含`type="image/svg+xml"`的对象([查看问题](https://github.com/cypress-io/cypress/issues/29904))
+- 含`slotAssignment="manual"`的Shadow DOM元素([查看问题](https://github.com/cypress-io/cypress/issues/29107))
+- Shadow DOM中的canvas([查看问题](https://github.com/cypress-io/cypress/issues/30438))
+- 服务器发送事件([查看问题](https://github.com/cypress-io/cypress/issues/29908))
+- Web sockets([查看问题](https://github.com/cypress-io/cypress/issues/29907))
+- `localStorage`和`sessionStorage`([查看问题](https://github.com/cypress-io/cypress/issues/29909))
+- Cookies([查看问题](https://github.com/cypress-io/cypress/issues/29910))
+- `cy.request()`的网络流量([查看问题](https://github.com/cypress-io/cypress/issues/30575))
+- `cy.request()`之外的Cypress命令的控制台属性([查看问题](https://github.com/cypress-io/cypress/issues/29911))
 
-### Performance
+### 性能
 
-#### Recording
+#### 记录
 
-Capturing this additional data can use additional resources while recording, but you can
-expect an even performance exchange with Test Replay versus video recording.
-There is more activity to capture Test Replay data but without the overhead of recording,
-compressing, and storing video assets.
+捕获这些额外数据在记录时可能使用更多资源，但你可以
+预期测试回放与视频记录的性能相当。
+捕获测试回放数据有更多活动，但没有录制、
+压缩和存储视频资产的开销。
 
 :::info
 
-**Tip:** We recommend disabling video recording when recording with
-Test Replay enabled to optimize performance.
+**提示：** 我们建议在启用测试回放时禁用视频录制，
+以优化性能。
 
 :::
 
-You can inspect the size of the Test Replay data that is uploaded to the Cloud
-and the time spent uploading the Test Replay data by inspecting the standard output of the test run.
+你可以通过检查测试运行的标准输出来查看上传到Cloud的
+测试回放数据大小及上传所花费的时间。
 
-The only assets stored to your file system are in a temporary directory and deleted after the run.
+唯一存储到你文件系统的资产位于临时目录中，运行后会被删除。
 
 ```shell
   (Uploading Cloud Artifacts)
@@ -211,122 +208,120 @@ The only assets stored to your file system are in a temporary directory and dele
   - Test Replay - Done Uploading 298 kB in 633.40ms 1/1
 ```
 
-#### Canvas Elements
+#### Canvas元素
 
-Capturing canvas elements can be resource-intensive. If you have a large number of canvas elements or large canvas elements
-in your application, you may experience performance issues when capturing Test Replay, so we recommend
-monitoring the performance of your tests after enabling capturing of canvas elements and raising any issues with us.
+捕获canvas元素可能消耗大量资源。如果你的应用中有大量canvas元素或大型canvas元素，
+在捕获测试回放时可能会遇到性能问题，因此我们建议
+在启用canvas元素捕获后监控测试性能，并向我们报告任何问题。
 
-Capturing canvas is disabled by default. To enable capturing canvas elements, please contact us at support@cypress.io.
+默认情况下canvas捕获是禁用的。要启用canvas元素捕获，请联系support@cypress.io。
 
-### Runner UI
+### 运行器UI
 
-The Cypress App ["Runner UI"](/app/core-concepts/open-mode#Test-Runner) is made up of a
-[command log](/app/core-concepts/open-mode#Command-Log) which displays every command
-executed in your spec. The UI also includes the URL bar, browser selector, and the viewport size
-control above the application under test.
+Cypress应用中的["运行器UI"](/app/core-concepts/open-mode#Test-Runner)由
+[命令日志](/app/core-concepts/open-mode#Command-Log)组成，显示你的规范中
+执行的每个命令。UI还包括URL栏、浏览器选择器和被测应用上方的视口大小控制。
 
-The Runner UI is visible during `cypress open` mode, but is also rendered
-([headless](/app/references/command-line#Options)-ly) during `cypress run` so that it displays
-within captured screenshots or videos, to assist in debugging CI failures.
+运行器UI在`cypress open`模式下可见，但在`cypress run`期间也会渲染
+（[无头](/app/references/command-line#Options)模式），以便在捕获的截图或视频中显示，
+协助调试CI失败。
 
-But rendering the Runner UI while running tests via `cypress run` can have performance implications,
-resulting in a slower test runtime, especially on lower resourced machines.
+但在通过`cypress run`运行测试时渲染运行器UI可能会影响性能，
+导致测试运行时间变慢，特别是在资源较低的机器上。
 
-With Test Replay, Cypress Cloud regenerates the entire UI for viewing the run and debugging CI failures.
-Additionally, displaying the Cypress command log in videos and screenshots is less valuable for users
-using Test Replay.
+有了测试回放，Cypress Cloud会为查看运行和调试CI失败重新生成整个UI。
+此外，在视频和截图中显示Cypress命令日志对使用测试回放的用户价值较低。
 
-So when Test Replay is enabled, the Runner UI does not render during `cypress run`
+因此，当启用测试回放时，运行器UI在`cypress run`期间不会渲染。
 
-If you'd like to render the Runner UI, you can turn on this behavior by passing `--runner-ui` as a CLI flag.
-You may encounter a slower performance when turning this on, especially in lower resourced machines.
-Learn more about the `--runner-ui` [command line option](/app/references/command-line#cypress-run-runner-ui).
+如果你想渲染运行器UI，可以通过传递`--runner-ui`作为CLI标志来开启此行为。
+开启后可能会遇到性能下降，特别是在资源较低的机器上。
+了解更多关于`--runner-ui`的[命令行选项](/app/references/command-line#cypress-run-runner-ui)。
 
-## Opt-out of Test Replay
+## 退出测试回放
 
 :::caution
 
-Please refer to the [Cypress Cloud Terms of Use](https://cloud.cypress.io/terms-of-use) and our [Security & Compliance](https://www.cypress.io/security/) guide for specifics around reasonable use of Cypress Cloud, data storage and security at Cypress.
+请参考[Cypress Cloud使用条款](https://cloud.cypress.io/terms-of-use)和我们的[安全与合规](https://www.cypress.io/security/)指南，了解关于合理使用Cypress Cloud、数据存储和Cypress安全的具体内容。
 
-Test Replays, including the test data leveraged within your tests, are visible to everyone with access to your project.
+测试回放，包括测试中利用的测试数据，对有权访问你项目的所有人可见。
 
 :::
 
-If you do not want to capture test data for replay and debugging purposes, you can "shut off" Test Replay in project settings.
+如果你不想捕获用于回放和调试目的的测试数据，可以在项目设置中"关闭"测试回放。
 
 <DocsImage
   src="/img/cloud/features/test-replay/opt-out.png"
-  alt="Test Replay opt-out controls"
+  alt="测试回放退出控制"
 />
 
-## Troubleshooting
+## 故障排除
 
 :::info
 
-**Tip:** Before troubleshooting further, please ensure you're using the latest version of Cypress. We fix bugs with Test Replay often,
-so your issue may already be fixed.
+**提示：** 在进一步故障排除前，请确保你使用的是最新版本的Cypress。我们经常修复测试回放的bug，
+所以你的问题可能已经解决。
 
 :::
 
-If you're experiencing an issue and have already tried the troubleshooting steps below,
-you can report an issue within the Test Replay window in the Cloud by clicking the **Report an Issue** button.
+如果你遇到问题且已尝试以下故障排除步骤，
+可以在Cloud的测试回放窗口中点击**报告问题**按钮报告问题。
 
 <DocsImage
   src="/img/cloud/features/test-replay/report-issue.png"
-  alt="Screenshot of top right corner of Test Replay window with a button that says 'Report an Issue'"
+  alt="测试回放窗口右上角的截图，显示一个写着'报告问题'的按钮"
 />
 
-### Test Replay is not available
+### 测试回放不可用
 
-If the Test Replay button is disabled in Cypress Cloud, there are a few things to check:
+如果Cypress Cloud中的测试回放按钮被禁用，有几项需要检查：
 
-1. Confirm runs have been recorded to Cypress Cloud using Cypress `v13` or later.
-2. Ensure tests were recorded using a Chromium-based browser (Chrome, Edge, Electron).
-3. Check that Test Replay is enabled in Cypress Cloud project settings.
-4. Review the standard output of the test run to ensure there was not an [error uploading Test Replay](#Test-Replay-errored-during-upload).
+1. 确认运行已使用Cypress `v13`或更高版本记录到Cypress Cloud。
+2. 确保测试使用基于Chromium的浏览器(Chrome、Edge、Electron)记录。
+3. 检查Cypress Cloud项目设置中是否启用了测试回放。
+4. 检查测试运行的标准输出，确保没有[上传测试回放时出错](#Test-Replay-errored-during-upload)。
 
-**Safari 16.3 and under users may experience errors when _viewing_ Test Replay**
+**Safari 16.3及以下版本用户在_查看_测试回放时可能会遇到错误**
 
-Cypress Cloud relies on certain web APIs implemented by specific browsers. Safari versions older than 16.4 may be missing certain APIs required for rendering Test Replay. To view Test Replay in Safari, version 16.4 and above may be used. This does not affect running tests or recording to Cypress Cloud.
+Cypress Cloud依赖特定浏览器实现的Web API。Safari 16.4以下版本可能缺少渲染测试回放所需的某些API。要在Safari中查看测试回放，可使用16.4及以上版本。这不影响运行测试或记录到Cypress Cloud。
 
-### Test Replay errored during upload
+### 测试回放上传出错
 
-Sometimes, tracking down issues that prevent uploading Test Replay recordings can be difficult.
-We try to provide as much detail with our error messaging as possible to resolve the issue.
+有时，追踪导致无法上传测试回放记录的问题可能很困难。
+我们尽量在错误消息中提供尽可能多的细节以解决问题。
 
-Specs that have problems uploading a Test Replay recording may have a disabled "Test Replay" button in Cypress Cloud.
+上传测试回放记录有问题的规范在Cypress Cloud中可能有禁用的"测试回放"按钮。
 
 <DocsImage
   src="/img/cloud/features/test-replay/error-uploading-test-replay.png"
-  alt="Popover in Cypress Cloud on hover of disabled Test Replay button that reads 'There was an error uploading the Test Replay for this test. Learn more.'"
+  alt="Cypress Cloud中悬停在禁用的测试回放按钮上的弹出框，显示'上传此测试的测试回放时出错。了解更多。'"
 />
 
-The exact error message can be seen by viewing the spec's output.
+可以通过查看规范输出来查看确切的错误消息。
 
 <DocsImage
   src="/img/cloud/features/test-replay/view-spec-output.png"
-  alt="Spec row in Cypress Cloud showing number of passed tests, run time, group, test type, OS, browser, and a button that says 'View Output' which is higlighted with an arrow and rectangle"
+  alt="Cypress Cloud中的规范行，显示通过的测试数量、运行时间、组、测试类型、操作系统、浏览器和一个标有'查看输出'的按钮，该按钮被箭头和矩形高亮"
 />
 
-#### Common errors
+#### 常见错误
 
-- **Failed to upload after X attempts error**: This error occurs when the Test Replay data is not uploaded to the Cloud
-  due to network issues. This could be due to a poor network connection or a network issue. To fix:
-  - Try recording the test again to see if the issue persists.
-- **Network or HTTP error**: These errors indicate that Cypress could not establish a connection to upload. To fix:
-  - Ensure the machine has access to the internet.
-  - Ensure that the network configuration of the machine recording the spec allows for [Cypress URLs](/app/references/troubleshooting#Allow-Cypress-URLs-on-VPNs).
-  - Check if a firewall or proxy is blocking the connection. If a proxy is blocking connections, configure the proxy so that it does not block uploads to Cypress URLs.
-  - Check [cypress status](https://www.cypressstatus.com/) for any ongoing issues.
-- **Invalid or missing Test Replay upload URL**: Specs that take longer than the
-  [run timeout](/cloud/account-management/projects#Run-Timeout) will not successfully upload. To fix:
-  - Reduce the run time of the spec.
-  - Or increase the run timeout in the project settings.
+- **X次尝试后上传失败错误**：此错误发生在由于网络问题测试回放数据未上传到Cloud时。
+  可能是由于网络连接不良或网络问题。修复方法：
+  - 尝试再次记录测试，看问题是否持续。
+- **网络或HTTP错误**：这些错误表明Cypress无法建立上传连接。修复方法：
+  - 确保机器能访问互联网。
+  - 确保记录规范的机器网络配置允许[Cypress URL](/app/references/troubleshooting#Allow-Cypress-URLs-on-VPNs)。
+  - 检查防火墙或代理是否阻止连接。如果代理阻止连接，配置代理使其不阻止上传到Cypress URL。
+  - 检查[cypress状态](https://www.cypressstatus.com/)是否有持续问题。
+- **无效或缺失的测试回放上传URL**：运行时间超过
+  [运行超时](/cloud/account-management/projects#Run-Timeout)的规范将无法成功上传。修复方法：
+  - 减少规范的运行时间。
+  - 或在项目设置中增加运行超时。
 
-## See also
+## 另请参阅
 
-- [Test Replay FAQ](/cloud/faq#Test-Replay)
-- [Cypress v13 changelog](/app/references/changelog#13-0-0)
-- [Cypress Default Video Configuration](/app/references/configuration#Videos)
-- [Cypress Video Artifacts](/app/guides/screenshots-and-videos#Videos)
+- [测试回放FAQ](/cloud/faq#Test-Replay)
+- [Cypress v13变更日志](/app/references/changelog#13-0-0)
+- [Cypress默认视频配置](/app/references/configuration#Videos)
+- [Cypress视频工件](/app/guides/screenshots-and-videos#Videos)

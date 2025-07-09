@@ -1,6 +1,6 @@
 ---
-title: 'siblings | Cypress Documentation'
-description: Get sibling DOM elements in Cypress.
+title: 'siblings | Cypress 文档'
+description: 在Cypress中获取兄弟DOM元素。
 sidebar_label: siblings
 slug: /api/commands/siblings
 ---
@@ -9,9 +9,9 @@ slug: /api/commands/siblings
 
 # siblings
 
-Get sibling DOM elements.
+获取兄弟DOM元素。
 
-## Syntax
+## 语法
 
 ```javascript
 .siblings()
@@ -20,121 +20,116 @@ Get sibling DOM elements.
 .siblings(selector, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('td').siblings() // Yield all td's siblings
-cy.get('li').siblings('.active') // Yield all li's siblings with class '.active'
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.siblings('.error') // Errors, cannot be chained off 'cy'
-cy.clock().siblings() // Errors, 'clock' does not yield DOM elements
+cy.get('td').siblings() // 获取所有td元素的兄弟元素
+cy.get('li').siblings('.active') // 获取所有li元素中带有'.active'类的兄弟元素
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
-<Icon name="angle-right" /> **selector _(String selector)_**
+```javascript
+cy.siblings('.error') // 错误，不能从'cy'链式调用
+cy.clock().siblings() // 错误，'clock'不返回DOM元素
+```
 
-A selector used to filter matching DOM elements.
+### 参数
 
-<Icon name="angle-right" /> **options _(Object)_**
+<Icon name="angle-right" /> **selector _(字符串选择器)_**
 
-Pass in an options object to change the default behavior of `.siblings()`.
+用于过滤匹配DOM元素的选择器。
 
-| Option    | Default                                                           | Description                                                                         |
+<Icon name="angle-right" /> **options _(对象)_**
+
+传入一个选项对象来改变`.siblings()`的默认行为。
+
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.siblings()` to resolve before [timing out](#Timeouts)            |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 在[超时](#Timeouts)前等待`.siblings()`解析的时间            |
 
 <HeaderYields />
 
-- `.siblings()` yields the new DOM element(s) it found.
-- `.siblings()` is a query, and it is _safe_ to chain further commands.
+- `.siblings()`返回找到的新DOM元素。
+- `.siblings()`是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Get the siblings of each `li`
+#### 获取每个`li`元素的兄弟元素
 
 ```html
 <ul>
-  <li>Home</li>
-  <li>Contact</li>
-  <li class="active">Services</li>
-  <li>Price</li>
+  <li>首页</li>
+  <li>联系</li>
+  <li class="active">服务</li>
+  <li>价格</li>
 </ul>
 ```
 
 ```javascript
-// yields all other li's in list
+// 返回列表中所有其他li元素
 cy.get('.active').siblings()
 ```
 
-### Selector
+### 选择器
 
-#### Get siblings of element with class `active`
+#### 获取带有`active`类的元素的兄弟元素
 
 ```javascript
-// yields <li class="active">Services</li>
+// 返回<li class="active">服务</li>
 cy.get('li').siblings('.active')
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.siblings()` requires being chained off a command that yields DOM element(s).
+- `.siblings()`必须链式调用在一个返回DOM元素的命令之后。
 
 <HeaderAssertions />
 
-- `.siblings()` will automatically [retry](/app/core-concepts/retry-ability)
-  until the element(s)
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.siblings()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed.
+- `.siblings()`会自动[重试](/app/core-concepts/retry-ability)，直到元素[存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)。
+- `.siblings()`会自动[重试](/app/core-concepts/retry-ability)，直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `.siblings()` can time out waiting for the element(s) to
-  [exist in the DOM](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
-- `.siblings()` can time out waiting for assertions you've added to pass.
+- `.siblings()`可能会因等待元素[存在于DOM中](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)而超时。
+- `.siblings()`可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Get the siblings of element with class `active`_**
+**_获取带有`active`类元素的兄弟元素_**
 
 ```javascript
 cy.get('.left-nav').find('li.active').siblings()
 ```
 
-The commands above will display in the Command Log as:
+以上命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/siblings/find-siblings-of-dom-elements-to-test.png"
-  alt="Command Log siblings"
+  alt="命令日志 siblings"
 />
 
-When clicking on `siblings` within the command log, the console outputs the
-following:
+当点击命令日志中的`siblings`时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/siblings/console-log-of-sibling-elements.png"
-  alt="Console Log siblings"
+  alt="控制台日志 siblings"
 />
 
-## History
+## 历史
 
-| Version                                    | Changes                     |
+| 版本                                    | 变更                     |
 | ------------------------------------------ | --------------------------- |
-| [< 0.3.3](/app/references/changelog#0-3-3) | `.siblings()` command added |
+| [< 0.3.3](/app/references/changelog#0-3-3) | 添加了`.siblings()`命令 |
 
-## See also
+## 另请参阅
 
 - [`.prev()`](/api/commands/prev)
 - [`.next()`](/api/commands/next)

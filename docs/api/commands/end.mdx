@@ -1,6 +1,6 @@
 ---
-title: 'end | Cypress Documentation'
-description: End a chain of commands in Cypress.
+title: 'end | Cypress 文档'
+description: 结束Cypress中的命令链。
 sidebar_label: end
 ---
 
@@ -8,23 +8,23 @@ sidebar_label: end
 
 # end
 
-End a chain of commands.
+结束命令链。
 
-## Syntax
+## 语法
 
 ```javascript
 .end()
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.contains('ul').end() // Yield 'null' instead of 'ul' element
+cy.contains('ul').end() // 返回'null'而不是'ul'元素
 ```
 
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
 ```javascript
 cy.end()
@@ -32,47 +32,46 @@ cy.end()
 
 <HeaderYields />
 
-- `.end()` yields `null`.
+- `.end()` 返回 `null`。
 
-## Examples
+## 示例
 
-`.end()` is useful when you want to end a chain of commands and force the next
-command to not receive what was yielded in the previous command.
+`.end()` 在您想结束命令链并强制下一条命令不接收上一条命令的返回结果时非常有用。
 
 ```javascript
-cy.contains('User: Cheryl')
+cy.contains('用户: Cheryl')
   .click()
-  .end() // yield null
-  .contains('User: Charles')
-  .click() // contains looks for content in document now
+  .end() // 返回null
+  .contains('用户: Charles')
+  .click() // contains现在会在文档中查找内容
 ```
 
-Alternatively, you can always start a new chain of commands off of `cy`.
+或者，您也可以直接从 `cy` 开始一个新的命令链。
 
 ```javascript
-cy.contains('User: Cheryl').click()
-cy.contains('User: Charles').click() // contains looks for content in document now
+cy.contains('用户: Cheryl').click()
+cy.contains('用户: Charles').click() // contains现在会在文档中查找内容
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.end()` requires being chained off a previous command.
+- `.end()` 必须在上一条命令后链式调用。
 
 <HeaderAssertions />
 
-- `.end()` cannot have any assertions chained.
+- `.end()` 不能链式调用任何断言。
 
 <HeaderTimeouts />
 
-- `.end()` cannot time out.
+- `.end()` 不会超时。
 
-## Command Log
+## 命令日志
 
-- `.end()` does _not_ log in the Command Log
+- `.end()` 不会在命令日志中记录
 
-## See also
+## 另请参阅
 
 - [`.root()`](/api/commands/root)
 - [`.within()`](/api/commands/within)

@@ -1,6 +1,6 @@
 ---
-title: 'url | Cypress Documentation'
-description: Get the current URL of the page that is currently active in Cypress.
+title: 'url | Cypress 文档'
+description: 获取当前 Cypress 活动页面的 URL。
 sidebar_label: url
 e2eSpecific: true
 slug: /api/commands/url
@@ -10,89 +10,88 @@ slug: /api/commands/url
 
 # url
 
-Get the current URL of the page that is currently active.
+获取当前活动页面的 URL。
 
 :::info
 
-This is an alias of [`cy.location('href')`](/api/commands/location)
+这是 [`cy.location('href')`](/api/commands/location) 的别名。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 cy.url()
 cy.url(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.url() // Yields the current URL as a string
+cy.url() // 以字符串形式返回当前 URL
 ```
 
-### Arguments
+### 参数
 
-<Icon name="angle-right" /> **options _(Object)_**
+<Icon name="angle-right" /> **options _(对象)_**
 
-Pass in an options object to change the default behavior of `cy.url()`.
+传入一个选项对象以更改 `cy.url()` 的默认行为。
 
 **cy.url( _options_ )**
 
-| Option    | Default                                                           | Description                                                                         |
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `decode`  | `false`                                                           | Decode URL                                                                          |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `cy.url()` to resolve before [timing out](#Timeouts)               |
+| `decode`  | `false`                                                           | 解码 URL                                                                          |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 在[超时](#Timeouts)前等待 `cy.url()` 解析的时间               |
 
 <HeaderYields />
 
-- `cy.url()` yields the current URL as a string.
-- `cy.url()` is a query, and it is _safe_ to chain further commands.
+- `cy.url()` 以字符串形式返回当前 URL。
+- `cy.url()` 是一个查询命令，可以安全地链式调用其他命令。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Assert the URL is `http://localhost:8000/users/1/edit`
+#### 断言 URL 是 `http://localhost:8000/users/1/edit`
 
 ```javascript
-// clicking the anchor causes the browser to follow the link
+// 点击锚点会使浏览器跳转到链接
 cy.get('#user-edit a').click()
 cy.url().should('include', '/users/1/edit') // => true
 cy.url().should('eq', 'http://localhost:8000/users/1/edit') // => true
 ```
 
-### `decode` option
+### `decode` 选项
 
-When the URL contains non-ASCII characters, use the `decode` option.
+当 URL 包含非 ASCII 字符时，使用 `decode` 选项。
 
 ```javascript
-// For the curious, '사랑' means 'love' in Korean.
+// 好奇的话，"사랑" 在韩语中意为 "love"。
 cy.url({ decode: true }).should('contain', '사랑')
 ```
 
-## Notes
+## 说明
 
-### Href Shorthand
+### Href 简写
 
-#### URL is an alias for `cy.location('href')`
+#### URL 是 `cy.location('href')` 的别名
 
-`cy.url()` uses `href` under the hood.
+`cy.url()` 在底层使用了 `href`。
 
 ```javascript
-cy.url() // these yield the same string
-cy.location('href') // these yield the same string
+cy.url() // 这些返回相同的字符串
+cy.location('href') // 这些返回相同的字符串
 ```
 
-### Differences
+### 区别
 
-#### URL versus href
+#### URL 与 href
 
-Given the remote URL, `http://localhost:8000/index.html`, all 3 of these
-assertions are the same.
+给定远程 URL `http://localhost:8000/index.html`，以下 3 个断言是相同的。
 
 ```javascript
 cy.location('href').should('include', '/index.html')
@@ -102,75 +101,67 @@ cy.location().its('href').should('include', '/index.html')
 cy.url().should('include', '/index.html')
 ```
 
-`href` and `toString` come from the `window.location` spec.
+`href` 和 `toString` 来自 `window.location` 规范。
 
-But you may be wondering where the URL property comes from. Per the
-`window.location` spec, there actually isn't a URL property on the `location`
-object.
+但你可能想知道 URL 属性来自哪里。根据 `window.location` 规范，`location` 对象实际上并没有 URL 属性。
 
-`cy.url()` exists because it's what most developers naturally assume would
-return them the full current URL. We almost never refer to the URL as an `href`.
+`cy.url()` 存在是因为它是大多数开发者自然认为会返回完整当前 URL 的方式。我们几乎从不将 URL 称为 `href`。
 
-#### Hardcoded versus using the configuration object
+#### 硬编码与使用配置对象
 
-Instead of hard-coding the URL used in the assertion, we recommend you define a
-`baseUrl` in your [Cypress configuration](/app/references/configuration). For
-more details on why, see our Best Practices guide on
-[setting a global `baseUrl`](/app/core-concepts/best-practices#Setting-a-Global-baseUrl).
+与其在断言中硬编码 URL，我们建议你在 [Cypress 配置](/app/references/configuration) 中定义 `baseUrl`。更多细节请参阅我们的最佳实践指南中的 [设置全局 `baseUrl`](/app/core-concepts/best-practices#Setting-a-Global-baseUrl)。
 
-Given the remote URL, `http://localhost:8000/index.html`, and the baseUrl,
-`http://localhost:8000`, these assertions are the same.
+给定远程 URL `http://localhost:8000/index.html` 和 baseUrl `http://localhost:8000`，以下断言是相同的。
 
 ```javascript
 cy.url().should('eq', 'http://localhost:8000/index.html')
-cy.url().should('eq', Cypress.config().baseUrl + '/index.html') // tests won't fail in case the port changes
+cy.url().should('eq', Cypress.config().baseUrl + '/index.html') // 如果端口更改，测试不会失败
 ```
 
-#### Assert that the url contains "#users/new"
+#### 断言 URL 包含 "#users/new"
 
 ```javascript
 cy.url().should('contain', '#users/new')
 ```
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `cy.url()` requires being chained off of `cy`.
+- `cy.url()` 需要链式调用 `cy`。
 
 <HeaderAssertions />
 
-- `cy.url()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed
+- `cy.url()` 会自动 [重试](/app/core-concepts/retry-ability)，直到所有链式断言通过。
 
 <HeaderTimeouts />
 
-- `cy.url()` can time out waiting for assertions you've added to pass.
+- `cy.url()` 可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-The commands above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/url/test-url-of-website-or-web-application.png"
-  alt="Command Log url"
+  alt="命令日志 url"
 />
 
-When clicking on URL within the Command Log, the console outputs the following:
+在命令日志中点击 URL 时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/url/console-log-of-browser-url-string.png"
-  alt="Console Log url"
+  alt="控制台日志 url"
 />
 
-## History
+## 历史
 
-| Version                                    | Changes                  |
+| 版本                                    | 变更                  |
 | ------------------------------------------ | ------------------------ |
-| [8.4.0](/app/references/changelog#8-4-0)   | `decode` option added    |
-| [< 0.3.3](/app/references/changelog#0-3-3) | `cy.url()` command added |
+| [8.4.0](/app/references/changelog#8-4-0)   | 添加 `decode` 选项    |
+| [< 0.3.3](/app/references/changelog#0-3-3) | 添加 `cy.url()` 命令 |
 
-## See also
+## 另请参阅
 
 - [`cy.hash()`](/api/commands/hash)
 - [`cy.location()`](/api/commands/location)

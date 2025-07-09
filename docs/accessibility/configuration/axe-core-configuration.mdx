@@ -1,34 +1,34 @@
 ---
-title: 'Axe Core® configuration | Cypress Accessibility'
-description: 'Configuration for Axe-Core® rules can be configured.'
-sidebar_label: 'Axe Core® configuration'
+title: 'Axe Core® 配置 | Cypress 无障碍测试'
+description: '可配置 Axe-Core® 规则的参数设置'
+sidebar_label: 'Axe Core® 配置'
 ---
 
 <ProductHeading product="accessibility" />
 
-# Axe Core® configuration
+# Axe Core® 配置
 
-Configuration for Axe-Core® rules is available through your Account Executive. We are happy to have a call with you to dial in your report config to make sure you are getting the most useful reports possible, and we find this onboarding very effective.
+Axe-Core® 规则的配置需通过客户经理获取。我们很乐意与您电话沟通，协助调整报告配置以确保获得最有价值的报告，实践证明这种对接方式非常高效。
 
-In most cases, configuration of these rules as they run in Cypress Cloud isn't needed, because your implementation of any policies about what should "fail a build" is handled using the [Accessibility Results API](/accessibility/results-api), where you have full control over how to parse the results and what rules need to be reacted to. Keeping the results in Cypress Cloud broad helps you to still be able to see and understand all of the accessibility information, even if only a subset of the results would be considered blocking.
+多数情况下，无需专门配置 Cypress Cloud 中运行的这些规则，因为关于"构建失败"标准的策略实施可通过 [无障碍测试结果 API](/accessibility/results-api) 完全掌控。您可自由解析结果数据并决定需要响应的规则。在 Cypress Cloud 中保留完整结果有助于全面了解无障碍信息，即使只有部分结果会被视为阻塞性问题。
 
-**Note.** Certain Axe Core® rules are off by default. Here are the rules that are currently either ignored by configuration, or for which results cannot be detected.
+**注意** 部分 Axe Core® 规则默认关闭。以下是当前被配置忽略或无法检测结果的规则：
 
-- `Elements must meet minimum color contrast ratio thresholds`
-  - This is off by default. This is both the slowest rule in the Axe Core® ruleset, and the one that can have the highest percentage of false positives or incomplete checks.
-  - It does work perfectly in many projects, so we are happy to turn this on for you if requested, so that you can see the results.
-- `<video> or <audio> elements must not play automatically`
-  - Ignored because Test Replay does not yet capture the metadata to check this
-- `Delayed refresh under 20 hours must not be used`
-  - Ignored because Test Replay does not collect the metadata for this
+- `元素必须满足最小色彩对比度阈值`
+  - 默认关闭。这是 Axe Core® 规则集中执行最慢的规则，也是误报率或未完成检查可能性最高的规则。
+  - 该规则在许多项目中表现完美，如有需要，我们可为您开启以查看结果。
+- `<video> 或 <audio> 元素禁止自动播放`
+  - 因测试回放功能尚未捕获相关元数据而被忽略
+- `延迟刷新时间必须小于20小时`
+  - 因测试回放功能未收集相关元数据而被忽略
 
-## Component Testing
+## 组件测试
 
-Cypress Accessibility works great with component testing. In addition the rules that are off by default, "page-level" rules do not run for component tests, since a component is usually a fragment mounted in an empty page that would not be expected to have things like headings or a `main` element.
+Cypress 无障碍测试完美支持组件测试。除默认关闭的规则外，"页面级"规则不会在组件测试中运行，因为组件通常挂载在空白页面中，不应包含标题或`main`元素等页面级结构。
 
-## Updates to the Axe Core® library
+## Axe Core® 库更新
 
-Updates to the Axe Core® library are released several times each year. While Cypress does not commit to updating our internal Axe Core® version within a specific timeframe, we will always wait at least 30 days before making an update.
-Since some updates introduce new rules or address bugs that change how issues are detected, this buffer is intended to give you time to make changes in your use of our [Results API](/accessibility/results-api) if needed. Axe Core® releases can be tracked [in GitHub](https://github.com/dequelabs/axe-core/releases).
+Axe Core® 库每年会发布多次更新。虽然 Cypress 不承诺在特定时间范围内更新内部使用的 Axe Core® 版本，但我们始终会保持至少30天的延迟更新策略。
+由于某些更新可能引入新规则或修复影响问题检测方式的错误，这个缓冲期旨在为您留出时间，以便必要时调整 [结果 API](/accessibility/results-api) 的使用策略。Axe Core® 的版本发布可通过 [GitHub](https://github.com/dequelabs/axe-core/releases) 跟踪。
 
-The specific Axe Core® version used by Cypress for a run can be seen in the Properties tab for that run in Cypress Cloud, and is also included in the Results API.
+Cypress Cloud 中每次运行所使用的具体 Axe Core® 版本可在运行记录的 Properties 标签页查看，同时也包含在结果 API 的返回数据中。

@@ -11,7 +11,7 @@ import NavbarLogo from '@theme/Navbar/Logo'
 import NavbarSearch from '@theme/Navbar/Search'
 import { SocialIcons } from './SocialIcons'
 function useNavbarItems() {
-  // TODO temporary casting until ThemeConfig type is improved
+  // TODO 临时类型转换，待ThemeConfig类型改进后移除
   return useThemeConfig().navbar.items
 }
 
@@ -23,8 +23,8 @@ function NavbarItems({ items }) {
           key={i}
           onError={(error) =>
             new Error(
-              `A theme navbar item failed to render.
-Please double-check the following navbar item (themeConfig.navbar.items) of your Docusaurus config:
+              `导航栏项目渲染失败。
+请检查Docusaurus配置中的以下导航栏项目(themeConfig.navbar.items):
 ${JSON.stringify(item, null, 2)}`,
               { cause: error }
             )
@@ -61,7 +61,7 @@ export default function NavbarContent() {
             className="navbar__toggle"
             sidebarShown={mobileSidebar.sidebarShown}
             setSidebarShown={mobileSidebar.setSidebarShown}
-            aria-label="Navigation Menu"
+            aria-label="导航菜单"
           />
           <NavbarLogo
             className="navbar__brand"
@@ -72,8 +72,8 @@ export default function NavbarContent() {
       }
       center={<NavbarItems items={leftItems} />}
       right={
-        // TODO stop hardcoding items?
-        // Ask the user to add the respective navbar items => more flexible
+        // TODO 需要优化硬编码项目
+        // 建议用户添加相应的导航栏项目以获得更灵活的配置
         <>
           {!searchBarItem && (
             <NavbarSearch>

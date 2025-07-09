@@ -1,37 +1,35 @@
 ---
-title: 'How to manage projects | Cypress Cloud'
-description: 'Learn how to set up a project to record test runs, manage project settings, transfer ownership of a project, and how to integrate with third party integrations.'
-sidebar_label: Projects
+title: '项目管理指南 | Cypress Cloud'
+description: '了解如何设置项目以记录测试运行、管理项目设置、转移项目所有权，以及如何与第三方集成进行整合。'
+sidebar_label: 项目管理
 sidebar_position: 20
 ---
 
 <ProductHeading product="cloud" />
 
-# Projects
+# 项目管理
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 学习要点
 
-- How to set up a project to record test runs
-- How to manage project settings
-- How to transfer ownership of a project
-- Best practices for multi-repo implementation
-- How to integrate with source control providers, issue management, and team communication tools
+- 如何设置项目以记录测试运行
+- 如何管理项目设置
+- 如何转移项目所有权
+- 多仓库实现的最佳实践
+- 如何与源代码控制提供商、问题管理及团队沟通工具集成
 
 :::
 
-## Identification
+## 项目标识
 
-Cypress uses your [projectId](#Project-ID) and [Record Key](#Record-key)
-together to uniquely identify projects.
+Cypress 使用 [projectId](#Project-ID) 和 [记录密钥](#Record-key) 共同唯一标识项目。
 
-### Project ID
+### 项目ID
 
-Once you set up your project to record, we generate a unique `projectId` for
-your project and automatically insert it into your Cypress configuration file.
+当您设置项目记录时，我们会为项目生成唯一的 `projectId` 并自动插入到 Cypress 配置文件中。
 
-#### The `projectId` is a 6 character string in your Cypress configuration
+#### `projectId` 是 Cypress 配置文件中的6位字符串
 
 :::cypress-config-example
 
@@ -43,342 +41,273 @@ your project and automatically insert it into your Cypress configuration file.
 
 :::
 
-This helps us uniquely identify your project. If you manually alter this,
-**Cypress will no longer be able to identify your project or find the recorded
-builds for it**.
+这帮助我们唯一标识您的项目。如果手动修改此值，**Cypress 将无法识别您的项目或找到其记录的构建结果**。
 
-If you're using source control, we recommend that you check your Cypress
-configuration file, including the `projectId`, into source control. If you don't
-want your `projectId` visible in your source code you can set it as an
-environment variable using the name `CYPRESS_PROJECT_ID`. The exact mechanism
-for doing so depends on your system but could be something like:
+如果使用源代码控制，建议将 Cypress 配置文件（包括 `projectId`）提交到源代码控制中。若不想让 `projectId` 在源代码中可见，可将其设为环境变量 `CYPRESS_PROJECT_ID`。具体设置方式取决于系统，例如：
 
 ```shell
 export CYPRESS_PROJECT_ID={projectId}
 ```
 
-### Record key
+### 记录密钥
 
-The record key is used to authenticate that your project is _allowed_ to record
-tests to Cypress Cloud. As long as your record key stays _private_, no one will
-be able to record test runs for your project - even if they have your
-`projectId`.
+记录密钥用于验证项目是否有权向 Cypress Cloud 记录测试。只要记录密钥保持私有，即使他人拥有您的 `projectId`，也无法为项目记录测试运行。
 
-Think of your record key as the key that enables you to _write and create_ runs.
-However, it has nothing to do with being able to _read or see_ runs once they
-are recorded.
+将记录密钥视为允许您写入和创建运行的钥匙。但它与查看已记录运行无关。
 
 :::caution
 
-<strong>Exposing a record key</strong>
+<strong>记录密钥泄露风险</strong>
 
-Anyone that has access to both the `projectId` and the record key of a project
-can record runs to that organization's project in Cypress Cloud.
+任何同时获取 `projectId` 和记录密钥的人都可以向该组织的 Cypress Cloud 项目记录运行。
 
-**You would not want people outside of your team running tests because:**
+**您不希望团队外人员运行测试的原因：**
 
-1. **This could drive up the number of tests you've run.** Since Cypress bills
-   based on the number of recorded tests - this means they can use up all
-   allotted tests and there would be consequences to that.
-2. **They can write any data they want to your Cypress Cloud.** They could edit
-   the test suite so that recorded tests record different things than the
-   project's original intent. This could including visiting different websites
-   and generating videos of visiting those websites, for example.
+1. **这会增加测试运行次数**。Cypress 按记录测试数计费，可能导致配额耗尽。
+2. **他们可以向 Cypress Cloud 写入任意数据**。可能修改测试套件，使记录内容偏离项目初衷，例如访问不同网站并生成访问视频。
 
-If a record key is exposed you should [delete it](#Delete-record-key) and
-[create a new record key](#Create-new-record-key). Deleted keys will be invalid;
-If a project is run with a deleted key it will not be able to record.
+如果记录密钥泄露，应[删除旧密钥](#Delete-record-key)并[创建新密钥](#Create-new-record-key)。已删除的密钥将失效；使用删除密钥运行的项目无法记录。
 
-You can set your record key as an environment variable to help protect it. Learn
-more [here](/app/continuous-integration/overview#Environment-variables).
+可通过环境变量设置记录密钥以加强保护。详见[此处](/app/continuous-integration/overview#Environment-variables)。
 
 :::
 
-Once you're set up to record test runs, we automatically generate a _Record Key_
-for the project.
+设置记录测试运行后，我们会自动生成项目的记录密钥。
 
-#### A record key is a GUID that looks like this
+#### 记录密钥是如下格式的GUID
 
 ```text
 f4466038-70c2-4688-9ed9-106bf013cd73
 ```
 
-You can create multiple Record Keys for a project, or delete existing ones from
-[Cypress Cloud](https://on.cypress.io/cloud).
+您可以为项目创建多个记录密钥，或通过 [Cypress Cloud](https://on.cypress.io/cloud) 删除现有密钥。
 
 <DocsImage
   src="/img/cloud/projects/record-keys-in-project-settings-dashboard.jpg"
-  alt="Record key in project settings"
+  alt="项目设置中的记录密钥"
 />
 
-You can also find your Record Key inside of the _Settings_ tab in the Cypress
-App.
+也可在 Cypress 应用的 _Settings_ 选项卡中找到记录密钥。
 
 <DocsImage
   src="/img/cloud/projects/record-key-desktop-gui.jpg"
-  alt="Record Key in Configuration Tab"
+  alt="配置选项卡中的记录密钥"
 />
 
-#### Create new record key
+#### 创建新记录密钥
 
-1. Go to your organization's projects page.
-2. Select the project you want to change access to.
-3. Go to the project's **Settings** page.
-4. Here you will see a **Record Keys** section
-5. Click **Create New Key**. A new key will be automatically generated for your
-   project.
+1. 进入组织项目页面
+2. 选择目标项目
+3. 进入项目 **Settings** 页面
+4. 找到 **Record Keys** 部分
+5. 点击 **Create New Key**，系统将自动生成新密钥
 
-#### Delete record key
+#### 删除记录密钥
 
-1. Go to your organization's projects page.
-2. Select the project you want to change access to.
-3. Go to the project's **Settings** page.
-4. Here you will see a **Record Keys** section
-5. Click **Delete** beside the record key you want to delete.
+1. 进入组织项目页面
+2. 选择目标项目
+3. 进入项目 **Settings** 页面
+4. 找到 **Record Keys** 部分
+5. 点击目标密钥旁的 **Delete**
 
-## Project settings
+## 项目设置
 
-### Access to Runs
+### 运行访问权限
 
-Visit your project settings to see who has access to your project's runs.
+通过项目设置管理谁可查看项目测试运行。
 
-#### Public vs Private
+#### 公开 vs 私有
 
-- **Public** means that anyone can see the recorded test runs for the project.
-  It is similar to how public projects on GitHub, Travis CI, or CircleCI are
-  handled. Anyone who knows your `projectId` will be able to see the recorded
-  runs for public projects.
+- **公开**：任何人都可查看项目记录的测试运行，类似 GitHub、Travis CI 或 CircleCI 的公开项目。知晓 `projectId` 的人均可查看公开项目运行。
 
-- **Private** means that only [users](/cloud/account-management/users)
-  you invite to your
-  [organization](/cloud/account-management/organizations) can see its
-  recorded runs. Even if someone knows your `projectId`, they will not have
-  access to your runs unless you have invited them.
+- **私有**：仅受邀加入[组织](/cloud/account-management/organizations)的[用户](/cloud/account-management/users)可查看运行。即使他人知晓 `projectId`，未经邀请也无法访问。
 
-#### Change project access
+#### 修改项目访问权限
 
-1. Go to your organization's projects page.
-2. Select the project you want to change access to.
-3. Go to the project's **Settings** page.
-4. Here you will see a section displaying **Access**. Choose the appropriate
-   access you'd like to assign.
+1. 进入组织项目页面
+2. 选择目标项目
+3. 进入项目 **Settings** 页面
+4. 在 **Access** 部分选择适当权限
    <DocsImage
      src="/img/cloud/projects/access-to-runs.jpg"
-     alt="access-to-runs"
+     alt="运行访问权限设置"
    />
 
-### Smart Orchestration
+### 智能编排
 
-#### Spec Prioritization & Auto Cancellation
+#### 测试规范优先级 & 自动取消
 
-Toggle Spec Prioritization to reduce feedback time by running previously failed test specs first. Enabling Auto Cancellation to reduce run duration by canceling the run when tests fail. Adjust the number of test failures before auto
-canceling.
+启用测试规范优先级可通过优先运行先前失败的测试来缩短反馈时间。启用自动取消可在测试失败时终止运行以减少持续时间。可设置触发自动取消的失败测试数。
 
-These settings can significantly improve developer resolution time, reduce your monthly CI bill and free up CI resources. See our
-[Spec Prioritization](/cloud/features/smart-orchestration/spec-prioritization)
-and [Auto Cancellation](/cloud/features/smart-orchestration/run-cancellation) guides to learn more.
+这些设置能显著提升问题解决速度，降低月度CI费用并释放CI资源。详见[测试规范优先级](/cloud/features/smart-orchestration/spec-prioritization)和[自动取消](/cloud/features/smart-orchestration/run-cancellation)指南。
 
 <DocsImage
   src="/img/cloud/features/smart-orchestration/spec-prioritization-active.png"
-  alt="Run completion delay settings"
+  alt="运行完成延迟设置"
 />
 
-### Parallelization
+### 并行化
 
-#### Run completion delay
+#### 运行完成延迟
 
-You can edit the number of seconds that a run will wait for new groups to join
-before transitioning to 'completed'.
+可设置运行在转为"已完成"状态前等待新测试组加入的秒数。
 
-See our
-[Parallelization guide](/cloud/features/smart-orchestration/parallelization#Run-completion-delay)
-to learn more.
+详见[并行化指南](/cloud/features/smart-orchestration/parallelization#Run-completion-delay)。
 
 <DocsImage
   src="/img/cloud/projects/run-completion-delay.jpg"
-  alt="Run completion delay settings"
+  alt="运行完成延迟设置"
 />
 
-### Run Timeout
+### 运行超时
 
-You can edit the number of minutes that Cloud will wait to receive a signal from the run before being set to
-'Timed Out'. The default is 90 minutes. Valid timeout values are between 5 and 300 minutes.
+可设置Cloud等待接收运行信号的最长时间（默认90分钟），超时后状态设为"已超时"。有效值介于5-300分钟之间。
 
-You can lengthen the timeout if you are experiencing runs that have passing / failing tests but are not being
-captured by Cloud due to a timeout. You can shorten the timeout if you need faster feedback.
+若因超时导致通过/失败的测试未被Cloud捕获，可延长超时；若需更快反馈，可缩短超时。
 
 <DocsImage
   src="/img/cloud/projects/run-timeout-setting.jpg"
-  alt="Run timeout setting"
+  alt="运行超时设置"
 />
 
-### Transfer ownership
+### 所有权转移
 
-#### Transfer project to other user or organization
+#### 转移项目至其他用户或组织
 
-You can transfer projects that you own to another
-[organization](/cloud/account-management/organizations) you are a part of
-or to another user in the organization. Projects can only be transferred from
-[Cypress Cloud](https://on.cypress.io/cloud).
+可将拥有的项目转移至您所属的其他[组织](/cloud/account-management/organizations)或组织内其他用户。此操作仅能通过[Cypress Cloud](https://on.cypress.io/cloud)完成。
 
-1. Select your organization in the organization switcher.
-2. Select the project you wish to transfer.
-3. Go to the project's **Settings** page.
-4. Scroll down to the **Transfer Ownership** section and click **Transfer
-   Ownership**.
+1. 在组织切换器中选择您的组织
+2. 选择待转移项目
+3. 进入项目 **Settings** 页面
+4. 滚动至 **Transfer Ownership** 部分并点击 **Transfer Ownership**
    <DocsImage
      src="/img/cloud/projects/transfer-ownership-button.jpg"
-     alt="Transfer ownership button"
+     alt="所有权转移按钮"
    />
-5. Select the user or organization, then click **Transfer**.
+5. 选择目标用户或组织，点击 **Transfer**
    <DocsImage
      src="/img/cloud/projects/transfer-ownership-of-project-dialog.jpg"
-     alt="Transfer Project dialog"
+     alt="项目转移对话框"
      width="80%"
    />
 
 :::caution
 
-<Icon name="exclamation-triangle" /> You are not allowed to transfer a project to
-an organization that is currently enrolled in a [free trial](/cloud/get-started/free-trial).
+<Icon name="exclamation-triangle" /> 禁止将项目转移至当前处于[免费试用](/cloud/get-started/free-trial)的组织。
 
 :::
 
-#### Cancel project transfer
+#### 取消项目转移
 
-Upon transferring, you can cancel the transfer at any time by visiting the
-organization's projects and clicking **Cancel Transfer**.
+转移过程中，可随时通过访问组织项目页面点击 **Cancel Transfer** 取消。
 
 <DocsImage
   src="/img/cloud/projects/cancel-transfer-of-project.jpg"
-  alt="Cancel pending transfer of project"
+  alt="取消待处理的项目转移"
 />
 
-#### Accept or reject transferred project
+#### 接受或拒绝转移项目
 
-When a project is transferred to you, you will receive an email notifying you.
-You will be able to accept or reject the transferred project by clicking the
-notification in the sidebar and clicking 'Accept' or 'Reject'.
+当项目转移至您时，将收到通知邮件。可通过侧边栏通知点击'Accept'或'Reject'来处理。
 
 <DocsImage
   src="/img/cloud/projects/accept-or-reject-transfer-of-project.jpg"
-  alt="Accept or reject a transferred project"
+  alt="接受或拒绝项目转移"
 />
 
-### Delete Project
+### 删除项目
 
-You can delete projects you own. This will also delete all of their recorded
-test runs. Deleting projects can only be done from
-[Cypress Cloud](https://on.cypress.io/cloud).
+可删除拥有的项目，同时删除所有记录测试运行。此操作仅能通过[Cypress Cloud](https://on.cypress.io/cloud)完成。
 
-1. Select your organization in the organization switcher.
-2. Select the project you want to remove.
-3. Go to the project's **Settings** page.
-4. At the very bottom of the Settings page click the **Remove Project** button.
+1. 在组织切换器中选择您的组织
+2. 选择待删除项目
+3. 进入项目 **Settings** 页面
+4. 在页面底部点击 **Remove Project** 按钮
    <DocsImage
      src="/img/cloud/projects/remove-project-dialog.png"
-     alt="Delete project dialog"
+     alt="删除项目对话框"
      width="80%"
    />
-5. Confirm that you want to delete the project by clicking **Yes, Remove
-   Project**.
+5. 点击 **Yes, Remove Project** 确认删除
 
-### README Badges
+### README徽章
 
-README badges allow you to increase visibility of your project's test status and
-test count to other developers viewing your project's README file.
+README徽章可提升项目README文件中测试状态和测试数的可见性。
 
-#### Create a README badge
+#### 创建README徽章
 
-1. In your Cypress Cloud account, select the project for which you'd like to add
-   a badge.
-2. On the Project Settings page, scroll down to the README Badges section and
-   click “Configure Badge”.
+1. 在Cypress Cloud账户中选择目标项目
+2. 在项目设置页面滚动至README Badges部分，点击"Configure Badge"
 
 :::caution
 
-**Note**: README badges are currently only available for public projects.
+**注意**：README徽章目前仅适用于公开项目。
 
 :::
 
-3. A configuration modal will appear. The Project ID will be pre-filled with the
-   ID associated with the project you selected. You can choose to designate a
-   specific branch, or leave this field blank to always use the latest build in
-   the project.
-4. Next, style your badge. Flat is the default styling and is most commonly
-   used, but 5 style options are available.
-5. Select the badge type to change the amount and type of information that's
-   displayed. Simple status will show only whether tests are passing or failing.
-   Detailed status will show the number of tests that were passed, failed, or
-   skipped. Test count will show how many tests are included in your project.
-6. Once you've selected all your settings, check out the preview and make sure
-   everything looks just the way you like it.
-7. 🎉 Your badge is ready to be embedded. Copy the markdown at the bottom of the
-   Configure Badge modal, and embed it in your project's README file for
-   everyone to see!
+3. 弹出配置窗口，项目ID已自动填充。可指定特定分支或留空以始终使用最新构建
+4. 设计徽章样式。默认Flat样式最常用，共提供5种样式选项
+5. 选择徽章类型以改变显示信息量。简单状态仅显示通过/失败，详细状态显示通过/失败/跳过的测试数，测试计数显示项目包含的总测试数
+6. 完成设置后检查预览效果
+7. 🎉 徽章已就绪。复制配置窗口底部的Markdown代码，嵌入项目README文件
 
    {/* prettier-ignore */}
     <DocsImage
       src="/img/cloud/projects/cloud-badge-configuration.jpg"
-      alt="README Badge configuration form"
+      alt="README徽章配置表单"
       width="80%"
     />
 
-See also
-[Highlight your project's test status with Cypress README badges](https://www.cypress.io/blog/2020/09/02/highlight-your-projects-test-status-with-cypress-readme-badges/)
-announcement.
+另见[使用Cypress README徽章突出项目测试状态](https://www.cypress.io/blog/2020/09/02/highlight-your-projects-test-status-with-cypress-readme-badges/)公告。
 
-## Best Practices
+## 最佳实践
 
-### Multi-repo Implementation
+### 多仓库实现
 
-When Cypress tests reside in a repository separate from the application code, it creates a suboptimal Cloud experience - especially when considering the commit and branch interpretation for each git directory.
+当Cypress测试与应用代码分属不同仓库时，会导致Cloud体验不佳，特别是涉及每个git目录的提交和分支解释时。
 
 :::info
 
-For any given Cypress project, all commits or branches associated to recorded runs should belong or relate to a single `.git` repository.
+对于任何Cypress项目，所有与记录运行关联的提交或分支应属于或关联到单个`.git`仓库。
 
 :::
 
-If this is not possible, there are some measures to help organize your data:
+若无法满足，可采取以下措施组织数据：
 
-1. Create two separate projects in Cypress Cloud, for example, **App Project** and **Test Project**
+1. 在Cypress Cloud创建两个独立项目，如**应用项目**和**测试项目**
 
-2. For the **App Project**:
+2. 对于**应用项目**：
+   - 将GitHub集成链接至应用代码仓库
+   - 覆盖测试记录使用的 `COMMIT_INFO_*` 环境变量以反映应用代码仓库状态
+   - 将与应用代码仓库相关的运行记录至**应用项目**
+   - 将Cypress配置/测试仓库相关标识符（短SHA/版本号）捕获为运行标签
 
-   - Link the GitHub integration to the Application code repo
-   - Override the `COMMIT_INFO_*` environment variables used by the test recording to reflect the state of the checked out Application code repo
-   - Record any runs related to the Application code repo to **App Project**
-   - Capture any Cypress config/tests repo related identifiers (short sha/release number) as tags decorated on the run
+3. 对于**测试项目**：
+   - 将GitHub集成链接至Cypress配置/测试仓库
+   - 确保记录至**测试项目**的运行与测试代码变更相关
+   - 如有必要，可将测试执行针对的应用代码仓库状态捕获为标签
 
-3. For the **Test Project**:
+## 第三方集成
 
-   - Link the GitHub integration to the Cypress config/tests repo
-   - Ensure any runs recorded to **Test Project** are related to test code changes in the Cypress config/tests repo
-     - The Application code repo state that the tests are executed against could likewise be captured as tags here, if necessary.
+可通过项目设置页面集成多种第三方工具并编辑相关设置。
 
-## Third party integrations
+详见集成指南：
 
-You can integrate your project with many third party tools and edit those
-settings from within the project settings page.
-
-See our integration guides to learn more:
-
-### Source Control Providers
+### 源代码控制提供商
 
 {/* prettier-ignore-start */}
 
-- <Logo src="/img/logo/github.svg" alt="GitHub logo"/> [GitHub integration guide](/cloud/integrations/source-control/github)
-- <Logo src="/img/logo/gitlab.svg" alt="GitLab logo"/> [GitLab integration guide](/cloud/integrations/source-control/gitlab)
-- <Logo src="/img/logo/bitbucket.svg" alt="Bitbucket logo"/> [Bitbucket integration guide](/cloud/integrations/source-control/bitbucket)
+- <Logo src="/img/logo/github.svg" alt="GitHub logo"/> [GitHub集成指南](/cloud/integrations/source-control/github)
+- <Logo src="/img/logo/gitlab.svg" alt="GitLab logo"/> [GitLab集成指南](/cloud/integrations/source-control/gitlab)
+- <Logo src="/img/logo/bitbucket.svg" alt="Bitbucket logo"/> [Bitbucket集成指南](/cloud/integrations/source-control/bitbucket)
 
-### Issue Management
+### 问题管理
 
-- <Logo src="/img/logo/jira.svg" alt="Jira logo"/> [Jira integration guide](/cloud/integrations/jira)
+- <Logo src="/img/logo/jira.svg" alt="Jira logo"/> [Jira集成指南](/cloud/integrations/jira)
 
-### Team Communication
+### 团队沟通
 
-- <Logo src="/img/logo/slack.svg" alt="Slack logo"/> [Cypress integration for Slack guide](/cloud/integrations/slack)
-- <Logo src="/img/logo/ms-teams.svg" alt="Microsoft Teams logo"/> [Cypress integration for Microsoft Teams guide](/cloud/integrations/teams)
+- <Logo src="/img/logo/slack.svg" alt="Slack logo"/> [Slack集成指南](/cloud/integrations/slack)
+- <Logo src="/img/logo/ms-teams.svg" alt="Microsoft Teams logo"/> [Microsoft Teams集成指南](/cloud/integrations/teams)
 
 {/* prettier-ignore-end */}

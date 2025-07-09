@@ -1,149 +1,149 @@
 ---
-title: 'Cypress Recipes: How to Test Common Scenarios'
-description: 'Cypress Recipes show you how to test common scenarios in Cypress. Learn how to test the DOM, log in, use preprocessors, and more.'
-sidebar_label: Recipes
+title: 'Cypress 实战指南：常见测试场景解决方案'
+description: 'Cypress 实战指南展示了如何使用 Cypress 测试常见场景。学习如何测试 DOM、登录功能、使用预处理器等。'
+sidebar_label: 实战指南
 ---
 
 <ProductHeading product="app" />
 
-# Recipes
+# 实战指南
 
-Recipes show you how to test common scenarios in Cypress.
+本指南展示如何使用 Cypress 测试常见场景。
 
 <Icon
   name="github"
   url="https://github.com/cypress-io/cypress-example-recipes"
 />
 
-## Fundamentals
+## 基础篇
 
-| Recipe                                                                                                                                          | Description                                                                                     |
+| 方案                                                                                                                                          | 描述                                                                                     |
 | ----------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| [Node Modules](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/fundamentals__node-modules)                           | Import your own Node modules                                                                    |
-| [Environment variables](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/server-communication__env-variables)         | Passing environment variables to tests                                                          |
-| [Handling errors](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/fundamentals__errors)                              | Handling thrown errors and unhandled promise rejections                                         |
-| [Dynamic tests](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/fundamentals__dynamic-tests)                         | Create tests dynamically from JSON data                                                         |
-| [Dynamic tests from CSV](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/fundamentals__dynamic-tests-from-csv)       | Create tests dynamically from CSV file                                                          |
-| [Dynamic tests from API](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/fundamentals__dynamic-tests-from-api)       | Create tests dynamically by calling an external API                                             |
-| [Fixtures](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/fundamentals__fixtures)                                   | Loading single or multiple fixtures                                                             |
-| [Adding Custom Commands](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/fundamentals__add-custom-command)           | Write your own custom commands using JavaScript with correct types for IntelliSense to work     |
-| [Adding Custom Commands (TS)](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/fundamentals__add-custom-command-ts)   | Write your own custom commands using TypeScript                                                 |
-| [Adding Chai Assertions](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/extending-cypress__chai-assertions)         | Add new or custom chai assertions                                                               |
-| [Cypress module API](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/fundamentals__module-api)                       | Run Cypress via its module API                                                                  |
-| [Wrapping Cypress module API](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/fundamentals__module-api-wrap)         | Writing a wrapper around "cypress run" command line parsing                                     |
-| [Custom browsers](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/fundamentals__custom-browsers)                     | Control which browsers the project can use, or even add a custom browser into the list          |
-| [Use Chrome Remote Interface](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/fundamentals__chrome-remote-debugging) | Use Chrome debugger protocol to trigger hover state and print media style                       |
-| [Out-of-the-box TypeScript](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/fundamentals__typescript)                | Write tests in TypeScript without setting up preprocessors                                      |
-| [Per-test timeout](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/fundamentals__timeout)                            | Fail a test if it runs longer than the specified time limit                                     |
-| [Cypress events](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/fundamentals__cy-events)                            | Using `Cypress.on` and `cy.on` to listen to Cypress events like `before:window:load`            |
-| [Video resolution](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/fundamentals__window-size)                        | Increase the browser window size to record high quality videos and capture detailed screenshots |
+| [Node 模块](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/fundamentals__node-modules)                           | 导入自定义 Node 模块                                                                    |
+| [环境变量](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/server-communication__env-variables)         | 向测试传递环境变量                                                          |
+| [错误处理](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/fundamentals__errors)                              | 处理抛出错误和未处理的 Promise 拒绝                                         |
+| [动态测试](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/fundamentals__dynamic-tests)                         | 从 JSON 数据动态创建测试                                                         |
+| [从 CSV 生成动态测试](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/fundamentals__dynamic-tests-from-csv)       | 从 CSV 文件动态创建测试                                                          |
+| [从 API 生成动态测试](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/fundamentals__dynamic-tests-from-api)       | 通过调用外部 API 动态创建测试                                             |
+| [测试夹具](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/fundamentals__fixtures)                                   | 加载单个或多个测试夹具                                                             |
+| [添加自定义命令](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/fundamentals__add-custom-command)           | 使用 JavaScript 编写自定义命令并确保 IntelliSense 类型提示正常工作     |
+| [添加自定义命令(TypeScript)](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/fundamentals__add-custom-command-ts)   | 使用 TypeScript 编写自定义命令                                                 |
+| [添加 Chai 断言](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/extending-cypress__chai-assertions)         | 添加新的或自定义的 chai 断言                                                               |
+| [Cypress 模块 API](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/fundamentals__module-api)                       | 通过模块 API 运行 Cypress                                                                  |
+| [封装 Cypress 模块 API](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/fundamentals__module-api-wrap)         | 编写封装 "cypress run" 命令行解析的包装器                                     |
+| [自定义浏览器](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/fundamentals__custom-browsers)                     | 控制项目可用的浏览器列表，或添加自定义浏览器          |
+| [使用 Chrome 远程调试接口](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/fundamentals__chrome-remote-debugging) | 使用 Chrome 调试协议触发悬停状态和打印媒体样式                       |
+| [开箱即用的 TypeScript](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/fundamentals__typescript)                | 无需设置预处理器即可用 TypeScript 编写测试                                      |
+| [单测试超时](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/fundamentals__timeout)                            | 如果测试运行超过指定时间限制则失败                                     |
+| [Cypress 事件](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/fundamentals__cy-events)                            | 使用 `Cypress.on` 和 `cy.on` 监听 `before:window:load` 等 Cypress 事件            |
+| [视频分辨率](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/fundamentals__window-size)                        | 增加浏览器窗口尺寸以录制高质量视频和捕获详细截图 |
 
-## Testing the DOM
+## DOM 测试
 
-| Recipe                                                                                                                                      | Description                                                                  |
+| 方案                                                                                                                                      | 描述                                                                  |
 | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| [Tab Handling and Links](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__tab-handling-links)        | Links that open in a new tab                                                 |
-| [Hover and Hidden Elements](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__hover-hidden-elements)  | Test hidden elements requiring hover                                         |
-| [Form Interactions](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__form-interactions)              | Test form elements like input type `range`                                   |
-| [Drag and Drop](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__drag-drop)                          | Use `.trigger()` to test drag and drop                                       |
-| [Shadow DOM](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__shadow-dom)                            | Test elements within shadow DOM                                              |
-| [Waiting for static resource](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__wait-for-resource)    | Shows how to wait for CSS, image, or any other static resource to load       |
-| [CSV load and table test](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__csv-table)                | Loads CSV file and compares objects against cells in a table                 |
-| [Evaluate performance metrics](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__performance-metrics) | Utilize Cypress to monitor a website                                         |
-| [Root style](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__root-style)                            | Trigger input color change that modifies CSS variable                        |
-| [Select widgets](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__select2)                           | Working with `<select>` elements and [Select2](https://select2.org/) widgets |
-| [Lit Elements](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/testing-dom__lit-element)                         | Testing Lit Elements with Shadow DOM                                         |
-| [File download](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__download)                           | Download and validate CSV, Excel, text, Zip, and image files                 |
-| [Page reloads](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/testing-dom__page-reloads)                        | Avoiding `while` loop when dealing with randomness                           |
-| [Pagination](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__pagination)                            | Clicking the "Next" link until we reach the last page                        |
-| [Clipboard](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__clipboard)                              | Copy and paste text into the clipboard from the test                         |
+| [标签页处理与链接](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__tab-handling-links)        | 在新标签页打开的链接                                                 |
+| [悬停与隐藏元素](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__hover-hidden-elements)  | 测试需要悬停的隐藏元素                                         |
+| [表单交互](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__form-interactions)              | 测试 `range` 等表单元素                                   |
+| [拖放操作](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__drag-drop)                          | 使用 `.trigger()` 测试拖放功能                                       |
+| [Shadow DOM](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__shadow-dom)                            | 测试 Shadow DOM 中的元素                                              |
+| [等待静态资源](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__wait-for-resource)    | 展示如何等待 CSS、图片等静态资源加载完成       |
+| [CSV 加载与表格测试](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__csv-table)                | 加载 CSV 文件并与表格单元格数据对比                 |
+| [评估性能指标](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__performance-metrics) | 利用 Cypress 监控网站性能                                         |
+| [根样式](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__root-style)                            | 触发修改 CSS 变量的颜色输入变化                        |
+| [选择器组件](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__select2)                           | 测试 `<select>` 元素和 [Select2](https://select2.org/) 组件 |
+| [Lit 元素](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/testing-dom__lit-element)                         | 测试带 Shadow DOM 的 Lit 元素                                         |
+| [文件下载](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__download)                           | 下载并验证 CSV、Excel、文本、Zip 和图片文件                 |
+| [页面刷新](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/testing-dom__page-reloads)                        | 处理随机性时避免使用 `while` 循环                           |
+| [分页](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__pagination)                            | 点击"下一页"直到最后一页                        |
+| [剪贴板](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__clipboard)                              | 在测试中复制粘贴剪贴板文本                         |
 
-## Logging In
+## 登录测试
 
-| Recipe                                                                                                                          | Description                                 |
+| 方案                                                                                                                          | 描述                                 |
 | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
-| [Basic Auth](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/logging-in__basic-auth)                 | Log in using Basic Authentication           |
-| [Single Sign On](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/logging-in__single-sign-on)         | Log in across multiple servers or providers |
-| [HTML Web Forms](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/logging-in__html-web-forms)         | Log in with a basic HTML form               |
-| [XHR Web Forms](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/logging-in__xhr-web-forms)           | Log in using an XHR                         |
-| [CSRF Tokens](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/logging-in__csrf-tokens)               | Log in with a required CSRF token           |
-| [Json Web Tokens](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/logging-in__jwt)                   | Log in using JWT                            |
-| [Using application code](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/logging-in__using-app-code) | Log in by calling the application code      |
+| [基础认证](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/logging-in__basic-auth)                 | 使用基础认证登录           |
+| [单点登录](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/logging-in__single-sign-on)         | 跨多服务器或提供商登录 |
+| [HTML 网页表单](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/logging-in__html-web-forms)         | 通过基础 HTML 表单登录               |
+| [XHR 网页表单](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/logging-in__xhr-web-forms)           | 使用 XHR 登录                         |
+| [CSRF 令牌](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/logging-in__csrf-tokens)               | 需要 CSRF 令牌的登录           |
+| [Json Web 令牌](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/logging-in__jwt)                   | 使用 JWT 登录                            |
+| [使用应用代码](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/logging-in__using-app-code) | 通过调用应用代码登录      |
 
-Also see [Authentication plugins](/app/plugins/plugins-list) and watch
-[Organizing Tests, Logging In, Controlling State](https://www.youtube.com/watch?v=5XQOK0v_YRE)
+另请参阅 [认证插件](/app/plugins/plugins-list) 并观看
+[测试组织、登录控制、状态管理](https://www.youtube.com/watch?v=5XQOK0v_YRE)
 
-## Preprocessors
+## 预处理器
 
-| Recipe                                                                                                                                        | Description                                         |
+| 方案                                                                                                                                        | 描述                                         |
 | --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| [Grep tests](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/preprocessors__grep)                                  | Filter tests by name using Mocha-like `grep` syntax |
-| [Typescript with Browserify](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/preprocessors__typescript-browserify) | Add typescript support with browserify              |
-| [Typescript with Webpack](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/preprocessors__typescript-webpack)       | Add typescript support with webpack                 |
-| [Flow with Browserify](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/preprocessors__flow-browserify)             | Add flow support with Browserify                    |
+| [测试筛选](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/preprocessors__grep)                                  | 使用类 Mocha 的 `grep` 语法按名称过滤测试 |
+| [Browserify 的 TypeScript 支持](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/preprocessors__typescript-browserify) | 通过 browserify 添加 TypeScript 支持              |
+| [Webpack 的 TypeScript 支持](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/preprocessors__typescript-webpack)       | 通过 webpack 添加 TypeScript 支持                 |
+| [Browserify 的 Flow 支持](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/preprocessors__flow-browserify)             | 通过 Browserify 添加 flow 支持                    |
 
-## Blogs
+## 博客案例
 
-Demo recipes from the blog posts at [Cypress blog](https://www.cypress.io/blog).
+来自 [Cypress 博客](https://www.cypress.io/blog) 的演示方案。
 
-| Recipe                                                                                                                                | Description                                                                                                       |
+| 方案                                                                                                                                | 描述                                                                                                       |
 | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| [Application Actions](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__application-actions)          | Application actions are a replacement for Page Objects                                                            |
-| [E2E API Testing](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__e2e-api-testing)                  | Run your API Tests with a GUI                                                                                     |
-| [E2E Snapshots](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__e2e-snapshots)                      | End-to-End Snapshot Testing                                                                                       |
-| [Element Coverage](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__element-coverage)                | Track elements covered by tests                                                                                   |
-| [Codepen.io Testing](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__codepen-demo)                  | Test a HyperApp Codepen demo                                                                                      |
-| [Testing Redux Store](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__testing-redux-store)          | Test an application that uses central Redux data store                                                            |
-| [Vue + Vuex + REST Testing](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__vue-vuex-rest)          | Test an application that uses central Vuex data store                                                             |
-| [A11y Testing](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__a11y)                                | Accessibility testing with [cypress-axe](https://github.com/avanslaars/cypress-axe)                               |
-| [Automate Angular Testing](https://www.cypress.io/blog/2019/08/02/guest-post-angular-adding-cypress-ui-tests-to-your-devops-pipeline) | Automate Angular Testing                                                                                          |
-| [React DevTools](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__use-react-devtools)                | Loads React DevTools Chrome extension automatically                                                               |
-| [Expect N assertions](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__assertion-counting)           | How to expect a certain number of assertions in a test                                                            |
-| [Browser notifications](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__notification)               | How to test application that uses [`Notification`](https://developer.mozilla.org/en-US/docs/Web/API/notification) |
-| [Testing iframes](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__iframes)                          | Accessing elements in 3rd party iframe, spy and stub network calls from iframe                                    |
-| [Class decorators](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/blogs__class-decorator)                 | Using JavaScript class decorator to expose objects created by the application so they are reachable from tests    |
-| [Form Submit](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__form-submit)                          | Removing flake from the test where a page is reloaded after form submission                                       |
-| [Using Day.js instead of Moment.js](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__dayjs)          | Using [day.js](https://day.js.org/) library instead of the deprecated `Cypress.moment`                            |
+| [应用操作](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__application-actions)          | 应用操作是 Page Objects 的替代方案                                                            |
+| [端到端 API 测试](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__e2e-api-testing)                  | 通过 GUI 运行 API 测试                                                                                     |
+| [端到端快照](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__e2e-snapshots)                      | 端到端快照测试                                                                                       |
+| [元素覆盖率](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__element-coverage)                | 追踪测试覆盖的元素                                                                                   |
+| [Codepen.io 测试](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__codepen-demo)                  | 测试 HyperApp Codepen 演示                                                                                      |
+| [Redux Store 测试](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__testing-redux-store)          | 测试使用 Redux 数据存储的应用                                                            |
+| [Vue + Vuex + REST 测试](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__vue-vuex-rest)          | 测试使用 Vuex 数据存储的应用                                                             |
+| [无障碍测试](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__a11y)                                | 使用 [cypress-axe](https://github.com/avanslaars/cypress-axe) 进行无障碍测试                               |
+| [自动化 Angular 测试](https://www.cypress.io/blog/2019/08/02/guest-post-angular-adding-cypress-ui-tests-to-your-devops-pipeline) | 自动化 Angular 测试                                                                                          |
+| [React DevTools](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__use-react-devtools)                | 自动加载 React DevTools Chrome 扩展                                                               |
+| [断言计数](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__assertion-counting)           | 如何预期测试中的断言数量                                                            |
+| [浏览器通知](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__notification)               | 测试使用 [`Notification`](https://developer.mozilla.org/en-US/docs/Web/API/notification) 的应用 |
+| [iframe 测试](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__iframes)                          | 访问第三方 iframe 元素，监视和拦截 iframe 网络请求                                    |
+| [类装饰器](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/blogs__class-decorator)                 | 使用 JavaScript 类装饰器暴露应用创建的对象以便测试访问    |
+| [表单提交](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__form-submit)                          | 消除表单提交后页面重载测试的不稳定性                                       |
+| [使用 Day.js 替代 Moment.js](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/blogs__dayjs)          | 使用 [day.js](https://day.js.org/) 库替代已弃用的 `Cypress.moment`                            |
 
-## Stubbing and spying
+## 桩与监视
 
-| Recipe                                                                                                                                           | Description                                                           |
+| 方案                                                                                                                                           | 描述                                                           |
 | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
-| [Stubbing Functions](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing-spying__functions)                      | Use `cy.stub()` to test function calls                                |
-| [Stubbing `window.fetch`](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing-spying__window-fetch)              | Use `cy.stub()` to control fetch requests                             |
-| [Stubbing using`cy.intercept`](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing-spying__intercept)            | Control network using `cy.intercept` API                              |
-| [Stubbing `window.open` and `console.log`](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing-spying__window)   | Use `cy.stub()` and `cy.spy()` to test application behavior           |
-| [Stubbing `window.print`](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing-spying__window-print)              | Use `cy.stub() `to test `window.print` call made from the application |
-| [Stubbing Google Analytics](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing-spying__google-analytics)        | Use `cy.stub()` and `cy.intercept()` to test Google Analytics calls   |
-| [Stub methods called on `console`](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing-spying__console)          | Use `cy.stub()` to test and control methods called on `console`       |
-| [Stub resource loading](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing__resources)                          | Use `MutationObserver` to stub resource loading like `img` tags       |
-| [Stub `navigator.cookieEnabled` property](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing-spying__navigator) | Use `cy.stub()` to mock the `navigator.cookieEnabled` property        |
+| [函数桩](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing-spying__functions)                      | 使用 `cy.stub()` 测试函数调用                                |
+| [拦截 `window.fetch`](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing-spying__window-fetch)              | 使用 `cy.stub()` 控制 fetch 请求                             |
+| [使用 `cy.intercept` 拦截](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing-spying__intercept)            | 使用 `cy.intercept` API 控制网络                              |
+| [拦截 `window.open` 和 `console.log`](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing-spying__window)   | 使用 `cy.stub()` 和 `cy.spy()` 测试应用行为           |
+| [拦截 `window.print`](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing-spying__window-print)              | 使用 `cy.stub()` 测试应用调用的 `window.print` |
+| [拦截 Google Analytics](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing-spying__google-analytics)        | 使用 `cy.stub()` 和 `cy.intercept()` 测试 Google Analytics 调用   |
+| [拦截 `console` 方法](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing-spying__console)          | 使用 `cy.stub()` 测试和控制 `console` 方法调用       |
+| [拦截资源加载](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing__resources)                          | 使用 `MutationObserver` 拦截 `img` 等资源加载       |
+| [拦截 `navigator.cookieEnabled` 属性](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/stubbing-spying__navigator) | 使用 `cy.stub()` 模拟 `navigator.cookieEnabled` 属性        |
 
-## Unit Testing
+## 单元测试
 
-| Recipe                                                                                                                        | Description                               |
+| 方案                                                                                                                        | 描述                               |
 | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| [Application Code](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/unit-testing__application-code) | Import and test your own application code |
+| [应用代码](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/unit-testing__application-code) | 导入并测试自己的应用代码 |
 
-## Server Communication
+## 服务端通信
 
-| Recipe                                                                                                                                                     | Description                                                                                                                  |
+| 方案                                                                                                                                                     | 描述                                                                                                                  |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| [Bootstrapping your App](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/server-communication__bootstrapping-your-app)          | Seed your application with test data                                                                                         |
-| [Seeding your Database in Node](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/server-communication__seeding-database-in-node) | Seed your database with test data                                                                                            |
-| [XHR assertions](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/server-communication__xhr-assertions)                          | Spy and assert on application's network calls                                                                                |
-| [Visiting 2nd domain](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/server-communication__visit-2nd-domain)                   | Visiting two different domains from two different tests and passing value from one test to another                           |
-| [Pass value between specs](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/server-communication__pass-value-between-specs)      | Pass a value from spec to spec using `cy.task`                                                                               |
-| [Stream test results](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/server-communication__stream-tests)                       | Streams each test result from the browser to the plugins to an external process via IPC                                      |
-| [Offline](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/server-communication__offline)                                        | Test web application when the network is offline                                                                             |
-| [Server timing](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/server-communication__server-timing)                            | Report server timing results from Cypress test                                                                               |
-| [Wait for API](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/server-communication__wait-for-api)                              | Call the backend using `cy.request` until it responds                                                                        |
-| [Making HTTP requests](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/server-communication__request)                           | How to use `cy.request`, `window.fetch`, and `cy.task` commands to make HTTP requests to the server with and without cookies |
+| [应用初始化](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/server-communication__bootstrapping-your-app)          | 用测试数据初始化应用                                                                                         |
+| [Node 中初始化数据库](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/server-communication__seeding-database-in-node) | 用测试数据初始化数据库                                                                                            |
+| [XHR 断言](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/server-communication__xhr-assertions)                          | 监视和断言应用的网络调用                                                                                |
+| [访问第二个域名](https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/server-communication__visit-2nd-domain)                   | 在不同测试中访问两个不同域名并传递值                           |
+| [在测试文件间传值](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/server-communication__pass-value-between-specs)      | 使用 `cy.task` 在测试文件间传值                                                                               |
+| [流式测试结果](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/server-communication__stream-tests)                       | 将每个测试结果从浏览器通过插件流式传输到外部进程                                      |
+| [离线测试](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/server-communication__offline)                                        | 测试网络离线时的应用                                                                             |
+| [服务端计时](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/server-communication__server-timing)                            | 从 Cypress 测试报告服务端计时结果                                                                               |
+| [等待 API](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/server-communication__wait-for-api)                              | 使用 `cy.request` 调用后端直到响应                                                                        |
+| [发起 HTTP 请求](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/server-communication__request)                           | 如何使用 `cy.request`、`window.fetch` 和 `cy.task` 命令发起带或不带 cookie 的 HTTP 请求 |
 
-## Other Cypress Recipes
+## 其他 Cypress 方案
 
-| Recipe                                                                                            | Description                              |
+| 方案                                                                                            | 描述                              |
 | ------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| [Visual Testing](/app/tooling/visual-testing)                                                     | Official Cypress guide to visual testing |
-| [Code Coverage](/app/tooling/code-coverage)                                                       | Official Cypress guide to code coverage  |
-| [Run in Docker](https://www.cypress.io/blog/2019/05/02/run-cypress-with-a-single-docker-command/) | Run Cypress with a single Docker command |
+| [视觉测试](/app/tooling/visual-testing)                                                     | Cypress 官方视觉测试指南 |
+| [代码覆盖率](/app/tooling/code-coverage)                                                       | Cypress 官方代码覆盖率指南  |
+| [Docker 运行](https://www.cypress.io/blog/2019/05/02/run-cypress-with-a-single-docker-command/) | 单条 Docker 命令运行 Cypress |

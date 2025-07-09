@@ -1,6 +1,6 @@
 ---
-title: 'Allowed Interaction Commands | Cypress UI Coverage'
-description: 'The `allowedInteractionCommands` configuration property allows users to limit the interaction commands that are tracked for specific elements in UI Coverage.'
+title: '允许的交互命令 | Cypress UI 覆盖率'
+description: '`allowedInteractionCommands` 配置属性允许用户限制在 UI 覆盖率中为特定元素追踪的交互命令。'
 sidebar_label: allowedInteractionCommands
 sidebar_position: 100
 ---
@@ -9,16 +9,16 @@ sidebar_position: 100
 
 # allowedInteractionCommands
 
-UI Coverage tracks all interaction commands by default for comprehensive coverage reporting. The `allowedInteractionCommands` configuration allows you to limit which interaction commands are tracked for specific elements by defining rules based on CSS selectors.
+UI 覆盖率默认追踪所有交互命令以生成全面的覆盖率报告。`allowedInteractionCommands` 配置允许您通过基于 CSS 选择器定义规则，来限制为特定元素追踪哪些交互命令。
 
-This is particularly useful for filtering out irrelevant interactions or focusing coverage tracking on specific interaction patterns for different types of elements.
+这对于过滤无关交互或针对不同类型元素聚焦特定交互模式的覆盖率追踪特别有用。
 
-## Why use allowedInteractionCommands?
+## 为什么使用 allowedInteractionCommands？
 
-- **Focused tracking**: Limit coverage tracking to relevant interaction types for specific elements or components to reduce noise in reports.
-- **Component-specific rules**: Apply different interaction tracking rules based on element types or component categories. For example, you may require specific kinds of interactions on complex data-visualization components that are not required in regular interactive elements.
+- **聚焦追踪**：将覆盖率追踪限制为特定元素或组件相关的交互类型，减少报告中的干扰
+- **组件特定规则**：基于元素类型或组件类别应用不同的交互追踪规则。例如，复杂数据可视化组件可能需要特定交互类型，而这些交互在常规交互元素中并不需要
 
-## Syntax
+## 语法
 
 ```json
 {
@@ -33,20 +33,20 @@ This is particularly useful for filtering out irrelevant interactions or focusin
 }
 ```
 
-### Options
+### 选项
 
-The `allowedInteractionCommands` property accepts an array of objects, where each object defines a rule for limiting interaction commands for elements matching a specific selector.
+`allowedInteractionCommands` 属性接受一个对象数组，每个对象定义一条规则，用于限制匹配特定选择器的元素的交互命令。
 
-| Option     | Required | Default | Description                                                                                                                                                                       |
-| ---------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `selector` | Required |         | A CSS selector to identify elements. Supports standard CSS selector syntax, including IDs, classes, attributes, and combinators.                                                  |
-| `commands` | Required |         | An array of command names (strings) that should be tracked as interactions for elements matching the selector. All other interaction commands will be ignored for these elements. |
+| 选项        | 必填     | 默认值  | 描述                                                                                                                                                                       |
+| ----------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `selector`  | 必填     |         | 用于识别元素的 CSS 选择器。支持标准 CSS 选择器语法，包括 ID、类、属性和组合器                                                                                              |
+| `commands`  | 必填     |         | 应作为交互追踪的命令名称（字符串）数组，针对匹配选择器的元素。对于这些元素，所有其他交互命令将被忽略                                                                        |
 
-## Examples
+## 示例
 
-### Limiting button interactions to clicks only
+### 限制按钮交互仅为点击
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -61,19 +61,19 @@ The `allowedInteractionCommands` property accepts an array of objects, where eac
 }
 ```
 
-#### Usage in tests
+#### 测试中使用
 
 ```javascript
-// Only click and realClick will be tracked for buttons
-cy.get('[data-cy="submit-button"]').click() // ✓ Tracked
-cy.get('[data-cy="submit-button"]').realClick() // ✓ Tracked
-cy.get('[data-cy="submit-button"]').hover() // ✗ Not tracked
-cy.get('[data-cy="submit-button"]').focus() // ✗ Not tracked
+// 对于按钮只追踪 click 和 realClick
+cy.get('[data-cy="submit-button"]').click() // ✓ 追踪
+cy.get('[data-cy="submit-button"]').realClick() // ✓ 追踪
+cy.get('[data-cy="submit-button"]').hover() // ✗ 不追踪
+cy.get('[data-cy="submit-button"]').focus() // ✗ 不追踪
 ```
 
-### Different rules for form elements
+### 表单元素的不同规则
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -96,27 +96,27 @@ cy.get('[data-cy="submit-button"]').focus() // ✗ Not tracked
 }
 ```
 
-#### Usage in tests
+#### 测试中使用
 
 ```javascript
-// Text inputs: only type, clear, and realType are tracked
-cy.get('[data-cy="username"]').type('john_doe') // ✓ Tracked
-cy.get('[data-cy="username"]').clear() // ✓ Tracked
-cy.get('[data-cy="username"]').focus() // ✗ Not tracked
+// 文本输入框：只追踪 type、clear 和 realType
+cy.get('[data-cy="username"]').type('john_doe') // ✓ 追踪
+cy.get('[data-cy="username"]').clear() // ✓ 追踪
+cy.get('[data-cy="username"]').focus() // ✗ 不追踪
 
-// Select elements: only select and click are tracked
-cy.get('[data-cy="country"]').select('US') // ✓ Tracked
-cy.get('[data-cy="country"]').click() // ✓ Tracked
-cy.get('[data-cy="country"]').hover() // ✗ Not tracked
+// 选择框：只追踪 select 和 click
+cy.get('[data-cy="country"]').select('US') // ✓ 追踪
+cy.get('[data-cy="country"]').click() // ✓ 追踪
+cy.get('[data-cy="country"]').hover() // ✗ 不追踪
 
-// Checkboxes/Radio buttons: check, uncheck, and click are tracked
-cy.get('[data-cy="agree-terms"]').check() // ✓ Tracked
-cy.get('[data-cy="agree-terms"]').click() // ✓ Tracked
+// 复选框/单选按钮：追踪 check、uncheck 和 click
+cy.get('[data-cy="agree-terms"]').check() // ✓ 追踪
+cy.get('[data-cy="agree-terms"]').click() // ✓ 追踪
 ```
 
-### Excluding hover interactions for mobile components
+### 排除移动组件的悬停交互
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -131,20 +131,20 @@ cy.get('[data-cy="agree-terms"]').click() // ✓ Tracked
 }
 ```
 
-#### Usage in tests
+#### 测试中使用
 
 ```javascript
-// Mobile components: hover interactions are excluded
-cy.get('[data-mobile="true"][data-cy="menu-item"]').click() // ✓ Tracked
-cy.get('[data-mobile="true"][data-cy="menu-item"]').tap() // ✓ Tracked
-cy.get('[data-mobile="true"][data-cy="menu-item"]').hover() // ✗ Not tracked
+// 移动组件：排除 hover 交互
+cy.get('[data-mobile="true"][data-cy="menu-item"]').click() // ✓ 追踪
+cy.get('[data-mobile="true"][data-cy="menu-item"]').tap() // ✓ 追踪
+cy.get('[data-mobile="true"][data-cy="menu-item"]').hover() // ✗ 不追踪
 ```
 
-### Allowing assertions as interactions
+### 允许断言作为交互
 
-Note that because `allowedInteractionCommands` replaces the allowed interactions, if you add `assert` as an interaction, remember to also add any other acceptable interactions to the list.
+请注意，由于 `allowedInteractionCommands` 会替换允许的交互，如果您添加 `assert` 作为交互，请记得在列表中也添加其他可接受的交互。
 
-#### Config
+#### 配置
 
 ```json
 {
@@ -159,18 +159,18 @@ Note that because `allowedInteractionCommands` replaces the allowed interactions
 }
 ```
 
-#### Usage in tests
+#### 测试中使用
 
 ```javascript
-// Any assertions on matching elements are tracked
-cy.get('button[data-no-explicit-interaction="true"]').should('exist) // ✓ Tracked
-cy.get('button[data-no-explicit-interaction="true"]').should('be.visible) // ✓ Tracked
-cy.get('button[data-no-explicit-interaction="true"]').click() // ✗ Not tracked
+// 对匹配元素的任何断言都会被追踪
+cy.get('button[data-no-explicit-interaction="true"]').should('exist) // ✓ 追踪
+cy.get('button[data-no-explicit-interaction="true"]').should('be.visible) // ✓ 追踪
+cy.get('button[data-no-explicit-interaction="true"]').click() // ✗ 不追踪
 ```
 
-## Notes
+## 注意事项
 
-- Elements that don't match any selector will have all interaction commands tracked (default behavior).
-- If an element matches multiple selectors, commands from all matching rules will be allowed. A high degree of specificity for these selectors is recommended.
-- Command names are case-sensitive and must match exactly as they appear in your test code.
-- This configuration works separately from `additionalInteractionCommands`. Custom commands do **not** need to be globally defined as `additionalInteractionCommands` in order to be declared here.
+- 不匹配任何选择器的元素将追踪所有交互命令（默认行为）
+- 如果元素匹配多个选择器，则允许所有匹配规则的命令。建议对这些选择器使用高度特异性
+- 命令名称区分大小写，必须与测试代码中完全一致
+- 此配置与 `additionalInteractionCommands` 分开工作。自定义命令**不**需要在此处声明前全局定义为 `additionalInteractionCommands`

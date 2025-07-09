@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.browser | Cypress Documentation'
-description: Cypress.browser returns you properties of the browser.
+title: 'Cypress.browser | Cypress 文档'
+description: Cypress.browser 返回浏览器的属性。
 sidebar_label: browser
 sidebar_position: 50
 ---
@@ -9,37 +9,37 @@ sidebar_position: 50
 
 # Cypress.browser
 
-`Cypress.browser` returns you properties of the browser.
+`Cypress.browser` 返回浏览器的属性。
 
-## Syntax
+## 语法
 
 ```javascript
-Cypress.browser // returns browser object
+Cypress.browser // 返回浏览器对象
 ```
 
-The object has the following properties:
+该对象包含以下属性：
 
-| Property       | Type                 | Description                                                           |
-| -------------- | -------------------- | --------------------------------------------------------------------- |
-| `channel`      | `string`             | Release channel of the browser, such as `stable`, `dev`, or `canary`. |
-| `displayName`  | `string`             | Human-readable display name for the browser.                          |
-| `family`       | `string`             | Rendering engine being used. `chromium` or `firefox`.                 |
-| `isChosen`     | `boolean`            | Whether the browser is selected in the browser selector of Cypress.   |
-| `majorVersion` | `number` \| `string` | The major version number of the browser.                              |
-| `name`         | `string`             | Machine-friendly name, like `chrome`, `electron`, or `firefox`.       |
-| `path`         | `string`             | Path to the browser on disk. Blank for Electron.                      |
-| `version`      | `string`             | Full version.                                                         |
-| `isHeadless`   | `boolean`            | Whether the browser is running headlessly.                            |
-| `isHeaded`     | `boolean`            | Whether the browser displays headed.                                  |
+| 属性           | 类型                 | 描述                                                                 |
+| -------------- | -------------------- | ------------------------------------------------------------------- |
+| `channel`      | `string`             | 浏览器的发布渠道，如 `stable`、`dev` 或 `canary`。                   |
+| `displayName`  | `string`             | 浏览器的可读显示名称。                                               |
+| `family`       | `string`             | 使用的渲染引擎。`chromium` 或 `firefox`。                            |
+| `isChosen`     | `boolean`            | 浏览器是否在 Cypress 的浏览器选择器中被选中。                         |
+| `majorVersion` | `number` \| `string` | 浏览器的主版本号。                                                   |
+| `name`         | `string`             | 机器友好的名称，如 `chrome`、`electron` 或 `firefox`。              |
+| `path`         | `string`             | 浏览器在磁盘上的路径。Electron 浏览器为空。                          |
+| `version`      | `string`             | 完整版本号。                                                         |
+| `isHeadless`   | `boolean`            | 浏览器是否以无头模式运行。                                           |
+| `isHeaded`     | `boolean`            | 浏览器是否以有界面模式显示。                                         |
 
-## Examples
+## 示例
 
-### Log browser information
+### 记录浏览器信息
 
-#### `Cypress.browser` returns browser object
+#### `Cypress.browser` 返回浏览器对象
 
 ```js
-it('log browser info', () => {
+it('记录浏览器信息', () => {
   console.log(Cypress.browser)
   // {
   //   channel: 'stable',
@@ -56,9 +56,9 @@ it('log browser info', () => {
 })
 ```
 
-### Conditionals
+### 条件判断
 
-#### Check that Chrome specific styles are applied
+#### 检查 Chrome 特定样式是否应用
 
 ```css
 @media and (-webkit-min-device-pixel-ratio: 0) {
@@ -69,43 +69,43 @@ it('log browser info', () => {
 ```
 
 ```javascript
-it('has correct Chrome specific css property', () => {
-  // if in Chrome, check css property was properly applied
+it('检查 Chrome 特定 CSS 属性是否正确', () => {
+  // 如果在 Chrome 中，检查 CSS 属性是否正确应用
   if (Cypress.browser.name === 'chrome') {
     cy.get('.header').should('have.css', 'margin-right').and('eq', '0')
   }
 })
 ```
 
-#### Screenshot only in headless browser
+#### 仅在无头浏览器中截图
 
 ```javascript
 Cypress.Commands.overwrite(
   'screenshot',
   (originalFn, subject, name, options) => {
-    // only take screenshots in headless browser
+    // 仅在无头浏览器中截图
     if (Cypress.browser.isHeadless) {
-      // return the original screenshot function
+      // 返回原始截图函数
       return originalFn(subject, name, options)
     }
 
-    return cy.log('No screenshot taken when headed')
+    return cy.log('有界面模式下不截图')
   }
 )
 
-// only takes in headless browser
+// 仅在无头浏览器中执行截图
 cy.screenshot()
 ```
 
-## History
+## 历史版本
 
-| Version                                  | Changes                      |
-| ---------------------------------------- | ---------------------------- |
-| [3.0.2](/app/references/changelog#3-0-2) | `Cypress.browser` introduced |
+| 版本                                   | 变更                          |
+| ------------------------------------- | ----------------------------- |
+| [3.0.2](/app/references/changelog#3-0-2) | 引入 `Cypress.browser` 功能。 |
 
-## See also
+## 另请参阅
 
-- [Browser Launch API](/api/node-events/browser-launch-api)
-- [Cross Browser Testing](/app/guides/cross-browser-testing)
+- [浏览器启动 API](/api/node-events/browser-launch-api)
+- [跨浏览器测试](/app/guides/cross-browser-testing)
 - [Cypress.isBrowser](/api/cypress-api/isbrowser)
-- [Launching Browsers](/app/references/launching-browsers)
+- [启动浏览器](/app/references/launching-browsers)

@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.log | Cypress Documentation'
-description: The internal API for controlling what gets printed to the Command Log of Cypress.
+title: 'Cypress.log | Cypress 文档'
+description: 控制 Cypress 命令日志输出内容的内部 API。
 sidebar_label: log
 ---
 
@@ -8,51 +8,49 @@ sidebar_label: log
 
 # Cypress.log
 
-This is the internal API for controlling what gets printed to the Command Log.
+这是用于控制命令日志输出内容的内部 API。
 
-Useful when writing your own
-[custom commands](/api/cypress-api/custom-commands).
+在编写[自定义命令](/api/cypress-api/custom-commands)时非常有用。
 
-## Syntax
+## 语法
 
 ```javascript
 Cypress.log(options)
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to `Cypress.log()`.
+向 `Cypress.log()` 传入一个选项对象。
 
-| Option         | Default               | Description                                 |
-| -------------- | --------------------- | ------------------------------------------- |
+| 选项           | 默认值               | 描述                                 |
+| -------------- | --------------------- | ------------------------------------ |
 | `$el`          | `undefined`           |
-| `name`         | `name of the command` |
-| `displayName`  | `name of the command` | Overrides `name` only for display purposes. |
-| `message`      | `command args`        |
+| `name`         | `命令名称`            |
+| `displayName`  | `命令名称`            | 仅用于显示目的，会覆盖 `name`。      |
+| `message`      | `命令参数`            |
 | `consoleProps` | `function() {}`       |
 
-## Examples
+## 示例
 
-We want the Command Log and the console in the DevTools to log specific
-properties of our custom command.
+我们希望命令日志和开发者工具控制台能记录自定义命令的特定属性。
 
 ```javascript
 Cypress.Commands.add('setSessionStorage', (key, value) => {
-  // Turn off logging of the cy.window() to command log
+  // 关闭 cy.window() 在命令日志中的记录
   cy.window({ log: false }).then((window) => {
     window.sessionStorage.setItem(key, value)
   })
 
   const log = Cypress.log({
     name: 'setSessionStorage',
-    // shorter name for the Command Log
+    // 在命令日志中显示更短的名称
     displayName: 'setSS',
     message: `${key}, ${value}`,
     consoleProps: () => {
-      // return an object which will
-      // print to dev tools console on click
+      // 返回一个对象，点击命令时
+      // 会在开发者工具控制台中打印
       return {
         Key: key,
         Value: value,
@@ -63,14 +61,13 @@ Cypress.Commands.add('setSessionStorage', (key, value) => {
 })
 ```
 
-The code above displays in the Command Log as shown below, with the console
-properties shown on click of the command.
+上述代码在命令日志中的显示效果如下所示，点击命令时会显示控制台属性。
 
 <DocsImage
   src="/img/api/Cypress.log-custom-logging-and-console.png"
-  alt="Custom logging of custom command"
+  alt="自定义命令的日志记录"
 />
 
-## See also
+## 另请参阅
 
 - [`Commands`](/api/cypress-api/custom-commands)

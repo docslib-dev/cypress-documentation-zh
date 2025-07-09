@@ -1,74 +1,71 @@
 ---
-title: 'submit | Cypress Documentation'
-description: Submit a form in Cypress.
-sidebar_label: submit
+title: 'submit | Cypress 文档'
+description: '在Cypress中提交表单'
+sidebar_label: 'submit'
 ---
 
 <ProductHeading product="app" />
 
 # submit
 
-Submit a form.
+提交表单。
 
-It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried) to
-chain further commands that rely on the subject after `.submit()`.
+在`.submit()`之后继续链式调用依赖于目标对象的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
 :::caution
 
-The [subject](/app/core-concepts/introduction-to-cypress#Subject-Management)
-must be a `<form>`.
+[目标对象](/app/core-concepts/introduction-to-cypress#Subject-Management)必须是一个`<form>`元素。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .submit()
 .submit(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('form').submit() // Submit a form
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.submit() // Errors, cannot be chained off 'cy'
-cy.get('input').submit() // Errors, 'input' does not yield a form
+cy.get('form').submit() // 提交表单
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
+
+```javascript
+cy.submit() // 错误，不能直接链式调用'cy'
+cy.get('input').submit() // 错误，'input'不是表单元素
+```
+
+### 参数
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `.submit()`.
+传入选项对象以改变`.submit()`的默认行为。
 
-| Option    | Default                                                           | Description                                                                         |
+| 选项      | 默认值                                                           | 描述                                                                         |
 | --------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `log`     | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.submit()` to resolve before [timing out](#Timeouts)              |
+| `log`     | `true`                                                            | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令 |
+| `timeout` | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 在[超时](#Timeouts)前等待`.submit()`完成的时间              |
 
 <HeaderYields />
 
-- `.submit()` yields the same subject it was given.
-- It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried)
-  to chain further commands that rely on the subject after `.submit()`.
+- `.submit()`返回与原始目标对象相同的内容。
+- 在`.submit()`之后继续链式调用依赖于目标对象的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Example
+## 示例
 
-### No Args
+### 无参数
 
-#### Submit can only be called on a single form
+#### Submit只能作用于单个表单
 
 ```html
 <form id="contact">
   <input type="text" name="message" />
-  <button type="submit">Send</button>
+  <button type="submit">发送</button>
 </form>
 ```
 
@@ -76,78 +73,67 @@ Pass in an options object to change the default behavior of `.submit()`.
 cy.get('#contact').submit()
 ```
 
-## Notes
+## 注意事项
 
-### Submit is not an action command
+### Submit不是操作命令
 
-`.submit()` is not implemented like other action commands, and does not follow
-the same rules of
-[waiting for actionability](/app/core-concepts/interacting-with-elements).
+`.submit()`的实现方式与其他操作命令不同，不遵循[等待可操作性](/app/core-concepts/interacting-with-elements)的相同规则。
 
-`.submit()` is a helpful command used as a shortcut. Normally a user has to
-perform a different "action" to submit a form. It could be clicking a submit
-`<button>`, or pressing `enter` on a keyboard.
+`.submit()`是一个有用的快捷命令。通常用户需要通过不同的"操作"来提交表单，比如点击提交`<button>`或在键盘上按`enter`键。
 
-Oftentimes using `.submit()` directly is more concise and conveys what you're
-trying to test.
+很多时候直接使用`.submit()`更简洁，并能准确表达你的测试意图。
 
-If you want the other guarantees of waiting for an element to become actionable,
-you should use a different command like [`.click()`](/api/commands/click) or
-[`.type()`](/api/commands/type).
+如果你需要等待元素变为可操作的其他保证，应该使用其他命令如[`.click()`](/api/commands/click)或[`.type()`](/api/commands/type)。
 
-### Submit will fail if there are form validation errors
+### 表单验证错误会导致Submit失败
 
-If the form being submitted includes inputs with
-[client-side validation](https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation)
-and that validation fails, `.submit()` will fail and list the validation
-failures.
+如果提交的表单包含具有[客户端验证](https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation)的输入字段且验证失败，`.submit()`会失败并列出验证错误。
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.submit()` requires being chained off a command that yields DOM element(s).
-- `.submit()` requires the element to be a `form`.
+- `.submit()`需要链式调用返回DOM元素的命令。
+- `.submit()`要求目标元素是`form`。
 
 <HeaderAssertions />
 
-- `.submit()` will automatically wait for assertions you have chained to pass.
+- `.submit()`会自动等待链式断言通过。
 
 <HeaderTimeouts />
 
-- `.submit()` can time out waiting for assertions you've added to pass.
+- `.submit()`可能会因等待链式断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Submit a form_**
+**_提交表单_**
 
 ```javascript
 cy.intercept('POST', '/users', { fixture: 'user' }).as('userSuccess')
 cy.get('form').submit()
 ```
 
-The commands above will display in the Command Log as:
+以上命令会在命令日志中显示为：
 
 <DocsImage
   src="/img/api/submit/form-submit-shows-in-command-log-of-cypress.png"
-  alt="Command Log submit"
+  alt="命令日志中的submit"
 />
 
-When clicking on `submit` within the command log, the console outputs the
-following:
+当点击命令日志中的`submit`时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/submit/console-shows-what-form-was-submitted.png"
-  alt="Console Log submit"
+  alt="控制台日志中的submit"
 />
 
-## History
+## 历史版本
 
-| Version                                    | Changes                   |
+| 版本                                    | 变更                   |
 | ------------------------------------------ | ------------------------- |
-| [< 0.3.3](/app/references/changelog#0-3-3) | `.submit()` command added |
+| [< 0.3.3](/app/references/changelog#0-3-3) | 新增`.submit()`命令 |
 
-## See also
+## 另请参阅
 
 - [`.click()`](/api/commands/click)
 - [`.type()`](/api/commands/type)

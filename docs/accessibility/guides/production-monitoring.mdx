@@ -1,29 +1,29 @@
 ---
-sidebar_label: Production monitoring
-title: 'Production monitoring | Cypress Accessibility Documentation'
-description: 'Monitor accessibility issues in production by running scheduled Cypress tests against live environments, capturing dynamic content changes, and generating automated reports for a comprehensive accessibility overview.'
+sidebar_label: 生产环境监控
+title: '生产环境监控 | Cypress无障碍测试文档'
+description: '通过对线上环境运行定时Cypress测试，捕获动态内容变更并生成自动化报告，全面监控生产环境中的无障碍访问问题。'
 sidebar_position: 60
 ---
 
 <ProductHeading product="accessibility" />
 
-# Production monitoring
+# 生产环境监控
 
-Cypress is commonly used in CI and local development workflows. It can also be leveraged to monitor production or staging environments through scheduled tests. This approach is particularly useful for environments involving dynamic content, such as those managed by Content Management Systems (CMS), where content changes can impact accessibility.
+Cypress通常用于CI和本地开发工作流。它同样适用于通过定时测试来监控生产或预发布环境。这种方法特别适用于包含动态内容的环境，例如由内容管理系统(CMS)维护的网站，其中内容变更可能影响无障碍访问。
 
-Dynamic or externally controlled content, such as A/B tests or user-generated content, often makes it challenging to write explicit assertions. For these cases, production smoke tests can serve as high-level health checks, ensuring the accessibility of dynamic UI variations without requiring full test coverage.
+动态或外部控制的内容（如A/B测试或用户生成内容）往往难以编写明确的断言。针对这些场景，生产环境冒烟测试可作为高层级的健康检查，确保动态UI变体的无障碍性，而无需完整的测试覆盖。
 
-## Using Cypress for Production Monitoring
+## 使用Cypress进行生产监控
 
-Cypress Accessibility enables you to test dynamic content seamlessly. By visiting a production URL within your Cypress tests and performing minimal UI interactions, you can capture the page's accessibility state in reports. This allows teams to detect accessibility issues introduced outside the regular development lifecycle.
+Cypress无障碍测试功能使您能够无缝测试动态内容。通过在Cypress测试中访问生产环境URL并执行最简UI交互，您可以在报告中捕获页面的无障碍状态。这使得团队能够发现常规开发生命周期之外引入的无障碍问题。
 
-## Example: Automated Sitemap-Based Testing
+## 示例：基于站点地图的自动化测试
 
-If your project lacks existing Cypress tests, a common approach is to generate test coverage from a sitemap or an array of target URLs. These URLs can be used to perform light interactions and capture accessibility reports. Below is an example of how to automate this process by using a sitemap and scrolling to the footer on each page:
+如果项目缺少现成的Cypress测试，常见做法是从站点地图或目标URL数组生成测试覆盖。这些URL可用于执行轻量交互并捕获无障碍报告。以下示例展示如何通过站点地图自动化该流程，并在每个页面滚动至页脚：
 
 ```js
-describe('Accessibility Scan', () => {
-  it('Checks accessibility with the sitemap.xml', () => {
+describe('无障碍扫描', () => {
+  it('使用sitemap.xml检查无障碍性', () => {
     cy.request('https://<YOUR_WEBSITE>/sitemap.xml').then((response) => {
       const xmlString = response.body
       const parser = new DOMParser()
@@ -40,4 +40,4 @@ describe('Accessibility Scan', () => {
 })
 ```
 
-The outcome of this is a first-page-load accessibility report for every URL in the site. Any Cypress UI tests for specific workflows will increase the coverage area automatically to include the states and variations reached during the workflows.
+该测试会为站点地图中的每个URL生成首屏加载的无障碍报告。任何针对特定工作流的Cypress UI测试都将自动扩大覆盖范围，包含工作流中触达的各个状态和变体。

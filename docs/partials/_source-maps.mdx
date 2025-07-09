@@ -1,34 +1,12 @@
-Cypress utilizes source maps to enhance the error experience. Stack traces are
-translated so that your source files are shown instead of the generated file
-that is loaded by the browser. This also enables displaying code frames. Without
-inline source maps, you will not see code frames.
+Cypress 利用源映射(source map)来增强错误显示体验。堆栈跟踪会被转换，从而显示您的源文件而非浏览器加载的生成文件。这同时支持显示代码框架(code frame)。若没有内联源映射(inline source map)，您将无法看到代码框架。
 
-By default, Cypress will include an inline source map in your spec file, so you
-will get the most out of the error experience. If you
-[modify the preprocessor](/api/node-events/preprocessors-api#Usage), ensure that inline
-source maps are enabled to get the same experience. Some examples of this include:
+默认情况下，Cypress会在测试规范文件(spec file)中包含内联源映射，因此您能获得最佳的错误显示体验。如果您[修改了预处理器](/api/node-events/preprocessors-api#Usage)，请确保启用内联源映射以获得相同体验。具体示例如下：
 
-- With webpack and the
-  [webpack preprocessor](https://github.com/cypress-io/cypress/tree/develop/npm/webpack-preprocessor), set
-  [the `devtool` option](https://webpack.js.org/configuration/devtool/) to
-  `inline-source-map`.
-- With esbuild and the
-  [esbuild preprocessor](https://github.com/bahmutov/cypress-esbuild-preprocessor/tree/main), set
-  [the `sourcemap` option](https://esbuild.github.io/api/#sourcemap) to `inline` when
-  [creating the bundler](https://github.com/bahmutov/cypress-esbuild-preprocessor#esbuild-options).
-- With cucumber and the
-  [cucumber preprocessor](https://github.com/badeball/cypress-cucumber-preprocessor/tree/master)
-  third party bundlers are used to bundle the code.
-  - For esbuild and the
-    [esbuild preprocessor](https://github.com/bahmutov/cypress-esbuild-preprocessor/tree/main),
-    set [the `sourcemap` option](https://esbuild.github.io/api/#sourcemap) to `inline` when
-    [creating the bundler](https://github.com/bahmutov/cypress-esbuild-preprocessor#esbuild-options).
-    Note: the cucumber preprocessor documentation for the esbuild bundler describes an experimental
-    option: `prettySourceMaps`, but this option is buggy and setting source maps on the esbuild
-    bundler directly works better.
-  - The other bundlers all default their source maps appropriately.
+- 使用webpack及[webpack预处理器](https://github.com/cypress-io/cypress/tree/develop/npm/webpack-preprocessor)时，将[`devtool`选项](https://webpack.js.org/configuration/devtool/)设为`inline-source-map`
+- 使用esbuild及[esbuild预处理器](https://github.com/bahmutov/cypress-esbuild-preprocessor/tree/main)时，在[创建打包器](https://github.com/bahmutov/cypress-esbuild-preprocessor#esbuild-options)时将[`sourcemap`选项](https://esbuild.github.io/api/#sourcemap)设为`inline`
+- 使用cucumber及[cucumber预处理器](https://github.com/badeball/cypress-cucumber-preprocessor/tree/master)时，会使用第三方打包器来打包代码
+  - 对于esbuild及[esbuild预处理器](https://github.com/bahmutov/cypress-esbuild-preprocessor/tree/main)，在[创建打包器](https://github.com/bahmutov/cypress-esbuild-preprocessor#esbuild-options)时将[`sourcemap`选项](https://esbuild.github.io/api/#sourcemap)设为`inline`
+    注意：cucumber预处理器文档中提到的esbuild打包器实验性选项`prettySourceMaps`存在缺陷，直接在esbuild打包器上设置源映射效果更佳
+  - 其他打包器都会默认采用适当的源映射配置
 
-If using [TypeScript](https://www.typescriptlang.org/) with any custom preprocessor, you will want to make sure that the [TypeScript](https://www.typescriptlang.org/)
-compiler is generating source maps. This can be done by setting the [`sourceMap`](https://www.typescriptlang.org/tsconfig/#sourceMap) option in your
-`tsconfig.json` to `true`. The [`inlineSourceMap`](https://www.typescriptlang.org/tsconfig/#inlineSourceMap) option is **not** recommended as it does not provide an accurate code frame.
-Please see our recommended [tsconfig.json](/app/tooling/typescript-support#Configure-tsconfigjson) as a reference.
+如果在自定义预处理器中使用[TypeScript](https://www.typescriptlang.org/)，请确保[TypeScript](https://www.typescriptlang.org/)编译器生成了源映射。这可以通过在`tsconfig.json`中将[`sourceMap`](https://www.typescriptlang.org/tsconfig/#sourceMap)选项设为`true`来实现。**不推荐**使用[`inlineSourceMap`](https://www.typescriptlang.org/tsconfig/#inlineSourceMap)选项，因为它无法提供准确的代码框架。请参考我们推荐的[tsconfig.json](/app/tooling/typescript-support#Configure-tsconfigjson)配置。

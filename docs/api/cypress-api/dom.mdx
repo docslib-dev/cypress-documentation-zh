@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.dom | Cypress Documentation'
-description: 'Cypress.dom.method() is a collection of DOM related helper methods in Cypress'
+title: 'Cypress.dom | Cypress 文档'
+description: 'Cypress.dom.method() 是 Cypress 中一系列与 DOM 相关的辅助方法集合'
 sidebar_label: dom
 sidebar_position: 100
 ---
@@ -9,31 +9,29 @@ sidebar_position: 100
 
 # Cypress.dom
 
-`Cypress.dom.method()` is a collection of DOM related helper methods.
+`Cypress.dom.method()` 是 Cypress 中一系列与 DOM 相关的辅助方法集合。
 
 :::caution
 
-There are actually dozens of methods attached to `Cypress.dom` that are not
-documented below. These methods are used internally by Cypress in nearly every
-single built in command.
+实际上 `Cypress.dom` 还包含数十个未在下方文档中列出的方法。这些方法被 Cypress 内部几乎所有的内置命令所使用。
 
-We suggest
-[reading through the source code here](https://github.com/cypress-io/cypress/blob/develop/packages/driver/src/dom/index.ts)
-to see all of the methods and what they do.
+建议
+[查阅此处的源代码](https://github.com/cypress-io/cypress/blob/develop/packages/driver/src/dom/index.ts)
+以了解所有方法及其功能。
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 Cypress.dom.isHidden(element)
 ```
 
-## Examples
+## 示例
 
-### Is attached
+### 是否已附加
 
-**Returns a boolean indicating whether an element is attached to the DOM.**
+**返回布尔值，表示元素是否已附加到 DOM 中。**
 
 ```javascript
 cy.get('button').then(($el) => {
@@ -41,10 +39,9 @@ cy.get('button').then(($el) => {
 })
 ```
 
-### Is descendent
+### 是否为后代元素
 
-**Returns a boolean indicating whether an element is a descendent of another
-element.**
+**返回布尔值，表示一个元素是否是另一个元素的后代。**
 
 ```javascript
 cy.get('div').then(($el) => {
@@ -52,9 +49,9 @@ cy.get('div').then(($el) => {
 })
 ```
 
-### Is detached
+### 是否已分离
 
-**Returns a boolean indicating whether an element is detached from the DOM.**
+**返回布尔值，表示元素是否已从 DOM 中分离。**
 
 ```javascript
 cy.get('button').then(($el) => {
@@ -62,9 +59,9 @@ cy.get('button').then(($el) => {
 })
 ```
 
-### Is document
+### 是否为文档类型
 
-**Returns a boolean indicating whether a node is of document type.**
+**返回布尔值，表示节点是否为 document 类型。**
 
 ```javascript
 cy.get('p').then(($el) => {
@@ -72,9 +69,9 @@ cy.get('p').then(($el) => {
 })
 ```
 
-### Is DOM
+### 是否为 DOM 对象
 
-**Returns a boolean indicating whether an object is a DOM object.**
+**返回布尔值，表示对象是否为 DOM 对象。**
 
 ```javascript
 cy.get('body').then(($el) => {
@@ -82,9 +79,9 @@ cy.get('body').then(($el) => {
 })
 ```
 
-### Is element
+### 是否为 DOM 元素
 
-**Returns a boolean indicating whether an object is a DOM element.**
+**返回布尔值，表示对象是否为 DOM 元素。**
 
 ```javascript
 cy.get('p').then(($el) => {
@@ -92,13 +89,12 @@ cy.get('p').then(($el) => {
 })
 ```
 
-### Is focusable
+### 是否可聚焦
 
-**Returns a boolean indicating whether an element can receive focus.**
+**返回布尔值，表示元素是否可以接收焦点。**
 
-Cypress internally uses this method _everywhere_ to figure out whether an
-element is hidden,
-[mostly for actionability](/app/core-concepts/interacting-with-elements).
+Cypress 内部广泛使用此方法来判断元素是否隐藏，
+[主要用于可操作性检查](/app/core-concepts/interacting-with-elements)。
 
 ```javascript
 cy.get('input').then(($el) => {
@@ -106,9 +102,9 @@ cy.get('input').then(($el) => {
 })
 ```
 
-### Is focused
+### 是否已聚焦
 
-**Returns a boolean indicating whether an element currently has focus.**
+**返回布尔值，表示元素当前是否拥有焦点。**
 
 ```javascript
 cy.get('button').then(($el) => {
@@ -116,13 +112,12 @@ cy.get('button').then(($el) => {
 })
 ```
 
-### Is hidden
+### 是否隐藏
 
-**Returns a boolean indicating whether an element is hidden.**
+**返回布尔值，表示元素是否隐藏。**
 
-Cypress internally uses this method _everywhere_ to figure out whether an
-element is hidden,
-[mostly for actionability](/app/core-concepts/interacting-with-elements).
+Cypress 内部广泛使用此方法来判断元素是否隐藏，
+[主要用于可操作性检查](/app/core-concepts/interacting-with-elements)。
 
 ```javascript
 cy.get('p').then(($el) => {
@@ -130,9 +125,9 @@ cy.get('p').then(($el) => {
 })
 ```
 
-### Is jQuery
+### 是否为 jQuery 对象
 
-**Returns a boolean indicating whether an object is a jQuery object.**
+**返回布尔值，表示对象是否为 jQuery 对象。**
 
 ```javascript
 cy.get('input').then(($el) => {
@@ -140,13 +135,12 @@ cy.get('input').then(($el) => {
 })
 ```
 
-### Is scrollable
+### 是否可滚动
 
-**Returns a boolean indicating whether an element is scrollable.**
+**返回布尔值，表示元素是否可滚动。**
 
-Cypress internally uses this method _everywhere_ to figure out whether an
-element can be scrolled,
-[mostly for actionability](/app/core-concepts/interacting-with-elements).
+Cypress 内部广泛使用此方法来判断元素是否可滚动，
+[主要用于可操作性检查](/app/core-concepts/interacting-with-elements)。
 
 ```javascript
 cy.get('body').then(($el) => {
@@ -154,9 +148,9 @@ cy.get('body').then(($el) => {
 })
 ```
 
-### Is visible
+### 是否可见
 
-**Returns a boolean indicating whether an element is visible.**
+**返回布尔值，表示元素是否可见。**
 
 ```javascript
 cy.get('img').then(($el) => {
@@ -164,9 +158,9 @@ cy.get('img').then(($el) => {
 })
 ```
 
-### Is window
+### 是否为 window 对象
 
-**Returns a boolean indicating whether an object is a window object.**
+**返回布尔值，表示对象是否为 window 对象。**
 
 ```javascript
 cy.get(window).then(($el) => {
@@ -174,9 +168,9 @@ cy.get(window).then(($el) => {
 })
 ```
 
-### Unwrap
+### 解包
 
-**Returns an array of raw elements pulled out from a jQuery object.**
+**从 jQuery 对象中提取原始元素组成的数组。**
 
 ```javascript
 cy.get('body').then(($el) => {
@@ -184,9 +178,9 @@ cy.get('body').then(($el) => {
 })
 ```
 
-### Wrap
+### 包装
 
-**Returns a jQuery object obtained by wrapping an object in jQuery.**
+**通过将对象包装在 jQuery 中返回 jQuery 对象。**
 
 ```javascript
 cy.get('p').then(($el) => {

@@ -1,6 +1,6 @@
 ---
-title: 'scrollTo | Cypress Documentation'
-description: Scroll to a specific position in the window or element in Cypress.
+title: 'scrollTo | Cypress 文档'
+description: 在 Cypress 中滚动到窗口或元素的特定位置。
 sidebar_label: scrollTo
 ---
 
@@ -8,12 +8,11 @@ sidebar_label: scrollTo
 
 # scrollTo
 
-Scroll to a specific position.
+滚动到指定位置。
 
-It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried) to
-chain further commands that rely on the subject after `.scrollTo()`.
+在 `.scrollTo()` 之后继续链式调用依赖该目标对象的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Syntax
+## 语法
 
 ```javascript
 cy.scrollTo(position)
@@ -21,7 +20,7 @@ cy.scrollTo(x, y)
 cy.scrollTo(position, options)
 cy.scrollTo(x, y, options)
 
-  // ---or---
+  // ---或---
 
   .scrollTo(position)
   .scrollTo(x, y)
@@ -29,28 +28,26 @@ cy.scrollTo(x, y, options)
   .scrollTo(x, y, options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.scrollTo(0, 500) // Scroll the window 500px down
-cy.get('.sidebar').scrollTo('bottom') // Scroll 'sidebar' to its bottom
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.title().scrollTo('My App') // Errors, 'title' does not yield DOM element
+cy.scrollTo(0, 500) // 将窗口向下滚动 500px
+cy.get('.sidebar').scrollTo('bottom') // 将 'sidebar' 滚动到底部
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
+
+```javascript
+cy.title().scrollTo('My App') // 错误，'title' 不返回 DOM 元素
+```
+
+### 参数
 
 <Icon name="angle-right" /> **position _(String)_**
 
-A specified position to scroll the window or element to. Valid positions are
-`topLeft`, `top`, `topRight`, `left`, `center`, `right`, `bottomLeft`, `bottom`,
-and `bottomRight`.
+要滚动窗口或元素到的指定位置。有效位置包括 `topLeft`、`top`、`topRight`、`left`、`center`、`right`、`bottomLeft`、`bottom` 和 `bottomRight`。
 
 <DocsImage
   src="/img/api/coordinates-diagram.jpg"
@@ -59,174 +56,161 @@ and `bottomRight`.
 
 <Icon name="angle-right" /> **x _(Number, String)_**
 
-The distance in pixels from window/element's left or percentage of the
-window/element's width to scroll to.
+距离窗口/元素左侧的像素距离或窗口/元素宽度的百分比。
 
 <Icon name="angle-right" /> **y _(Number, String)_**
 
-The distance in pixels from window/element's top or percentage of the
-window/element's height to scroll to.
+距离窗口/元素顶部的像素距离或窗口/元素高度的百分比。
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `cy.scrollTo()`.
+传入一个选项对象以更改 `cy.scrollTo()` 的默认行为。
 
-| Option             | Default                                                           | Description                                                                         |
-| ------------------ | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `duration`         | `0`                                                               | Scrolls over the duration (in ms)                                                   |
-| `easing`           | `swing`                                                           | Will scroll with the easing animation                                               |
-| `ensureScrollable` | `true`                                                            | Ensure element is scrollable. Error if element cannot scroll.                       |
-| `log`              | `true`                                                            | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log) |
-| `timeout`          | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | Time to wait for `.scrollTo()` to resolve before [timing out](#Timeouts)            |
+| 选项                | 默认值                                                           | 描述                                                                         |
+| ------------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `duration`         | `0`                                                             | 滚动的持续时间（毫秒）                                                      |
+| `easing`           | `swing`                                                        | 使用缓动动画滚动                                                            |
+| `ensureScrollable` | `true`                                                         | 确保元素可滚动。如果元素无法滚动则报错。                                    |
+| `log`              | `true`                                                         | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令          |
+| `timeout`          | [`defaultCommandTimeout`](/app/references/configuration#Timeouts) | 等待 `.scrollTo()` 解析的超时时间                                           |
 
 <HeaderYields />
 
-- `.scrollTo()` yields the same subject it was given.
-- It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried)
-  to chain further commands that rely on the subject after `.scrollTo()`.
+- `.scrollTo()` 返回与传入时相同的目标对象。
+- 在 `.scrollTo()` 之后继续链式调用依赖该目标对象的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Examples
+## 示例
 
-### Position
+### 位置
 
-#### Scroll to the bottom of the window
+#### 滚动到窗口底部
 
 ```javascript
 cy.scrollTo('bottom')
 ```
 
-#### Scroll to the center of the list
+#### 滚动到列表中央
 
 ```javascript
 cy.get('#movies-list').scrollTo('center')
 ```
 
-### Coordinates
+### 坐标
 
-#### Scroll 500px down the list
+#### 将列表向下滚动 500px
 
 ```javascript
 cy.get('#infinite-scroll-list').scrollTo(0, 500)
 ```
 
-#### Scroll the window 500px to the right
+#### 将窗口向右滚动 500px
 
 ```javascript
 cy.scrollTo('500px')
 ```
 
-#### Scroll 25% down the element's height
+#### 滚动到元素高度的 25% 处
 
 ```javascript
 cy.get('.user-photo').scrollTo('0%', '25%')
 ```
 
-### Options
+### 选项
 
-#### Use linear easing animation to scroll
+#### 使用线性缓动动画滚动
 
 ```javascript
 cy.get('.documentation').scrollTo('top', { easing: 'linear' })
 ```
 
-#### Scroll to the right over 2000ms
+#### 在 2000ms 内滚动到右侧
 
 ```javascript
 cy.get('#slider').scrollTo('right', { duration: 2000 })
 ```
 
-#### Do not error if element is not scrollable
+#### 如果元素不可滚动则不报错
 
-Let's say we do not know whether our `table` element is scrollable. Sometimes
-the `table` may be scrollable (with 2,000 rows) and sometimes the `table` may
-not be scrollable (with 5 rows). You can ignore the error checking to ensure the
-element is scrollable by passing `ensureScrollable: false`.
+假设我们不知道 `table` 元素是否可滚动。有时 `table` 可能是可滚动的（有 2,000 行），有时 `table` 可能不可滚动（只有 5 行）。可以通过传递 `ensureScrollable: false` 来忽略元素是否可滚动的检查。
 
 ```js
-// will move on to next command even if table is not scrollable
+// 即使表格不可滚动也会继续执行下一条命令
 cy.get('table').scrollTo('bottom', { ensureScrollable: false })
 cy.get('table').find('tr:last-child').should('be.visible')
 ```
 
-## Notes
+## 注意事项
 
-### Actionability
+### 可操作性
 
-`cy.scrollTo()` is an "action command" that follows all the rules of
-[Actionability](/app/core-concepts/interacting-with-elements).
+`cy.scrollTo()` 是一个“操作命令”，遵循[可操作性](/app/core-concepts/interacting-with-elements)的所有规则。
 
-### Scopes
+### 作用域
 
-`cy.scrollTo()` acts differently whether it's starting a series of commands or
-being chained off of an existing.
+`cy.scrollTo()` 的行为取决于它是作为命令序列的起点还是被链式调用。
 
-#### When starting a series of commands:
+#### 作为命令序列的起点时：
 
-This scrolls the `window`.
+这会滚动 `window`。
 
 ```javascript
 cy.scrollTo('bottom')
 ```
 
-#### When chained to an existing series of commands:
+#### 被链式调用时：
 
-This will scroll the `<#checkout-items>` element.
+这会滚动 `<#checkout-items>` 元素。
 
 ```javascript
 cy.get('#checkout-items').scrollTo('right')
 ```
 
-### Snapshots
+### 快照
 
-#### Snapshots do not reflect scroll behavior
+#### 快照不反映滚动行为
 
-_Cypress does not reflect the accurate scroll positions of any elements within
-snapshots._ If you want to see the actual scrolling behavior in action, we
-recommend using [`.pause()`](/api/commands/pause) to walk through each command
-or
-[watching the video of the test run](/app/guides/screenshots-and-videos#Videos).
+_Cypress 不会在快照中准确反映任何元素的滚动位置。_ 如果想查看实际的滚动行为，建议使用 [`.pause()`](/api/commands/pause) 逐步执行每个命令，或[观看测试运行的视频](/app/guides/screenshots-and-videos#Videos)。
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.scrollTo()` requires being chained off a command that yields DOM element(s).
-- `.scrollTo()` requires the element to be scrollable.
+- `.scrollTo()` 需要链式调用一个返回 DOM 元素的命令。
+- `.scrollTo()` 要求元素可滚动。
 
 <HeaderTimeouts />
 
-- `.scrollTo()` can time out waiting for assertions you've added to pass.
+- `.scrollTo()` 可能会在等待你添加的断言通过时超时。
 
-## Command Log
+## 命令日志
 
-**_Scroll to the bottom of the window then scroll the element to the "right"_**
+**_滚动到窗口底部，然后将元素滚动到“右侧”_**
 
 ```javascript
 cy.scrollTo('bottom')
 cy.get('#scrollable-horizontal').scrollTo('right')
 ```
 
-The commands above will display in the Command Log as:
+上述命令将在命令日志中显示为：
 
 <DocsImage
   src="/img/api/scrollto/command-log-scrollto.png"
   alt="command log for scrollTo"
 />
 
-When clicking on `scrollTo` within the command log, the console outputs the
-following:
+当点击命令日志中的 `scrollTo` 时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/scrollto/console-log-scrollto.png"
   alt="console.log for scrollTo"
 />
 
-## History
+## 历史
 
-| Version                                    | Changes                                      |
-| ------------------------------------------ | -------------------------------------------- |
-| [4.11.0](/app/references/changelog#4-11-0) | Added support for `ensureScrollable` option. |
+| 版本                                     | 变更                                      |
+| --------------------------------------- | ----------------------------------------- |
+| [4.11.0](/app/references/changelog#4-11-0) | 添加了对 `ensureScrollable` 选项的支持。 |
 
-## See also
+## 另请参阅
 
 - [`.scrollIntoView()`](/api/commands/scrollintoview)

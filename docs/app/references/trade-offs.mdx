@@ -1,193 +1,138 @@
 ---
-title: 'Trade-offs in Cypress'
-description: 'Learn about the trade-offs you make when using Cypress, and how to work around them.'
-sidebar_label: Trade-offs
+title: 'Cypress的权衡取舍'
+description: '了解使用Cypress时需要做出的权衡取舍，以及如何应对这些限制。'
+sidebar_label: 权衡取舍
 e2eSpecific: true
 ---
 
 <ProductHeading product="app" />
 
-# Trade-offs
+# 权衡取舍
 
-Cypress automates the browser with its own unique architecture. While this
-unlocks the power to do things you will not find anywhere else, there are
-specific trade-offs that are made.
+Cypress通过其独特的架构实现浏览器自动化。虽然这赋予了它无与伦比的能力，但也带来了一些特定的权衡取舍。
 
-In this guide we'll lay out what some of the trade-offs are - and specifically
-how you can work around them.
+本指南将列出这些权衡点，并具体说明如何应对它们。
 
-While at first it may seem like these are strict limitations in Cypress - we
-think you will soon realize that many of these boundaries are actually **good**
-to have. In a sense they prevent you from writing bad, slow, or flaky tests.
+虽然乍看之下这些似乎是Cypress的严格限制，但您很快会意识到其中许多边界实际上是有益的。从某种意义上说，它们能防止您编写糟糕、缓慢或不稳定的测试。
 
-## Permanent trade-offs Overview
+## 永久性权衡概述
 
-- Cypress is not a general purpose [automation tool](#Automation-restrictions).
-- Cypress commands run [inside of a browser](#Inside-the-browser).
-- You cannot use Cypress to drive
-  [two browsers at the same time](#Multiple-browsers-open-at-the-same-time).
-- Each test is bound to a single superdomain. Cross-origin navigation inside
-  tests can be enabled by using the [`cy.origin`](/api/commands/origin) command.
-  Please read our
-  [Cross Origin Testing Guide](/app/guides/cross-origin-testing).
+- Cypress不是通用的[自动化工具](#自动化限制)
+- Cypress命令在[浏览器内部](#浏览器内部)运行
+- 无法使用Cypress同时驱动[两个浏览器](#同时打开多个浏览器)
+- 每个测试都绑定到单个超级域名。测试中的跨源导航可通过[`cy.origin`](/api/commands/origin)命令启用，请阅读我们的[跨源测试指南](/app/guides/cross-origin-testing)
 
-## Temporary trade-offs Overview
+## 临时性权衡概述
 
-We want to highlight some _temporary_ restrictions that Cypress hopes to
-eventually address.
+我们想重点说明一些Cypress希望最终解决的临时限制：
 
-- [Workarounds for the lack of a `cy.hover()` command.](/api/commands/hover)
-- [There is not any native or mobile events support.](https://github.com/cypress-io/cypress/issues/311#issuecomment-339824191)
-- [iframe support is somewhat limited, but does work.](https://github.com/cypress-io/cypress/issues/136)
+- [缺少`cy.hover()`命令的解决方案](/api/commands/hover)
+- [暂不支持原生或移动端事件](https://github.com/cypress-io/cypress/issues/311#issuecomment-339824191)
+- [iframe支持有限但可用](https://github.com/cypress-io/cypress/issues/136)
 
-## Permanent trade-offs
+## 永久性权衡
 
-### Automation restrictions
+### 自动化限制
 
-The Cypress App is a specialized tool that does end-to-end, component, and API
-testing really well. We don't think Cypress is the optimal tool for things such as:
+Cypress应用是一个专注于端到端测试、组件测试和API测试的专用工具。我们认为Cypress不适合以下场景：
 
-- Indexing the web
-- Spidering links
-- Performance testing
-- Scripting 3rd party sites
+- 网络索引
+- 链接爬取
+- 性能测试
+- 第三方站点脚本
 
-There are other excellent tools that are optimized for doing each item listed
-above.
+对于上述每个场景，都有其他更优秀的专用工具。
 
-The **sweet spot** of Cypress is to be used as a tool to test your own
-application.
+Cypress的核心价值在于作为测试您自己应用程序的工具。
 
-### Inside the browser
+### 浏览器内部
 
-In case you missed it before - Cypress tests run inside of the browser! This
-means we can do things nobody else can. There is no object serialization or JSON
-wire protocols. You have real, native access to everything in your application
-under test.
+再次强调——Cypress测试在浏览器内部运行！这意味着我们可以做到其他工具无法实现的事情。没有对象序列化或JSON有线协议，您可以直接访问被测应用中的所有内容。
 
-But this also means that your test code **is being evaluated inside the
-browser**. Test code is not evaluated in Node, or any other server side
-language. The **only** language we'll ever support is the language of the web:
-JavaScript.
+但这也意味着您的测试代码是在浏览器中执行的。测试代码不是在Node或任何其他服务端语言中评估的。我们唯一支持的语言就是Web语言：JavaScript。
 
-This trade-off means it makes it a little bit more challenging to communicate with the
-back end - like your server or database. You will not be able to connect or
-`import` those server-side libraries or modules directly. Although you can require
-`node_modules` which can be used in the browser. Additionally, you have the
-ability to use Node to import or talk directly to your back end scripts using
-[our Node Events](/api/node-events/overview) or
-[cy.task()](/api/commands/task).
+这种权衡使得与后端（如服务器或数据库）的通信稍具挑战性。您无法直接连接或`import`那些服务端库或模块。不过您可以引入能在浏览器中使用的`node_modules`。此外，您还可以通过[Node事件](/api/node-events/overview)或[cy.task()](/api/commands/task)使用Node直接与后端脚本交互。
 
-To talk to your database or server you need to use the
-[`cy.exec()`](/api/commands/exec), [`cy.task()`](/api/commands/task), or
-[`cy.request()`](/api/commands/request) commands. That means you will need to
-expose a way to seed and setup your database. It might take a bit more elbow grease
-than other testing tools written in your back end language.
+要与数据库或服务器通信，您需要使用[`cy.exec()`](/api/commands/exec)、[`cy.task()`](/api/commands/task)或[`cy.request()`](/api/commands/request)命令。这意味着您需要提供种子数据和设置数据库的方法。这可能比其他用后端语言编写的测试工具需要更多额外工作。
 
-The trade-off here is that doing everything in the browser is a much better
-experience in Cypress. But doing things outside of
-the browser may take a little extra work.
+这里的权衡在于，在浏览器中执行所有操作能为Cypress带来更好的体验，而在浏览器外执行操作可能需要更多额外工作。
 
-### Multiple browsers open at the same time
+### 同时打开多个浏览器
 
-Cypress does not support controlling more than 1 open browser at a time.
-You can test multiple tabs, however, using our [@cypress/puppeteer](https://github.com/cypress-io/cypress/tree/develop/npm/puppeteer) plugin.
+Cypress不支持同时控制多个打开的浏览器。但您可以使用[@cypress/puppeteer](https://github.com/cypress-io/cypress/tree/develop/npm/puppeteer)插件测试多个标签页。
 
-With that said, except in the most unusual and rare circumstances, you can still
-test most application behavior without opening multiple browsers at the same
-time.
+尽管如此，除了极少数特殊情况外，您仍然可以在不打开多个浏览器的情况下测试大多数应用行为。
 
-You may ask about this functionality like this:
+您可能会这样询问此功能：
 
-> I'm trying to test a chat application. Can I run more than one browser at a
-> time with Cypress?
+> 我正在测试一个聊天应用。能否用Cypress同时运行多个浏览器？
 
-Whether you are testing a chat application or anything else - what you are
-really asking about is testing collaboration. But, **you don't need to recreate
-the entire environment in order to test collaboration with 100% coverage**.
+无论您测试的是聊天应用还是其他功能，实际上您关注的是测试协作。但您不需要重建整个环境来实现100%覆盖率的协作测试。
 
-Doing it this way can be faster, more accurate, and more scalable.
+以下方法可能更快、更准确且更具扩展性。
 
-While outside the scope of this article, you could test a chat application using
-the following principles. Each one will incrementally introduce more
-collaboration:
+虽然超出本文范围，但您可以使用以下原则测试聊天应用。每个原则都会逐步引入更多协作：
 
-#### 1. Use only the browser:
+#### 1. 仅使用浏览器：
 
 ```text
     ↓
-← browser →
+← 浏览器 →
     ↑
 ```
 
-Avoid the server, invoke your JavaScript callbacks manually thereby simulating
-what happens when "notifications come in", or "users leave the chat" purely in
-the browser.
+避开服务器，手动调用JavaScript回调来模拟"通知到达"或"用户离开聊天"等场景。
 
-You can [stub](/api/commands/stub) everything and simulate every single
-scenario. Chat messages, offline messages, connections, reconnections,
-disconnections, group chat, etc. Everything that happens inside of the browser
-can be fully tested. Requests leaving the browser could also be stubbed and you
-could assert that the request bodies were correct.
+您可以[stub](/api/commands/stub)所有内容并模拟每个场景：聊天消息、离线消息、连接、重连、断开连接、群聊等。浏览器内发生的所有内容都可以完全测试。离开浏览器的请求也可以被stub，并断言请求体是否正确。
 
-#### 2. Stub the other connection:
+#### 2. Stub其他连接：
 
 ```text
-server → browser
+服务器 → 浏览器
             ↓
-server ← browser
+服务器 ← 浏览器
   ↓
-(other connections stubbed)
+(其他连接被stub)
   ↓
-server → browser
+服务器 → 浏览器
 ```
 
-Use your server to receive messages from the browser, and simulate "the other
-participant" by sending messages as that participant. This is certainly
-application specific, but generally you could insert records into the database
-or do whatever it takes for your server to act as if a message of one client
-needs to be sent back to the browser.
+使用服务器接收来自浏览器的消息，并通过以该参与者身份发送消息来模拟"其他参与者"。这取决于具体应用，但通常可以通过向数据库插入记录等方式，使服务器表现得像需要将一个客户端的消息发送回浏览器。
 
-Typically this pattern enables you to avoid making a secondary WebSocket
-connection and yet still fulfills the bidirectional browser and server contract.
-This means you could also test edge cases (disconnections, etc) without actually
-handling real connections.
+这种模式通常可以避免建立第二个WebSocket连接，同时仍满足浏览器和服务器的双向契约。这意味着您还可以在不处理真实连接的情况下测试边缘情况（如断开连接等）。
 
-#### 3: Introduce another connection:
+#### 3. 引入另一个连接：
 
 ```text
-server → browser
+服务器 → 浏览器
             ↓
-server ← browser
+服务器 ← 浏览器
   ↓
-server → other connection
+服务器 → 其他连接
             ↓
-server ← other connection
+服务器 ← 其他连接
   ↓
-server → browser
+服务器 → 浏览器
 ```
 
-To do this - you would need a background process outside of the browser to make
-the underlying WebSocket connection that you can then communicate with and
-control.
+要实现这一点，您需要一个浏览器外的后台进程来建立底层WebSocket连接，然后您可以与之通信并控制它。
 
-You can do this in many ways and here is an example of using an HTTP server to
-act as the client and exposing a REST interface that enables us to control it.
+有多种方法可以实现，这里是一个使用HTTP服务器作为客户端并暴露REST接口的示例：
 
 ```js
-// Cypress tests
+// Cypress测试
 
-// tell the http server at 8081 to connect to 8080
+// 告诉8081端口的HTTP服务器连接到8080
 cy.request('http://localhost:8081/connect?url=http://localhost:8080')
 
-// tell the http server at 8081 to send a message
+// 告诉8081端口的HTTP服务器发送消息
 cy.request('http://localhost:8081/message?m=hello')
 
-// tell the http server at 8081 to disconnect
+// 告诉8081端口的HTTP服务器断开连接
 cy.request('http://localhost:8081/disconnect')
 ```
 
-And the HTTP server code would look something like this...
+HTTP服务器代码大致如下：
 
 ```js
 const client = require('socket.io:client')
@@ -226,6 +171,4 @@ app.get('/disconnect', (req, res) => {
 app.listen(8081, () => {})
 ```
 
-This avoids ever needing a second open browser, but still gives you an
-end-to-end test that provides 100% confidence that the two clients can
-communicate with each other.
+这种方法避免了需要第二个打开的浏览器，同时仍提供了端到端测试，确保两个客户端可以相互通信。

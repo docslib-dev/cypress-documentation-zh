@@ -1,6 +1,6 @@
 ---
-title: 'clear | Cypress Documentation'
-description: Clear the value of an input or textarea in Cypress.
+title: 'clear | Cypress 文档'
+description: 在 Cypress 中清空 input 或 textarea 的值。
 sidebar_label: clear
 slug: /api/commands/clear
 ---
@@ -9,136 +9,128 @@ slug: /api/commands/clear
 
 # clear
 
-Clear the value of an `input` or `textarea`.
+清空 `input` 或 `textarea` 的值。
 
-It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried) to
-chain further commands that rely on the subject after `.clear()`.
+在 `.clear()` 之后继续链式调用依赖于该元素的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
 :::info
 
-An alias for [`.type('{selectall}{del}')`](/api/commands/type)
+[`.type('{selectall}{del}')`](/api/commands/type) 的别名
 
 :::
 
-## Syntax
+## 语法
 
 ```javascript
 .clear()
 .clear(options)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-cy.get('[type="text"]').clear() // Clear text input
+cy.get('[type="text"]').clear() // 清空文本输入框
 cy.get('textarea').type('Hi!')
-cy.get('textarea').clear() // Clear textarea
-cy.focused().clear() // Clear focused input/textarea
+cy.get('textarea').clear() // 清空文本域
+cy.focused().clear() // 清空当前聚焦的输入框/文本域
 ```
 
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
 ```javascript
-cy.clear() // Errors, cannot be chained off 'cy'
-cy.get('nav').clear() // Errors, 'get' doesn't yield input or textarea
-cy.clock().clear() // Errors, 'clock' does not yield DOM elements
+cy.clear() // 错误，不能直接链式调用 'cy'
+cy.get('nav').clear() // 错误，'get' 返回的不是输入框或文本域
+cy.clock().clear() // 错误，'clock' 不返回 DOM 元素
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-Pass in an options object to change the default behavior of `.clear()`.
+传入一个选项对象来改变 `.clear()` 的默认行为。
 
-| Option                       | Default                                                                     | Description                                                                                                                                     |
+| 选项                       | 默认值                                                                     | 描述                                                                                                                                     |
 | ---------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `animationDistanceThreshold` | [`animationDistanceThreshold`](/app/references/configuration#Actionability) | The distance in pixels an element must exceed over time to be [considered animating](/app/core-concepts/interacting-with-elements#Animations).  |
-| `force`                      | `false`                                                                     | Forces the action, disables [waiting for actionability](#Assertions)                                                                            |
-| `log`                        | `true`                                                                      | Displays the command in the [Command log](/app/core-concepts/open-mode#Command-Log)                                                             |
-| `scrollBehavior`             | [`scrollBehavior`](/app/references/configuration#Actionability)             | Viewport position to where an element [should be scrolled](/app/core-concepts/interacting-with-elements#Scrolling) before executing the command |
-| `timeout`                    | [`defaultCommandTimeout`](/app/references/configuration#Timeouts)           | Time to wait for `.clear()` to resolve before [timing out](#Timeouts)                                                                           |
-| `waitForAnimations`          | [`waitForAnimations`](/app/references/configuration#Actionability)          | Whether to wait for elements to [finish animating](/app/core-concepts/interacting-with-elements#Animations) before executing the command.       |
+| `animationDistanceThreshold` | [`animationDistanceThreshold`](/app/references/configuration#Actionability) | 元素必须随时间移动超过的像素距离才能被[视为动画](/app/core-concepts/interacting-with-elements#Animations)。  |
+| `force`                      | `false`                                                                     | 强制执行操作，禁用[等待可操作性](#Assertions)                                                                            |
+| `log`                        | `true`                                                                      | 在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示该命令                                                             |
+| `scrollBehavior`             | [`scrollBehavior`](/app/references/configuration#Actionability)             | 在执行命令前将元素[滚动到](/app/core-concepts/interacting-with-elements#Scrolling)的视口位置 |
+| `timeout`                    | [`defaultCommandTimeout`](/app/references/configuration#Timeouts)           | 等待 `.clear()` 解析的超时时间，超过则[超时](#Timeouts)                                                                           |
+| `waitForAnimations`          | [`waitForAnimations`](/app/references/configuration#Actionability)          | 是否等待元素[完成动画](/app/core-concepts/interacting-with-elements#Animations)后再执行命令。       |
 
 <HeaderYields />
 
-- `.clear()` yields the same subject it was given.
-- It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried)
-  to chain further commands that rely on the subject after `.clear()`.
+- `.clear()` 返回与输入相同的元素。
+- 在 `.clear()` 之后继续链式调用依赖于该元素的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Examples
+## 示例
 
-### No Args
+### 无参数
 
-#### Clear the input and type a new value
+#### 清空输入框并输入新值
 
 ```javascript
 cy.get('textarea').clear()
 cy.get('textarea').type('Hello, World')
 ```
 
-## Notes
+## 注意事项
 
-### Actionability
+### 可操作性
 
-#### The element must first reach actionability
+#### 元素必须首先达到可操作状态
 
-`.clear()` is an "action command" that follows all the rules of
-[Actionability](/app/core-concepts/interacting-with-elements).
+`.clear()` 是一个 "动作命令"，遵循所有[可操作性](/app/core-concepts/interacting-with-elements)的规则。
 
-### Documentation
+### 文档说明
 
-`.clear()` is an alias for
-[`.type({selectall}{del})`](/api/commands/type).
+`.clear()` 是 [`.type({selectall}{del})`](/api/commands/type) 的别名。
 
-Please read the [`.type()`](/api/commands/type) documentation for more details.
+更多详情请阅读 [`.type()`](/api/commands/type) 文档。
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.clear()` requires being chained off a command that yields DOM element(s).
-- `.clear()` requires the element to be an `input` or `textarea`.
+- `.clear()` 需要链式调用返回 DOM 元素的命令。
+- `.clear()` 要求元素是 `input` 或 `textarea`。
 
 <HeaderAssertions />
 
-- `.clear()` will automatically wait for the element to reach an
-  [actionable state](/app/core-concepts/interacting-with-elements)
-- `.clear()` will automatically [retry](/app/core-concepts/retry-ability)
-  until all chained assertions have passed
+- `.clear()` 会自动等待元素达到[可操作状态](/app/core-concepts/interacting-with-elements)
+- `.clear()` 会自动[重试](/app/core-concepts/retry-ability)直到所有链式断言通过
 
 <HeaderTimeouts />
 
-- `.clear()` can time out waiting for the element to reach an
-  [actionable state](/app/core-concepts/interacting-with-elements).
-- `.clear()` can time out waiting for assertions you've added to pass.
+- `.clear()` 可能会因等待元素达到[可操作状态](/app/core-concepts/interacting-with-elements)而超时。
+- `.clear()` 可能会因等待添加的断言通过而超时。
 
-## Command Log
+## 命令日志
 
-**_Clear the input and type a new value_**
+**_清空输入框并输入新值_**
 
 ```javascript
 cy.get('input[name="name"]').clear()
 cy.get('input[name="name"]').type('Jane Lane')
 ```
 
-The commands above will display in the Command Log as:
+上述命令会在命令日志中显示为：
 
 <DocsImage
   src="/img/api/clear/clear-input-in-cypress.png"
   alt="Command log for clear"
 />
 
-When clicking on `clear` within the command log, the console outputs the
-following:
+当点击命令日志中的 `clear` 时，控制台会输出以下内容：
 
 <DocsImage
   src="/img/api/clear/one-input-cleared-in-tests.png"
   alt="console.log for clear"
 />
 
-## See also
+## 另请参阅
 
 - [`.blur()`](/api/commands/blur)
 - [`.focus()`](/api/commands/focus)

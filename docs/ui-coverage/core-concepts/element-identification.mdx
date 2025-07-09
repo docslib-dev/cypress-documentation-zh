@@ -1,19 +1,19 @@
 ---
-title: 'Uniquely identify test elements | Cypress UI Coverage'
-description: 'Elements are uniquely identified across views and snapshots by their HTML attributes, location, and other signals in the DOM.'
-sidebar_label: Element Identification
+title: '唯一标识测试元素 | Cypress UI Coverage'
+description: '通过HTML属性、位置和DOM中的其他信号，元素在视图和快照中被唯一标识。'
+sidebar_label: 元素标识
 sidebar_position: 20
 ---
 
 <ProductHeading product="ui-coverage" />
 
-# Element Identification
+# 元素标识
 
-UI Coverage uniquely identifies elements across views and snapshots using a combination of HTML attributes, location, and other signals in the DOM. Stable and unique identifiers are crucial for accurately tracking and de-duplicating elements throughout the various snapshots captured in your tests.
+UI Coverage 通过结合HTML属性、位置和DOM中的其他信号，在视图和快照中唯一标识元素。稳定且唯一的标识符对于准确跟踪和去重测试过程中捕获的各种快照中的元素至关重要。
 
-## Significant attributes for identification
+## 用于标识的重要属性
 
-Certain attributes are prioritized by UI Coverage for element identification and grouping. These include:
+UI Coverage 会优先考虑以下属性用于元素标识和分组：
 
 - `data-cy`
 - `data-test`
@@ -24,13 +24,13 @@ Certain attributes are prioritized by UI Coverage for element identification and
 - `id`
 - `name`
 
-By using these attributes consistently in your application, you can improve the accuracy of UI Coverage tracking.
+通过在应用程序中一致使用这些属性，可以提高UI Coverage跟踪的准确性。
 
-## Configuring element identification
+## 配置元素标识
 
-### Attribute filters
+### 属性过滤器
 
-Exclude irrelevant or dynamically generated attributes to reduce noise in UI Coverage reports. For example:
+排除不相关或动态生成的属性，以减少UI Coverage报告中的干扰。例如：
 
 ```json
 {
@@ -46,11 +46,11 @@ Exclude irrelevant or dynamically generated attributes to reduce noise in UI Cov
 }
 ```
 
-Learn more about attribute filtering in the [Attribute Filters](/ui-coverage/configuration/attributefilters) guide.
+了解更多关于属性过滤的信息，请参阅[属性过滤器](/ui-coverage/configuration/attributefilters)指南。
 
-### Significant attributes
+### 重要属性
 
-Define custom significant attributes to prioritize specific selectors that align with your application’s structure. For example:
+定义自定义重要属性，以优先考虑与应用程序结构相符的特定选择器。例如：
 
 ```json
 {
@@ -60,4 +60,4 @@ Define custom significant attributes to prioritize specific selectors that align
 }
 ```
 
-Refer to the [Significant Attributes](/ui-coverage/configuration/significantattributes) guide for detailed instructions.
+详细说明请参考[重要属性](/ui-coverage/configuration/significantattributes)指南。

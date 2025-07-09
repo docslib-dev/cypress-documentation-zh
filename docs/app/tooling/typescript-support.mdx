@@ -1,37 +1,34 @@
 ---
-title: 'TypeScript Support in Cypress'
-description: 'Learn how to set up TypeScript in Cypress, configure TypeScript for custom commands, assertions, and plugins and more'
+title: 'Cypress中的TypeScript支持'
+description: '学习如何在Cypress中设置TypeScript，为自定义命令、断言和插件配置TypeScript等'
 sidebar_label: 'TypeScript'
 ---
 
 <ProductHeading product="app" />
 
-# TypeScript Support
+# TypeScript支持
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to set up TypeScript in Cypress
-- How to configure TypeScript for custom commands, assertions, and plugins
-- How to use TypeScript with Cypress component testing
-- How to avoid clashing types with Jest
-- How to set up your development environment for TypeScript
+- 如何在Cypress中设置TypeScript
+- 如何为自定义命令、断言和插件配置TypeScript
+- 如何在Cypress组件测试中使用TypeScript
+- 如何避免与Jest的类型冲突
+- 如何为TypeScript设置开发环境
 
 :::
 
-Cypress ships with
-[official type declarations](https://github.com/cypress-io/cypress/tree/develop/cli/types)
-for [TypeScript](https://www.typescriptlang.org/). This allows you to write your
-tests in TypeScript.
+Cypress内置了
+[官方类型声明](https://github.com/cypress-io/cypress/tree/develop/cli/types)
+支持[TypeScript](https://www.typescriptlang.org/)。这允许你使用TypeScript编写测试。
 
-## Get Started
+## 开始使用
 
-### Install TypeScript
+### 安装TypeScript
 
-To use TypeScript with Cypress, you will need TypeScript 4.0+. If you do not
-already have TypeScript installed as a part of your framework, you will need to
-install it:
+要在Cypress中使用TypeScript，你需要TypeScript 4.0+。如果你的框架尚未安装TypeScript，你需要先安装：
 
 <Tabs>
 <TabItem value='npm'>
@@ -50,13 +47,13 @@ yarn add typescript --dev
 </TabItem>
 </Tabs>
 
-### Configure tsconfig.json
+### 配置tsconfig.json
 
-We recommend creating a
+我们建议在
+[`cypress`文件夹](/app/core-concepts/writing-and-organizing-tests#Folder-structure)
+内创建一个
 [`tsconfig.json`](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
-inside your
-[`cypress` folder](/app/core-concepts/writing-and-organizing-tests#Folder-structure)
-with the following configuration:
+并配置如下：
 
 ```json title="tsconfig.json"
 {
@@ -70,37 +67,32 @@ with the following configuration:
 }
 ```
 
-The `"types"` will tell the TypeScript compiler to only include type definitions
-from Cypress. This will address instances where the project also uses
-`@types/chai` or `@types/jquery`. Since
-[Chai](/app/references/bundled-libraries#Chai) and
-[jQuery](/app/references/bundled-libraries#Other-Library-Utilities) are
-namespaces (globals), incompatible versions will cause the package manager
-(`yarn` or `npm`) to nest and include multiple definitions and cause conflicts.
+`"types"`会告诉TypeScript编译器仅包含Cypress的类型定义。这将解决项目中同时使用`@types/chai`或`@types/jquery`的情况。由于
+[Chai](/app/references/bundled-libraries#Chai)和
+[jQuery](/app/references/bundled-libraries#Other-Library-Utilities)是命名空间（全局变量），不兼容的版本会导致包管理器（`yarn`或`npm`）嵌套并包含多个定义，从而引发冲突。
 
 :::caution
 
-You may have to restart your IDE's TypeScript server if the setup above does not
-appear to work. For example:
+如果上述设置未生效，你可能需要重启IDE的TypeScript服务器。例如：
 
-VS Code (within a .ts or .js file):
+VS Code（在.ts或.js文件中）：
 
-- Open the command palette (Mac: `cmd+shift+p`, Windows: `ctrl+shift+p`)
-- Type "restart ts" and select the "TypeScript: Restart TS server." option
+- 打开命令面板（Mac：`cmd+shift+p`，Windows：`ctrl+shift+p`）
+- 输入"restart ts"并选择"TypeScript: Restart TS server."选项
 
-If that does not work, try restarting the IDE.
+如果仍不生效，尝试重启IDE。
 
 :::
 
-### Processing your Cypress configuration and plugins
+### 处理Cypress配置和插件
 
-Cypress needs to be able to transpile your Cypress configuration and plugins written in TypeScript in order to make them executable within Cypress's Node.js runtime. To do this, Cypress will attempt to read the user's TypeScript and project configuration to apply the correct TypeScript loader to Cypress's Node.js runtime.
+Cypress需要能够转译用TypeScript编写的Cypress配置和插件，以便在Cypress的Node.js运行时中执行。为此，Cypress会尝试读取用户的TypeScript和项目配置，以将正确的TypeScript加载器应用到Cypress的Node.js运行时。
 
-If your project is an `ESM` package (short for [ECMAScript Module](https://nodejs.org/api/esm.html#modules-ecmascript-modules)), Cypress attempts to apply the [ts-node/esm](https://github.com/TypeStrong/ts-node?tab=readme-ov-file#esm) Node.js loader to resolve the Cypress configuration and plugins. `ESM` is determined by Cypress if you have the `type: "module"` key-value pair present inside your project's `package.json`.
+如果你的项目是一个`ESM`包（即[ECMAScript模块](https://nodejs.org/api/esm.html#modules-ecmascript-modules)的缩写），Cypress会尝试应用[ts-node/esm](https://github.com/TypeStrong/ts-node?tab=readme-ov-file#esm) Node.js加载器来解析Cypress配置和插件。如果项目的`package.json`中包含`type: "module"`键值对，Cypress会认为该项目是`ESM`。
 
-Otherwise, regular [ts-node](https://github.com/TypeStrong/ts-node?tab=readme-ov-file#node-flags-and-other-tools) is required into Cypress's Node.js runtime.
-Since Node.js by itself can only interpret CommonJS files, Cypress attempts to make your TypeScript configuration compatible with Cypress' Node.js runtime.
-To do this, Cypress overrides the following configuration values found inside your project's `tsconfig.json`:
+否则，Cypress会在其Node.js运行时中引入常规的[ts-node](https://github.com/TypeStrong/ts-node?tab=readme-ov-file#node-flags-and-other-tools)。
+由于Node.js本身只能解释CommonJS文件，Cypress会尝试使你的TypeScript配置与Cypress的Node.js运行时兼容。
+为此，Cypress会覆盖项目`tsconfig.json`中的以下配置值：
 
 ```json
 {
@@ -110,17 +102,16 @@ To do this, Cypress overrides the following configuration values found inside yo
 }
 ```
 
-This does not have an impact on your project or its TypeScript configuration settings. This override only happens within the context of the Cypress runtime.
+这不会影响你的项目或其TypeScript配置设置。此覆盖仅在Cypress运行时的上下文中生效。
 
-## Extending TypeScript Support
+## 扩展TypeScript支持
 
-### Types for Custom Commands
+### 自定义命令的类型
 
-When adding [custom commands](/api/cypress-api/custom-commands) to the `cy`
-object, you can manually add their types to avoid TypeScript errors.
+当向`cy`对象添加[自定义命令](/api/cypress-api/custom-commands)时，你可以手动添加它们的类型以避免TypeScript错误。
 
-For example if you add the command `cy.dataCy` into your
-[supportFile](/app/references/configuration#Testing-Type-Specific-Options) like this:
+例如，如果你在
+[supportFile](/app/references/configuration#Testing-Type-Specific-Options)中添加了`cy.dataCy`命令：
 
 ```typescript
 // cypress/support/index.ts
@@ -129,8 +120,7 @@ Cypress.Commands.add('dataCy', (value) => {
 })
 ```
 
-Then you can add the `dataCy` command to the global Cypress Chainable interface
-(so called because commands are chained together).
+然后你可以将`dataCy`命令添加到全局的Cypress Chainable接口（之所以称为Chainable，是因为命令可以链式调用）。
 
 ```typescript
 // cypress/support/index.ts
@@ -138,7 +128,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       /**
-       * Custom command to select DOM element by data-cy attribute.
+       * 通过data-cy属性选择DOM元素的自定义命令。
        * @example cy.dataCy('greeting')
        */
       dataCy(value: string): Chainable<JQuery<HTMLElement>>
@@ -149,20 +139,17 @@ declare global {
 
 :::info
 
-A nice detailed JSDoc comment above the method type will be really appreciated
-by any users of your custom command.
+在方法类型上方添加详细的JSDoc注释会让使用你的自定义命令的用户感到非常贴心。
 
 :::
 
 :::info
 
-Types of all the parameters taken by the implementation callback are inferred
-automatically based on the declared interface. Thus, in the example above, the
-`value` will be of type `string` implicitly.
+实现回调的所有参数类型会根据声明的接口自动推断。因此，在上面的例子中，`value`会隐式地具有`string`类型。
 
 :::
 
-In your specs, you can now use the custom command as expected
+在你的测试文件中，现在可以按预期使用自定义命令
 
 :::visit-mount-example
 
@@ -171,18 +158,17 @@ it('works', () => {
   -{// from your cypress/e2e/spec.cy.ts
   cy.visit('/')::// from your src/components/MyComponent.cy.ts
   cy.mount(<MyComponent />)}-
-  // IntelliSense and TS compiler should
-  // not complain about unknown method
+  // IntelliSense和TS编译器应该
+  // 不会对未知方法报错
   cy.dataCy('greeting')
 })
 ```
 
 :::
 
-#### Adding child or dual commands
+#### 添加子命令或双命令
 
-When you add a custom command with `prevSubject`, Cypress will infer the subject
-type automatically based on the specified `prevSubject`.
+当你使用`prevSubject`添加自定义命令时，Cypress会根据指定的`prevSubject`自动推断主题类型。
 
 ```typescript
 // cypress/support/index.ts
@@ -190,7 +176,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       /**
-       * Custom command to type a few random words into input elements
+       * 向输入元素输入几个随机单词的自定义命令
        * @param count=3
        * @example cy.get('input').typeRandomWords()
        */
@@ -214,11 +200,9 @@ Cypress.Commands.add(
 )
 ```
 
-#### Overwriting child or dual commands
+#### 覆盖子命令或双命令
 
-When overwriting either built-in or custom commands which make use of
-`prevSubject`, you must specify generic parameters to help the type-checker to
-understand the type of the `prevSubject`.
+当覆盖使用`prevSubject`的内置或自定义命令时，你必须指定泛型参数以帮助类型检查器理解`prevSubject`的类型。
 
 ```typescript
 interface TypeOptions extends Cypress.TypeOptions {
@@ -229,9 +213,9 @@ Cypress.Commands.overwrite<'type', 'element'>(
   'type',
   (originalFn, element, text, options?: Partial<TypeOptions>) => {
     if (options && options.sensitive) {
-      // turn off original log
+      // 关闭原始日志
       options.log = false
-      // create our own log with masked message
+      // 创建我们自己的带掩码消息的日志
       Cypress.log({
         $el: element,
         name: 'type',
@@ -244,38 +228,34 @@ Cypress.Commands.overwrite<'type', 'element'>(
 )
 ```
 
-As you can see there are generic parameters `<'type', 'element'>` are used:
+如你所见，这里使用了泛型参数`<'type', 'element'>`：
 
-1. The first parameter is the command name, equal to first parameter passed to
-   `Cypress.Commands.overwrite`.
-2. The second parameter is the type of the `prevSubject` that is used by the
-   original command. Possible values:
-   - 'element' infers it as `JQuery<HTMLElement>`
-   - 'window' infers it as `Window`
-   - 'document' infers it as `Document`
-   - 'optional' infers it as `unknown`
+1. 第一个参数是命令名称，与传递给`Cypress.Commands.overwrite`的第一个参数相同。
+2. 第二个参数是原始命令使用的`prevSubject`类型。可能的值：
+   - 'element'推断为`JQuery<HTMLElement>`
+   - 'window'推断为`Window`
+   - 'document'推断为`Document`
+   - 'optional'推断为`unknown`
 
-#### Examples:
+#### 示例：
 
-- See
-  [Adding Custom Commands (TS)](https://github.com/cypress-io/cypress-example-recipes#fundamentals)
-  example recipe.
-- Example project
-  [cypress-example-todomvc custom commands](https://github.com/cypress-io/cypress-example-todomvc#custom-commands)
-  uses custom commands to avoid boilerplate code.
+- 参见
+  [添加自定义命令（TS）](https://github.com/cypress-io/cypress-example-recipes#fundamentals)
+  示例配方。
+- 示例项目
+  [cypress-example-todomvc自定义命令](https://github.com/cypress-io/cypress-example-todomvc#custom-commands)
+  使用自定义命令避免样板代码。
 
-### Types for custom assertions
+### 自定义断言的类型
 
-If you extend Cypress assertions, you can extend the assertion types to make the
-TypeScript compiler understand the new methods. See the
-[Recipe: Adding Chai Assertions](/app/references/recipes#Fundamentals) for
-instructions.
+如果你扩展了Cypress断言，你可以扩展断言类型以使TypeScript编译器理解新方法。参见
+[配方：添加Chai断言](/app/references/recipes#Fundamentals)
+获取说明。
 
-### Types for plugins
+### 插件的类型
 
-You can utilize Cypress's type declarations in your
-[plugins file](/app/plugins/plugins-guide) by annotating it like the
-following:
+你可以通过以下方式在
+[插件文件](/app/plugins/plugins-guide)中使用Cypress的类型声明：
 
 ```javascript
 // cypress/plugins/index.ts
@@ -286,15 +266,11 @@ following:
 module.exports = (on, config) => {}
 ```
 
-### Using an External Typings File
+### 使用外部类型文件
 
-You might find it easier to organize your types by moving them from the support
-file into an external
-[declaration (\*.d.ts) file](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html).
-To do so, create a new file, like _cypress.d.ts_, and cut the types for your
-custom commands/assertions from the _support_ file and into the new file. Below
-is an example of moving the custom `cy.mount` typings that come by default with
-a component testing app into a root level _cypress.d.ts_ file.
+你可能会发现将类型从支持文件移动到外部
+[声明（*.d.ts）文件](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html)
+更容易组织。为此，创建一个新文件，如_cypress.d.ts_，并将自定义命令/断言的类型从支持文件剪切到新文件中。以下是将组件测试应用默认附带的`cy.mount`自定义类型移动到根级别_cypress.d.ts_文件的示例。
 
 <Tabs>
 <TabItem value="cypress.d.ts" active>
@@ -302,10 +278,10 @@ a component testing app into a root level _cypress.d.ts_ file.
 ```ts
 import { mount } from 'cypress/react'
 
-// Augment the Cypress namespace to include type definitions for
-// your custom command.
-// Alternatively, can be defined in cypress/support/component.d.ts
-// with a <reference path="./component" /> at the top of your spec.
+// 扩展Cypress命名空间以包含
+// 自定义命令的类型定义。
+// 或者，可以在cypress/support/component.d.ts中定义
+// 并在测试文件顶部添加<reference path="./component" />。
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -318,8 +294,7 @@ declare global {
 </TabItem>
 </Tabs>
 
-You might need to include the _\*.d.ts_ in the include options in any
-_tsconfig.json_ files in your project for TypeScript to pick up the new types:
+你可能需要在项目的任何_tsconfig.json_文件中的include选项中包含_*.d.ts_，以便TypeScript能够识别新类型：
 
 <Tabs>
 <TabItem value="tsconfig.json" active>
@@ -347,30 +322,23 @@ _tsconfig.json_ files in your project for TypeScript to pick up the new types:
 </TabItem>
 </Tabs>
 
-### Set up your dev environment
+### 设置开发环境
 
-Please refer to your code editor in
-[TypeScript's Editor Support doc](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support)
-and follow the instructions for your IDE to get TypeScript support and
-[intelligent code completion](/app/tooling/IDE-integration#Intelligent-Code-Completion)
-configured in your developer environment before continuing. TypeScript support
-is built in for [Visual Studio Code](https://code.visualstudio.com/),
-[Visual Studio](https://www.visualstudio.com/), and
-[WebStorm](https://www.jetbrains.com/webstorm/) - all other editors require
-extra setup.
+请参考你的代码编辑器在
+[TypeScript的编辑器支持文档](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support)
+中的说明，并按照IDE的指南在继续之前配置TypeScript支持和
+[智能代码补全](/app/tooling/IDE-integration#Intelligent-Code-Completion)。
+TypeScript支持内置在[Visual Studio Code](https://code.visualstudio.com/)、
+[Visual Studio](https://www.visualstudio.com/)和
+[WebStorm](https://www.jetbrains.com/webstorm/)中——所有其他编辑器都需要额外设置。
 
-### Clashing types with Jest
+### 与Jest的类型冲突
 
-If you are using both Jest and Cypress in the same project, the TypeScript types
-registered globally by the two test runners can clash. For example, both Jest
-and Cypress provide the clashing types for the `describe` and `it` functions.
-Both Jest and Expect (bundled inside Cypress) provide the clashing types for the
-`expect` assertion, etc.
+如果你在同一个项目中同时使用Jest和Cypress，两个测试运行器注册的全局TypeScript类型可能会冲突。例如，Jest和Cypress都为`describe`和`it`函数提供了冲突的类型。Jest和Cypress内置的Expect都为`expect`断言提供了冲突的类型等。
 
-You may want to consider configuring your app with separate `tsconfig.json` to solve
-[clashing types with jest](/app/tooling/typescript-support#Clashing-types-with-Jest).
-You will need to exclude `cypress.config.ts`, `cypress`, `node_modules` in your
-root `tsconfig.json` file.
+你可以考虑为应用配置单独的`tsconfig.json`来解决
+[与Jest的类型冲突](/app/tooling/typescript-support#Clashing-types-with-Jest)。
+你需要在根`tsconfig.json`文件中排除`cypress.config.ts`、`cypress`和`node_modules`。
 
 ```json title="tsconfig.json"
 {
@@ -378,15 +346,15 @@ root `tsconfig.json` file.
 }
 ```
 
-## History
+## 历史
 
-| Version                                    | Changes                                                                                    |
+| 版本                                    | 变更                                                                                    |
 | ------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| [13.0.0](/app/references/changelog#13-0-0) | Raised minimum required TypeScript version from 3.4+ to 4.0+                               |
-| [10.0.0](/app/references/changelog#10-0-0) | Update guide to cover TypeScript setup for component testing                               |
-| [5.0.0](/app/references/changelog#5-0-0)   | Raised minimum required TypeScript version from 2.9+ to 3.4+                               |
-| [4.4.0](/app/references/changelog#4-4-0)   | Added support for TypeScript without needing your own transpilation through preprocessors. |
+| [13.0.0](/app/references/changelog#13-0-0) | 将最低要求的TypeScript版本从3.4+提高到4.0+                               |
+| [10.0.0](/app/references/changelog#10-0-0) | 更新指南以涵盖组件测试的TypeScript设置                               |
+| [5.0.0](/app/references/changelog#5-0-0)   | 将最低要求的TypeScript版本从2.9+提高到3.4+                               |
+| [4.4.0](/app/references/changelog#4-4-0)   | 添加了对TypeScript的支持，无需通过预处理器进行自己的转译。 |
 
-## See also
+## 另请参阅
 
-- [IDE Integration](/app/tooling/IDE-integration)
+- [IDE集成](/app/tooling/IDE-integration)

@@ -1,182 +1,147 @@
 ---
-title: 'Manage teams | Cypress Cloud'
-description: 'Learn how to manage teams in Cypress Cloud, assign users to teams, and assign projects to teams.'
+title: '团队管理 | Cypress Cloud'
+description: '了解如何在Cypress Cloud中管理团队，将用户分配到团队，以及将项目分配给团队。'
 sidebar_position: 35
-sidebar_label: Teams
+sidebar_label: 团队管理
 sidebar_custom_props: { 'new_label': true }
 ---
 
 <ProductHeading product="cloud" />
 
-# Manage teams
+# 团队管理
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 学习要点
 
-- How teams are used in Cypress Cloud
-- How to assign users to teams
-- How to assign projects to teams
-- Best practices for team setup
+- Cypress Cloud中团队的用途
+- 如何将用户分配到团队
+- 如何将项目分配给团队
+- 团队设置的最佳实践
 
 :::
 
-Teams can be defined in Cypress Cloud. A team can help you control which users have
-access to specific projects. This is accomplished by selecting which projects a team
-is allowed to access.
+可以在Cypress Cloud中定义团队。团队可以帮助您控制哪些用户有权访问特定项目。这是通过选择团队可以访问的项目来实现的。
 
-Organizations have many reasons for wanting to divide access into teams. Some of the most
-popular reasons are:
+组织有很多理由希望将访问权限划分为团队。一些最常见的理由是：
 
-- Increase efficiency and reduce clutter by only seeing the projects that you need to see
-- Multiple business units in your organization are sharing the same Cypress Cloud organization
-- Privacy and security when certain projects are only meant to be accessible to specific users
-  in an organization
-- Ability to understand Cypress usage, by team, in [Enterprise Reporting](/cloud/features/analytics/enterprise-reporting)
+- 通过仅查看需要查看的项目来提高效率并减少混乱
+- 组织中的多个业务单元共享同一个Cypress Cloud组织
+- 当某些项目仅限组织中的特定用户访问时的隐私和安全性
+- 通过[企业报告](/cloud/features/analytics/enterprise-reporting)按团队了解Cypress使用情况的能力
 
-_Note: [public projects](https://on.cypress.io/what-is-project-access) are visible to all users in the organization in Cypress Cloud_
+_注意：[公共项目](https://on.cypress.io/what-is-project-access)对Cypress Cloud组织中的所有用户可见_
 
-## Manage teams
+## 管理团队
 
-Organization [owner or admin](/cloud/account-management/users#User-roles) roles can create
-teams in Cypress Cloud. These organization owners and admins, along with a new role called
-the _team admin_, are then able to configure the team as required.
+组织的[所有者或管理员](/cloud/account-management/users#User-roles)角色可以在Cypress Cloud中创建团队。这些组织所有者和管理员，以及一个称为_团队管理员_的新角色，然后可以根据需要配置团队。
 
-- There is no limit on the number of teams that can be set up for your organization
-- All users in Cypress Cloud will be a member of the default team named _Everyone_
-- A user can be assigned to multiple teams
-- Roles are defined at the user level. That user's role determines the permissions granted
-  within the team
-- There is no limit on the number of projects that can be assigned to a team
-- The same project can be assigned to multiple teams
-- Having access to a project in Cypress Cloud has no bearing on whether or not a Cypress App user can record runs to Cypress Cloud
+- 可以为组织设置的团队数量没有限制
+- Cypress Cloud中的所有用户都将是名为_所有人_的默认团队的成员
+- 一个用户可以分配到多个团队
+- 角色在用户级别定义。该用户的角色决定了在团队内授予的权限
+- 可以分配给团队的项目数量没有限制
+- 同一个项目可以分配给多个团队
+- 在Cypress Cloud中拥有对项目的访问权限与Cypress App用户是否可以将运行记录到Cypress Cloud无关
 
-### Create or delete teams
+### 创建或删除团队
 
-Only organization [owner or admin](/cloud/account-management/users#User-roles) roles can create
-teams in Cypress Cloud. Other roles will not see the button to create a new team.
+只有组织的[所有者或管理员](/cloud/account-management/users#User-roles)角色可以在Cypress Cloud中创建团队。其他角色将看不到创建新团队的按钮。
 
-1. On the Users & Teams page, select the _Teams_ tab
-2. Click **+ Create team**
+1. 在“用户与团队”页面上，选择_团队_选项卡
+2. 点击**+ 创建团队**
 
    <DocsImage
      src="/img/cloud/teams/create-new-team.png"
-     alt="Nagivate to the Users & Teams page and see a button to create a new team."
+     alt="导航到用户与团队页面并看到创建新团队的按钮。"
    />
 
-3. On the _Create new team_ modal, enter the team name and click **Save**
+3. 在_创建新团队_模态框中，输入团队名称并点击**保存**
 
-_Note: team names must be unique_
+_注意：团队名称必须唯一_
 
-To delete a team, simply click on the _X_ icon at the right side of the team's row.
-You will be prompted for confirmation before the team is deleted.
+要删除团队，只需点击团队行右侧的_X_图标。在删除团队之前，系统会提示您确认。
 
-### Assign projects to a team
+### 将项目分配给团队
 
-Once a team has been created, it is important to assign projects to the team. If no
-projects are assigned to a team, any users that are a member of only this team will not
-have access to Cypress Cloud projects.
+创建团队后，将项目分配给团队非常重要。如果没有项目分配给团队，仅属于此团队的任何用户将无法访问Cypress Cloud项目。
 
 <DocsImage
   src="/img/cloud/teams/assign-projects-to-team.png"
-  alt="Click the + icon to assign projects to a team."
+  alt="点击+图标将项目分配给团队。"
 />
 
-On the _Teams_ tab, assign projects to a team by clicking the **+** icon in the
-_Project access_ column. In the modal that appears there will be two options:
+在_团队_选项卡上，通过点击_项目访问_列中的**+**图标将项目分配给团队。在出现的模态框中有两个选项：
 
-1. Assign all projects to team
+1. 将所有项目分配给团队
 
-   Use this option if you have a team that should access all projects, including projects that
-   already exist and ones that will be created in the future. This is the default selection for
-   the _Everyone_ team.
+   如果有一个团队应该访问所有项目，包括已经存在的项目和将来创建的项目，请使用此选项。这是_所有人_团队的默认选择。
 
    <DocsImage
      src="/img/cloud/teams/assign-projects-to-team-modal-all.png"
-     alt="When assigning projects to a team, you can select All Projects that either exist or that may be created in the future."
+     alt="将项目分配给团队时，可以选择所有现有或将来可能创建的项目。"
    />
 
-2. Assign selected projects to team
+2. 将选定项目分配给团队
 
-   Use this option if you want to assign specific projects to a team. Search for projects by name
-   and select (or unselect) them to assign projects to the team.
+   如果要为团队分配特定项目，请使用此选项。按名称搜索项目并选择（或取消选择）它们以将项目分配给团队。
 
    <DocsImage
      src="/img/cloud/teams/assign-projects-to-team-modal-selected.png"
-     alt="When assigning projects to a team, you can select individual projects from a list."
+     alt="将项目分配给团队时，可以从列表中选择单个项目。"
    />
 
-### Assign users to a team
+### 将用户分配到团队
 
-Once a team has been created and granted access to projects, the last step is to add
-users to the team. This will allow the users to have access to the projects in Cypress Cloud.
-There are two places in Cypress Cloud where users can be added to an existing team.
+创建团队并授予项目访问权限后，最后一步是将用户添加到团队中。这将允许用户访问Cypress Cloud中的项目。在Cypress Cloud中有两个地方可以将用户添加到现有团队。
 
-1. On the _Teams_ tab, select users for a team by clicking the **+** icon in the _Members_ column
+1. 在_团队_选项卡上，通过点击_成员_列中的**+**图标为团队选择用户
 
-   This makes it easy to add multiple users to a team at the same time. Simply browse the user list
-   or search by name, and then select (or unselect) them to assign users as members of this team.
+   这样可以轻松地同时将多个用户添加到团队中。只需浏览用户列表或按名称搜索，然后选择（或取消选择）他们以将用户分配为此团队的成员。
 
    <DocsImage
      src="/img/cloud/teams/assign-members-to-team.png"
-     alt="Click the + icon to assign Cypress Cloud users to a team."
+     alt="点击+图标将Cypress Cloud用户分配到团队。"
    />
    <DocsImage
      src="/img/cloud/teams/assign-members-to-team-modal.png"
-     alt="When assigning users to a team, you can select individual users from a list."
+     alt="将用户分配到团队时，可以从列表中选择单个用户。"
    />
 
-2. On the _Users_ tab, select teams for a user by clicking the **+** icon in the _Teams_ column
+2. 在_用户_选项卡上，通过点击_团队_列中的**+**图标为用户选择团队
 
-   You can manage the team(s) assigned to a user directly on the _Users_ page. On the edit modal
-   you you can search by team name and then select (or unselect) them to assign the user to
-   additional teams.
+   您可以直接在_用户_页面上管理分配给用户的团队。在编辑模态框中，可以按团队名称搜索，然后选择（或取消选择）他们以将用户分配到其他团队。
 
-   _Note: The label 'No project access' will appear if a team has not yet been configured to have
-   access to any projects. This will help you avoid mistakes when assigning users to teams._
+   _注意：如果团队尚未配置为可以访问任何项目，将显示“无项目访问权限”标签。这将帮助您在将用户分配到团队时避免错误。_
 
    <DocsImage
      src="/img/cloud/teams/assign-team-to-user.png"
-     alt="Click the + icon to assign a team to a specific user."
+     alt="点击+图标为特定用户分配团队。"
    />
    <DocsImage
      src="/img/cloud/teams/assign-team-to-user-modal.png"
-     alt="When assigning a team to a specific user, you can select individual teams from a list."
+     alt="为特定用户分配团队时，可以从列表中选择单个团队。"
    />
 
-## Best practices
+## 最佳实践
 
-Separating project access between multiple teams in Cypress Cloud is an optional setup. If your
-organization has no concerns or reasons to define teams, simply keep the default _Everyone_ team
-as it is defined. All users added to Cypress Cloud will automatically be associated with the
-Everyone team, and that team has access to all projects.
+在Cypress Cloud中将项目访问权限划分为多个团队是可选的设置。如果您的组织没有定义团队的需求或理由，只需保持默认的_所有人_团队的定义不变。添加到Cypress Cloud的所有用户将自动与所有人团队关联，并且该团队可以访问所有项目。
 
-For organizations that have a desire to divide into teams, a common setup is as follows:
+对于希望划分为团队的组织，常见的设置如下：
 
-1. Create a team that will be assigned to all organization-level users (Owner or Admin) and assign
-   all projects to this team. This will provide visibility to all projects to your organization-level users.
+1. 创建一个将分配给所有组织级别用户（所有者或管理员）的团队，并将所有项目分配给该团队。这将为您的组织级别用户提供对所有项目的可见性。
 
-   - For example: create a team named 'Admins' and give it access to all projects. Then assign any
-     existing and new organization-level users to this team.
+   - 例如：创建一个名为“管理员”的团队并授予其访问所有项目的权限。然后将所有现有和新的组织级别用户分配到此团队。
 
-2. Create teams that will align with your organizational structure and teams. It may be tempting to create
-   a lot of teams with access to very specific projects, but that can increase your maintenance over time.
+2. 创建与您的组织结构和团队对齐的团队。可能会倾向于创建许多可以访问非常特定项目的团队，但这可能会随着时间的推移增加维护工作。
 
-3. Once teams have been created, choose at least one member of each team who can be assigned the **Team admin**
-   role. This will allow users who are regular participants of the team to perform administration tasks for the
-   projects. It also removes this responsibility from your organization-level Admins and Owners.
+3. 创建团队后，为每个团队选择至少一个可以分配**团队管理员**角色的成员。这将允许作为团队常规参与者的用户执行项目的管理任务。这也将这一责任从您的组织级别管理员和所有者中移除。
 
-4. After teams have been configured, you can remove the _All projects_ assignment from the _Everyone_ team.
-   This will enforce your new team structure since users are no longer receiving project access from the default
-   _Everyone_ team.
+4. 配置团队后，可以从_所有人_团队中删除_所有项目_的分配。这将强制执行新的团队结构，因为用户不再从默认的_所有人_团队获得项目访问权限。
 
-5. Ensure that all users have access to at least one project. This is easiest to see on the **Users** page
-   where labels will appear in the _Teams_ columns if a user is not assigned to any teams, or if a user is
-   assigned only to teams which cannot access projects. Remember: public projects are outside the scope of Teams
-   and will always be visible to all users in your organization.
+5. 确保所有用户至少可以访问一个项目。这在**用户**页面上最容易看到，如果用户未分配到任何团队，或者用户仅分配到无法访问项目的团队，则_团队_列中会显示标签。记住：公共项目不在团队范围内，并且始终对组织中的所有用户可见。
 
-6. When a new project is created, make sure that it is granted access to one or more teams.
+6. 创建新项目时，确保将其授予一个或多个团队的访问权限。
 
-   - The new project will automatically be accessible to all users in a team assigned to _All projects_
-   - Cypress is considering an additional feature to require a user who creates a new project to select teams
-     at the time of project creation.
+   - 新项目将自动对分配到_所有项目_的团队中的所有用户可访问
+   - Cypress正在考虑添加一项功能，要求用户在创建新项目时选择团队。

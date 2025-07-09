@@ -1,49 +1,49 @@
 ---
-title: 'Views of URLs and mounted components | Cypress UI Coverage'
-description: 'UI Coverage is organized into views, which are the unique URLs across all snapshots from end-to-end tests and the unique mounted components from component tests.'
-sidebar_label: Views
+title: 'URL视图与挂载组件 | Cypress UI覆盖率'
+description: 'UI覆盖率按视图组织，视图包含端到端测试中所有快照的唯一URL，以及组件测试中挂载的唯一组件。'
+sidebar_label: 视图
 sidebar_position: 100
 ---
 
 <ProductHeading product="ui-coverage" />
 
-# Views
+# 视图
 
-UI Coverage organizes unique URLs from snapshots in end-to-end tests and mounted components in component tests into Views. Each View represents a distinct page or state in your application, allowing you to track coverage across different parts of your application.
+UI覆盖率将端到端测试快照中的唯一URL和组件测试中的挂载组件组织为视图。每个视图代表应用程序中的一个独立页面或状态，使您能够跟踪应用程序不同部分的覆盖率。
 
-## How views are created
+## 视图创建机制
 
-By default, UI Coverage applies a set of rules to generate a single View for dynamic URLs representing the same page. These rules ensure clarity by grouping similar URLs and reducing noise:
+默认情况下，UI覆盖率应用一组规则为表示同一页面的动态URL生成单一视图。这些规则通过分组相似URL来确保清晰度并减少干扰：
 
-- **Search Parameters**: All query parameters are removed (e.g., `/dashboard?tab=overview` becomes `/dashboard`).
-- **Hash Parameters**: Fragment identifiers are removed unless they represent a subpath (e.g., `#/admin`).
-- **Dynamic Segments**: URL segments that differ only by integers or UUIDs are replaced with a wildcard (`*`).
+- **搜索参数**：移除所有查询参数（例如`/dashboard?tab=overview`变为`/dashboard`）
+- **哈希参数**：移除片段标识符，除非它们表示子路径（例如`#/admin`）
+- **动态段**：仅由整数或UUID不同的URL段会被替换为通配符（`*`）
 
-### Examples of views
+### 视图示例
 
-- `/users/123/profile` and `/users/456/profile` become `/users/*/profile`
-- `/dashboard?tab=overview` and `/dashboard?tab=settings` become `/dashboard`
-- `/app#settings` and `/app#profile` become `/app`
-- `/app#/admin` and `/app#/settings` remain separate Views
+- `/users/123/profile` 和 `/users/456/profile` 合并为 `/users/*/profile`
+- `/dashboard?tab=overview` 和 `/dashboard?tab=settings` 合并为 `/dashboard`
+- `/app#settings` 和 `/app#profile` 合并为 `/app`
+- `/app#/admin` 和 `/app#/settings` 保持为独立视图
 
-These rules help consolidate similar pages into manageable Views while maintaining specificity where needed.
+这些规则有助于将相似页面整合为可管理的视图，同时在需要时保持特异性。
 
-## Using Views
+## 视图应用
 
-In the UI Coverage interface, Views are listed along with their coverage scores, providing insights into:
+在UI覆盖率界面中，视图列表会显示覆盖率分数，帮助您了解：
 
-- **Tested Areas**: Identify which parts of your application have sufficient test coverage.
-- **Untested Areas**: Spot pages or components that lack testing and prioritize them.
-- **Coverage Trends**: Track how coverage evolves across Views over time.
-- **Critical Flows**: Focus testing efforts on key user journeys and ensure their completeness.
+- **已测试区域**：识别应用程序中哪些部分已有充分测试覆盖
+- **未测试区域**：发现缺乏测试的页面或组件并确定优先级
+- **覆盖率趋势**：跟踪各视图覆盖率随时间的变化
+- **关键流程**：聚焦关键用户旅程的测试工作并确保其完整性
 
-## Customizing views
+## 自定义视图
 
-You can tailor how URLs are grouped into Views using configuration options:
+您可以通过配置选项定制URL分组方式：
 
-### View grouping
+### 视图分组
 
-Define rules for grouping URLs into Views to align with your application's structure:
+定义URL分组规则以匹配应用程序结构：
 
 ```json
 {
@@ -55,11 +55,11 @@ Define rules for grouping URLs into Views to align with your application's struc
 }
 ```
 
-To learn more about the configuration options, refer to the [Views](/ui-coverage/configuration/views) documentation.
+更多配置选项请参阅[视图](/ui-coverage/configuration/views)文档。
 
-### Ignoring views
+### 忽略视图
 
-Exclude irrelevant or low-priority URLs from being tracked as Views:
+排除不相关或低优先级的URL不被追踪为视图：
 
 ```json
 {
@@ -72,4 +72,4 @@ Exclude irrelevant or low-priority URLs from being tracked as Views:
 }
 ```
 
-To learn more about the configuration options, refer to the [View Filters](/ui-coverage/configuration/viewfilters) documentation.
+更多配置选项请参阅[视图过滤器](/ui-coverage/configuration/viewfilters)文档。

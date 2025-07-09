@@ -1,144 +1,111 @@
 ---
-title: 'IDE Integration with Cypress: VSCode, IntelliJ, and more'
-description: 'Learn how to open files in your IDE, set up intelligent code completion, and find extensions and plugins for popular IDEs.'
-sidebar_label: 'IDE Integration'
+title: 'Cypress的IDE集成：VSCode、IntelliJ等'
+description: '了解如何在IDE中打开文件、设置智能代码补全，以及为流行IDE寻找扩展和插件。'
+sidebar_label: 'IDE集成'
 ---
 
 <ProductHeading product="app" />
 
-# IDE Integration
+# IDE集成
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 您将学习到
 
-- How to open files in your IDE
-- Extensions and plugins for popular IDEs
-- How to set up intelligent code completion in your IDE
+- 如何在IDE中打开文件
+- 流行IDE的扩展和插件
+- 如何在IDE中设置智能代码补全
 
 :::
 
-## File Opener Preference
+## 文件打开器偏好设置
 
-When clicking on a file path or an [error](/app/guides/debugging#Errors) in
-the [command log](/app/core-concepts/open-mode#Command-Log), Cypress will
-attempt to open the file on your system. If the editor supports inline
-highlighting of the file, the file will open with the cursor located on the line
-and column of interest.
+当点击[命令日志](/app/core-concepts/open-mode#Command-Log)中的文件路径或[错误](/app/guides/debugging#Errors)时，Cypress会尝试在您的系统中打开该文件。如果编辑器支持文件内联高亮显示，文件将在光标定位到相关行和列的位置打开。
 
 <DocsImage
   src="/img/app/core-concepts/open-mode/open-file-in-IDE.gif"
-  alt="Open file in your IDE"
+  alt="在IDE中打开文件"
 />
 
-The first time you click a file path, Cypress will prompt you to select which
-location you prefer to open the file. You can choose to open it in your:
+首次点击文件路径时，Cypress会提示您选择首选的文件打开位置。您可以选择在以下位置打开：
 
-- File system (e.g. Finder on MacOS, File Explore on Windows)
-- An IDE located on your system
-- A specified application path
+- 文件系统（例如MacOS的Finder，Windows的文件资源管理器）
+- 系统中安装的IDE
+- 指定的应用程序路径
 
 :::caution
 
-Cypress attempts to find available file editors on your system and display those
-as options. If your preferred editor is not listed, you can specify the (full)
-path to it by selecting **Other**. Cypress will make every effort to open the
-file, _but it is not guaranteed to work with every application_.
+Cypress会尝试查找系统上可用的文件编辑器并显示为选项。如果首选编辑器未列出，您可以通过选择**其他**来指定其（完整）路径。Cypress将尽力打开文件，_但不能保证适用于所有应用程序_。
 
 :::
 
-After setting your file opener preference, any files will automatically open in
-your selected application without prompting you to choose. If you want to change
-your selection, you can do so in the **Settings** tab of Cypress by clicking
-under **File Opener Preference**.
+设置文件打开器偏好后，任何文件将自动在所选应用程序中打开，无需再次选择。如需更改选择，可在Cypress的**设置**选项卡中点击**文件打开器偏好**进行调整。
 
 <DocsImage
   src="/img/app/IDE-integration/file-opener-preference-settings-tab.png"
-  alt="screenshot of Cypress test-runner settings tab with file opener preference panel"
+  alt="Cypress测试运行器设置选项卡中文件打开器偏好面板的截图"
 />
 
-## Extensions & Plugins
+## 扩展与插件
 
-There are many third-party IDE extensions and plugins to help integrate your IDE
-with Cypress.
+有许多第三方IDE扩展和插件可帮助将您的IDE与Cypress集成。
 
 ### Visual Studio Code
 
-- [Cypress Fixture-IntelliSense](https://marketplace.visualstudio.com/items?itemName=JosefBiehler.cypress-fixture-intellisense):
-  Supports your [cy.fixture()](/api/commands/fixture) by providing intellisense
-  for existing fixtures.
-- [Cypress Helper](https://marketplace.visualstudio.com/items?itemName=shevtsov.vscode-cy-helper):
-  Various helpers and commands for integration with Cypress.
-- [Cypress Snippets](https://marketplace.visualstudio.com/items?itemName=andrew-codes.cypress-snippets):
-  Useful Cypress code snippets.
-- [Cypress Snippets](https://marketplace.visualstudio.com/items?itemName=CliffSu.cypress-snippets):
-  This extension includes the newest and most common cypress snippets.
-- [Open Cypress](https://marketplace.visualstudio.com/items?itemName=tnrich.vscode-extension-open-cypress):
-  Allows you to open Cypress specs and single `it()` blocks directly from VS
-  Code.
-- [Test Utils](https://marketplace.visualstudio.com/items?itemName=chrisbreiding.test-utils):
-  Easily add or remove `.only` and `.skip` modifiers with keyboard shortcuts or
-  the command palette.
-- [Cypress Test Explorer](https://marketplace.visualstudio.com/items?itemName=dpanshug.cypress-test-explorer):
-  Helps you discover, navigate and run Cypress tests directly from the editor.
+- [Cypress Fixture-IntelliSense](https://marketplace.visualstudio.com/items?itemName=JosefBiehler.cypress-fixture-intellisense): 通过为现有fixture提供智能感知来支持[cy.fixture()](/api/commands/fixture)。
+- [Cypress Helper](https://marketplace.visualstudio.com/items?itemName=shevtsov.vscode-cy-helper): 提供多种与Cypress集成的辅助工具和命令。
+- [Cypress Snippets](https://marketplace.visualstudio.com/items?itemName=andrew-codes.cypress-snippets): 实用的Cypress代码片段。
+- [Cypress Snippets](https://marketplace.visualstudio.com/items?itemName=CliffSu.cypress-snippets): 包含最新和最常见的Cypress代码片段。
+- [Open Cypress](https://marketplace.visualstudio.com/items?itemName=tnrich.vscode-extension-open-cypress): 允许直接从VS Code打开Cypress规范和单个`it()`块。
+- [Test Utils](https://marketplace.visualstudio.com/items?itemName=chrisbreiding.test-utils): 通过键盘快捷键或命令面板轻松添加或移除`.only`和`.skip`修饰符。
+- [Cypress Test Explorer](https://marketplace.visualstudio.com/items?itemName=dpanshug.cypress-test-explorer): 帮助您直接从编辑器发现、导航和运行Cypress测试。
 
-### IntelliJ Platform
+### IntelliJ平台
 
-- [JetBrains Aqua](https://www.jetbrains.com/aqua/): An IDE for UI Test Automation with comprehensive Cypress support. Features include autocompletion, in-IDE debugging, test search, and more.
+- [JetBrains Aqua](https://www.jetbrains.com/aqua/): 专为UI测试自动化设计的IDE，全面支持Cypress。功能包括自动补全、IDE内调试、测试搜索等。
 
-- [Test Automation plugin](https://plugins.jetbrains.com/plugin/20175-test-automation): The official plugin, developed and maintained by JetBrains, offering robust support for Cypress and compatible with IntelliJ IDEA, CLion, GoLand, PhpStorm, PyCharm, Rider, RubyMine, and WebStorm. It encompasses all the features found in JetBrains Aqua.
+- [Test Automation插件](https://plugins.jetbrains.com/plugin/20175-test-automation): JetBrains官方开发维护的插件，提供强大的Cypress支持，兼容IntelliJ IDEA、CLion、GoLand、PhpStorm、PyCharm、Rider、RubyMine和WebStorm。包含JetBrains Aqua中的所有功能。
 
-- [Cypress Support](https://plugins.jetbrains.com/plugin/13819-intellij-cypress): Integrates Cypress under the common Intellij test framework.
+- [Cypress Support](https://plugins.jetbrains.com/plugin/13819-intellij-cypress): 将Cypress集成到Intellij通用测试框架下。
 
-## Intelligent Code Completion
+## 智能代码补全
 
-### Writing Tests
+### 编写测试
 
-#### Features
+#### 功能
 
-IntelliSense is available for Cypress. It offers intelligent code suggestions
-directly in your IDE while writing tests. A typical IntelliSense popup shows
-command definition, a code example and a link to the full documentation page.
+Cypress支持IntelliSense。它能在编写测试时直接在IDE中提供智能代码建议。典型的IntelliSense弹出窗口会显示命令定义、代码示例和完整文档页面的链接。
 
-##### Autocomplete while typing Cypress commands
+##### 输入Cypress命令时自动补全
 
 <DocsVideo
   src="/img/snippets/intellisense-cypress-assertion-matchers.mp4"
-  title="Intellisense Autocomplete Cypress commands"
+  title="Cypress命令的IntelliSense自动补全"
 />
 
-##### Signature help when writing and hovering on Cypress commands
+##### 编写和悬停在Cypress命令上时的签名帮助
 
 <DocsVideo
   src="/img/snippets/intellisense-method-signature-examples.mp4"
-  title="Intellisense on hover"
+  title="悬停时的IntelliSense"
 />
 
-##### Autocomplete while typing assertion chains, including only showing DOM assertions if testing on a DOM element.
+##### 输入断言链时自动补全，包括仅在测试DOM元素时显示DOM断言
 
 <DocsVideo
   src="/img/snippets/intellisense-assertion-chainers.mp4"
-  title="Intellisense Autocomplete DOM assertions"
+  title="DOM断言的IntelliSense自动补全"
 />
 
-#### Set up in your Dev Environment
+#### 在开发环境中设置
 
-This document assumes you have
-[installed Cypress](/app/get-started/install-cypress).
+本文档假设您已[安装Cypress](/app/get-started/install-cypress)。
 
-Cypress comes with TypeScript
-[type declarations](https://github.com/cypress-io/cypress/tree/develop/cli/types)
-included. Modern text editors can use these type declarations to show
-IntelliSense inside spec files.
+Cypress内置了TypeScript[类型声明](https://github.com/cypress-io/cypress/tree/develop/cli/types)。现代文本编辑器可以使用这些类型声明在规范文件中显示IntelliSense。
 
-##### Triple slash directives
+##### 三斜线指令
 
-The simplest way to see IntelliSense when typing a Cypress command or assertion
-is to add a
-[triple-slash directive](http://www.typescriptlang.org/docs/handbook/triple-slash-directives.html)
-to the head of your JavaScript or TypeScript testing file. This will turn the
-IntelliSense on a per file basis. Copy the comment line below and paste it into
-your spec file.
+在输入Cypress命令或断言时，查看IntelliSense的最简单方法是在JavaScript或TypeScript测试文件头部添加[三斜线指令](http://www.typescriptlang.org/docs/handbook/triple-slash-directives.html)。这将基于每个文件启用IntelliSense。复制下面的注释行并粘贴到您的规范文件中。
 
 ```js
 /// <reference types="Cypress" />
@@ -146,42 +113,26 @@ your spec file.
 
 <DocsVideo
   src="/img/snippets/intellisense-setup.mp4"
-  title="Intellisense triple-slash directive"
+  title="IntelliSense三斜线指令"
 />
 
-If you write [custom commands](/api/cypress-api/custom-commands) and provide
-TypeScript definitions for them, you can use the triple slash directives to show
-IntelliSense, even if your project uses only JavaScript. For example, if your
-custom commands are written in `cypress/support/commands.js` and you describe
-them in `cypress/support/index.d.ts` use:
+如果您编写了[自定义命令](/api/cypress-api/custom-commands)并为其提供了TypeScript定义，即使项目仅使用JavaScript，也可以使用三斜线指令显示IntelliSense。例如，如果自定义命令写在`cypress/support/commands.js`中并在`cypress/support/index.d.ts`中描述，可以使用：
 
 ```js
-// type definitions for Cypress object "cy"
+// Cypress对象"cy"的类型定义
 /// <reference types="cypress" />
 
-// type definitions for custom commands like "createDefaultTodos"
+// 如"createDefaultTodos"等自定义命令的类型定义
 /// <reference types="../support" />
 ```
 
-See the
-[`cypress-example-todomvc`](https://github.com/cypress-io/cypress-example-todomvc#cypress-intellisense)
-repository for a working example.
+参考[`cypress-example-todomvc`](https://github.com/cypress-io/cypress-example-todomvc#cypress-intellisense)仓库获取工作示例。
 
-If the triple slash directive does not work, please refer to your code editor in
-[TypeScript's Editor Support doc](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support)
-and follow the instructions for your IDE to get
-[TypeScript support](/app/tooling/typescript-support) and intelligent code
-completion configured in your developer environment first. TypeScript support is
-built in for [Visual Studio Code](https://code.visualstudio.com/),
-[Visual Studio](https://www.visualstudio.com/), and
-[WebStorm](https://www.jetbrains.com/webstorm/) - all other editors require
-extra setup.
+如果三斜线指令无效，请参考[TypeScript的编辑器支持文档](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support)中关于您的代码编辑器的部分，并按照IDE的说明首先在开发环境中配置[TypeScript支持](/app/tooling/typescript-support)和智能代码补全。[Visual Studio Code](https://code.visualstudio.com/)、[Visual Studio](https://www.visualstudio.com/)和[WebStorm](https://www.jetbrains.com/webstorm/)内置了TypeScript支持——其他所有编辑器都需要额外设置。
 
-##### Reference type declarations via `jsconfig`
+##### 通过`jsconfig`引用类型声明
 
-Instead of adding triple slash directives to each JavaScript spec file, some
-IDEs (like VS Code) understand a common `jsconfig.json` file in the root of the
-project. In that file, you can include the Cypress module and your test folders.
+无需为每个JavaScript规范文件添加三斜线指令，某些IDE（如VS Code）能理解项目根目录下的`jsconfig.json`文件。在该文件中，您可以包含Cypress模块和测试文件夹。
 
 ```json
 {
@@ -189,16 +140,11 @@ project. In that file, you can include the Cypress module and your test folders.
 }
 ```
 
-The Intelligent Code Completion should now show help for `cy` commands inside
-regular JavaScript spec files.
+现在，智能代码补全应在常规JavaScript规范文件中显示`cy`命令的帮助。
 
-##### Reference type declarations via `tsconfig`
+##### 通过`tsconfig`引用类型声明
 
-Adding a
-[`tsconfig.json`](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
-inside your
-[`cypress` folder](/app/core-concepts/writing-and-organizing-tests#Folder-structure)
-with the following configuration should get intelligent code completion working.
+在[`cypress`文件夹](/app/core-concepts/writing-and-organizing-tests#Folder-structure)中添加一个[`tsconfig.json`](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html)，并配置以下内容，应能使智能代码补全正常工作。
 
 ```json
 {
@@ -210,6 +156,6 @@ with the following configuration should get intelligent code completion working.
 }
 ```
 
-### See also
+### 另请参阅
 
-- [Adding custom properties to the global `window` with the right TypeScript type](https://github.com/bahmutov/test-todomvc-using-app-actions#intellisense)
+- [使用正确的TypeScript类型向全局`window`添加自定义属性](https://github.com/bahmutov/test-todomvc-using-app-actions#intellisense)

@@ -1,22 +1,21 @@
-If you are running the tests from within a restrictive VPN you will need to allow some URLs so that Cypress can have effective communication with Cypress Cloud.
+如果您在限制性VPN环境下运行测试，需要允许以下URL以确保Cypress能与Cypress Cloud有效通信。
 
-**The URLs are the following:**
+**需要放行的URL如下：**
 
 - `https://api.cypress.io` - **Cypress API**
-- `https://assets.cypress.io` - **Asset CDN** (Org logos, icons, videos,
-  screenshots, etc.)
-- `https://authenticate.cypress.io` - **Authentication API**
-- `https://capture.cypress.io` - **Cypress Test Replay**
-- `https://s3.amazonaws.com/capture.cypress.io` - **Uploading Cypress Test Replay from Test Runner**
+- `https://assets.cypress.io` - **资源CDN**（组织徽标、图标、视频、截图等）
+- `https://authenticate.cypress.io` - **认证API**
+- `https://capture.cypress.io` - **Cypress测试回放**
+- `https://s3.amazonaws.com/capture.cypress.io` - **从测试运行器上传Cypress测试回放**
 - `https://cloud.cypress.io` - **Cypress Cloud**
-- `https://docs.cypress.io` - **Cypress documentation**
-- `https://download.cypress.io` - **CDN download of Cypress binary**
-- `https://on.cypress.io` - **URL shortener for link redirects**
+- `https://docs.cypress.io` - **Cypress文档**
+- `https://download.cypress.io` - **Cypress二进制文件CDN下载**
+- `https://on.cypress.io` - **链接跳转的URL缩短服务**
 
-**If you are using GitHub Enterprise or GitLab for Enterprise (Self-managed), you may also need to add the following to the version control IP allowlist:**
+**如果您使用GitHub Enterprise或GitLab for Enterprise（自托管版），可能还需要将以下版本控制IP加入白名单：**
 
-- `3.211.102.119` - **Dedicated IP**
-- `18.213.72.78` - **Dedicated IP**
-- `35.169.145.173` - **Dedicated IP**
-- `44.199.152.70` - **Dedicated IP**
-- `52.70.95.89` - **Dedicated IP**
+- `3.211.102.119` - **专用IP**
+- `18.213.72.78` - **专用IP**
+- `35.169.145.173` - **专用IP**
+- `44.199.152.70` - **专用IP**
+- `52.70.95.89` - **专用IP**

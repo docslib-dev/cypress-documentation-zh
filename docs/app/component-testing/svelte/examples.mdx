@@ -1,31 +1,30 @@
 ---
-title: Svelte Examples
-description: Learn how to test Svelte components with Cypress Component Testing.
+title: Svelte 示例
+description: 学习如何使用 Cypress 组件测试来测试 Svelte 组件。
 sidebar_position: 30
-sidebar_label: Examples
+sidebar_label: 示例
 ---
 
 <ProductHeading product="app" />
 
-# Svelte Examples
+# Svelte 示例
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to mount a Svelte component
-- How to pass props to a Svelte component
-- How to test event handlers in a Svelte component
-- How to access the component instance in a test
+- 如何挂载一个 Svelte 组件
+- 如何向 Svelte 组件传递 props
+- 如何测试 Svelte 组件中的事件处理器
+- 如何在测试中访问组件实例
 
 :::
 
-## Mounting Components
+## 挂载组件
 
-### Using `cy.mount()`
+### 使用 `cy.mount()`
 
-To mount a component with `cy.mount()`, import the component and pass it to the
-method:
+要使用 `cy.mount()` 挂载组件，导入组件并将其传递给该方法：
 
 ```ts
 import { Stepper } from './stepper.svelte'
@@ -35,9 +34,9 @@ it('mounts', () => {
 })
 ```
 
-### Passing Data to a Component
+### 向组件传递数据
 
-You can pass props to a component by setting props in the options: `cy.mount()`:
+你可以通过在选项中设置 props 来向组件传递数据：`cy.mount()`：
 
 ```ts
 it('mounts', () => {
@@ -45,13 +44,9 @@ it('mounts', () => {
 })
 ```
 
-### Testing Event Handlers
+### 测试事件处理器
 
-To test emitted events from a Svelte component, we need to pass in a callback
-for when we increment the stepper. The Stepper component
-will need to invoke this callback for us. We can also pass in a
-Cypress spy so we can query the spy later for results. In the example below, we
-pass in the `onChange` callback handler and validate it was called as expected:
+要测试 Svelte 组件发出的事件，我们需要为步进器递增时传入一个回调函数。Stepper 组件需要为我们调用这个回调函数。我们还可以传入一个 Cypress spy，以便稍后查询 spy 的结果。在下面的示例中，我们传入了 `onChange` 回调处理器，并验证它是否按预期被调用：
 
 ```js
 it('clicking + fires a change event with the incremented value', () => {
@@ -62,14 +57,12 @@ it('clicking + fires a change event with the incremented value', () => {
 })
 ```
 
-### Accessing the Component Instance
+### 访问组件实例
 
-There might be times when you might want to access the component instance
-directly in your tests. To do so, use `.then()`, which enables us to work with
-the subject that was yielded from the `cy.mount()` command.
+有时你可能希望在测试中直接访问组件实例。为此，使用 `.then()`，它允许我们处理从 `cy.mount()` 命令返回的主题。
 
 ```js
 cy.mount(Stepper).then(({ component }) => {
-  //component is the rendered instance of Stepper
+  //component 是 Stepper 的渲染实例
 })
 ```

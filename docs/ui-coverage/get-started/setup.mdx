@@ -1,60 +1,60 @@
 ---
-title: 'Get Started | UI Coverage Documentation'
-description: 'Set up UI Coverage by recording a run. No setup or instrumentation is required.'
-sidebar_label: Get Started
+title: '快速入门 | UI Coverage 文档'
+description: '通过记录测试运行来设置UI Coverage。无需任何设置或代码插桩。'
+sidebar_label: 快速入门
 sidebar_position: 20
 ---
 
 <ProductHeading product="ui-coverage" />
 
-# Get Started
+# 快速入门
 
-UI Coverage works instantly, with no setup or code instrumentation required. If you record test runs to the Cypress Cloud with Test Replay, you're ready to start using UI Coverage.
-You'll start your free trial with personalized support from our sales team and your existing test data to instantly see where testing gaps exist for all of your Cypress projects.
-From there, you can easily customize reports to fit your needs with flexible configuration options.
+UI Coverage 无需设置或代码插桩即可立即使用。如果您使用 Test Replay 将测试运行记录到 Cypress Cloud，就可以开始使用 UI Coverage。
+您将通过销售团队的个性化支持和现有测试数据开始免费试用，立即查看所有 Cypress 项目中存在的测试覆盖缺口。
+之后，您可以通过灵活的配置选项轻松自定义报告以满足需求。
 
-## 1. Request a trial
+## 1. 申请试用
 
-Get started with a free trial of UI Coverage. You'll receive a personalized demo using your existing test data to see where testing gaps exist for all of your Cypress projects.
+开始免费试用 UI Coverage。您将获得个性化演示，使用现有测试数据查看所有 Cypress 项目中存在的测试覆盖缺口。
 
 <Btn
-  label="Request trial ➜"
+  label="申请试用 ➜"
   variant="indigo-dark"
   className="!mb-0"
   href="https://www.cypress.io/ui-coverage?utm_medium=get-started-page&utm_source=docs.cypress.io&utm_content=Request%20trial"
 />
 
-## 2. Record a run
+## 2. 记录测试运行
 
-UI Coverage generates reports using [Test Replay](/cloud/features/test-replay) data and requires Cypress v13+. No additional configuration or instrumentation is required to start using UI Coverage.
+UI Coverage 使用 [Test Replay](/cloud/features/test-replay) 数据生成报告，需要 Cypress v13+ 版本。开始使用 UI Coverage 无需额外配置或代码插桩。
 
-[Record a run](/cloud/get-started/setup) to the Cypress Cloud with Test Replay to start using UI Coverage.
+使用 Test Replay [记录测试运行](/cloud/get-started/setup) 到 Cypress Cloud 即可开始使用 UI Coverage。
 
-## 3. View your UI Coverage results
+## 3. 查看 UI Coverage 结果
 
-After recording a test run, you can view your UI Coverage results in the Cypress Cloud via the **UI Coverage** tab.
+记录测试运行后，您可以在 Cypress Cloud 的 **UI Coverage** 选项卡中查看 UI Coverage 结果。
 
 <DocsImage
   src="/img/ui-coverage/get-started/uicov-docs-1.gif"
-  alt="UI Coverage demo showing a mouse hovering and interacting with the UI of the Cloud product"
+  alt="UI Coverage 演示，展示鼠标悬停并与 Cloud 产品的 UI 交互"
   noBorder="true"
 />
 
-## 4. Customize your results
+## 4. 自定义结果
 
-UI Coverage provides flexible configuration options to customize your reports. You can configure:
+UI Coverage 提供灵活的配置选项来自定义报告。您可以配置：
 
-- [Attribute filters](/ui-coverage/configuration/attributefilters): specify patterns for attributes and their values that should not be used for identifying and grouping elements
-- [Element filters](/ui-coverage/configuration/elementfilters): specify selectors for elements that should be excluded from UI Coverage
-- [Element groups](/ui-coverage/configuration/elementgroups): groups elements that are related to one another
-- [Elements](/ui-coverage/configuration/elements): specify selectors to uniquely identify elements
-- [Significant Attributes](/ui-coverage/configuration/significantattributes): prioritize the identification and grouping of specific attributes
-- [View filters](/ui-coverage/configuration/viewfilters): specify URL patterns for URLs that should be excluded from UI Coverage. Excluding a URL also excludes all links to that URL.
-- [Views](/ui-coverage/configuration/views): specify URL patterns that represent views
+- [属性过滤器](/ui-coverage/configuration/attributefilters)：指定不应用于识别和分组元素的属性及其值的模式
+- [元素过滤器](/ui-coverage/configuration/elementfilters)：指定应从 UI Coverage 中排除的元素选择器
+- [元素组](/ui-coverage/configuration/elementgroups)：将相关元素分组
+- [元素](/ui-coverage/configuration/elements)：指定用于唯一标识元素的选择器
+- [重要属性](/ui-coverage/configuration/significantattributes)：优先识别和分组特定属性
+- [视图过滤器](/ui-coverage/configuration/viewfilters)：指定应从 UI Coverage 中排除的 URL 模式。排除 URL 也会排除指向该 URL 的所有链接。
+- [视图](/ui-coverage/configuration/views)：指定表示视图的 URL 模式
 
-To add or modify the configuration for your project, navigate to the **App Quality** tab in your project settings.
+要添加或修改项目配置，请导航至项目设置中的 **App Quality** 选项卡。
 
 <DocsImage
   src="/img/accessibility/configuration/cypress-accessibility-configuration-editor.png"
-  alt="The Cypress Cloud UI showing the configuration editor"
+  alt="Cypress Cloud UI 显示配置编辑器"
 />

@@ -1,111 +1,91 @@
 ---
-title: Best Practices
-description: Best practices for organizing tests, selecting elements, and controlling state in Cypress.
+title: 最佳实践
+description: 在Cypress中组织测试、选择元素和控制状态的最佳实践。
 sidebar_position: 80
 ---
 
 <ProductHeading product="app" />
 
-# Best Practices
+# 最佳实践
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- Best practices on how to organize tests, log in, and control state
-- Strategies for selecting elements and assigning return values
-- Best practices on visiting external sites
-- How to avoid relying on the state of previous tests
-- When to use `after` or `afterEach` hooks
-- How to avoid unnecessary waiting in your tests
-- Setting a global base URL for your tests to save time
+- 如何组织测试、登录和控制状态的最佳实践
+- 选择元素和分配返回值的策略
+- 访问外部网站的最佳实践
+- 如何避免依赖先前测试的状态
+- 何时使用 `after` 或 `afterEach` 钩子
+- 如何避免测试中不必要的等待
+- 为测试设置全局基础URL以节省时间
 
 :::
 
-The Cypress team maintains the <Icon name="github" inline="true" contentType="rwa" />, a full stack example
-application that demonstrates **best practices and scalable strategies with
-Cypress in practical and realistic scenarios**.
+Cypress团队维护了<Icon name="github" inline="true" contentType="rwa" />，这是一个完整的示例应用程序，展示了**在实际和现实场景中使用Cypress的最佳实践和可扩展策略**。
 
-The RWA achieves full [code-coverage](/app/tooling/code-coverage) with
-end-to-end tests
-[across multiple browsers](/app/guides/cross-browser-testing) and
-[device sizes](/api/commands/viewport), but also includes
-[visual regression tests](/app/tooling/visual-testing), API tests, unit
-tests, and runs them all in an
-[efficient CI pipeline](https://cloud.cypress.io/projects/7s5okt).
+RWA实现了完整的[代码覆盖率](/app/tooling/code-coverage)，包括[跨多个浏览器](/app/guides/cross-browser-testing)和[设备尺寸](/api/commands/viewport)的端到端测试，还包括[视觉回归测试](/app/tooling/visual-testing)、API测试、单元测试，并在[高效的CI管道](https://cloud.cypress.io/projects/7s5okt)中运行所有测试。
 
-The app is bundled with everything you need,
-[just clone the repository](https://github.com/cypress-io/cypress-realworld-app)
-and start testing.
+该应用程序捆绑了你所需的一切，[只需克隆仓库](https://github.com/cypress-io/cypress-realworld-app)即可开始测试。
 
-## <Icon name="angle-right" /> Organizing Tests, Logging In, Controlling State
+## <Icon name="angle-right" /> 组织测试、登录、控制状态
 
 :::danger
 
-<Icon name="exclamation-triangle" color="red" /> **Anti-Pattern:** Sharing page objects,
-using your UI to log in, and not taking shortcuts.
+<Icon name="exclamation-triangle" color="red" /> **反模式：** 共享页面对象，使用UI登录，不采取快捷方式。
 
 :::
 
 :::tip
 
-<Icon name="check-circle" color="green" /> **Best Practice:** Test specs in isolation,
-programmatically log into your application, and take control of your application's
-state.
+<Icon name="check-circle" color="green" /> **最佳实践：** 隔离测试规范，以编程方式登录应用程序，并控制应用程序的状态。
 
 :::
 
 :::tip
 
-We gave a "Best Practices" conference talk at AssertJS (February 2018). This
-video demonstrates how to approach breaking down your application and organizing
-your tests.
+我们在AssertJS（2018年2月）上做了一个“最佳实践”的会议演讲。这个视频演示了如何分解应用程序和组织测试。
 
 <Icon
   name="play-circle"
   url="https://www.youtube.com/watch?v=5XQOK0v_YRE"
-  callout="AssertJS - Cypress Best Practices"
+  callout="AssertJS - Cypress最佳实践"
 />
 
 :::
 
-We have several
-[Logging in recipes](https://github.com/cypress-io/cypress-example-recipes#logging-in-recipes)
-in our examples.
+我们在示例中有几个[登录配方](https://github.com/cypress-io/cypress-example-recipes#logging-in-recipes)。
 
-## <Icon name="angle-right" /> Selecting Elements
+## <Icon name="angle-right" /> 选择元素
 
 :::danger
 
-<Icon name="exclamation-triangle" color="red" /> **Anti-Pattern:** Using highly brittle
-selectors that are subject to change.
+<Icon name="exclamation-triangle" color="red" /> **反模式：** 使用高度脆弱的、容易变化的选择器。
 
 :::
 
 :::tip
 
-<Icon name="check-circle" color="green" /> **Best Practice:** Use `data-*` attributes
-to provide context to your selectors and isolate them from CSS or JS changes.
+<Icon name="check-circle" color="green" /> **最佳实践：** 使用 `data-*` 属性为选择器提供上下文，并将其与CSS或JS更改隔离。
 
 :::
 
-Every test you write will include selectors for elements. To save yourself a lot
-of headaches, you should write selectors that are resilient to changes.
+你编写的每个测试都将包括对元素的选择器。为了避免许多麻烦，你应该编写对更改具有弹性的选择器。
 
-Oftentimes we see users run into problems targeting their elements because:
+通常，用户会遇到以下问题：
 
-- Your application may use dynamic classes or ID's that change
-- Your selectors break from development changes to CSS styles or JS behavior
+- 应用程序可能使用动态类或ID，这些会变化
+- 选择器因CSS样式或JS行为的开发更改而中断
 
-Luckily, it is possible to avoid both of these problems.
+幸运的是，可以避免这两个问题。
 
-1. Don't target elements based on CSS attributes such as: `id`, `class`, `tag`
-2. Don't target elements that may change their `textContent`
-3. Add `data-*` attributes to make it easier to target elements
+1. 不要基于CSS属性（如：`id`、`class`、`tag`）定位元素
+2. 不要定位可能更改其 `textContent` 的元素
+3. 添加 `data-*` 属性以更容易定位元素
 
-### How It Works
+### 工作原理
 
-Given a button that we want to interact with:
+给定一个我们想要交互的按钮：
 
 ```html
 <button
@@ -119,39 +99,32 @@ Given a button that we want to interact with:
 </button>
 ```
 
-Let's investigate how we could target it:
+让我们研究如何定位它：
 
-| Selector                                | Recommended                                                   | Notes                                                           |
+| 选择器                                | 推荐                                                   | 说明                                                           |
 | --------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------- |
-| `cy.get('button').click()`              | <Icon name="exclamation-triangle" color="red" /> Never        | Worst - too generic, no context.                                |
-| `cy.get('.btn.btn-large').click()`      | <Icon name="exclamation-triangle" color="red" /> Never        | Bad. Coupled to styling. Highly subject to change.              |
-| `cy.get('#main').click()`               | <Icon name="exclamation-triangle" color="orange" /> Sparingly | Better. But still coupled to styling or JS event listeners.     |
-| `cy.get('[name="submission"]').click()` | <Icon name="exclamation-triangle" color="orange" /> Sparingly | Coupled to the `name` attribute which has HTML semantics.       |
-| `cy.contains('Submit').click()`         | <Icon name="check-circle" color="green" /> Depends            | Much better. But still coupled to text content that may change. |
-| `cy.get('[data-cy="submit"]').click()`  | <Icon name="check-circle" color="green" /> Always             | Best. Isolated from all changes.                                |
+| `cy.get('button').click()`              | <Icon name="exclamation-triangle" color="red" /> 从不        | 最差 - 太通用，没有上下文。                                |
+| `cy.get('.btn.btn-large').click()`      | <Icon name="exclamation-triangle" color="red" /> 从不        | 差。与样式耦合。极易变化。              |
+| `cy.get('#main').click()`               | <Icon name="exclamation-triangle" color="orange" /> 偶尔 | 较好。但仍与样式或JS事件监听器耦合。     |
+| `cy.get('[name="submission"]').click()` | <Icon name="exclamation-triangle" color="orange" /> 偶尔 | 与具有HTML语义的 `name` 属性耦合。       |
+| `cy.contains('Submit').click()`         | <Icon name="check-circle" color="green" /> 视情况            | 更好。但仍与可能变化的文本内容耦合。 |
+| `cy.get('[data-cy="submit"]').click()`  | <Icon name="check-circle" color="green" /> 总是             | 最佳。与所有更改隔离。                                |
 
-Targeting the element above by `tag`, `class` or `id` is very volatile and
-highly subject to change. You may swap out the element, you may refactor CSS and
-update ID's, or you may add or remove classes that affect the style of the
-element.
+通过 `tag`、`class` 或 `id` 定位上述元素非常不稳定且极易变化。你可能更换元素，重构CSS并更新ID，或添加或删除影响元素样式的类。
 
-Instead, adding the `data-cy` attribute to the element gives us a targeted
-selector that's only used for testing.
+相反，向元素添加 `data-cy` 属性为我们提供了一个仅用于测试的目标选择器。
 
-The `data-cy` attribute will not change from CSS style or JS behavioral changes,
-meaning it's not coupled to the **behavior** or **styling** of an element.
+`data-cy` 属性不会因CSS样式或JS行为更改而变化，这意味着它不与元素的**行为**或**样式**耦合。
 
-Additionally, it makes it clear to everyone that this element is used directly
-by test code.
+此外，它向所有人明确表示此元素直接由测试代码使用。
 
 :::info
 
-<strong>Did you know?</strong>
+<strong>你知道吗？</strong>
 
-The [Selector Playground](/app/core-concepts/open-mode#Selector-Playground)
-automatically follows these best practices.
+[选择器游乐场](/app/core-concepts/open-mode#Selector-Playground)自动遵循这些最佳实践。
 
-When determining a unique selector, it will automatically prefer elements with:
+在确定唯一选择器时，它会自动优先选择具有以下属性的元素：
 
 - `data-cy`
 - `data-test`
@@ -159,15 +132,12 @@ When determining a unique selector, it will automatically prefer elements with:
 
 :::
 
-#### <Icon name="graduation-cap" /> Real World Example
+#### <Icon name="graduation-cap" /> 真实示例
 
-The <Icon name="github" inline="true" contentType="rwa" /> uses two useful
-custom commands for selecting elements for testing:
+<Icon name="github" inline="true" contentType="rwa" /> 使用了两个有用的自定义命令来为测试选择元素：
 
-- `getBySel` yields elements with a `data-test` attribute that **match** a
-  specified selector.
-- `getBySelLike` yields elements with a `data-test` attribute that **contains**
-  a specified selector.
+- `getBySel` 生成具有 `data-test` 属性的元素，该属性**匹配**指定的选择器。
+- `getBySelLike` 生成具有 `data-test` 属性的元素，该属性**包含**指定的选择器。
 
 ```ts
 // cypress/support/commands.ts
@@ -183,334 +153,237 @@ Cypress.Commands.add('getBySelLike', (selector, ...args) => {
 
 :::note
 
-_<Icon name="github" /> Source:
+_<Icon name="github" /> 来源：
 [cypress/support/commands.ts](https://github.com/cypress-io/cypress-realworld-app/blob/develop/cypress/support/commands.ts)_
 
 :::
 
-### Text Content
+### 文本内容
 
-After reading the above rules you may be wondering:
+在阅读上述规则后，你可能会想：
 
-> If I should always use data attributes, then when should I use
-> `cy.contains()`?
+> 如果应该总是使用数据属性，那么何时使用 `cy.contains()`？
 
-A rule of thumb is to ask yourself this:
+一个经验法则是问自己：
 
-If the content of the element **changed** would you want the test to fail?
+如果元素的内容**更改**，你希望测试失败吗？
 
-- If the answer is yes: then use [`cy.contains()`](/api/commands/contains)
-- If the answer is no: then use a data attribute.
+- 如果答案是肯定的：则使用 [`cy.contains()`](/api/commands/contains)
+- 如果答案是否定的：则使用数据属性。
 
-**Example:**
+**示例：**
 
-If we looked at the `<html>` of our button again...
+如果我们再次查看按钮的 `<html>`...
 
 ```html
 <button id="main" class="btn btn-large" data-cy="submit">Submit</button>
 ```
 
-The question is: how important is the `Submit` text content to your test? If the
-text changed from `Submit` to `Save` - would you want the test to fail?
+问题是：`Submit` 文本内容对你的测试有多重要？如果文本从 `Submit` 更改为 `Save` - 你希望测试失败吗？
 
-If the answer is **yes** because the word `Submit` is critical and should not be
-changed - then use [`cy.contains()`](/api/commands/contains) to target the
-element. This way, if it is changed, the test will fail.
+如果答案是**是**，因为 `Submit` 这个词至关重要且不应更改 - 则使用 [`cy.contains()`](/api/commands/contains) 定位元素。这样，如果更改，测试将失败。
 
-If the answer is **no** because the text could be changed - then use
-[`cy.get()`](/api/commands/get) with data attributes. Changing the text to
-`Save` would then not cause a test failure.
+如果答案是**否**，因为文本可以更改 - 则使用 [`cy.get()`](/api/commands/get) 和数据属性。将文本更改为 `Save` 不会导致测试失败。
 
-### Cypress and Testing Library
+### Cypress 和 Testing Library
 
-Cypress loves the Testing Library project. We use Testing Library internally,
-and our philosophy aligns closely with Testing Library's ethos and approach to
-writing tests. We strongly endorse their best practices for situations where,
-as with `cy.contains()`, you want to fail a test if a specific piece of content or
-accessible role is not present.
+Cypress 喜欢 Testing Library 项目。我们在内部使用 Testing Library，我们的理念与 Testing Library 的宗旨和测试编写方法紧密一致。我们强烈支持他们的最佳实践，适用于像 `cy.contains()` 这样的情况，你希望如果特定内容或可访问角色不存在时测试失败。
 
-You can use the
-[Cypress Testing Library](https://testing-library.com/docs/cypress-testing-library/intro/)
-package to use the familiar testing library methods (like `findByRole`,
-`findByLabelText`, etc...) to select elements in Cypress specs.
+你可以使用 [Cypress Testing Library](https://testing-library.com/docs/cypress-testing-library/intro/) 包来使用熟悉的测试库方法（如 `findByRole`、`findByLabelText` 等）在 Cypress 规范中选择元素。
 
-If you are coming from a React Testing Library background and looking for more resources to understand how we
-recommend you approach testing your components, look to: [Cypress Component Testing](/app/component-testing/get-started).
+如果你来自 React Testing Library 背景，并寻找更多资源来理解我们建议你如何测试组件，请查看：[Cypress 组件测试](/app/component-testing/get-started)。
 
-### Accessibility Testing
+### 可访问性测试
 
-Selecting elements with data attributes, text content, or Testing Library locators can each have some different implications for accessibility,
-but none of these approaches is a "complete" accessibility test, and you will always need additional, accessibility-specific testing (including automated and manual tests) to confirm
-your application is working as expected for people with disabilities and the technology they use. See [our accessibility testing guide](/app/guides/accessibility-testing) for more details and comparisons of approaches.
+使用数据属性、文本内容或 Testing Library 定位器选择元素可能对可访问性有不同的影响，但这些方法都不是“完整”的可访问性测试，你总是需要额外的、特定于可访问性的测试（包括自动化和手动测试）来确认你的应用程序对残疾人和他们使用的技术是否按预期工作。详见[我们的可访问性测试指南](/app/guides/accessibility-testing)以获取更多详细信息和方法的比较。
 
-## <Icon name="angle-right" /> Assigning Return Values
+## <Icon name="angle-right" /> 分配返回值
 
 :::danger
 
-<Icon name="exclamation-triangle" color="red" /> **Anti-Pattern:** Trying to assign
-the return value of Commands with `const`, `let`, or `var`.
+<Icon name="exclamation-triangle" color="red" /> **反模式：** 尝试使用 `const`、`let` 或 `var` 分配命令的返回值。
 
 :::
 
 :::tip
 
-<Icon name="check-circle" color="green" /> **Best Practice:** Use [aliases and closures
-to access and store](/app/core-concepts/variables-and-aliases) what Commands yield
-you.
+<Icon name="check-circle" color="green" /> **最佳实践：** 使用 [别名和闭包来访问和存储](/app/core-concepts/variables-and-aliases) 命令生成的内容。
 
 :::
 
-Many first time users look at Cypress code and think it runs synchronously.
+许多初次使用 Cypress 的用户会认为它的代码是同步运行的。
 
-We see new users commonly write code that looks like this:
+我们经常看到新用户编写如下代码：
 
 ```js
-// DONT DO THIS. IT DOES NOT WORK
-// THE WAY YOU THINK IT DOES.
+// 不要这样做。它不会按你想象的方式工作。
 const a = cy.get('a')
 
 cy.visit('https://example.cypress.io')
 
-// nope, fails
+// 不，会失败
 a.first().click()
 
-// Instead, do this.
+// 相反，这样做。
 cy.get('a').as('links')
 cy.get('@links').first().click()
 ```
 
 :::info
 
-<strong>Did you know?</strong>
+<strong>你知道吗？</strong>
 
-You rarely have to ever use `const`, `let`, or `var` in Cypress. If you're using
-them, you will want to do some refactoring.
+在 Cypress 中很少需要使用 `const`、`let` 或 `var`。如果你在使用它们，你可能需要进行一些重构。
 
 :::
 
-If you are new to Cypress and wanting to better understand how Commands work -
-[please read our Introduction to Cypress guide](/app/core-concepts/introduction-to-cypress#Chains-of-Commands).
+如果你是 Cypress 的新手，并希望更好地理解命令的工作原理 - [请阅读我们的 Cypress 入门指南](/app/core-concepts/introduction-to-cypress#Chains-of-Commands)。
 
-If you're familiar with Cypress commands already, but find yourself using
-`const`, `let`, or `var` then you're typically trying to do one of two things:
+如果你已经熟悉 Cypress 命令，但发现自己使用 `const`、`let` 或 `var`，那么你通常是在尝试做以下两件事之一：
 
-- You're trying to **store and compare** values such as **text**, **classes**,
-  **attributes**.
-- You're trying to share **values** between tests and hooks like `before` and
-  `beforeEach`.
+- 你正在尝试**存储和比较**值，如**文本**、**类**、**属性**。
+- 你正在尝试在测试和钩子（如 `before` 和 `beforeEach`）之间共享**值**。
 
-For working with either of these patterns, please read our
-[Variables and Aliases guide](/app/core-concepts/variables-and-aliases).
+对于这些模式，请阅读我们的[变量和别名指南](/app/core-concepts/variables-and-aliases)。
 
-## <Icon name="angle-right" /> Visiting External Sites
+## <Icon name="angle-right" /> 访问外部网站
 
 :::danger
 
-<Icon name="exclamation-triangle" color="red" /> **Anti-Pattern:** Trying to visit
-or interact with sites or servers you do not control.
+<Icon name="exclamation-triangle" color="red" /> **反模式：** 尝试访问或与你无法控制的站点或服务器交互。
 
 :::
 
 :::tip
 
-<Icon name="check-circle" color="green" /> **Best Practice:** Only test websites
-that you control. Try to avoid visiting or requiring a 3rd party server. If you choose,
-you may use [`cy.request()`](/api/commands/request) to talk to 3rd party servers
-via their APIs. If possible, cache results via [`cy.session()`](/api/commands/session)
-to avoid repeat visits. See also reasons against [Testing Apps You Don't Control](/app/end-to-end-testing/writing-your-first-end-to-end-test#Testing-Apps-You-Dont-Control).
+<Icon name="check-circle" color="green" /> **最佳实践：** 仅测试你控制的网站。尽量避免访问或依赖第三方服务器。如果选择，可以使用 [`cy.request()`](/api/commands/request) 通过其API与第三方服务器通信。如果可能，通过 [`cy.session()`](/api/commands/session) 缓存结果以避免重复访问。另请参阅反对[测试你无法控制的应用程序](/app/end-to-end-testing/writing-your-first-end-to-end-test#Testing-Apps-You-Dont-Control)的原因。
 
 :::
 
-One of the first things many of our users attempt to do is involve 3rd party
-servers or services in their tests.
+我们的许多用户首先尝试做的事情之一就是在他们的测试中涉及第三方服务器或服务。
 
-You may want to access 3rd party services in several situations:
+你可能希望在几种情况下访问第三方服务：
 
-1. Testing log in when your app uses another provider via OAuth.
-2. Verifying your server updates a 3rd party server.
-3. Checking your email to see if your server sent a "forgot password" email.
+1. 当你的应用程序通过 OAuth 使用另一个提供商时测试登录。
+2. 验证你的服务器是否更新了第三方服务器。
+3. 检查你的电子邮件以查看服务器是否发送了“忘记密码”电子邮件。
 
-If you choose, these situations can be tested with
-[`cy.visit()`](/api/commands/visit) and [`cy.origin()`](/api/commands/origin).
-However, you will only want to utilize these commands for resources in your
-control, either by controlling the domain or hosted instance. These use cases
-are common for:
+如果选择，这些情况可以通过 [`cy.visit()`](/api/commands/visit) 和 [`cy.origin()`](/api/commands/origin) 进行测试。但是，你只希望将这些命令用于你控制的资源，无论是通过控制域还是托管实例。这些用例通常适用于：
 
-- Authentication as a service platforms, such as Auth0, Okta, Microsoft, AWS
-  Cognito, and others via username/password authentication. These domains and
-  service instances are usually owned and controlled by you or your
-  organization.
-- CMS instances, such as a Contentful or Wordpress instance.
-- Other types of services under a domain in which you control.
+- 作为服务平台的身份验证，如 Auth0、Okta、Microsoft、AWS Cognito 等，通过用户名/密码认证。这些域和服务实例通常由你或你的组织拥有和控制。
+- CMS 实例，如 Contentful 或 Wordpress 实例。
+- 其他类型的服务，位于你控制的域下。
 
-### Potential Challenges Authenticating with Social Platforms
+### 使用社交平台认证的潜在挑战
 
-Other services, such as social logins through popular media providers, are not
-recommended. Testing social logins may work, especially if run locally. However,
-we consider this a bad practice and do not recommend it because:
+其他服务，如通过流行媒体提供商的社交登录，不建议使用。测试社交登录可能有效，尤其是在本地运行时。然而，我们认为这是一种不好的做法，不建议这样做，因为：
 
-- It's incredibly time consuming and slows down your tests (unless using
-  [`cy.session()`](/api/commands/session)).
-- The 3rd party site may have changed or updated its content.
-- The 3rd party site may be having issues outside of your control.
-- The 3rd party site may detect you are testing via a script and block you.
-- The 3rd party site might have policies against automated login, leading to
-  banning of accounts.
-- The 3rd party site might detect you are a bot, and provide mechanisms such as
-  two-factor authentication, captchas, and other means to prevent automation.
-  This is common with continuous integration platforms and general automation.
-- The 3rd party site may be running A/B campaigns.
+- 它非常耗时，并减慢你的测试速度（除非使用 [`cy.session()`](/api/commands/session)）。
+- 第三方站点可能已更改或更新其内容。
+- 第三方站点可能在你无法控制的情况下出现问题。
+- 第三方站点可能检测到你正在通过脚本进行测试并阻止你。
+- 第三方站点可能有禁止自动化登录的政策，导致账户被封禁。
+- 第三方站点可能检测到你是一个机器人，并提供诸如双因素认证、验证码等机制来防止自动化。这在持续集成平台和一般自动化中很常见。
+- 第三方站点可能正在运行 A/B 测试。
 
-Let's look at a few strategies for dealing with these situations.
+让我们看看处理这些情况的几种策略。
 
-### When logging in
+### 登录时
 
-Many OAuth providers, especially social logins, run A/B experiments, which means
-that their login screen is dynamically changing. This makes automated testing
-difficult.
+许多 OAuth 提供商，尤其是社交登录，运行 A/B 实验，这意味着他们的登录屏幕是动态变化的。这使得自动化测试变得困难。
 
-Many OAuth providers also throttle the number of web requests you can make to
-them. For instance, if you try to test Google, Google will **automatically**
-detect that you are not a human and instead of giving you an OAuth login screen,
-they will make you fill out a captcha.
+许多 OAuth 提供商还会限制你可以向他们发出的网络请求数量。例如，如果你尝试测试 Google，Google 会**自动**检测到你不是一个人类，而不是给你一个 OAuth 登录屏幕，他们会让你填写验证码。
 
-Additionally, testing through an OAuth provider is mutable - you will first need
-a real user on their service and then modifying anything on that user might
-affect other tests downstream.
+此外，通过 OAuth 提供商的测试是可变的 - 你首先需要他们在服务上的真实用户，然后对该用户的任何修改可能会影响下游的其他测试。
 
-**Here are solutions you may choose to use to alleviate these problems:**
+**以下是你可以选择用来缓解这些问题的解决方案：**
 
-1. Use another platform that you control to log in with username and password
-   via [`cy.origin()`](/api/commands/origin). This likely guarantees that you
-   will not run into the problems listed above, while still being able to
-   automate your login flow. You can reduce the amount of authentication
-   requests by utilizing [`cy.session()`](/api/commands/session).
-2. [Stub](/api/commands/stub) out the OAuth provider and bypass it using their
-   UI altogether if [`cy.origin()`](/api/commands/origin) is not an option. You
-   could trick your application into believing the OAuth provider has passed its
-   token to your application.
-3. If you **must** get a real token and [`cy.origin()`](/api/commands/origin) is
-   not an option, you can use [`cy.request()`](/api/commands/request) and use
-   the **programmatic** API that your OAuth provider provides. These APIs likely
-   change **more** infrequently and you avoid problems like throttling and A/B
-   campaigns.
-4. Instead of having your test code bypass OAuth, you could also ask your server
-   for help. Perhaps all an OAuth token does is generate a user in your
-   database. Oftentimes OAuth is only useful initially and your server
-   establishes its own session with the client. If that is the case, use
-   [`cy.request()`](/api/commands/request) to get the session directly from your
-   server and bypass the provider altogether if
-   [`cy.origin()`](/api/commands/origin) is not an option.
+1. 使用你控制的另一个平台通过 [`cy.origin()`](/api/commands/origin) 使用用户名和密码登录。这很可能保证你不会遇到上述问题，同时仍然能够自动化你的登录流程。你可以通过使用 [`cy.session()`](/api/commands/session) 来减少认证请求的数量。
+2. 如果 [`cy.origin()`](/api/commands/origin) 不可用，[stub](/api/commands/stub) 出 OAuth 提供商并使用其 UI 完全绕过它。你可以欺骗你的应用程序，使其相信 OAuth 提供商已将其令牌传递给你的应用程序。
+3. 如果**必须**获取真实令牌且 [`cy.origin()`](/api/commands/origin) 不可用，可以使用 [`cy.request()`](/api/commands/request) 并使用你的 OAuth 提供商提供的**编程** API。这些 API 可能**更少**变化，并且你可以避免诸如限制和 A/B 测试等问题。
+4. 除了让你的测试代码绕过 OAuth，你也可以请求你的服务器帮助。也许 OAuth 令牌所做的只是在你的数据库中生成一个用户。通常 OAuth 仅在最初有用，你的服务器与客户端建立自己的会话。如果是这种情况，使用 [`cy.request()`](/api/commands/request) 直接从你的服务器获取会话，如果 [`cy.origin()`](/api/commands/origin) 不可用，则完全绕过提供商。
 
 :::info
 
-<strong>Recipes</strong>
+<strong>配方</strong>
 
-[We have several examples of doing this in our logging in recipes.](/app/references/recipes)
+[我们在登录配方中有几个示例。](/app/references/recipes)
 
 :::
 
-### 3rd party servers
+### 第三方服务器
 
-Sometimes actions that you take in your application **may** affect another 3rd
-party application. These situations are not that common, but it is possible.
-Imagine your application integrates with GitHub and by using your application
-you can change data inside of GitHub.
+有时你在应用程序中采取的操作**可能**影响另一个第三方应用程序。这些情况并不常见，但有可能。想象你的应用程序与 GitHub 集成，通过使用你的应用程序，你可以更改 GitHub 内部的数据。
 
-After running your test, instead of trying to
-[`cy.visit()`](/api/commands/visit) GitHub, you can use
-[`cy.request()`](/api/commands/request) to programmatically interact with
-GitHub's APIs directly.
+运行测试后，不要尝试 [`cy.visit()`](/api/commands/visit) GitHub，你可以使用 [`cy.request()`](/api/commands/request) 直接与 GitHub 的 API 进行编程交互。
 
-This avoids ever needing to touch the UI of another application.
+这避免了需要接触另一个应用程序的 UI。
 
-### Verifying sent emails
+### 验证发送的电子邮件
 
-Typically, when going through scenarios like user registration or forgotten
-passwords, your server schedules an email to be delivered.
+通常，在用户注册或忘记密码等场景中，你的服务器会安排发送电子邮件。
 
-1. If your application is running locally and is sending the emails directly
-   through an SMTP server, you can use a temporary local test SMTP server
-   running inside Cypress. Read the blog post
-   ["Testing HTML Emails using Cypress"](https://www.cypress.io/blog/2021/05/11/testing-html-emails-using-cypress/)
-   for details.
-2. If your application is using a 3rd party email service, or you cannot stub
-   the SMTP requests, you can use a test email inbox with an API access. Read
-   the blog post
-   ["Full Testing of HTML Emails using SendGrid and Ethereal Accounts"](https://www.cypress.io/blog/2021/05/24/full-testing-of-html-emails-using-ethereal-accounts/)
-   for details.
+1. 如果你的应用程序在本地运行并通过 SMTP 服务器直接发送电子邮件，你可以在 Cypress 内部使用临时本地测试 SMTP 服务器。阅读博客文章 ["使用 Cypress 测试 HTML 电子邮件"](https://www.cypress.io/blog/2021/05/11/testing-html-emails-using-cypress/) 以获取详细信息。
+2. 如果你的应用程序使用第三方电子邮件服务，或者你无法 stub SMTP 请求，你可以使用具有 API 访问权限的测试电子邮件收件箱。阅读博客文章 ["使用 SendGrid 和 Ethereal 账户全面测试 HTML 电子邮件"](https://www.cypress.io/blog/2021/05/24/full-testing-of-html-emails-using-ethereal-accounts/) 以获取详细信息。
 
-Cypress can even load the received HTML email in its browser to verify the
-email's functionality and visual style:
+Cypress 甚至可以在其浏览器中加载接收到的 HTML 电子邮件，以验证电子邮件的功能和视觉样式：
 
 <DocsImage
   src="/img/app/references/email-test.png"
-  title="The HTML email loaded during the test"
-  alt="The test finds and clicks the Confirm registration button"
+  title="测试期间加载的HTML电子邮件"
+  alt="测试找到并点击确认注册按钮"
 />
 
-3. In other cases, you should try using [`cy.request()`](/api/commands/request)
-   command to query the endpoint on your server that tells you what email has
-   been queued or delivered. That would give you a programmatic way to know
-   without involving the UI. Your server would have to expose this endpoint.
-4. You could also use `cy.request()` to a 3rd party email recipient server that
-   exposes an API to read off emails. You will then need the proper
-   authentication credentials, which your server could provide, or you could use
-   environment variables. Some email services already provide
-   <a href="/app/plugins/plugins-list#email">Cypress plugins</a> to access emails.
+3. 在其他情况下，你应该尝试使用 [`cy.request()`](/api/commands/request) 命令查询服务器上的端点，该端点告诉你哪些电子邮件已排队或已发送。这将为你提供一种编程方式，无需涉及 UI 即可知道。你的服务器需要公开此端点。
+4. 你也可以使用 `cy.request()` 到第三方电子邮件接收服务器，该服务器公开了读取电子邮件的 API。你将需要适当的认证凭据，你的服务器可以提供，或者你可以使用环境变量。一些电子邮件服务已经提供了<a href="/app/plugins/plugins-list#email">Cypress插件</a>来访问电子邮件。
 
-## <Icon name="angle-right" /> Having Tests Rely On The State Of Previous Tests
+## <Icon name="angle-right" /> 测试依赖于先前测试的状态
 
 :::danger
 
-<Icon name="exclamation-triangle" color="red" /> **Anti-Pattern:** Coupling multiple
-tests together.
+<Icon name="exclamation-triangle" color="red" /> **反模式：** 将多个测试耦合在一起。
 
 :::
 
 :::tip
 
-<Icon name="check-circle" color="green" /> **Best Practice:** Tests should always
-be able to be run independently from one another **and still pass**.
+<Icon name="check-circle" color="green" /> **最佳实践：** 测试应始终能够独立于彼此运行**并且仍然通过**。
 
 :::
 
-You only need to do one thing to know whether you've coupled your tests
-incorrectly, or if one test is relying on the state of a previous one.
+你只需要做一件事就可以知道你是否错误地耦合了测试，或者一个测试是否依赖于前一个测试的状态。
 
-Change `it` to [`it.only`](https://jestjs.io/docs/api#testonlyname-fn-timeout)
-on the test and refresh the browser.
+将 `it` 更改为 [`it.only`](https://jestjs.io/docs/api#testonlyname-fn-timeout) 并刷新浏览器。
 
-If this test can run **by itself** and pass - congratulations you have written a
-good test.
+如果这个测试可以**单独**运行并通过 - 恭喜你写了一个好的测试。
 
-If this is not the case, then you should refactor and change your approach.
+如果不是这样，那么你应该重构并改变你的方法。
 
-How to solve this:
+如何解决这个问题：
 
-- Move repeated code in previous tests to `before` or `beforeEach` hooks.
-- Combine multiple tests into one larger test.
+- 将先前测试中的重复代码移动到 `before` 或 `beforeEach` 钩子中。
+- 将多个测试合并为一个更大的测试。
 
-Let's imagine the following test that is filling out the form.
+让我们想象以下填写表单的测试。
 
 :::visit-mount-example
 
 ```js
-// an example of what NOT TO DO
-describe('my form', () => {
-  it('visits the form', () => {
+// 一个不应该做的例子
+describe('我的表单', () => {
+  it('访问表单', () => {
     -{cy.visit('/users/new')::cy.mount(<UserForm />)}-
   })
 
-  it('requires first name', () => {
+  it('需要名字', () => {
     cy.get('[data-testid="first-name"]').type('Johnny')
   })
 
-  it('requires last name', () => {
+  it('需要姓氏', () => {
     cy.get('[data-testid="last-name"]').type('Appleseed')
   })
 
-  it('can submit a valid form', () => {
+  it('可以提交有效表单', () => {
     cy.get('form').submit()
   })
 })
@@ -518,32 +391,29 @@ describe('my form', () => {
 
 :::
 
-What's wrong with the above tests? They are all coupled together!
+上面的测试有什么问题？它们都耦合在一起了！
 
-If you were to change `it` to
-[`it.only`](https://jestjs.io/docs/api#testonlyname-fn-timeout) on any of the
-last three tests, they would fail. Each test requires the previous to run in a
-specific order in order to pass.
+如果你将 `it` 更改为 [`it.only`](https://jestjs.io/docs/api#testonlyname-fn-timeout) 在任何最后三个测试上，它们都会失败。每个测试都需要前一个测试以特定顺序运行才能通过。
 
-Here's 2 ways we can fix this:
+以下是我们可以解决这个问题的两种方法：
 
-### 1. Combine into one test
+### 1. 合并为一个测试
 
 :::visit-mount-example
 
 ```js
-// a bit better
-describe('my form', () => {
-  it('can submit a valid form', () => {
+// 更好一些
+describe('我的表单', () => {
+  it('可以提交有效表单', () => {
     -{cy.visit('/users/new')::cy.mount(<NewUser />)}-
 
-    cy.log('filling out first name') // if you really need this
+    cy.log('填写名字') // 如果你真的需要这个
     cy.get('[data-testid="first-name"]').type('Johnny')
 
-    cy.log('filling out last name') // if you really need this
+    cy.log('填写姓氏') // 如果你真的需要这个
     cy.get('[data-testid="last-name"]').type('Appleseed')
 
-    cy.log('submitting form') // if you really need this
+    cy.log('提交表单') // 如果你真的需要这个
     cy.get('form').submit()
   })
 })
@@ -551,30 +421,28 @@ describe('my form', () => {
 
 :::
 
-Now we can put an `.only` on this test and it will run successfully irrespective
-of any other test. The ideal Cypress workflow is writing and iterating on a
-single test at a time.
+现在我们可以在这个测试上放一个 `.only`，它将成功运行，而不依赖于任何其他测试。理想的 Cypress 工作流程是一次编写和迭代一个测试。
 
-### 2. Run shared code before each test
+### 2. 在每个测试之前运行共享代码
 
 :::visit-mount-example
 
 ```js
-describe('my form', () => {
+describe('我的表单', () => {
   beforeEach(() => {
     -{cy.visit('/users/new')::cy.mount(<NewUser />)}-
     cy.get('[data-testid="first-name"]').type('Johnny')
     cy.get('[data-testid="last-name"]').type('Appleseed')
   })
 
-  it('displays form validation', () => {
-    // clear out first name
+  it('显示表单验证', () => {
+    // 清除名字
     cy.get('[data-testid="first-name"]').clear()
     cy.get('form').submit()
-    cy.get('[data-testid="errors"]').should('contain', 'First name is required')
+    cy.get('[data-testid="errors"]').should('contain', '名字是必填项')
   })
 
-  it('can submit a valid form', () => {
+  it('可以提交有效表单', () => {
     cy.get('form').submit()
   })
 })
@@ -582,39 +450,34 @@ describe('my form', () => {
 
 :::
 
-This above example is ideal because now we are resetting the state between each
-test and ensuring nothing in previous tests leaks into subsequent ones.
+上面的例子是理想的，因为现在我们正在在每个测试之间重置状态，并确保先前测试中的任何内容不会泄漏到后续测试中。
 
-We're also paving the way to make it less complicated to write multiple tests
-against the "default" state of the form. That way each test stays lean but each
-can be run independently and pass.
+我们还在为针对表单“默认”状态编写多个测试铺平道路。这样每个测试保持精简，但每个测试可以独立运行并通过。
 
-## <Icon name="angle-right" /> Creating "Tiny" Tests With A Single Assertion <E2EOnlyBadge />
+## <Icon name="angle-right" /> 创建“微小”测试与单一断言 <E2EOnlyBadge />
 
 :::danger
 
-<Icon name="exclamation-triangle" color="red" /> **Anti-Pattern:** Acting like you're
-writing unit tests.
+<Icon name="exclamation-triangle" color="red" /> **反模式：** 表现得像你在编写单元测试。
 
 :::
 
 :::tip
 
-<Icon name="check-circle" color="green" /> **Best Practice:** Add multiple assertions
-and don't worry about it
+<Icon name="check-circle" color="green" /> **最佳实践：** 添加多个断言，不用担心
 
 :::
 
-We've seen many users writing this kind of code:
+我们见过许多用户编写这种代码：
 
 ```js
-describe('my form', () => {
+describe('我的表单', () => {
   beforeEach(() => {
     cy.visit('/users/new')
     cy.get('[data-testid="first-name"]').type('johnny')
   })
 
-  it('has validation attr', () => {
+  it('有验证属性', () => {
     cy.get('[data-testid="first-name"]').should(
       'have.attr',
       'data-validation',
@@ -622,50 +485,44 @@ describe('my form', () => {
     )
   })
 
-  it('has active class', () => {
+  it('有活动类', () => {
     cy.get('[data-testid="first-name"]').should('have.class', 'active')
   })
 
-  it('has formatted first name', () => {
+  it('有格式化的名字', () => {
     cy.get('[data-testid="first-name"]')
-      // capitalized first letter
+      // 首字母大写
       .should('have.value', 'Johnny')
   })
 })
 ```
 
-While technically this runs fine - this is really excessive, and not performant.
+虽然技术上这运行良好 - 但这真的过度了，而且性能不好。
 
-Why you do this pattern in component and unit tests:
+为什么你在组件和单元测试中这样做：
 
-- When assertions failed you relied on the test's title to know what failed
-- You were told that adding multiple assertions was bad and accepted this as
-  truth
-- There was no performance penalty splitting up multiple tests because they run
-  really fast
+- 当断言失败时，你依赖测试标题来知道什么失败了
+- 你被告知添加多个断言是不好的，并接受了这一点
+- 拆分多个测试没有性能损失，因为它们运行得非常快
 
-Why you shouldn't do this in end-to-end tests:
+为什么你不应该在端到端测试中这样做：
 
-- Writing integration tests is not the same as unit tests
-- You will always know (and can visually see) which assertion failed in a large
-  test
-- Cypress runs a series of async lifecycle events that reset state between tests
-- Resetting tests is much slower than adding more assertions
+- 编写集成测试与单元测试不同
+- 你将始终知道（并且可以直观地看到）大型测试中哪个断言失败
+- Cypress 运行一系列异步生命周期事件，在测试之间重置状态
+- 重置测试比添加更多断言要慢得多
 
-It is common for tests in Cypress to issue 30+ commands. Because nearly every
-command has an implicit assertion (and can therefore fail), even by limiting
-your assertions you're not saving yourself anything because **any single command
-could implicitly fail**.
+在 Cypress 中，测试发出 30 多个命令是很常见的。因为几乎每个命令都有一个隐式断言（因此可能失败），即使限制你的断言，你也没有节省任何东西，因为**任何单个命令都可能隐式失败**。
 
-How you should rewrite those tests:
+你应该如何重写这些测试：
 
 ```js
-describe('my form', () => {
+describe('我的表单', () => {
   beforeEach(() => {
     cy.visit('/users/new')
   })
 
-  it('validates and formats first name', () => {
+  it('验证并格式化名字', () => {
     cy.get('[data-testid="first-name"]')
       .type('johnny')
       .should('have.attr', 'data-validation', 'required')
@@ -675,29 +532,26 @@ describe('my form', () => {
 })
 ```
 
-## <Icon name="angle-right" /> Using `after` Or `afterEach` Hooks
+## <Icon name="angle-right" /> 使用 `after` 或 `afterEach` 钩子
 
 :::danger
 
-<Icon name="exclamation-triangle" color="red" /> **Anti-Pattern:** Using `after`
-or `afterEach` hooks to clean up state.
+<Icon name="exclamation-triangle" color="red" /> **反模式：** 使用 `after` 或 `afterEach` 钩子来清理状态。
 
 :::
 
 :::tip
 
-<Icon name="check-circle" color="green" /> **Best Practice:** Clean up state **before**
-tests run.
+<Icon name="check-circle" color="green" /> **最佳实践：** 在测试运行**之前**清理状态。
 
 :::
 
-We see many of our users adding code to an `after` or `afterEach` hook in order
-to clean up the state generated by the current test(s).
+我们看到许多用户将代码添加到 `after` 或 `afterEach` 钩子中，以清理当前测试生成的状态。
 
-We most often see test code that looks like this:
+我们最常见的是看到这样的测试代码：
 
 ```js
-describe('logged in user', () => {
+describe('登录用户', () => {
   beforeEach(() => {
     cy.login()
   })
@@ -706,56 +560,35 @@ describe('logged in user', () => {
     cy.logout()
   })
 
-  it('tests', ...)
-  it('more', ...)
-  it('things', ...)
+  it('测试', ...)
+  it('更多', ...)
+  it('事情', ...)
 })
 ```
 
-Let's look at why this is not really necessary.
+让我们看看为什么这并不真正必要。
 
-### Dangling state is your friend
+### 悬空状态是你的朋友
 
-One of the **best** parts of Cypress is its emphasis on debuggability. Unlike
-other testing tools - when your tests end - you are left with your working
-application at the exact point where your test finished.
+Cypress 的**最佳**部分之一是其对可调试性的重视。与其他测试工具不同 - 当你的测试结束时 - 你会在测试完成的确切点留下你的工作应用程序。
 
-This is an **excellent** opportunity for you to **use** your application in the
-state the tests finished! This enables you to write **partial tests** that drive
-your application step by step, writing your test and application code at the
-same time.
+这是一个**绝佳**的机会，让你在测试结束的状态下**使用**你的应用程序！这使你能够编写**部分测试**，逐步驱动你的应用程序，同时编写测试和应用程序代码。
 
-We have built Cypress to support this use case. In fact, Cypress **does not**
-clean up its own internal state when the test ends. We **want** you to have
-dangling state at the end of the test! Things like [stubs](/api/commands/stub),
-[spies](/api/commands/spy), even [intercepts](/api/commands/intercept) are
-**not** removed at the end of the test. This means your application will behave
-identically while it is running Cypress commands or when you manually work with
-it after a test ends.
+我们构建 Cypress 来支持这种用例。事实上，Cypress **不会**在测试结束时清理其内部状态。我们**希望**你在测试结束时拥有悬空状态！诸如 [stubs](/api/commands/stub)、[spies](/api/commands/spy)，甚至 [intercepts](/api/commands/intercept) 的东西在测试结束时**不会**被移除。这意味着你的应用程序在运行 Cypress 命令或你在测试结束后手动操作时的行为是相同的。
 
-If you remove your application's state after each test, then you instantly lose
-the ability to use your application in this mode. Logging out at the end would
-always leave you with the same login page at the end of the test. In order to
-debug your application or write a partial test, you would always be left
-commenting out your custom `cy.logout()` command.
+如果你在每个测试后移除应用程序的状态，那么你立即失去了在这种模式下使用应用程序的能力。在结束时注销总是会让你在测试结束时留下相同的登录页面。为了调试你的应用程序或编写部分测试，你将总是需要注释掉你的自定义 `cy.logout()` 命令。
 
-### It's all downside with no upside
+### 全是缺点，没有优点
 
-For the moment, let's assume that for some reason your application desperately
-**needs** that last bit of `after` or `afterEach` code to run. Let's assume that
-if that code is not run - all is lost.
+暂时假设，出于某种原因，你的应用程序非常**需要**最后一点 `after` 或 `afterEach` 代码运行。让我们假设如果不运行该代码 - 一切都将丢失。
 
-That is fine - but even if this is the case, it should not go in an `after` or
-`afterEach` hook. Why? So far we have been talking about logging out, but let's
-use a different example. Let's use the pattern of needing to reset your
-database.
+这没问题 - 但即使是这样，它也不应该放在 `after` 或 `afterEach` 钩子中。为什么？到目前为止我们一直在谈论注销，但让我们使用一个不同的例子。让我们使用需要重置数据库的模式。
 
-**The idea goes like this:**
+**想法是这样的：**
 
-> After each test I want to ensure the database is reset back to 0 records so
-> when the next test runs, it is run with a clean state.
+> 在每个测试之后，我想确保数据库重置回 0 条记录，以便下一个测试运行时，它是在干净的状态下运行的。
 
-**With that in mind you write something like this:**
+**考虑到这一点，你写如下内容：**
 
 ```js
 afterEach(() => {
@@ -763,68 +596,47 @@ afterEach(() => {
 })
 ```
 
-Here is the problem: **there is no guarantee that this code will run.**
+问题是：**无法保证这段代码会运行。**
 
-If, hypothetically, you have written this command because it **has** to run
-before the next test does, then the absolute **worst place** to put it is in an
-`after` or `afterEach` hook.
+如果，假设你编写这个命令是因为它**必须**在下一个测试之前运行，那么绝对**最糟糕的**地方就是放在 `after` 或 `afterEach` 钩子中。
 
-Why? Because if you refresh Cypress in the middle of the test - you will have
-built up partial state in the database, and your custom `cy.resetDb()` function
-**will never get called**.
+为什么？因为如果你在测试中间刷新 Cypress - 你将在数据库中建立部分状态，而你的自定义 `cy.resetDb()` 函数**永远不会被调用**。
 
-If this state cleanup is **truly** required, then the next test will instantly
-fail. Why? Because resetting the state never happened when you refreshed
-Cypress.
+如果这种状态清理**真正**需要，那么下一个测试将立即失败。为什么？因为在刷新 Cypress 时重置状态从未发生过。
 
-### State reset should go before each test
+### 状态重置应在每个测试之前进行
 
-The simplest solution here is to move your reset code to **before** the test
-runs.
+这里最简单的解决方案是将你的重置代码移到测试运行**之前**。
 
-Code put in a `before` or `beforeEach` hook will **always** run prior to the
-test - even if you refreshed Cypress in the middle of an existing one!
+放在 `before` 或 `beforeEach` 钩子中的代码将**始终**在测试之前运行 - 即使你在现有测试中间刷新 Cypress！
 
-This is also a great opportunity to use
-[root level hooks in mocha](https://github.com/mochajs/mochajs.github.io/blob/master/index.md#root-level-hooks).
+这也是使用 [mocha 中的根级别钩子](https://github.com/mochajs/mochajs.github.io/blob/master/index.md#root-level-hooks) 的绝佳机会。
 
 <SupportFileConfiguration />
 
-**Hooks you add to the root will always run on all suites!**
+**你添加到根的钩子将始终在所有套件上运行！**
 
 ```js
-// cypress/support/e2e.js or cypress/support/component.js
+// cypress/support/e2e.js 或 cypress/support/component.js
 
 beforeEach(() => {
-  // now this runs prior to every test
-  // across all files no matter what
+  // 现在这在每个测试之前运行
+  // 在所有文件中无论什么情况
   cy.resetDb()
 })
 ```
 
-### Is resetting the state necessary?
+### 重置状态有必要吗？
 
-One final question you should ask yourself is - is resetting the state even
-necessary? Remember, Cypress already automatically enforces
-[test isolation](/app/core-concepts/writing-and-organizing-tests#Test-Isolation)
-by clearing state before each test. Make sure you are not trying to clean up
-state that is already cleaned up by Cypress automatically.
+最后你应该问自己的一个问题是 - 重置状态甚至有必要吗？记住，Cypress 已经通过在每个测试之前清除状态自动强制执行[测试隔离](/app/core-concepts/writing-and-organizing-tests#Test-Isolation)。确保你不是在尝试清理已经被 Cypress 自动清理的状态。
 
-If the state you are trying to clean lives on the server - by all means, clean
-that state. You will need to run these types of routines! But if the state is
-related to your application currently under test - you likely do not even need
-to clear it.
+如果你尝试清理的状态位于服务器上 - 当然，清理这些状态。你将需要运行这些类型的例程！但如果状态与当前测试的应用程序相关 - 你可能甚至不需要清除它。
 
-The only times you **ever** need to clean up state, is if the operations that
-one test runs affects another test downstream. In only those cases do you need
-state cleanup.
+你**唯一**需要清理状态的时候，是一个测试运行的操作影响了下游的另一个测试。只有在这些情况下你才需要状态清理。
 
-#### <Icon name="graduation-cap" /> Real World Example
+#### <Icon name="graduation-cap" /> 真实示例
 
-The <Icon name="github" inline="true" contentType="rwa" /> resets and re-seeds
-its database via a custom [Cypress task](/api/commands/task) called `db:seed` in
-a `beforeEach` hook. This allows each test to start from a clean slate and a
-deterministic state. For example:
+<Icon name="github" inline="true" contentType="rwa" /> 通过一个名为 `db:seed` 的自定义 [Cypress 任务](/api/commands/task) 在 `beforeEach` 钩子中重置和重新种子数据库。这允许每个测试从干净的初始状态和确定性状态开始。例如：
 
 ```ts
 // cypress/tests/ui/auth.cy.ts
@@ -837,22 +649,19 @@ beforeEach(function () {
 
 :::note
 
-_<Icon name="github" /> Source:
+_<Icon name="github" /> 来源：
 [cypress/tests/ui/auth.cy.ts](https://github.com/cypress-io/cypress-realworld-app/blob/develop/cypress/tests/ui/auth.spec.ts)_
 
 :::
 
-The `db:seed` task is defined within the
-[setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin) function of the
-project, and in this case sends a request to a dedicated back end API of the app
-to appropriately re-seed the database.
+`db:seed` 任务在项目的 [setupNodeEvents](/app/plugins/plugins-guide#Using-a-plugin) 函数中定义，在这种情况下，向应用程序的专用后端 API 发送请求以适当地重新种子数据库。
 
 :::cypress-config-plugin-example
 
 ```ts
 on('task', {
   async 'db:seed'() {
-    // Send request to backend API to re-seed database with test data
+    // 发送请求到后端API以使用测试数据重新种子数据库
     const { data } = await axios.post(`${testDataApiEndpoint}/seed`)
     return data
   },
@@ -864,221 +673,163 @@ on('task', {
 
 :::note
 
-_<Icon name="github" /> Source:
+_<Icon name="github" /> 来源：
 [cypress/plugins/index.ts](https://github.com/cypress-io/cypress-realworld-app/blob/develop/cypress/plugins/index.ts)_
 
 :::
 
-The same practice above can be used for any type of database (PostgreSQL,
-MongoDB, etc.). In this example, a request is sent to a back end API, but you
-could also interact directly with your database with direct queries, custom
-libraries, etc. If you already have non-JavaScript methods of handling or
-interacting with your database, you can use [`cy.exec`](/api/commands/exec),
-instead of [`cy.task`](/api/commands/task), to execute any system command or
-script.
+上述相同的实践可以用于任何类型的数据库（PostgreSQL、MongoDB 等）。在这个例子中，发送了一个请求到后端 API，但你也可以直接与你的数据库交互，使用直接查询、自定义库等。如果你已经有非 JavaScript 的方法来处理或与你的数据库交互，你可以使用 [`cy.exec`](/api/commands/exec)，而不是 [`cy.task`](/api/commands/task)，来执行任何系统命令或脚本。
 
-## <Icon name="angle-right" /> Unnecessary Waiting
+## <Icon name="angle-right" /> 不必要的等待
 
 :::danger
 
-<Icon name="exclamation-triangle" color="red" /> **Anti-Pattern:** Waiting for arbitrary
-time periods using [`cy.wait(Number)`](/api/commands/wait#Time).
+<Icon name="exclamation-triangle" color="red" /> **反模式：** 使用 [`cy.wait(Number)`](/api/commands/wait#Time) 等待任意时间段。
 
 :::
 
 :::tip
 
-<Icon name="check-circle" color="green" /> **Best Practice:** Use route aliases or
-assertions to guard Cypress from proceeding until an explicit condition is met.
+<Icon name="check-circle" color="green" /> **最佳实践：** 使用路由别名或断言来保护 Cypress，直到满足明确的条件才继续。
 
 :::
 
-In Cypress, you almost never need to use `cy.wait()` for an arbitrary amount of
-time. If you are finding yourself doing this, there is likely a much simpler
-way.
+在 Cypress 中，你几乎不需要使用 `cy.wait()` 来等待任意时间。如果你发现自己这样做，很可能有更简单的方法。
 
-Let's imagine the following examples:
+让我们想象以下示例：
 
-### Unnecessary wait for `cy.request()`
+### 不必要的 `cy.request()` 等待
 
-Waiting here is unnecessary since the [`cy.request()`](/api/commands/request)
-command will not resolve until it receives a response from your server. Adding
-the wait here only adds 5 seconds after the
-[`cy.request()`](/api/commands/request) has already resolved.
+在这里等待是不必要的，因为 [`cy.request()`](/api/commands/request) 命令在从服务器接收到响应之前不会解析。在这里添加等待只会在 [`cy.request()`](/api/commands/request) 已经解析后增加 5 秒。
 
 ```javascript
 cy.request('http://localhost:8080/db/seed')
-cy.wait(5000) // <--- this is unnecessary
+cy.wait(5000) // <--- 这是不必要的
 ```
 
-### Unnecessary wait for `cy.visit()` <E2EOnlyBadge />
+### 不必要的 `cy.visit()` 等待 <E2EOnlyBadge />
 
-Waiting for this is unnecessary because the [cy.visit()](/api/commands/visit)
-resolves once the page fires its `load` event. By that time all of your assets
-have been loaded including javascript, stylesheets, and html.
+等待这是不必要的，因为 [cy.visit()](/api/commands/visit) 在页面触发其 `load` 事件时解析。到那时，你的所有资产都已加载，包括 javascript、样式表和 html。
 
 ```javascript
 cy.visit('http://localhost/8080')
-cy.wait(5000) // <--- this is unnecessary
+cy.wait(5000) // <--- 这是不必要的
 ```
 
-### Unnecessary wait for `cy.get()`
+### 不必要的 `cy.get()` 等待
 
-Waiting for the [`cy.get()`](/api/commands/get) below is unnecessary because
-[`cy.get()`](/api/commands/get) automatically retries until the table's `tr` has
-a length of 2.
+等待下面的 [`cy.get()`](/api/commands/get) 是不必要的，因为 [`cy.get()`](/api/commands/get) 会自动重试，直到表的 `tr` 长度为 2。
 
-Whenever commands have an assertion they will not resolve until their associated
-assertions pass. This enables you to describe the state of your application
-without having to worry about when it gets there.
+每当命令有断言时，它们不会解析，直到其关联的断言通过。这使你能够描述应用程序的状态，而不必担心它何时到达那里。
 
 ```javascript
 cy.intercept('GET', '/users', [{ name: 'Maggy' }, { name: 'Joan' }])
 cy.get('#fetch').click()
-cy.wait(4000) // <--- this is unnecessary
+cy.wait(4000) // <--- 这是不必要的
 cy.get('table tr').should('have.length', 2)
 ```
 
-Alternatively a better solution to this problem is by waiting explicitly for an
-aliased route.
+这个问题的一个更好的解决方案是通过等待显式的别名路由。
 
 ```javascript
 cy.intercept('GET', '/users', [{ name: 'Maggy' }, { name: 'Joan' }]).as(
   'getUsers'
 )
 cy.get('[data-testid="fetch-users"]').click()
-cy.wait('@getUsers') // <--- wait explicitly for this route to finish
+cy.wait('@getUsers') // <--- 显式等待此路由完成
 cy.get('table tr').should('have.length', 2)
 ```
 
-## <Icon name="angle-right" /> Running Tests Intelligently
+## <Icon name="angle-right" /> 智能运行测试
 
-As your test suite grows and takes longer to run, you may find yourself hitting
-performance bottlenecks on your CI system. We recommend integrating your source
-control system with your test suite such that merges are blocked until all your
-Cypress tests have passed. The downside of this is that longer test execution
-times slow the velocity at which branches may be merged and features may be
-shipped. This issue is compounded further if you have dependent chains of
-branches waiting to be merged.
+随着你的测试套件增长并运行时间更长，你可能会在 CI 系统上遇到性能瓶颈。我们建议将你的源代码控制系统与测试套件集成，以便在所有 Cypress 测试通过之前阻止合并。这样做的缺点是较长的测试执行时间会减慢分支合并和功能交付的速度。如果你有依赖的分支链等待合并，这个问题会进一步加剧。
 
-One solution to this problem is **Smart Orchestration** with Cypress Cloud.
-Using a combination of
-[parallelization](/cloud/features/smart-orchestration/parallelization),
-[load balancing](/cloud/features/smart-orchestration/load-balancing#Balance-strategy),
-[Auto Cancellation](/cloud/features/smart-orchestration/run-cancellation), and
-[Spec Prioritization](/cloud/features/smart-orchestration/spec-prioritization),
-Smart Orchestration maximizes your available compute resources & minimizes
-waste.
+这个问题的解决方案之一是使用 Cypress Cloud 的**智能编排**。结合[并行化](/cloud/features/smart-orchestration/parallelization)、[负载均衡](/cloud/features/smart-orchestration/load-balancing#Balance-strategy)、[自动取消](/cloud/features/smart-orchestration/run-cancellation)和[规范优先级](/cloud/features/smart-orchestration/spec-prioritization)，智能编排最大化你可用的计算资源并最小化浪费。
 
-## <Icon name="angle-right" /> Web Servers
+## <Icon name="angle-right" /> Web 服务器
 
 :::danger
 
-<Icon name="exclamation-triangle" color="red" /> **Anti-Pattern:** Trying to start
-a web server from within Cypress scripts with [`cy.exec()`](/api/commands/exec) or
-[`cy.task()`](/api/commands/task).
+<Icon name="exclamation-triangle" color="red" /> **反模式：** 尝试使用 [`cy.exec()`](/api/commands/exec) 或 [`cy.task()`](/api/commands/task) 从 Cypress 脚本中启动 web 服务器。
 
 :::
 
 :::tip
 
-<Icon name="check-circle" color="green" /> **Best Practice:** Start a web server
-prior to running Cypress.
+<Icon name="check-circle" color="green" /> **最佳实践：** 在运行 Cypress 之前启动 web 服务器。
 
 :::
 
-We do NOT recommend trying to start your back end web server from within
-Cypress.
+我们**不**建议尝试从 Cypress 内部启动你的后端 web 服务器。
 
-Any command run by [cy.exec()](/api/commands/exec) or
-[cy.task()](/api/commands/task) has to exit eventually. Otherwise, Cypress will
-not continue running any other commands.
+由 [cy.exec()](/api/commands/exec) 或 [cy.task()](/api/commands/task) 运行的任何命令最终都必须退出。否则，Cypress 将无法继续运行任何其他命令。
 
-Trying to start a web server from [cy.exec()](/api/commands/exec) or
-[cy.task()](/api/commands/task) causes all kinds of problems because:
+尝试从 [cy.exec()](/api/commands/exec) 或 [cy.task()](/api/commands/task) 启动 web 服务器会导致各种问题，因为：
 
-- You have to background the process
-- You lose access to it via terminal
-- You don't have access to its `stdout` or logs
-- Every time your tests run, you'd have to work out the complexity around
-  starting an already running web server.
-- You would likely encounter constant port conflicts
+- 你必须将进程放在后台
+- 你失去了通过终端访问它的权限
+- 你无法访问它的 `stdout` 或日志
+- 每次测试运行时，你必须解决已经运行的 web 服务器的复杂性
+- 你可能会遇到不断的端口冲突
 
-**Why can't I shut down the process in an `after` hook?**
+**为什么我不能在 `after` 钩子中关闭进程？**
 
-Because there is no guarantee that code running in an `after` will always run.
+因为无法保证 `after` 中的代码会始终运行。
 
-While working in the Cypress Test Runner you can always restart / refresh while
-in the middle of a test. When that happens, code in an `after` won't execute.
+在 Cypress 测试运行器中工作时，你总是可以在测试中间重新启动 / 刷新。当这种情况发生时，`after` 中的代码不会执行。
 
-**What should I do then?**
+**那我应该怎么做？**
 
-Start your web server before running Cypress and kill it after it completes.
+在运行 Cypress 之前启动你的 web 服务器，并在完成后杀死它。
 
-Are you trying to run in CI?
+你是在尝试在 CI 中运行吗？
 
-We have
-[examples showing you how to start and stop your web server](/app/continuous-integration/overview#Boot-your-server).
+我们有[示例展示如何启动和停止你的 web 服务器](/app/continuous-integration/overview#Boot-your-server)。
 
-## <Icon name="angle-right" /> Setting a Global `baseUrl`
+## <Icon name="angle-right" /> 设置全局 `baseUrl`
 
 :::danger
 
-<Icon name="exclamation-triangle" color="red" /> **Anti-Pattern:** Using [cy.visit()](/api/commands/visit)
-without setting a `baseUrl`.
+<Icon name="exclamation-triangle" color="red" /> **反模式：** 使用 [cy.visit()](/api/commands/visit) 而不设置 `baseUrl`。
 
 :::
 
 :::tip
 
-<Icon name="check-circle" color="green" /> **Best Practice:** Set a `baseUrl` in
-your [Cypress configuration](/app/references/configuration).
+<Icon name="check-circle" color="green" /> **最佳实践：** 在你的 [Cypress 配置](/app/references/configuration) 中设置 `baseUrl`。
 
 :::
 
-By adding a [baseUrl](/app/references/configuration#Global) in your
-configuration Cypress will attempt to prefix the `baseUrl` any URL provided to
-commands like [cy.visit()](/api/commands/visit) and
-[cy.request()](/api/commands/request) that are not fully qualified domain name
-(FQDN) URLs.
+通过在配置中添加 [baseUrl](/app/references/configuration#Global)，Cypress 将尝试为提供给 [cy.visit()](/api/commands/visit) 和 [cy.request()](/api/commands/request) 等命令的任何非完全限定域名 (FQDN) URL 添加前缀。
 
-This allows you to omit hard-coding fully qualified domain name (FQDN) URLs in
-commands. For example,
+这允许你省略在命令中硬编码完全限定域名 (FQDN) URL。例如，
 
 ```javascript
 cy.visit('http://localhost:8080/index.html')
 ```
 
-can be shortened to
+可以缩短为
 
 ```javascript
 cy.visit('index.html')
 ```
 
-Not only does this create tests that can easily switch between domains, i.e.
-running a dev server on `http://localhost:8080` vs a deployed production server
-domain, but adding a `baseUrl` can also save some time during the initial
-startup of your Cypress tests.
+这不仅创建了可以轻松在域之间切换的测试，即在 `http://localhost:8080` 上运行的开发服务器与部署的生产服务器域之间切换，而且添加 `baseUrl` 还可以在 Cypress 测试的初始启动时节省一些时间。
 
-When you start running your tests, Cypress does not know the url of the app you
-plan to test. So, Cypress initially opens on `https://localhost` + a random
-port.
+当你开始运行测试时，Cypress 不知道你计划测试的应用程序的 URL。因此，Cypress 最初在 `https://localhost` + 随机端口上打开。
 
-### Without `baseUrl` set, Cypress loads main window in `localhost` + random port
+### 未设置 `baseUrl` 时，Cypress 在 `localhost` + 随机端口加载主窗口
 
 <DocsImage
   src="/img/app/references/cypress-loads-in-localhost-and-random-port.png"
-  alt="Url address shows localhost:53927/__/#tests/integration/organizations/list_spec.coffee"
+  alt="URL地址显示 localhost:53927/__/#tests/integration/organizations/list_spec.coffee"
 />
 
-As soon as it encounters a [cy.visit()](/api/commands/visit), Cypress then
-switches to the url of the main window to the url specified in your visit. This
-can result in a 'flash' or 'reload' when your tests first start.
+一旦遇到 [cy.visit()](/api/commands/visit)，Cypress 就会将主窗口的 URL 切换到你在访问中指定的 URL。这可能导致测试首次启动时的“闪烁”或“重新加载”。
 
-By setting the `baseUrl`, you can avoid this reload altogether. Cypress will
-load the main window in the `baseUrl` you specified as soon as your tests start.
+通过设置 `baseUrl`，你可以完全避免这种重新加载。Cypress 将在测试开始时立即加载你在 `baseUrl` 中指定的主窗口。
 
-### Cypress configuration file
+### Cypress 配置文件
 
 :::cypress-config-example
 
@@ -1092,30 +843,27 @@ load the main window in the `baseUrl` you specified as soon as your tests start.
 
 :::
 
-### With `baseUrl` set, Cypress loads main window in `baseUrl`
+### 设置 `baseUrl` 后，Cypress 在 `baseUrl` 加载主窗口
 
 <DocsImage
   src="/img/app/references/cypress-loads-window-in-base-url-localhost.png"
-  alt="Url address bar shows localhost:8484/__tests/integration/organizations/list_spec.coffee"
+  alt="URL地址栏显示 localhost:8484/__tests/integration/organizations/list_spec.coffee"
 />
 
-Having a `baseUrl` set gives you the added bonus of seeing an error if your
-server is not running during `cypress open` at the specified `baseUrl`.
+设置 `baseUrl` 还给你一个额外的好处，即在 `cypress open` 时如果服务器未在指定的 `baseUrl` 上运行，你会看到一个错误。
 
 <DocsImage
   src="/img/app/references/cypress-ensures-baseUrl-server-is-running.png"
-  alt="Cypress Launchpad with warning about how Cypress could not verify server set as the baseUrl is running"
+  alt="Cypress Launchpad 带有警告，说明 Cypress 无法验证设置为 baseUrl 的服务器是否正在运行"
 />
 
-We also display an error if your server is not running at the specified
-`baseUrl` during `cypress run` after several retries.
+我们还会在 `cypress run` 时几次重试后显示错误，如果服务器未在指定的 `baseUrl` 上运行。
 
 <DocsImage
   src="/img/app/references/cypress-verifies-server-is-running-during-cypress-run.png"
-  alt="The terminal warns and retries when the url at your baseUrl is not running"
+  alt="终端在 baseUrl 上的 URL 未运行时警告并重试"
 />
 
-### Usage of `baseUrl` in depth
+### 深入使用 `baseUrl`
 
-This [short video](https://www.youtube.com/watch?v=f5UaXuAc52c) explains in
-depth how to use `baseUrl` correctly.
+这个[短视频](https://www.youtube.com/watch?v=f5UaXuAc52c)深入解释了如何正确使用 `baseUrl`。

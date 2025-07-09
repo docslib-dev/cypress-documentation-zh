@@ -1,157 +1,137 @@
 ---
-title: 'Jira Integration | Cypress Documentation'
-description: 'Create a Jira issue for a given a test case from the Cypress Cloud.'
+title: 'Jira集成 | Cypress文档'
+description: '从Cypress Cloud为测试用例创建Jira问题。'
 sidebar_position: 30
 sidebar_label: Jira
 ---
 
 <ProductHeading product="cloud" plan="team" />
 
-# Jira Integration
+# Jira集成
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to install the Cypress Jira integration
-- How to create a Jira issue for a test case from Cypress Cloud
+- 如何安装Cypress Jira集成
+- 如何从Cypress Cloud为测试用例创建Jira问题
 
 :::
 
-[Cypress Cloud](https://on.cypress.io/cloud) can integrate with your Jira
-workflow to enable:
+[Cypress Cloud](https://on.cypress.io/cloud)可以与您的Jira工作流集成，实现：
 
-- Creating one or more Jira issues for a given a test case directly from the
-  Cypress Cloud.
-- Viewing of historical log of Jira issues created for or associated for a given
-  test case across test runs.
+- 直接从Cypress Cloud为测试用例创建一个或多个Jira问题
+- 查看跨测试运行的测试用例关联或创建的Jira问题历史记录
 
-## Installing the Jira integration
+## 安装Jira集成
 
 :::tip
 
-<Icon name="star" /> **Premium Cypress Cloud Feature**
+<Icon name="star" /> **Cypress Cloud高级功能**
 
-**Jira integration** is available to users with a
-[Team Cypress Cloud plan](https://cypress.io/pricing).
+**Jira集成**适用于拥有[团队版Cypress Cloud计划](https://cypress.io/pricing)的用户。
 
 :::
 
-1. Visit **Integrations → Jira** in Cypress Cloud and click **Install Jira**
+1. 在Cypress Cloud中访问**集成 → Jira**，点击**安装Jira**
    <DocsImage
      src="/img/cloud/integrations/jira/dashboard-jira-integration-install.png"
-     alt="Cypress Cloud Integrations"
+     alt="Cypress Cloud集成"
    />
-1. Click the **Get it Now** button on the
-   [Atlassian Marketplace Cypress for Jira page](https://marketplace.atlassian.com/apps/1224341/cypress-for-jira?hosting=cloud&tab=overview)
+1. 在[Atlassian Marketplace Cypress for Jira页面](https://marketplace.atlassian.com/apps/1224341/cypress-for-jira?hosting=cloud&tab=overview)点击**立即获取**
    <DocsImage
      src="/img/cloud/integrations/jira/dashboard-jira-atlassian-get-it-now.png"
      alt="Atlassian Marketplace Cypress for Jira"
    />
-1. Login to Jira, Choose a site to install your app and click **Install app**.
+1. 登录Jira，选择安装站点并点击**安装应用**
    <DocsImage
      src="/img/cloud/integrations/jira/dashboard-jira-atlassian-choose-site.png"
-     alt="Atlassian Marketplace Cypress for Jira Choose Site"
+     alt="Atlassian Marketplace Cypress for Jira选择站点"
    />
-1. On the "Add to Jira" screen, confirm installation by clicking **Get it now**
+1. 在"添加到Jira"界面，点击**立即获取**确认安装
    <DocsImage
      src="/img/cloud/integrations/jira/dashboard-jira-atlassian-confirm-install.png"
-     alt="Atlassian Marketplace Cypress for Jira Installation Confirmation"
+     alt="Atlassian Marketplace Cypress for Jira安装确认"
    />
-1. Once installed, click the **Get Started** link in the notification.
+1. 安装完成后，点击通知中的**开始使用**链接
    <DocsImage
      src="/img/cloud/integrations/jira/dashboard-jira-atlassian-success.png"
-     alt="Atlassian Marketplace Cypress for Jira Installation Success"
+     alt="Atlassian Marketplace Cypress for Jira安装成功"
    />
-1. On the next page, click the **Click to Finish Installation** button to be
-   redirected to [Cypress Cloud](https://cloud.cypress.io/) and choose the
-   Cypress Organization for integration.
+1. 在下一页，点击**点击完成安装**按钮，重定向到[Cypress Cloud](https://cloud.cypress.io/)并选择要集成的Cypress组织
    <DocsImage
      src="/img/cloud/integrations/jira/dashboard-jira-atlassian-finish-install-step.png"
-     alt="Atlassian Marketplace Cypress for Jira Installation Finish Installation"
+     alt="Atlassian Marketplace Cypress for Jira完成安装步骤"
    />
-1. Once redirected to [Cypress Cloud](https://cloud.cypress.io/), select the
-   organization to integrate with
-   [Atlassian Marketplace Cypress for Jira](https://marketplace.atlassian.com/apps/1224341/cypress-for-jira?hosting=cloud&tab=overview).
+1. 重定向到[Cypress Cloud](https://cloud.cypress.io/)后，选择要与[Atlassian Marketplace Cypress for Jira](https://marketplace.atlassian.com/apps/1224341/cypress-for-jira?hosting=cloud&tab=overview)集成的组织
    <DocsImage
      src="/img/cloud/integrations/jira/dashboard-jira-integration-choose-cypress-org.png"
-     alt="Cypress Cloud Select Organization for Jira Integration"
+     alt="Cypress Cloud选择Jira集成组织"
    />
-1. The Jira Integration is complete. A list of projects permitted is provided on
-   the Jira Integration page.
+1. Jira集成完成。Jira集成页面会显示允许的项目列表
 
    <DocsImage
      src="/img/cloud/integrations/jira/dashboard-jira-integration-completed.png"
-     alt="Cypress Cloud Jira Integration"
+     alt="Cypress Cloud Jira集成"
    />
 
 :::caution
 
-<Icon name="exclamation-triangle" /> Only one Active installation is supported
+<Icon name="exclamation-triangle" /> 仅支持一个活动安装
 
 :::
 
-## Creating a Jira issue for a test case
+## 为测试用例创建Jira问题
 
 :::info
 
-<strong>When to create issues for tests?</strong>
+<strong>何时为测试创建问题？</strong>
 
-Jira issues can be created for both passing and failing tests. The most common
-use case would be to create Jira issues for failing tests to better track and
-prioritize fixing of pipeline failures within projects managed by Jira
-workflows.
+可以为通过或失败的测试创建Jira问题。最常见的使用场景是为失败的测试创建Jira问题，以便更好地跟踪和优先处理由Jira工作流管理的项目中的流水线故障修复。
 
 :::
 
-Let's walk through creating a Jira issue for a failing test:
+让我们通过为失败的测试创建Jira问题：
 
-1. Click on a failed test within the "Test Results" view of a test run to open
-   its results panel.
+1. 在测试运行的"测试结果"视图中点击失败的测试，打开其结果面板
 
-2. Click on the "Create Issue" button within the results panel, which will
-   present the form for creating a Jira issue for the test.
+2. 点击结果面板中的"创建问题"按钮，将显示为测试创建Jira问题的表单
 
    <DocsImage
      src="/img/cloud/integrations/jira/dashboard-jira-integration-create-issue.png"
-     alt="Create Jira Issue Button"
+     alt="创建Jira问题按钮"
    />
 
-3. Complete and submit the Jira issue creation form by selecting the Jira
-   project, issue type, assignee, and additional fields.
+3. 通过选择Jira项目、问题类型、分配人和附加字段，完成并提交Jira问题创建表单
 
    <DocsImage
      src="/img/cloud/integrations/jira/dashboard-jira-integration-modal.png"
-     alt="Create Jira Issue Modal"
+     alt="创建Jira问题模态框"
    />
 
-4. Once the issue is created, a log and reference of the issue will appear
-   within results panel of test.
+4. 问题创建后，测试结果面板中会出现问题的日志和引用
 
    <DocsImage
      src="/img/cloud/integrations/jira/dashboard-jira-integration-inline-issue.png"
-     alt="Jira Issue in Cypress Failure Context"
+     alt="Cypress失败上下文中的Jira问题"
    />
 
 :::info
 
-The create issue within Jira will include a link back Cypress Cloud for the
-associated test.
+Jira中创建的问题将包含返回Cypress Cloud的关联测试链接
 
 <DocsImage
   src="/img/cloud/integrations/jira/dashboard-jira-integration-jira-issue.png"
-  alt="Jira Issue of Cypress Failure"
+  alt="Cypress失败的Jira问题"
 />
 
 <DocsImage
   src="/img/cloud/integrations/jira/dashboard-jira-integration-jira-issue.png"
-  alt="Jira Issue of Cypress Failure"
+  alt="Cypress失败的Jira问题"
 />
 
 :::
 
-## Uninstalling the Jira integration
+## 卸载Jira集成
 
-You can remove this integration by visiting the **Integrations → Jira** page of
-your organization. This will disable the ability to create Jira issues from a
-test failure.
+您可以通过访问组织的**集成 → Jira**页面移除此集成。这将禁用从测试失败创建Jira问题的功能。

@@ -1,127 +1,87 @@
 ---
-title: 'Test Isolation'
-description: Learn how Cypress ensures test isolation and how to configure test isolation in end-to-end and component testing.
+title: '测试隔离'
+description: 了解Cypress如何确保测试隔离，以及如何在端到端测试和组件测试中配置测试隔离。
 sidebar_position: 45
 ---
 
 <ProductHeading product="app" />
 
-# Test Isolation
+# 测试隔离
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How Cypress ensures test isolation
-- How to configure test isolation in end-to-end and component testing
-- The trade-offs of enabling or disabling test isolation
+- Cypress如何确保测试隔离
+- 如何在端到端测试和组件测试中配置测试隔离
+- 启用或禁用测试隔离的权衡
 
 :::
 
 :::tip
 
-<Icon name="check-circle" color="green" /> **Best Practice:** Tests should always
-be able to be run independently from one another **and still pass**.
+<Icon name="check-circle" color="green" /> **最佳实践：** 测试应始终能够独立运行**且仍能通过**。
 
 :::
 
-As stated in our mission, we hold ourselves accountable to champion a testing
-process that actually works, and have built Cypress to guide developers towards
-writing independent tests from the start.
+正如我们的使命所述，我们有责任倡导一个真正有效的测试流程，并构建Cypress来引导开发者从一开始就编写独立的测试。
 
-We do this by cleaning up state _before_ each test to ensure that the operation
-of one test does not affect another test later on. The goal for each test should
-be to **reliably pass** whether run in isolation or consecutively with other
-tests. Having tests that depend on the state of an earlier test can potentially
-cause nondeterministic test failures which make debugging challenging.
+我们通过在每次测试_之前_清理状态来实现这一点，确保一个测试的操作不会影响后续测试。每个测试的目标应该是**可靠地通过**，无论是单独运行还是与其他测试连续运行。依赖先前测试状态的测试可能导致非确定性的测试失败，使调试变得困难。
 
-Cypress will start each test with a clean test slate by restoring and clearing
-all:
+Cypress将通过恢复和清除以下所有内容，为每个测试提供一个干净的测试环境：
 
-- [aliases](/api/commands/as)
-- [clock mocks](/api/commands/clock)
-- [intercepts](/api/commands/intercept)
-- [spies](/api/commands/spy)
-- [stubs](/api/commands/stub)
-- [viewport changes](/api/commands/viewport)
+- [别名](/api/commands/as)
+- [时钟模拟](/api/commands/clock)
+- [拦截](/api/commands/intercept)
+- [间谍](/api/commands/spy)
+- [存根](/api/commands/stub)
+- [视口更改](/api/commands/viewport)
 
-In addition to a clean test slate, Cypress also believes in running tests in a
-clean browser context such that the application or component under test behaves
-consistently when run. This behavior is described as `testIsolation`.
+除了干净的测试环境外，Cypress还主张在干净的浏览器上下文中运行测试，以便被测应用程序或组件在运行时表现一致。此行为称为`testIsolation`。
 
-The test isolation is a global configuration and can be overridden for
-end-to-end testing at the `describe` level with the
-[`testIsolation`](/app/references/configuration#e2e) option.
+测试隔离是一个全局配置，可以在端到端测试中通过[`testIsolation`](/app/references/configuration#e2e)选项在`describe`级别覆盖。
 
-## Test Isolation in End-to-End Testing
+## 端到端测试中的测试隔离
 
-Cypress supports enabling or disabling test isolation in end-to-end testing to
-describe if a suite of tests should run in a clean browser context or not.
+Cypress支持在端到端测试中启用或禁用测试隔离，以描述测试套件是否应在干净的浏览器上下文中运行。
 
-### Test Isolation Enabled
+### 启用测试隔离
 
-When test isolation is enabled, Cypress resets the browser context _before_ each
-test by:
+当启用测试隔离时，Cypress会在每次测试_之前_通过以下方式重置浏览器上下文：
 
-- clearing the dom state by visiting `about:blank`
-- clearing [cookies](/api/cypress-api/cookies) in all domains
-- clearing
-  [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
-  in all domains
-- clearing
-  [`sessionStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
-  in all domains
+- 通过访问`about:blank`清除DOM状态
+- 清除所有域中的[cookies](/api/cypress-api/cookies)
+- 清除所有域中的[`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
+- 清除所有域中的[`sessionStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
 
-Because the test starts in a fresh browser context, you must re-visit your
-application and perform the series of interactions needed to build the dom and
-browser state for each test.
+由于测试在全新的浏览器上下文中开始，您必须重新访问您的应用程序并执行一系列交互以构建每个测试所需的DOM和浏览器状态。
 
-Additionally, the [`cy.session()`](/api/commands/session) command will inherit
-this configuration and will clear the page and current browser context when
-establishing a browser session. This is so tests can reliably pass when run
-standalone or in a randomized order.
+此外，[`cy.session()`](/api/commands/session)命令将继承此配置，并在建立浏览器会话时清除页面和当前浏览器上下文。这是为了确保测试在单独运行或随机顺序运行时能够可靠地通过。
 
-### Test Isolation Disabled
+### 禁用测试隔离
 
-When test isolation is disabled, Cypress will not alter the browser context
-before the test starts. The page does not clear between tests and cookies, local
-storage and session storage will be available across tests in that suite.
-Additionally, the [`cy.session()`](/api/commands/session) command will only
-clear the current browser context when establishing the browser session - the
-current page is not cleared.
+当禁用测试隔离时，Cypress不会在测试开始前更改浏览器上下文。页面在测试之间不会清除，cookies、本地存储和会话存储将在该套件的测试中保持可用。此外，[`cy.session()`](/api/commands/session)命令在建立浏览器会话时只会清除当前浏览器上下文——当前页面不会被清除。
 
-### Quick Comparison
+### 快速比较
 
-| testIsolation | beforeEach test                                                                                                                                     | cy.session()                                                                                                                                        |
+| testIsolation | 每次测试前                                                                                                                                         | cy.session()                                                                                                                                        |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `true`        | - clears page by visiting `about:blank`<br/>- clears cookies in all domains<br/>- local storage in all domains<br/>- session storage in all domains | - clears page by visiting `about:blank`<br/>- clears cookies in all domains<br/>- local storage in all domains<br/>- session storage in all domains |
-| `false`       | does not alter the current browser context                                                                                                          | <br/>- clears cookies in all domains<br/>- local storage in all domains<br/>- session storage in all domains                                        |
+| `true`        | - 通过访问`about:blank`清除页面<br/>- 清除所有域中的cookies<br/>- 所有域中的本地存储<br/>- 所有域中的会话存储                                       | - 通过访问`about:blank`清除页面<br/>- 清除所有域中的cookies<br/>- 所有域中的本地存储<br/>- 所有域中的会话存储                                       |
+| `false`       | 不更改当前浏览器上下文                                                                                                                              | <br/>- 清除所有域中的cookies<br/>- 所有域中的本地存储<br/>- 所有域中的会话存储                                                                       |
 
-## Test Isolation in Component Testing
+## 组件测试中的测试隔离
 
-Cypress does not support configuring the test isolation behavior in component
-testing.
+Cypress不支持在组件测试中配置测试隔离行为。
 
-When running component tests, Cypress always resets the browser context _before_
-each test by:
+在运行组件测试时，Cypress始终会在每次测试_之前_通过以下方式重置浏览器上下文：
 
-- unmounting the rendered component under test
-- clearing [cookies](/api/cypress-api/cookies) in all domains
-- clearing
-  [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
-  in all domains
-- clearing
-  [`sessionStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
-  in all domains
+- 卸载被测组件
+- 清除所有域中的[cookies](/api/cypress-api/cookies)
+- 清除所有域中的[`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
+- 清除所有域中的[`sessionStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
 
-## Test Isolation Trade-offs
+## 测试隔离的权衡
 
-It is important to note that disabling test isolation may improve the overall
-performance of end-to-end tests, however, it can also cause state to "leak"
-between tests. This can make later tests dependent on the results of earlier
-tests, and potentially cause misleading test failures. It is important to be
-extremely mindful of how tests are written when using this mode, and ensure that
-tests continue to run independently of one another.
+需要注意的是，禁用测试隔离可能会提高端到端测试的整体性能，但也可能导致状态在测试之间“泄漏”。这可能会使后续测试依赖于先前测试的结果，并可能导致误导性的测试失败。在使用此模式时，必须非常注意测试的编写方式，并确保测试能够独立运行。
 
-The best way to ensure your tests are independent is to add a `.only()` to your
-test and verify it can run successfully without the test before it.
+确保测试独立的最佳方法是在测试中添加`.only()`，并验证它可以在没有前一个测试的情况下成功运行。

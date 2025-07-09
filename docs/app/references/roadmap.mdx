@@ -1,128 +1,79 @@
 ---
-title: 'Roadmap for Cypress App'
-description: 'Learn about the roadmap for the Cypress App, including release stages and strategies for releasing and communicating changes.'
-sidebar_label: Roadmap
+title: 'Cypress应用路线图'
+description: '了解Cypress应用的路线图，包括发布阶段以及变更发布和沟通策略。'
+sidebar_label: 路线图
 ---
 
 <ProductHeading product="app" />
 
-# Roadmap
+# 路线图
 
-## Cypress App
+## Cypress应用
 
-At Cypress we love sharing what we are working on and are always striving to
-improve transparency and communication with our community. If you are interested
-in learning more about what we have planned for the future of the Cypress App
-check out our
-[Cypress App Priorities Board](https://github.com/orgs/cypress-io/projects/13/views/1).
+在Cypress，我们乐于分享正在开发的内容，并始终致力于提高与社区的透明度和沟通。如果您想了解更多关于Cypress应用未来计划的信息，请查看我们的[Cypress应用优先级看板](https://github.com/orgs/cypress-io/projects/13/views/1)。
 
-## Release Stages
+## 发布阶段
 
-Cypress follows Semantic Versioning
-([see summary here](https://semver.org/#summary)) so that it is clear how you
-may be affected when upgrading to a newer version of Cypress. If there is a
-minor version increment, `11.0.0` → `11.1.0` for example, you should not
-experience disruption in your usage of Cypress. If there is a major version
-increment, `11.1.0` → `12.0.0` for example, you may need to make changes to
-continue using Cypress. For most scenarios this is a valid way to consider how
-disruptive upgrading to the next version of Cypress may be. In some cases,
-however, a feature of Cypress may be in a stage of development in which it does
-not adhere to these rules.
+Cypress遵循语义化版本控制（[参见此处摘要](https://semver.org/#summary)），以便在升级到新版本时明确可能受到的影响。如果是次要版本升级，例如从`11.0.0`到`11.1.0`，您在使用Cypress时应该不会遇到中断。如果是主要版本升级，例如从`11.1.0`到`12.0.0`，您可能需要做出更改才能继续使用Cypress。在大多数情况下，这是一种有效的方式来考虑升级到下一个版本的Cypress可能带来的影响。然而，在某些情况下，Cypress的某个功能可能处于开发阶段，此时它可能不遵循这些规则。
 
-In order to help our users be aware of when this might be the case, we have
-consolidated definitions of the different release stages: General Availability,
-Beta, Alpha, and Experimental. We also describe our approach to making and
-communicating changes in each stage.
+为了帮助用户了解这种情况，我们整合了不同发布阶段的定义：正式发布（GA）、Beta、Alpha和实验性。我们还描述了在每个阶段进行变更和沟通的方法。
 
-### General Availability (GA)
+### 正式发布（GA）
 
-Features that have reached General Availability are features that we have deemed
-to be feature complete and free of issues in the majority of use cases.
+达到正式发布阶段的功能是我们认为功能完整且在大多数用例中没有问题的功能。
 
-**Strategies for releasing and communicating changes to GA features**
+**正式发布功能的变更发布和沟通策略**
 
-- Modifications
-  - Modifications can be introduced during any release cycle and increment
-    semver
-- Breaking Changes
-  - Breaking changes will only be introduced during major releases in which
-    semver is bumped by a major version
-  - In some cases early access to these changes are possible through public
-    packages
-- Removals
-  - Removals will only be introduced during major releases in which semver is
-    bumped by a major version
-  - In the majority of cases, removals will be proceeded by a period in which
-    the feature is ‘deprecated’
-  - Migration steps will be provided to minimize pain points in these situations
+- 修改
+  - 修改可以在任何发布周期中引入，并会增加语义化版本号
+- 破坏性变更
+  - 破坏性变更只会在主要版本发布时引入，此时语义化版本号会进行主版本升级
+  - 在某些情况下，可以通过公开包提前访问这些变更
+- 移除
+  - 移除只会在主要版本发布时引入，此时语义化版本号会进行主版本升级
+  - 在大多数情况下，移除之前会有一个功能被“弃用”的时期
+  - 将提供迁移步骤以尽量减少这些情况下的痛点
 
 ### Beta
 
-Beta features may not be feature complete, but they should be close enough where
-major changes are not expected. Beta features consist of features that we are
-looking to gather user feedback on by providing them as default functionality
-before an official release.
+Beta功能可能尚未功能完整，但它们应该足够接近完成，预计不会有重大变更。Beta功能包括我们希望通过在正式发布前将其作为默认功能来收集用户反馈的功能。
 
-**Strategies for releasing and communicating changes to Beta features**
+**Beta功能的变更发布和沟通策略**
 
-- Modifications
-  - Modifications can be introduced during any release cycle.
-  - Modifications will be documented, with recommended code changes highlighted
-    if appropriate.
-- Breaking Changes
-  - Breaking changes can be introduced during any release cycle and do not bump
-    semver by a major version
-  - Breaking changes require in-app messaging to help users unblock themselves
-    as needed
-  - The introduction and impact of breaking changes should be carefully
-    considered at this stage as the cost to users is higher than with an alpha
-    feature.
-- Removals
-  - Removal of any new functionality related to the feature can happen during
-    any release cycle and will increment semver. These do not need to coincide
-    with a major release that is bumping semver by a major version.
-  - Removals at this stage will be rare and a migration strategy along with
-    reasoning for the removal will be documented.
+- 修改
+  - 修改可以在任何发布周期中引入
+  - 修改将被记录，并在适当的情况下突出显示推荐的代码更改
+- 破坏性变更
+  - 破坏性变更可以在任何发布周期中引入，并且不会导致语义化版本号的主版本升级
+  - 破坏性变更需要应用内消息以帮助用户在需要时解决问题
+  - 在此阶段应仔细考虑破坏性变更的引入和影响，因为对用户的成本高于Alpha功能
+- 移除
+  - 与功能相关的任何新功能的移除可以在任何发布周期中进行，并会增加语义化版本号。这些移除不需要与主版本发布同时进行。
+  - 在此阶段的移除将很少见，并且会记录迁移策略及移除原因
 
 ### Alpha
 
-Alpha features consist of features that we are looking to gather user feedback
-on by providing them as default functionality before an official release. Alpha
-features may not be feature complete and changes are possible during this stage.
+Alpha功能包括我们希望通过在正式发布前将其作为默认功能来收集用户反馈的功能。Alpha功能可能尚未功能完整，在此阶段可能会有变更。
 
-**Strategies for releasing and communicating changes to Alpha features**
+**Alpha功能的变更发布和沟通策略**
 
-- Modifications
-  - Modifications can be introduced during any release cycle and may or may not
-    increment semver.
-  - Modifications will be documented, with recommended code changes highlighted
-    if appropriate.
-- Breaking Changes
-  - Breaking changes can be introduced during any release cycle and do not bump
-    semver by a major version
-- Removals
-  - Removal of any new functionality related to the feature can happen during
-    any release cycle and does not bump semver by a major version.
+- 修改
+  - 修改可以在任何发布周期中引入，可能会也可能不会增加语义化版本号
+  - 修改将被记录，并在适当的情况下突出显示推荐的代码更改
+- 破坏性变更
+  - 破坏性变更可以在任何发布周期中引入，并且不会导致语义化版本号的主版本升级
+- 移除
+  - 与功能相关的任何新功能的移除可以在任何发布周期中进行，并且不会导致语义化版本号的主版本升级
 
-### Experimental
+### 实验性
 
-Experimental features consist of features that we are looking to gather user
-feedback on before we commit fully to further development of the feature. These
-type of features require you to opt-in to via a configuration value prefixed
-with `experimental`. These types of features may be unstable and contain issues.
-You should expect to see frequent changes and improvements during the feature’s
-experimental lifetime. The current experimental features can be found
-[here](/app/references/experiments).
+实验性功能包括我们希望在完全承诺进一步开发之前收集用户反馈的功能。这些功能需要通过以`experimental`为前缀的配置值来启用。这些功能可能不稳定并存在问题。在功能的实验性生命周期内，您应该会看到频繁的变更和改进。当前的实验性功能可以在[此处](/app/references/experiments)找到。
 
-**Strategies for releasing and communicating changes to experimental features**
+**实验性功能的变更发布和沟通策略**
 
-- Modifications
-  - Modifications can be introduced during any release cycle and may or may not
-    increment semver.
-- Breaking Changes
-  - Breaking changes can be introduced during any release cycle and do not bump
-    semver by a major version.
-- Removals
-  - Removal of any new functionality related to the feature or the feature in
-    its entirety can happen during any release cycle and will not be accompanied
-    by a major semver version change.
+- 修改
+  - 修改可以在任何发布周期中引入，可能会也可能不会增加语义化版本号
+- 破坏性变更
+  - 破坏性变更可以在任何发布周期中引入，并且不会导致语义化版本号的主版本升级
+- 移除
+  - 与功能相关的任何新功能或整个功能的移除可以在任何发布周期中进行，并且不会伴随语义化版本号的主版本变更

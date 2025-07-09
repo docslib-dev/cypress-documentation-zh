@@ -1,297 +1,223 @@
 ---
-title: 'Cross Origin Testing: Cypress Guide'
-description: 'Learn how to test cross-origin content with Cypress.'
-sidebar_label: Cross Origin Testing
+title: '跨域测试：Cypress指南'
+description: '学习如何使用Cypress测试跨域内容。'
+sidebar_label: 跨域测试
 e2eSpecific: true
 ---
 
 <ProductHeading product="app" />
 
-# Cross Origin Testing
+# 跨域测试
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- What strategies Cypress uses to work around same-origin policy
-- Limitations and workarounds with cross-origin content
+- Cypress绕过同源策略的技术方案
+- 跨域内容的限制与解决方案
 
 :::
 
-## Web Security
+## 网络安全
 
-Browsers adhere to a strict
-[same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy).
-This means that browsers restrict access between `<iframes>` when their origin
-policies don't match.
+浏览器遵循严格的[同源策略](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy)。这意味着当`<iframe>`的源策略不匹配时，浏览器会限制它们之间的访问。
 
-Because Cypress works from within the browser, Cypress must be able to directly
-communicate with your remote application at all times. Unfortunately, browsers
-naturally try to prevent Cypress from doing this.
+由于Cypress在浏览器内部工作，它必须始终能直接与远程应用通信。不幸的是，浏览器天然会阻止这种行为。
 
-To get around these restrictions, Cypress implements some strategies involving
-JavaScript code, the browser's internal APIs, and network proxying to _play by
-the rules_ of same-origin policy. It's our goal to fully automate the
-application under test without you needing to modify your application's code -
-and we are _mostly_ able to do this.
+为解决这些限制，Cypress通过JavaScript代码、浏览器内部API和网络代理的组合策略来"遵守"同源策略规则。我们的目标是在无需修改应用代码的情况下完全自动化测试——我们基本实现了这一点。
 
-### What Cypress does under the hood
+### Cypress的底层实现
 
-- Proxies all HTTP / HTTPS traffic.
-- Changes the hosted URL to match that of the application under test.
-- Uses the browser's internal APIs for network level traffic.
+- 代理所有HTTP/HTTPS流量
+- 改变托管URL以匹配被测应用
+- 使用浏览器内部API处理网络层流量
 
-When Cypress first loads, the internal Cypress web application is hosted on a
-random port: something like `http://localhost:64874/__/`.
+当Cypress首次加载时，其内部应用会运行在随机端口，如`http://localhost:64874/__/`。
 
-After the first [`cy.visit()`](/api/commands/visit) command is issued in a test,
-Cypress changes its URL to match the origin of your remote application, thereby
-solving the first major hurdle of same-origin policy. Your application's code
-executes the same as it does outside of Cypress, and everything works as
-expected.
+在测试中执行第一个[`cy.visit()`](/api/commands/visit)命令后，Cypress会将URL改为远程应用的源地址，从而解决同源策略的首要障碍。你的应用代码会像在Cypress外部一样执行，所有功能正常运作。
 
 :::info
 
-<strong>How is HTTPS supported?</strong>
+<strong>HTTPS如何支持？</strong>
 
-Cypress must assign and manage browser certificates to be able to
-modify the traffic in real time. You'll notice Chrome display a warning that the 'SSL certificate does not
-match'. This is expected behavior. Under the hood we act as our own CA
-authority and issue certificates dynamically in order to intercept requests
-otherwise impossible to access. We only do this for the origin currently
-under test, and bypass other traffic.
+Cypress必须分配和管理浏览器证书以实现实时流量修改。你会看到Chrome显示"SSL证书不匹配"的警告，这是预期行为。底层我们充当自己的CA机构，动态颁发证书来拦截原本无法访问的请求。我们仅对当前测试的源执行此操作，其他流量则直接放行。
 
-Note, that Cypress allows you to optionally specify CA / client certificate
-information for use with HTTPS sites. See
-[configuring client certificates](/app/references/client-certificates). If
-the remote server requests a client certificate for a configured URL, Cypress
-will supply it.
+注意，Cypress允许你为HTTPS站点可选地配置CA/客户端证书。详见[配置客户端证书](/app/references/client-certificates)。如果远程服务器要求提供配置URL的客户端证书，Cypress会予以提供。
 
 :::
 
-## Limitations
+## 限制
 
-It's important to note that although we do our **very best** to ensure your
-application works normally inside of Cypress, there _are_ some limitations you
-need to be aware of.
+尽管我们竭尽全力确保应用在Cypress中正常运行，但仍需注意以下限制：
 
-- [Different origins per test require cy.origin()](#Different-origins-per-test-require-cyorigin)
-- [Cross-origin iframes are not supported](#Cross-origin-iframes)
-- [Navigating from HTTPS to HTTP will error](#Insecure-Content)
-- [Cypress requires that the URLs navigated to have the same port](#Same-port-per-test)
+- [不同源测试需要cy.origin()](#不同源测试需要cyorigin)
+- [不支持跨域iframe](#跨域iframe)
+- [从HTTPS导航到HTTP会报错](#不安全内容)
+- [测试中要求相同端口](#同测试同端口)
 
-### Different origins per test require `cy.origin()`
+### 不同源测试需要`cy.origin()`
 
-Cypress changes its own host URL to match that of your applications. With the
-exception of `cy.origin`, Cypress requires that the URLs navigated to have the
-same [origin](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin) for the
-entirety of a single test.
+Cypress会改变自身主机URL以匹配你的应用。除`cy.origin`外，Cypress要求单个测试中所有导航URL保持相同[源](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin)。
 
-If you attempt to visit two different origins, the `cy.origin` command must
-be used to wrap Cypress commands of the second visited domain. Otherwise,
-Cypress commands will timeout after the navigation and will eventually error.
-This is because the commands that were expected to run on the second domain are
-actually being run on the first domain.
+如果尝试访问两个不同源，必须使用`cy.origin`包装第二个域的Cypress命令。否则，导航后命令会超时失败，因为这些命令实际仍在第一个域上执行。
 
-Without `cy.origin()`, you can visit different origins in _different_ tests,
-but not in the _same_ test.
+没有`cy.origin()`时，你可以在不同测试中访问不同源，但不能在同一个测试中这样做。
 
-#### Examples of test cases that will error without the use of `cy.origin`
+#### 不使用`cy.origin`会报错的测试案例
 
-1. [`.click()`](/api/commands/click) an `<a>` with an `href` to a different
-   origin with subsequent Cypress commands being run.
-2. [`.submit()`](/api/commands/submit) a `<form>` that causes your web server to
-   redirect you to a different origin where additional Cypress commands are
-   run.
-3. Issue a JavaScript redirect in your application, such as
-   `window.location.href = '...'`, which navigates to a different origin
-   where additional Cypress commands are run.
+1. 点击指向不同源的`<a>`链接后执行后续命令
+2. 提交导致重定向到不同源的`<form>`表单后执行命令
+3. 应用中执行如`window.location.href = '...'`跳转到不同源后执行命令
 
-In each of these situations, Cypress will lose the ability to automate your
-application and will error via command timeout unless the `cy.origin` command is
-used.
+这些情况下，除非使用`cy.origin`命令，否则Cypress将失去自动化能力并报错。
 
-Read on to learn about
-[working around these common problems](#Common-Workarounds).
+继续阅读了解[常见问题的解决方案](#常见解决方案)。
 
 <DocumentDomainWorkaround />
 
-#### Parts of a URL
+#### URL的组成部分
 
-We understand this is a bit complicated to understand, so we have built a nifty
-chart to help clarify the differences!
+我们理解这些概念有些复杂，因此制作了示意图帮助理解！
 
 <DocsImage
   src="/img/app/cross-origin-testing/parts_of_a_url.jpg"
-  alt="Diagram showing the parts of a URL including href broken into protocol, host, pathname, hash and smaller components of hostname, port, path, and search with and example URL"
+  alt="URL分解图展示协议、主机、路径名、哈希等组成部分，以及主机名、端口、路径、查询参数的示例"
 />
 
-##### Origin
+##### 源
 
-An `origin` is comprised of a URL's `scheme`, `hostname`, _and_ `port`. Given the URLs
-below, all have the same origin compared to `https://www.cypress.io`:
+`源`由URL的`协议`、`主机名`和`端口`组成。以下URL与`https://www.cypress.io`同源：
 
 - `https://www.cypress.io/cloud`
 - `https://www.cypress.io/app`
 
-But the following have different origins compared to `https://www.cypress.io`:
+但以下URL与`https://www.cypress.io`不同源：
 
-- `http://www.cypress.io` (different `scheme`)
-- `https://docs.cypress.io` (different `hostname` due to the subdomain)
-- `https://www.auth0.com` (different `hostname`)
-- `https://www.cypress.io:81` (different `port`)
+- `http://www.cypress.io`（协议不同）
+- `https://docs.cypress.io`（子域名不同）
+- `https://www.auth0.com`（主机名不同）
+- `https://www.cypress.io:81`（端口不同）
 
 :::danger
 
-<Icon name="exclamation-triangle" color="red" /> You **cannot** [visit](/api/commands/visit)
-two different origins in the same test and continue to interact with the page without
-the use of the [`cy.origin()`](/api/commands/origin) command.
+<Icon name="exclamation-triangle" color="red" /> 你**不能**在同一个测试中[访问](/api/commands/visit)两个不同源后继续交互，除非使用[`cy.origin()`](/api/commands/origin)。
 
 :::
 
 :::tip
 
-<Icon name="check-circle" color="green" /> You **can** [visit](/api/commands/visit)
-two or more origins in **different** tests without needing [`cy.origin()`](/api/commands/origin).
+<Icon name="check-circle" color="green" /> 你**可以**在**不同**测试中[访问](/api/commands/visit)多个源，无需[`cy.origin()`](/api/commands/origin)。
 :::
 
-For practical purposes, this means the following:
+实际应用如下：
 
 ```javascript
-// This test will run without error
-it('navigates', () => {
+// 这个测试能正常运行
+it('导航', () => {
   cy.visit('https://www.cypress.io')
   cy.visit('https://www.cypress.io/app')
-  cy.get('selector') // yup all good
+  cy.get('选择器') // 完全正常
 })
 ```
 
 ```javascript
-// this will error because the origin https://docs.cypress.io doesn't match the origin https://www.cypress.io
-it('navigates', () => {
+// 这会报错，因为https://docs.cypress.io与https://www.cypress.io不同源
+it('导航', () => {
   cy.visit('https://www.cypress.io')
   cy.visit('https://docs.cypress.io')
-  cy.get('selector')
+  cy.get('选择器')
 })
 ```
 
-To fix the above cross-origin error, use `cy.origin()` to indicate which origin
-the sequential command should run against:
+修复上述跨域错误，使用`cy.origin()`指定后续命令的运行源：
 
 ```javascript
-it('navigates', () => {
+it('导航', () => {
   cy.visit('https://example.cypress.io')
   cy.visit('https://docs.cypress.io')
   cy.origin('https://docs.cypress.io', () => {
-    cy.get('selector') // yup all good
+    cy.get('选择器') // 完全正常
   })
 })
 ```
 
 ```javascript
-it('navigates', () => {
+it('导航', () => {
   cy.visit('https://www.cypress.io')
 })
 
-// split visiting different origin in another test
-it('navigates to new origin', () => {
+// 将不同源的访问拆分到另一个测试
+it('导航到新源', () => {
   cy.visit('https://cypress-dx.com')
-  cy.get('selector') // yup all good
+  cy.get('选择器') // 完全正常
 })
 ```
 
-### Cross-origin iframes
+### 跨域iframe
 
-If your site embeds an `<iframe>` that is a cross-origin frame, Cypress won't
-be able to automate or communicate with this `<iframe>`.
+如果你的网站嵌入了跨域`<iframe>`，Cypress将无法自动化或与之通信。
 
-#### Examples of uses for cross-origin iframes
+#### 跨域iframe的常见用途
 
-- Embedding a Vimeo or YouTube video.
-- Displaying a credit card form from Stripe or Braintree.
-- Displaying an embedded login form from Auth0.
-- Showing comments from Disqus.
+- 嵌入Vimeo或YouTube视频
+- 显示Stripe或Braintree的信用卡表单
+- 嵌入Auth0的登录表单
+- 展示Disqus评论
 
-If you'd like support for this
-(check our [open issue](https://github.com/cypress-io/cypress/issues/136)), or
-you can
-[disable web security](/app/guides/cross-origin-testing#Disabling-Web-Security).
+如果你需要此功能支持（查看我们的[开放issue](https://github.com/cypress-io/cypress/issues/136)），或者可以[禁用网络安全](/app/guides/cross-origin-testing#禁用网络安全)。
 
-### Insecure Content
+### 不安全内容
 
-Because of the way Cypress is designed, if you're testing an HTTPS site,
-Cypress will error anytime you attempt to navigate back to an HTTP site. This
-behavior helps highlight a _pretty serious security problem_ with your
-application.
+由于Cypress的设计方式，当测试HTTPS站点时，任何导航回HTTP站点的尝试都会报错。这种行为有助于暴露应用中的严重安全问题。
 
-#### Example of accessing insecure content
+#### 访问不安全内容的例子
 
 ```javascript title="test.cy.js"
 cy.visit('https://example.cypress.io')
 ```
 
-In your application code, you set `cookies` and store a session on the browser.
-Now let's imagine you have a single `insecure` link (or JavaScript redirect) in
-your application code.
+假设你的应用代码设置了`cookies`并存储了会话。现在想象应用中有一个不安全的链接（或JavaScript重定向）。
 
 ```html title="index.html"
 <html>
-  <a href="http://example.cypress.io/page2">Page 2</a>
+  <a href="http://example.cypress.io/page2">页面2</a>
 </html>
 ```
 
-Cypress will immediately fail with the following test code:
+以下测试代码会立即失败：
 
 ```javascript title="test.cy.js"
 cy.visit('https://example.cypress.io')
-cy.get('a').click() // will fail
+cy.get('a').click() // 会失败
 ```
 
-Browsers refuse to display insecure content on a secure page. Because Cypress
-initially changed its URL to match `https://example.cypress.io` when the browser
-followed the `href` to `http://example.cypress.io/page2`, the browser will
-refuse to display the contents.
+浏览器拒绝在安全页面显示不安全内容。因为Cypress初始URL是`https://example.cypress.io`，当浏览器跟随`href`到`http://example.cypress.io/page2`时，会拒绝显示内容。
 
-Now you may be thinking, _This sounds like a problem with Cypress because when I
-work with my application outside of Cypress it works just fine._
+你可能会想：这似乎是Cypress的问题，因为我在Cypress之外使用时完全正常。
 
-However, the truth is, Cypress is exposing a _security vulnerability_ in your
-application, and you _want_ it to fail in Cypress.
+但实际上，Cypress暴露了你应用的安全漏洞，你希望它在Cypress中失败。
 
-`cookies` that don't have their `secure` flag set to `true` will be sent as
-clear text to the insecure URL. This leaves your application vulnerable to
-session hijacking.
+未设置`secure`标志为`true`的`cookies`会以明文发送到不安全URL，使应用面临会话劫持风险。
 
-This security vulnerability exists **even if** your web server forces a
-`301 redirect` back to the HTTPS site. The original HTTP request was still made
-once, exposing insecure session information.
+即使你的服务器强制`301重定向`回HTTPS站点，最初的HTTP请求仍会暴露会话信息。
 
-#### The solution
+#### 解决方案
 
-Update your HTML or JavaScript code to not navigate to an insecure HTTP page and
-instead only use HTTPS. Additionally make sure that cookies have their `secure`
-flag set to `true`.
+更新HTML或JavaScript代码，避免导航到不安全HTTP页面，仅使用HTTPS。同时确保cookies设置了`secure`标志为`true`。
 
-If you're in a situation where you don't control the code, or otherwise cannot
-work around this, you can bypass this restriction in Cypress by
-[disabling web security](/app/guides/cross-origin-testing#Disabling-Web-Security).
+如果无法控制代码，可以通过[禁用网络安全](/app/guides/cross-origin-testing#禁用网络安全)绕过此限制。
 
-### Same port per test
+### 同测试同端口
 
-Cypress requires that the URLs navigated to have the same port (if specified)
-for the entirety of a single test. This matches the behavior of the browser's
-normal
-[same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy).
+Cypress要求单个测试中所有导航URL保持相同端口（如指定）。这与浏览器标准[同源策略](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy)行为一致。
 
-## Common Workarounds
+## 常见解决方案
 
-Let's investigate how you might encounter cross-origin errors in your test code
-and break down how to work around them in Cypress.
+让我们探讨测试代码中可能遇到的跨域错误及其解决方案。
 
-### External Navigation
+### 外部导航
 
-The most common situation where you might encounter this error is when you click
-on an `<a>` that navigates to another origin.
+最常见的跨域错误是点击导航到其他源的`<a>`标签。
 
 ```html title="index.html"
 <html>
@@ -300,158 +226,121 @@ on an `<a>` that navigates to another origin.
 ```
 
 ```javascript title="test.cy.js"
-cy.visit('http://localhost:8080') // where your web server + HTML is hosted
-cy.get('a').click() // browser navigates to https://cypress.io
-cy.get('selector').should('exist') // Cypress errors
+cy.visit('http://localhost:8080') // 你的web服务器和HTML所在位置
+cy.get('a').click() // 浏览器导航到https://cypress.io
+cy.get('选择器').should('exist') // Cypress报错
 ```
 
 :::warning
 
-We don't recommend visiting an origin that you don't control in your tests
-which you can read more about
-[here](/app/core-concepts/best-practices#Visiting-External-Sites)
+我们不建议测试你[不控制的站点](/app/core-concepts/best-practices#访问外部站点)
 
 :::
 
-If you control this origin, either by owning the hosted instance
-or by other means, we recommend testing this origin with `cy.origin`.
+如果控制该源，建议使用`cy.origin`测试：
 
 ```javascript title="test.cy.js"
-cy.visit('http://localhost:8080') // where your web server + HTML is hosted
-cy.get('a').click() // browser navigates to https://example.cypress.io
+cy.visit('http://localhost:8080')
+cy.get('a').click()
 cy.origin('https://example.cypress.io', () => {
-  // declare cy.origin command on expected domain
-  cy.get('selector').should('exist') // Yup all good
+  // 在预期域上声明cy.origin
+  cy.get('选择器').should('exist') // 完全正常
 })
 ```
 
-If you're not in control of this origin, we recommend you test that the `href`
-property is correct instead of performing the navigation. This will help lead to
-more deterministic tests.
+如果不控制该源，建议测试`href`属性而非实际导航，这能提高测试确定性：
 
 ```javascript
-// this test verifies the behavior and will run considerably faster
+// 这个测试验证行为且运行更快
 cy.visit('http://localhost:8080')
-cy.get('a').should('have.attr', 'href', 'https://example.cypress.io') // no page load!
+cy.get('a').should('have.attr', 'href', 'https://example.cypress.io') // 无需页面加载！
 ```
 
-If for any reason the two above methods cannot be used,
-[`cy.request()`](/api/commands/request) may be an option to verify content as
-`cy.request()` is _NOT bound to CORS or same-origin policy_.
+如果以上方法都不可行，可以使用[`cy.request()`](/api/commands/request)验证内容，因为它不受CORS或同源策略限制：
 
 ```javascript
 cy.visit('http://localhost:8080')
 cy.get('a').then(($a) => {
-  // pull off the fully qualified href from the <a>
   const url = $a.prop('href')
-
-  // make a cy.request to it
   cy.request(url).its('body').should('include', '</html>')
 })
 ```
 
-### Form Submission Redirects
+### 表单提交重定向
 
-When you submit a regular HTML form, the browser will follow the HTTP(s)
-request.
+提交普通HTML表单时，浏览器会跟随HTTP(s)请求。
 
 ```html title="index.html"
 <html>
   <form method="POST" action="/submit">
     <input type="text" name="email" />
-    <input type="submit" value="Submit" />
+    <input type="submit" value="提交" />
   </form>
 </html>
 ```
 
 ```javascript title="test.cy.js"
 cy.visit('http://localhost:8080')
-cy.get('form').submit() // submit the form!
+cy.get('form').submit() // 提交表单！
 ```
 
-If your back end server handling the `/submit` route does a `30x` redirect to a
-different origin, you'll need to use the `cy.origin` command if running
-additional Cypress commands after submitting the form.
+如果后端服务器处理`/submit`路由时`30x重定向`到不同源，且提交表单后需要运行更多Cypress命令，则需要使用`cy.origin`。
 
 ```javascript title="routes.js"
-// node / express code on localhost:8080 server
+// localhost:8080服务器上的node/express代码
 app.post('/submit', (req, res) => {
-  // redirect the browser to cypress.io
   res.redirect('https://example.cypress.io')
 })
 ```
 
-You can test this with `cy.origin`, which may look like the following test case:
+测试代码如下：
 
 ```javascript title="test.cy.js"
 cy.visit('http://localhost:8080')
-cy.get('form').submit() // submit the form!
+cy.get('form').submit()
 cy.origin('cypress.io', () => {
   cy.url().should('contain', 'cypress.io')
 })
 ```
 
-A common use case for this is Single sign-on (SSO), OAuth, Open ID Connect
-(OIDC), or Authentication as a Service platforms, such as [Auth0](/app/guides/authentication-testing/auth0-authentication),
-[Okta](/app/guides/authentication-testing/okta-authentication), [Amazon
-Cognito](/app/guides/authentication-testing/amazon-cognito-authentication), and others.
+常见用例包括单点登录(SSO)、OAuth、Open ID Connect (OIDC)或认证服务平台，如[Auth0](/app/guides/authentication-testing/auth0-authentication)、[Okta](/app/guides/authentication-testing/okta-authentication)、[Amazon Cognito](/app/guides/authentication-testing/amazon-cognito-authentication)等。
 
-In these situations, if controlling the domain under test, we recommend that you
-test these with `cy.origin`.
+如果控制被测域，建议使用`cy.origin`测试：
 
 ```javascript title="test.cy.js"
 cy.visit('http://localhost:8080')
-cy.get('#login').click() // click a login button, which takes us to our authentication page.
+cy.get('#login').click()
 cy.origin('cypress.io', () => {
-  cy.get('#username').type('User1')
-  cy.get('#password').type('Password123')
-
-  // prompts a sign in that redirects to http://localhost:8080 with a token, cookie, or other means of acknowledgement
-  cy.get('button').contains('Sign In').click()
+  cy.get('#username').type('用户1')
+  cy.get('#password').type('密码123')
+  cy.get('button').contains('登录').click()
 })
 
-cy.get('#user-name-welcome').should('equal', 'Welcome, User1!')
+cy.get('#user-name-welcome').should('equal', '欢迎，用户1！')
 ```
 
-If for any reason you can't leverage `cy.origin`, programmatic authentication
-is still an option. In this situation you may `POST` to a different server and
-are redirected elsewhere (typically with the session token in the URL). If
-that's the case, you can still test this behavior with
-[`cy.request()`](/api/commands/request).
-
-In fact we can likely bypass the initial visit altogether and `POST` directly to
-your SSO server.
+如果无法使用`cy.origin`，仍可采用编程式认证。这种情况下，你可以直接`POST`到SSO服务器：
 
 ```javascript
 cy.request('POST', 'https://sso.corp.com/auth', {
   username: 'foo',
   password: 'bar',
 }).then((response) => {
-  // pull out the location redirect
   const loc = response.headers['Location']
-
-  // parse out the token from the url (assuming its in there)
   const token = parseOutMyToken(loc)
-
-  // do something with the token that your web application expects
-  // likely the same behavior as what your SSO does under the hood
-  // assuming it handles query string tokens like this
   cy.visit('http://localhost:8080?token=' + token)
-
-  // if you don't need to work with the token you can sometimes
-  // visit the location header directly
+  // 或者直接访问location头
   cy.visit(loc)
 })
 ```
 
-### JavaScript Redirects
+### JavaScript重定向
 
-When we say JavaScript Redirects we are talking about any kind of code that does
-something like this:
+JavaScript重定向指类似以下的代码：
 
 ```html title="index.html"
 <html>
-  <button id="nav">Navigate to Cypress example</button>
+  <button id="nav">导航到Cypress示例</button>
   <script>
     document.querySelector('#nav').addEventListener('click', () => {
       window.location.href = 'https://example.cypress.io'
@@ -460,71 +349,52 @@ something like this:
 </html>
 ```
 
-You can test this with `cy.origin`, which may look like the following test case:
+测试代码如下：
 
 ```javascript title="test.cy.js"
 cy.visit('http://localhost:8080')
-cy.get('#nav').submit() // trigger a javascript redirect!
+cy.get('#nav').submit() // 触发JavaScript重定向！
 cy.origin('https://example.cypress.io', () => {
   cy.url().should('contain', 'cypress.io')
 })
 ```
 
-### Cross-Origin Errors with `cy.origin`
+### 使用`cy.origin`时的跨域错误
 
-Sometimes, when using `cy.origin` and especially with websites that are not
-under your immediate test control, cross-origin errors may still tend to creep
-up. We don't recommend visiting or interacting with sites you
-[do not control](/app/core-concepts/best-practices#Visiting-External-Sites).
-However, if this is necessary, most of these issues can usually be remedied by
-applying` the
-[modify obstructive third-party code](/app/references/experiments#Configuration)
-experimental flag or by
-[disabling web security](/app/guides/cross-origin-testing#Disabling-Web-Security).
+有时，特别是测试非直接控制的网站时，跨域错误仍可能出现。我们不建议与[不控制的站点](/app/core-concepts/best-practices#访问外部站点)交互。但如果必须，大多数问题可通过启用[修改第三方干扰代码](/app/references/experiments#配置)实验性标志或[禁用网络安全](/app/guides/cross-origin-testing#禁用网络安全)解决。
 
-## Disabling Web Security
+## 禁用网络安全
 
-So if you cannot work around any of the issues using the suggested workarounds
-above, including
-[modifying obstructive third-party code](/app/guides/cross-origin-testing#Modifying-Obstructive-Third-Party-Code)
-with `cy.origin`, you may want to disable web security.
+如果无法通过上述方案解决问题，包括使用`cy.origin`[修改第三方干扰代码](/app/guides/cross-origin-testing#修改第三方干扰代码)，你可能需要禁用网络安全。
 
-One last thing to consider here is that every once in a while we discover bugs
-in Cypress that lead to cross-origin errors that can otherwise be fixed. If you
-think you're experiencing a bug,
-[open an issue](https://github.com/cypress-io/cypress/issues/new/choose).
+最后要考虑的是，我们偶尔会发现导致跨域错误的Cypress bug。如果你认为遇到bug，请[提交issue](https://github.com/cypress-io/cypress/issues/new/choose)。
 
 :::caution
 
-<strong>Chrome only</strong>
+<strong>仅限Chrome</strong>
 
-Disabling web security is only supported in Chrome-based browsers. Settings in
-`chromeWebSecurity` will have no effect in other browsers. We will log a warning
-in this case.
+禁用网络安全仅支持基于Chrome的浏览器。`chromeWebSecurity`设置对其他浏览器无效，此时会显示警告。
 
 <DocsImage
   src="/img/app/web-security/chrome-web-security-stdout-warning.jpg"
-  alt="chromeWebSecurity warning in stdout"
+  alt="stdout中的chromeWebSecurity警告"
 />
 
-If you rely on disabling web security, you will not be able to run tests on
-browsers that do not support this feature.
+如果依赖禁用网络安全功能，将无法在不支持此功能的浏览器上运行测试。
 
 :::
 
-### Set `chromeWebSecurity` to `false`
+### 设置`chromeWebSecurity`为`false`
 
-Setting `chromeWebSecurity` to `false` in Chrome-based browsers allows you to do
-the following:
+在Chrome浏览器中设置`chromeWebSecurity`为`false`允许你：
 
-- Display insecure content
-- Navigate to any origin without cross-origin errors with or without
-  `cy.origin`
-- Access cross-origin iframes that are embedded in your application
+- 显示不安全内容
+- 无需`cy.origin`即可无错导航到任何源
+- 访问应用中嵌入的跨域iframe
 
-Still here? That's cool, let's disable web security!
+还在看？很好，让我们禁用网络安全！
 
-#### Set `chromeWebSecurity` to `false` in the [Cypress configuration](/app/references/configuration)
+#### 在[Cypress配置](/app/references/configuration)中设置`chromeWebSecurity`为`false`
 
 :::cypress-config-example
 
@@ -536,28 +406,15 @@ Still here? That's cool, let's disable web security!
 
 :::
 
-## Modifying Obstructive Third Party Code
+## 修改第三方干扰代码
 
-Cypress today has the concept of
-[modifying obstructive code](/app/references/configuration#modifyObstructiveCode),
-which is code that may interfere with Cypress being able to run your web
-application. The `experimentalModifyObstructiveThirdPartyCode` flag provides the
-same benefits of the
-[modifyObstructiveCode](/app/references/configuration#modifyObstructiveCode)
-flag, but additionally applies it to third-party `.js` and `.html` that is being
-either loaded or navigated to inside your application. In addition to this, this
-flag also does the following:
+Cypress具有[修改干扰代码](/app/references/configuration#modifyObstructiveCode)的概念，这些代码可能影响Cypress运行你的web应用。`experimentalModifyObstructiveThirdPartyCode`标志提供了与[modifyObstructiveCode](/app/references/configuration#modifyObstructiveCode)相同的优势，但还将其应用于应用中加载或导航到的第三方`.js`和`.html`。此外，该标志还：
 
-- Adjusts the User Agent in Electron to appear more chrome-like. This option can
-  be overridden with the [userAgent](/app/references/configuration#Browser)
-  config option.
-- Removes
-  [Subresource Integrity (SRI)](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)
-  from modified scripts as they will not execute otherwise.
-- Updates the `Sec-Fetch-Dest` Metadata header from `iframe` to `document` in
-  cases where requests come from the application under test.
+- 调整Electron中的User Agent使其更像Chrome（可通过[userAgent](/app/references/configuration#Browser)配置覆盖）
+- 从修改的脚本中移除[子资源完整性(SRI)](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)，否则它们无法执行
+- 在来自被测应用的请求中，将`Sec-Fetch-Dest`元数据头从`iframe`更新为`document`
 
-Want to enable `experimentalModifyObstructiveThirdPartyCode`? Let's do it!
+启用`experimentalModifyObstructiveThirdPartyCode`的方法：
 
 :::cypress-config-example
 
@@ -569,25 +426,18 @@ Want to enable `experimentalModifyObstructiveThirdPartyCode`? Let's do it!
 
 :::
 
-## Other workarounds
+## 其他解决方案
 
-There are other ways of testing the interaction between two origins. The
-browser has a natural security barrier called `origin policy` this means that
-state like `localStorage`, `cookies`, `service workers` and many other APIs are
-not shared between them anyways. Cypress does offer APIs around `localStorage`,
-`sessionStorage`, and `cookies` that are not limited to this restriction.
+还有其他测试两个源交互的方法。浏览器有天然的`源策略`安全屏障，意味着`localStorage`、`cookies`、`service workers`等API不共享。Cypress提供了不受此限制的`localStorage`、`sessionStorage`和`cookies`API。
 
-As a best practice, you should not visit or interact with any website not under
-your control.
+最佳实践是不要访问或交互非你控制的网站。
 
-If your organization uses Single Sign On (SSO) or OAuth then you might choose to
-test a 3rd party service other than your origin, which can be tested with
-[`cy.origin()`](/api/commands/origin).
+如果你的组织使用单点登录(SSO)或OAuth，可以选择测试第三方服务而非你的源，这可以通过[`cy.origin()`](/api/commands/origin)实现。
 
-We've written several other guides specifically about handling this situation.
+我们编写了多个相关指南：
 
-- [Best Practices: Visiting external sites](/app/core-concepts/best-practices#Visiting-External-Sites)
-- [Recipes: Logging In - Single Sign On](/app/references/recipes#Logging-In)
-- [Guides: Amazon Cognito Authentication](/app/guides/authentication-testing/amazon-cognito-authentication)
-- [Guides: Auth0 Authentication](/app/guides/authentication-testing/auth0-authentication)
-- [Guides: Okta Authentication](/app/guides/authentication-testing/okta-authentication)
+- [最佳实践：访问外部站点](/app/core-concepts/best-practices#访问外部站点)
+- [配方：登录-单点登录](/app/references/recipes#登录)
+- [指南：Amazon Cognito认证](/app/guides/authentication-testing/amazon-cognito-authentication)
+- [指南：Auth0认证](/app/guides/authentication-testing/auth0-authentication)
+- [指南：Okta认证](/app/guides/authentication-testing/okta-authentication)

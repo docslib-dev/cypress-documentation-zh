@@ -1,4 +1,4 @@
-// Import the original mapper
+// 导入原始映射器
 import MDXComponents from "@theme-original/MDXComponents";
 import AnatomyOfAnError from "@site/docs/partials/_anatomy-of-an-error.mdx";
 import AccessibilityPremiumNote from "@site/docs/partials/_accessibility-premium-note.mdx";
@@ -162,7 +162,7 @@ library.add(
 )
 
 export default {
-  // Re-use the default mapping
+  // 复用默认映射
   ...MDXComponents,
   AnatomyOfAnError,
   AccessibilityPremiumNote,

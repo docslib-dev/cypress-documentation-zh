@@ -13,8 +13,8 @@ function CloseButton() {
       type="button"
       aria-label={translate({
         id: 'theme.docs.sidebar.closeSidebarButtonAriaLabel',
-        message: 'Close navigation bar',
-        description: 'The ARIA label for close button of mobile sidebar',
+        message: '关闭导航栏',
+        description: '移动端侧边栏关闭按钮的ARIA标签',
       })}
       className="clean-btn navbar-sidebar__close"
       onClick={() => mobileSidebar.toggle()}

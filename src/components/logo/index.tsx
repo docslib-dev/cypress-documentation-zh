@@ -9,7 +9,7 @@ export default function Logo({ alt, src, title, product: product }: { alt: strin
     return (
       <IconTechnologyUiCoverage 
         size="24"
-        alt="UI Coverage logo"
+        alt="UI覆盖率图标"
         fillColor="jade-200"
         strokeColor="teal-600"
       />
@@ -20,7 +20,7 @@ export default function Logo({ alt, src, title, product: product }: { alt: strin
     return(
       <IconTechnologyAccessibility 
         size="24"
-        alt="Cypress Accessibility logo"
+        alt="Cypress无障碍功能图标"
         fillColor="jade-200"
         strokeColor="teal-600"
       />

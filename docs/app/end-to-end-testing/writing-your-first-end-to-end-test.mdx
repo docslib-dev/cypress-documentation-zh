@@ -1,135 +1,117 @@
 ---
-title: 'End-to-End Testing: Your First Test with Cypress'
-sidebar_label: 'Your First Test'
-description: 'Dive into Cypress end-to-end testing with a guide on writing your first test. Learn step-by-step, best practices, and tips for efficient test creation'
+title: '端到端测试：使用Cypress编写第一个测试'
+sidebar_label: '第一个测试'
+description: '通过编写第一个测试的指南深入了解Cypress端到端测试。逐步学习最佳实践和高效创建测试的技巧'
 sidebar_position: 10
 slug: /app/end-to-end-testing/writing-your-first-end-to-end-test
 ---
 
 <ProductHeading product="app" />
 
-# Your First Test
+# 第一个测试
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to write your first end-to-end test in Cypress using an example app
-- How to use Cypress commands to interact with elements on a page
-- How to make assertions about the state of the application
+- 如何使用示例应用在Cypress中编写第一个端到端测试
+- 如何使用Cypress命令与页面元素交互
+- 如何对应用程序状态进行断言
   :::
 
-## Add a test file
+## 添加测试文件
 
-Assuming you've successfully
-[installed Cypress](/app/get-started/install-cypress) and
-[opened Cypress](/app/get-started/open-the-app), now it's time to add
-your first test. We're going to do this with the **Create new empty
-spec** button.
+假设你已经成功
+[安装Cypress](/app/get-started/install-cypress)并
+[打开Cypress](/app/get-started/open-the-app)，现在是时候添加
+你的第一个测试了。我们将使用**创建新的空测试规范**按钮来完成这个操作。
 
 <DocsImage
   src="/img/app/end-to-end-testing/writing-your-first-end-to-end-test/create-new-spec.png"
-  alt="Cypress with the Create new empty spec button highlighted"
+  alt="Cypress界面，突出显示创建新的空测试规范按钮"
 />
 
-On clicking it, you should see a dialog where you can enter the name of your new
-spec. Just accept the default name for now.
+点击后，你会看到一个对话框，可以输入新测试规范的名称。暂时接受默认名称即可。
 
 <DocsImage
   src="/img/app/end-to-end-testing/writing-your-first-end-to-end-test/enter-path-for-new-spec.png"
-  alt="The new spec path dialog"
+  alt="新测试规范路径对话框"
 />
 
-The newly-generated spec is displayed in a confirmation dialog. Just go ahead
-and close it with the ✕ button.
+新生成的测试规范会显示在确认对话框中。只需点击✕按钮关闭它。
 
 <DocsImage
   src="/img/app/end-to-end-testing/writing-your-first-end-to-end-test/new-spec-added-confirmation.png"
-  alt="The new spec confirmation dialog"
+  alt="新测试规范添加确认对话框"
 />
 
-Once we've created that file, you should see it immediately displayed in the
-list of end-to-end specs. Cypress monitors your spec files for any changes and
-automatically displays any changes.
+创建文件后，你应该会立即在端到端测试规范列表中看到它。Cypress会监控你的测试文件是否有任何更改，并自动显示这些更改。
 
 <DocsImage
   src="/img/app/end-to-end-testing/writing-your-first-end-to-end-test/spec-list-with-new-spec.png"
-  alt="Cypress showing the spec list with the newly created spec"
+  alt="Cypress显示包含新创建测试规范的列表"
 />
 
-Even though we haven't written any code yet - that's okay - let's click on your
-new spec and watch Cypress launch it. Cypress will visit `https://example.cypress.io` and the test passes.
+尽管我们还没有编写任何代码——这没关系——让我们点击你的新测试规范，观察Cypress如何启动它。Cypress会访问`https://example.cypress.io`，测试将通过。
 
 <DocsImage
   src="/img/app/end-to-end-testing/writing-your-first-end-to-end-test/new-spec-test-run.png"
-  alt="Cypress showing the newly created spec passing"
+  alt="Cypress显示新创建的测试规范通过"
 />
 
-## Write your first test
+## 编写第一个测试
 
-Now it's time to write your first test. We're going to:
+现在是时候编写你的第一个测试了。我们将：
 
-1. Write your first passing test.
-2. Update it so it fails.
-3. Watch Cypress reload in real time.
+1. 编写第一个通过的测试。
+2. 更新它使其失败。
+3. 观察Cypress实时重新加载。
 
-Open up your favorite IDE and replace the contents of your spec with the code
-below.
+打开你喜欢的IDE，将测试规范的内容替换为以下代码。
 
 ```js
-describe('My First Test', () => {
-  it('Does not do much!', () => {
+describe('我的第一个测试', () => {
+  it('没有做太多事情！', () => {
     expect(true).to.equal(true)
   })
 })
 ```
 
-Once you save this change you should see the browser reload.
+保存更改后，你应该会看到浏览器重新加载。
 
-Although it doesn't do anything useful, this is our first passing test! ✅
+虽然这个测试没有实际作用，但这是我们的第一个通过的测试！✅
 
-Over in the [Command Log](/app/core-concepts/open-mode#Command-Log) you'll
-see Cypress display the suite, the test and your first assertion (which should
-be passing in green).
+在[命令日志](/app/core-concepts/open-mode#Command-Log)中，你会看到Cypress显示测试套件、测试和你的第一个断言（应该是绿色的通过状态）。
 
 <DocsImage
   src="/img/app/get-started/e2e/v10/first-test.png"
-  alt="My first test shown passing in Cypress"
+  alt="我的第一个测试在Cypress中显示为通过"
 />
 
 :::info
 
-Notice Cypress displays a message about this being the default page
-[on the righthand side](/app/core-concepts/open-mode#Application-Under-Test).
-Cypress assumes you'll want to go out and [visit](/api/commands/visit) a URL on
-the internet - but it can also work just fine without that.
+注意Cypress在[右侧](/app/core-concepts/open-mode#Application-Under-Test)显示了一条关于这是默认页面的消息。Cypress假设你会想要访问互联网上的某个URL——但它也可以在没有这个操作的情况下正常工作。
 
 :::
 
-Now let's write our first failing test.
+现在让我们编写第一个失败的测试。
 
 ```js
-describe('My First Test', () => {
-  it('Does not do much!', () => {
+describe('我的第一个测试', () => {
+  it('没有做太多事情！', () => {
     expect(true).to.equal(false)
   })
 })
 ```
 
-Once you save again, you'll see Cypress display the failing test in red since
-`true` does not equal `false`.
+再次保存后，你会看到Cypress以红色显示失败的测试，因为`true`不等于`false`。
 
-Cypress also displays the stack trace and the code frame where the assertion
-failed (when available). You can click on the blue file link to open the file
-where the error occurred in
-[your preferred file opener](/app/tooling/IDE-integration#File-Opener-Preference).
-To read more about the error's display, read about
-[Debugging Errors](/app/guides/debugging#Errors).
+Cypress还会显示堆栈跟踪和断言失败的代码帧（如果可用）。你可以点击蓝色的文件链接，在[你首选的文件打开器](/app/tooling/IDE-integration#File-Opener-Preference)中打开发生错误的文件。要了解更多关于错误显示的信息，请阅读[调试错误](/app/guides/debugging#Errors)。
 
 <!--
-To reproduce the following screenshot:
-describe('My First Test', () => {
-  it('Does not do much!', () => {
+要重现以下截图：
+describe('我的第一个测试', () => {
+  it('没有做太多事情！', () => {
     expect(true).to.be.false
   })
 })
@@ -137,110 +119,88 @@ describe('My First Test', () => {
 
 <DocsImage
   src="/img/app/get-started/e2e/v10/first-test-failing.png"
-  alt="Failing test"
+  alt="失败的测试"
 />
 
-[Cypress](/app/core-concepts/open-mode) gives you a visual structure of
-suites, tests, and assertions. Soon you'll also see commands, page events,
-network requests, and more.
+[Cypress](/app/core-concepts/open-mode)为你提供了测试套件、测试和断言的可视化结构。很快你还会看到命令、页面事件、网络请求等。
 
 :::info
 
-**What are _describe_, _it_, and _expect_ ?**
+**什么是_describe_、_it_和_expect_？**
 
-All of these functions come from
-[Bundled Libraries](/app/references/bundled-libraries) that Cypress bakes in.
+所有这些函数都来自Cypress内置的[捆绑库](/app/references/bundled-libraries)。
 
-- `describe` and `it` come from [Mocha](https://mochajs.org)
-- `expect` comes from [Chai](http://www.chaijs.com)
+- `describe`和`it`来自[Mocha](https://mochajs.org)
+- `expect`来自[Chai](http://www.chaijs.com)
 
-Cypress builds on these popular tools and frameworks that you _hopefully_
-already have some familiarity and knowledge of. If not, that's okay too.
+Cypress基于这些你可能已经熟悉的流行工具和框架构建。如果不熟悉，也没关系。
 
 :::
 
 :::tip
 
-<strong>Using ESlint?</strong>
+<strong>使用ESlint？</strong>
 
-Check out our
-[Cypress ESLint plugin](https://github.com/cypress-io/eslint-plugin-cypress).
+查看我们的[Cypress ESLint插件](https://github.com/cypress-io/eslint-plugin-cypress)。
 
 :::
 
-## Write a _real_ test
+## 编写一个_真正的_测试
 
-**A solid test generally covers 3 phases:**
+**一个可靠的测试通常包含3个阶段：**
 
-1. Set up the application state.
-2. Take an action.
-3. Make an assertion about the resulting application state.
+1. 设置应用程序状态。
+2. 执行一个操作。
+3. 对结果应用程序状态进行断言。
 
-You might also see this phrased as "Given, When, Then", or "Arrange, Act,
-Assert". But the idea is: First you put the application into a specific state,
-then you take some action in the application that causes it to change, and
-finally you check the resulting application state.
+你可能也见过这种表述为"Given, When, Then"或"Arrange, Act, Assert"。但核心思想是：首先将应用程序置于特定状态，然后在应用程序中执行导致其变化的操作，最后检查结果应用程序状态。
 
-Today, we'll take a narrow view of these steps and map them cleanly to Cypress
-commands:
+今天，我们将从狭义的角度来看这些步骤，并将它们清晰地映射到Cypress命令：
 
-1. Visit a web page.
-2. Query for an element.
-3. Interact with that element.
-4. Assert about the content on the page.
+1. 访问一个网页。
+2. 查询一个元素。
+3. 与该元素交互。
+4. 对页面内容进行断言。
 
-### <Icon name="globe" /> Step 1: Visit a page
+### <Icon name="globe" /> 第一步：访问页面
 
-First, let's visit a web page. We will visit our
-[Kitchen Sink](https://github.com/cypress-io/cypress-example-kitchensink) application in this example
-so that you can try Cypress out without needing to worry about finding a page to
-test.
+首先，让我们访问一个网页。在这个例子中，我们将访问我们的[Kitchen Sink](https://github.com/cypress-io/cypress-example-kitchensink)应用程序，这样你就可以在不担心找到测试页面的情况下尝试Cypress。
 
-We can pass the URL we want to visit to [`cy.visit()`](/api/commands/visit).
-Let's replace our previous test with the one below that actually visits a page:
+我们可以将要访问的URL传递给[`cy.visit()`](/api/commands/visit)。让我们用实际访问页面的测试替换之前的测试：
 
 ```js
-describe('My First Test', () => {
-  it('Visits the Kitchen Sink', () => {
+describe('我的第一个测试', () => {
+  it('访问Kitchen Sink', () => {
     cy.visit('https://example.cypress.io')
   })
 })
 ```
 
-Save the file and switch back over to the Cypress Test Runner. You might notice
-a few things:
+保存文件并切换回Cypress测试运行器。你可能会注意到几件事：
 
-1. The [Command Log](/app/core-concepts/open-mode#Command-Log) now shows
-   the new `VISIT` action.
-2. The Kitchen Sink application has been loaded into the
-   [App](/app/core-concepts/open-mode).
-3. The test is green, even though we made no assertions.
-4. The `VISIT` displays a **blue pending state** until the page finishes
-   loading.
+1. [命令日志](/app/core-concepts/open-mode#Command-Log)现在显示新的`VISIT`操作。
+2. Kitchen Sink应用程序已加载到[应用程序](/app/core-concepts/open-mode)中。
+3. 测试是绿色的，尽管我们没有做任何断言。
+4. `VISIT`显示**蓝色挂起状态**，直到页面完成加载。
 
-Had this request come back with a non `2xx` status code such as `404` or `500`,
-or if there was a JavaScript error in the application's code, the test would
-have failed.
+如果这个请求返回非`2xx`状态码，如`404`或`500`，或者应用程序代码中有JavaScript错误，测试将会失败。
 
 <DocsVideo
   src="/img/snippets/first-test-visit-30fps.mp4"
-  title="First test with cy.visit()"
+  title="使用cy.visit()的第一个测试"
 />
 
-### <Icon name="search" /> Step 2: Query for an element
+### <Icon name="search" /> 第二步：查询元素
 
-Now that we've got a page loaded, we need to take some action on it. Why don't
-we click a link on the page? Sounds easy enough, let's go look for one we
-like... how about `type`?
+现在我们已经加载了一个页面，需要对其执行一些操作。为什么不点击页面上的一个链接呢？听起来很简单，让我们找一个我们喜欢的...比如`type`？
 
-To find this element by its contents, we'll use
-[cy.contains()](/api/commands/contains).
+要通过内容找到这个元素，我们将使用[cy.contains()](/api/commands/contains)。
 
-Let's add it to our test and see what happens:
+让我们将其添加到测试中，看看会发生什么：
 
 ```js
-describe('My First Test', () => {
-  it('finds the content "type"', () => {
+describe('我的第一个测试', () => {
+  it('找到内容"type"', () => {
     cy.visit('https://example.cypress.io')
 
     cy.contains('type')
@@ -248,25 +208,18 @@ describe('My First Test', () => {
 })
 ```
 
-Our test should now display `CONTAINS` in the
-[Command Log](/app/core-concepts/open-mode#Command-Log) and still be green.
+我们的测试现在应该在[命令日志](/app/core-concepts/open-mode#Command-Log)中显示`CONTAINS`，并且仍然是绿色的。
 
-Even without adding an assertion, we know that everything is okay! This is
-because many of Cypress' commands are built to fail if they don't find what
-they're expecting to find. This is known as an
-[Implicit Assertion](/app/core-concepts/introduction-to-cypress#Implicit-Assertions).
+即使没有添加断言，我们也知道一切正常！这是因为许多Cypress命令都内置了如果找不到预期内容就会失败的功能。这被称为[隐式断言](/app/core-concepts/introduction-to-cypress#Implicit-Assertions)。
 
-To verify this, replace `type` with something not on the page, like `hype`.
-You'll notice the test goes red, but only after about 4 seconds!
+为了验证这一点，将`type`替换为页面上没有的内容，如`hype`。你会注意到测试变红，但大约4秒后才失败！
 
-Can you see what Cypress is doing under the hood? It's automatically waiting and
-retrying because it expects the content to **eventually** be found in the DOM.
-It doesn't immediately fail!
+你能看到Cypress在幕后做了什么吗？它自动等待并重试，因为它期望内容**最终**会在DOM中找到。它不会立即失败！
 
 <!--
-To reproduce the following screenshot:
-describe('My First Test', () => {
-  it('finds the content "type"', () => {
+要重现以下截图：
+describe('我的第一个测试', () => {
+  it('找到内容"type"', () => {
     cy.visit('https://example.cypress.io')
     cy.contains('hype')
   })
@@ -275,38 +228,31 @@ describe('My First Test', () => {
 
 <DocsImage
   src="/img/app/get-started/e2e/v10/first-test-failing-contains.png"
-  alt="Test failing to not find content 'hype'"
+  alt="测试因找不到内容'hype'而失败"
 />
 
 :::caution
 
-<strong>Error Messages</strong>
+<strong>错误消息</strong>
 
-We've taken care at Cypress to write hundreds of custom error messages that
-attempt to clearly explain what went wrong. In this case, Cypress **timed out
-retrying** to find the content `hype` within the entire page. To read more about
-the error's display, read about
-[Debugging Errors](/app/guides/debugging#Errors).
+我们在Cypress中精心编写了数百条自定义错误消息，试图清楚地解释出了什么问题。在这个例子中，Cypress**超时重试**在整个页面中查找内容`hype`。要了解更多关于错误显示的信息，请阅读[调试错误](/app/guides/debugging#Errors)。
 
 :::
 
-Before we add another command - let's get this test back to passing. Replace
-`hype` with `type`.
+在添加另一个命令之前，让我们让这个测试重新通过。将`hype`替换回`type`。
 
 <DocsVideo
   src="/img/snippets/first-test-contains-30fps.mp4"
-  title="First test with cy.contains()"
+  title="使用cy.contains()的第一个测试"
 />
 
-### <Icon name="mouse-pointer" /> Step 3: Click an element
+### <Icon name="mouse-pointer" /> 第三步：点击元素
 
-Ok, now we want to click on the link we found. How do we do that? Add a
-[.click()](/api/commands/click) command to the end of the previous command, like
-so:
+好的，现在我们想点击我们找到的链接。我们该怎么做？在之前的命令末尾添加一个[.click()](/api/commands/click)命令，像这样：
 
 ```js
-describe('My First Test', () => {
-  it('clicks the link "type"', () => {
+describe('我的第一个测试', () => {
+  it('点击链接"type"', () => {
     cy.visit('https://example.cypress.io')
 
     cy.contains('type').click()
@@ -314,80 +260,62 @@ describe('My First Test', () => {
 })
 ```
 
-You can almost read it like a little story! Cypress calls this "chaining" and we
-chain together commands to build tests that really express what the app does in
-a declarative way.
+你几乎可以像读一个小故事一样阅读它！Cypress称之为"链式调用"，我们通过链式调用来构建测试，以声明式的方式真正表达应用程序的行为。
 
-Also note that the [App](/app/core-concepts/open-mode)
-has updated further after the click, following the link and showing the
-destination page:
+还要注意，[应用程序](/app/core-concepts/open-mode)在点击后进一步更新，跟随链接并显示目标页面：
 
-Now we can assert something about this new page!
+现在我们可以对这个新页面进行断言了！
 
 <DocsVideo
   src="/img/snippets/first-test-click-30fps.mp4"
-  title="First test with .click()"
+  title="使用.click()的第一个测试"
 />
 
 <IntellisenseCodeCompletion />
 
-### <Icon name="check-square" /> Step 4: Make an assertion
+### <Icon name="check-square" /> 第四步：进行断言
 
-Let's make an assertion about something on the new page we clicked into. Perhaps
-we'd like to make sure the new URL is the expected URL. We can do that by
-looking up the URL and chaining an assertion to it with
-[.should()](/api/commands/should).
+让我们对我们点击进入的新页面上的某些内容进行断言。也许我们想确保新的URL是预期的URL。我们可以通过查找URL并使用[.should()](/api/commands/should)链接一个断言来实现。
 
-Here's what that looks like:
+以下是它的样子：
 
 ```js
-describe('My First Test', () => {
-  it('clicking "type" navigates to a new url', () => {
+describe('我的第一个测试', () => {
+  it('点击"type"导航到新URL', () => {
     cy.visit('https://example.cypress.io')
 
     cy.contains('type').click()
 
-    // Should be on a new URL which
-    // includes '/commands/actions'
+    // 应该在一个包含'/commands/actions'的新URL上
     cy.url().should('include', '/commands/actions')
   })
 })
 ```
 
-#### Adding more commands and assertions
+#### 添加更多命令和断言
 
-We are not limited to a single interaction and assertion in a given test. In
-fact, many interactions in an application may require multiple steps and are
-likely to change your application state in more than one way.
+在给定的测试中，我们不仅限于单一的交互和断言。事实上，应用程序中的许多交互可能需要多个步骤，并且可能会以多种方式改变你的应用程序状态。
 
-We can continue the interactions and assertions in this test by adding another
-chain to interact with and verify the behavior of elements on this new page.
+我们可以通过在这个测试中添加另一个链式调用来继续交互和断言，以交互和验证这个新页面上元素的行为。
 
-We can use [cy.get()](/api/commands/get) to select an element based on its
-class. Then we can use the [.type()](/api/commands/type) command to enter text
-into the selected input. Finally, we can verify that the value of the input
-reflects the text that was typed with another [.should()](/api/commands/should).
+我们可以使用[cy.get()](/api/commands/get)根据类选择元素。然后我们可以使用[.type()](/api/commands/type)命令在选定的输入框中输入文本。最后，我们可以使用另一个[.should()](/api/commands/should)验证输入框的值反映了输入的文本。
 
-In general, the structure of your test should flow query -> query -> command or
-assertion(s). It's best practice not to chain anything after an action command;
-for more details on why this is, see our guide on
-[retry-ability](/app/core-concepts/retry-ability).
+一般来说，你的测试结构应该遵循查询 -> 查询 -> 命令或断言。最佳实践是在操作命令之后不要链接任何内容；有关为什么这样的更多细节，请参阅我们的[重试能力](/app/core-concepts/retry-ability)指南。
 
 ```js
-describe('My First Test', () => {
-  it('Gets, types and asserts', () => {
+describe('我的第一个测试', () => {
+  it('获取、输入和断言', () => {
     cy.visit('https://example.cypress.io')
 
     cy.contains('type').click()
 
-    // Should be on a new URL which
-    // includes '/commands/actions'
+    // 应该在一个包含'/commands/actions'的新URL上
     cy.url().should('include', '/commands/actions')
 
-    // Get an input, type into it
+    // 获取一个输入框，输入内容
     cy.get('.action-email').type('fake@email.com')
 
-    //  Verify that the value has been updated
+    // 验证值已更新
     cy.get('.action-email').should('have.value', 'fake@email.com')
   })
 })
@@ -395,152 +323,115 @@ describe('My First Test', () => {
 
 :::caution
 
-We normally don't suggest selecting and finding elements by their class names,
-but we do so here since we are querying an external site, and sometimes that is
-all we have to work with.
+我们通常不建议通过类名选择和查找元素，但在这里这样做是因为我们查询的是一个外部站点，有时这是我们唯一可以使用的。
 
-For more information on our guidance on selector best practices, see our guide
-on it [here](/app/core-concepts/best-practices#Selecting-Elements).
+有关我们关于选择器最佳实践的更多信息，请参阅[这里](/app/core-concepts/best-practices#Selecting-Elements)的指南。
 
 :::
 
-And there you have it: a short test in Cypress that visits a page, finds and
-clicks a link, verifies the URL and then verifies the behavior of an element on
-the new page. If we read it out loud, it might sound like:
+就是这样：一个简短的Cypress测试，访问一个页面，找到并点击一个链接，验证URL，然后验证新页面上一个元素的行为。如果我们大声读出来，可能会像这样：
 
 :::note
 
-1. _Visit: `https://example.cypress.io`_
-2. _Find the element with content: `type`_
-3. _Click on it_
-4. _Get the URL_
-5. _Assert it includes: `/commands/actions`_
-6. _Get the input with the `action-email` class_
-7. _Type `fake@email.com` into the input_
-8. _Assert the input reflects the new value_
+1. _访问：`https://example.cypress.io`_
+2. _找到内容为`type`的元素_
+3. _点击它_
+4. _获取URL_
+5. _断言它包含：`/commands/actions`_
+6. _获取类为`action-email`的输入框_
+7. _在输入框中输入`fake@email.com`_
+8. _断言输入框反映了新值_
 
 :::
 
-Or in the _Given_, _When_, _Then_ syntax:
+或者用_Given_、_When_、_Then_语法：
 
 :::note
 
-1. _**Given** a user visits `https://example.cypress.io`_
-2. _**When** they click the link labeled `type`_
-3. _And they type "fake@email.com" into the input that has a class of `action-email`
-   input_
-4. _**Then** the URL should include `/commands/actions`_
-5. _And the `[class="action-email"]` input has "fake@email.com" as its
-   value_
+1. _**Given** 用户访问`https://example.cypress.io`_
+2. _**When** 他们点击标签为`type`的链接_
+3. _并且他们在类为`action-email`的输入框中输入"fake@email.com"_
+4. _**Then** URL应该包含`/commands/actions`_
+5. _并且`[class="action-email"]`输入框的值为"fake@email.com"_
 
 :::
 
-And hey, this is a very clean test! We didn't have to say anything about _how_
-things work, just that we'd like to verify a particular series of events and
-outcomes.
+嘿，这是一个非常清晰的测试！我们不需要说明_如何_工作，只是我们想要验证一系列特定的事件和结果。
 
 <DocsVideo
   src="/img/snippets/first-test-assertions-30fps.mp4"
-  title="First test with assertions"
+  title="带有断言的第一个测试"
 />
 
 :::info
 
-<strong>Page Transitions</strong>
+<strong>页面过渡</strong>
 
-Worth noting is that this test transitioned across two different pages.
+值得注意的是，这个测试跨越了两个不同的页面。
 
-1. The initial [cy.visit()](/api/commands/visit)
-2. The [.click()](/api/commands/click) to a new page
+1. 初始的[cy.visit()](/api/commands/visit)
+2. [.click()](/api/commands/click)到新页面
 
-Cypress automatically detects things like a `page transition event` and will
-automatically **halt** running commands until the next page has **finished**
-loading.
+Cypress会自动检测诸如`页面过渡事件`之类的事情，并会自动**暂停**运行命令，直到下一个页面**完成**加载。
 
-Had the **next page** not finished its loading phase, Cypress would have ended
-the test and presented an error.
+如果**下一页**没有完成加载阶段，Cypress会结束测试并显示错误。
 
-Under the hood - this means you don't have to worry about commands accidentally
-running against a stale page, nor do you have to worry about running commands
-against a partially loaded page.
+在底层——这意味着你不必担心命令意外针对过时的页面运行，也不必担心命令针对部分加载的页面运行。
 
-We mentioned previously that Cypress waited **4 seconds** before timing out
-finding a DOM element - but in this case, when Cypress detects a
-`page transition event` it automatically increases the timeout to **60 seconds**
-for the single `PAGE LOAD` event.
+我们之前提到Cypress在查找DOM元素之前会等待**4秒**超时——但在这种情况下，当Cypress检测到`页面过渡事件`时，它会自动将单个`PAGE LOAD`事件的超时增加到**60秒**。
 
-In other words, based on the commands and the events happening, Cypress
-automatically alters its expected timeouts to match web application behavior.
+换句话说，基于命令和发生的事件，Cypress会自动调整其预期的超时时间以匹配Web应用程序的行为。
 
-These various timeouts are defined in the
-[Configuration](/app/references/configuration#Timeouts) document.
+这些各种超时定义在[配置](/app/references/configuration#Timeouts)文档中。
 
 :::
 
-## Record Tests with Cypress Studio
+## 使用Cypress Studio记录测试
 
-If you want a minimal code approach to creating tests, you can use
-[Cypress Studio](/app/guides/cypress-studio) to record your browser
-interactions and generate tests. Visit our
-[guide](/app/guides/cypress-studio) for more information.
+如果你想以最小的代码方式创建测试，可以使用[Cypress Studio](/app/guides/cypress-studio)记录浏览器交互并生成测试。访问我们的[指南](/app/guides/cypress-studio)了解更多信息。
 
-## Testing Apps You Don't Control
+## 测试你不控制的应用程序
 
 :::danger
 
-<Icon name="exclamation-triangle" color="red" /> **Anti-Pattern:** Trying to visit
-or interact with sites or servers you do not control.
+<Icon name="exclamation-triangle" color="red" /> **反模式：**尝试访问或与你无法控制的站点或服务器交互。
 
 :::
 
-In this guide we are testing our example application:
-[https://example.cypress.io](https://example.cypress.io).
-However you should think carefully about testing applications you **don't control**
-or you haven't been invited to test by the owner.
-Why?
+在本指南中，我们测试的是我们的示例应用程序：
+[https://example.cypress.io](https://example.cypress.io)。
+然而，你应该仔细考虑测试你**不控制**或所有者未邀请你测试的应用程序。
+为什么？
 
-- They may have security features enabled which prevent Cypress from working,
-  such as detecting Cypress script usage. This can block your access and make it
-  appear that the application website is unresponsive.
-- They have the potential to change at any moment which will break tests.
-- They may do A/B testing which makes it impossible to get consistent results.
+- 它们可能启用了安全功能，阻止Cypress工作，例如检测Cypress脚本使用。这可能会阻止你的访问，并使应用程序网站看起来无响应。
+- 它们有可能随时更改，这会破坏测试。
+- 它们可能进行A/B测试，这使得无法获得一致的结果。
 
-Generally speaking, the point of Cypress is to be a tool you use every day to
-build and test your own applications, not a general purpose web automation tool.
-However, this is a guideline rather than a hard-and-fast rule and there are a
-number of good reasons to make exceptions for certain kinds of application:
+一般来说，Cypress的目的是成为你每天用来构建和测试自己应用程序的工具，而不是通用的Web自动化工具。然而，这是一个指导原则而不是硬性规定，对于某些类型的应用程序有许多很好的例外理由：
 
-- They are specifically designed to integrate with third parties, e.g. SSO
-  providers.
-- They provide you with a complementary service, e.g. SaaS control panels or
-  analytics.
-- They reuse your content or provide plugins for an app you control.
+- 它们专门设计用于与第三方集成，例如SSO提供商。
+- 它们为你提供补充服务，例如SaaS控制面板或分析。
+- 它们重用你的内容或为你控制的应用程序提供插件。
 
-The key here is to carefully weigh the benefits of the tests in question against
-the possible disruption and flake these sorts of tests can introduce.
+这里的关键是仔细权衡相关测试的好处与这些测试可能引入的干扰和不稳定性。
 
-See also [Visiting External Sites](/app/core-concepts/best-practices#Visiting-External-Sites),
-on our [Best Practices](/app/core-concepts/best-practices) page,
-which discusses strategies when this is necessary.
+另请参阅[访问外部站点](/app/core-concepts/best-practices#Visiting-External-Sites)，在我们的[最佳实践](/app/core-concepts/best-practices)页面上，讨论了必要时采用的策略。
 
-## Next steps
+## 下一步
 
-- Take our free
-  [Testing your first application](https://learn.cypress.io/testing-your-first-application)
-  course.
-- Learn more about the [Cypress App](/app/core-concepts/open-mode) UI.
-- Start [testing your app](/app/end-to-end-testing/testing-your-app).
-- Set up
-  [intelligent code completion](/app/tooling/IDE-integration#Intelligent-Code-Completion)
-  for Cypress commands and assertions.
-- Record your test results to [Cypress Cloud](/cloud/get-started/introduction) for
-  advanced features like parallelization, flake detection, and more.
-- Check out the <Icon name="github" inline="true" contentType="rwa" /> for
-  practical demonstrations of Cypress testing practices, configuration, and
-  strategies in a real-world project.
-- Search Cypress's documentation to quickly find what you need.
+- 参加我们的免费
+  [测试你的第一个应用程序](https://learn.cypress.io/testing-your-first-application)
+  课程。
+- 了解更多关于[Cypress应用程序](/app/core-concepts/open-mode)UI的信息。
+- 开始[测试你的应用程序](/app/end-to-end-testing/testing-your-app)。
+- 设置
+  [智能代码补全](/app/tooling/IDE-integration#Intelligent-Code-Completion)
+  用于Cypress命令和断言。
+- 将你的测试结果记录到[Cypress Cloud](/cloud/get-started/introduction)，以获得并行化、flake检测等高级功能。
+- 查看<Icon name="github" inline="true" contentType="rwa" />，了解实际演示Cypress测试实践、配置和策略的真实项目。
+- 搜索Cypress的文档以快速找到你需要的内容。
 
 <DocsImage
   src="/img/app/get-started/e2e/search-box.png"
-  alt="Use the search box to find relevant documentation"
+  alt="使用搜索框查找相关文档"
 />

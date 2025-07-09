@@ -1,6 +1,6 @@
 ---
-title: 'GitLab Integration | Cypress Documentation'
-description: 'Configure GitLab status checks and merge request comments to show Cypress test results from Cypress Cloud.'
+title: 'GitLab 集成 | Cypress 文档'
+description: '配置 GitLab 状态检查和合并请求评论，以展示来自 Cypress Cloud 的测试结果。'
 sidebar_position: 20
 sidebar_label: GitLab
 ---
@@ -11,158 +11,121 @@ sidebar_label: GitLab
 
 :::info
 
-##### <Icon name="question-circle" color="#4BBFD2" /> What you'll learn
+##### <Icon name="question-circle" color="#4BBFD2" /> 你将学到
 
-- How to install the Cypress GitLab integration
-- How to configure status checks and merge request comments
+- 如何安装 Cypress GitLab 集成
+- 如何配置状态检查和合并请求评论
 
 :::
 
-[Cypress Cloud](https://on.cypress.io/cloud) can integrate your Cypress tests
-with your GitLab workflow via [status checks](#Status-checks) and
-[merge request comments](#Merge-Request-comments). A project first needs to be
-[set up to record](/cloud/account-management/projects) to Cypress Cloud
-to use GitLab integration.
+[Cypress Cloud](https://on.cypress.io/cloud) 可以通过[状态检查](#Status-checks)和[合并请求评论](#Merge-Request-comments)将你的 Cypress 测试与 GitLab 工作流集成。项目首先需要[设置为记录](/cloud/account-management/projects)到 Cypress Cloud 才能使用 GitLab 集成。
 
 <DocsImage
   src="/img/cloud/integrations/gitlab/gitlab-merge-request-comment.jpg"
-  alt="GitLab merge request comment showing run properties, test results, and tests for review"
+  alt="GitLab 合并请求评论展示运行属性、测试结果和待审查测试"
   width={800}
 />
 
 :::caution
 
-<Icon name="exclamation-triangle" /> The user enabling the integration needs to have
-admin access to GitLab.
+<Icon name="exclamation-triangle" /> 启用集成的用户需要拥有 GitLab 的管理员权限。
 
 :::
 
 :::caution
 
-GitLab Integration depends on your CI environment reliably providing a commit
-SHA (typically via an environment variable). This is not a problem for most
-users, but if you are facing GitLab integration issues with your CI setup,
-please make sure the git information is being sent properly by following
-[these guidelines](/app/continuous-integration/overview#Git-information).
-If you still face issues after this, please
-[contact us](mailto:support@cypress.io).
+GitLab 集成依赖于你的 CI 环境可靠地提供提交 SHA（通常通过环境变量）。这对大多数用户来说不是问题，但如果你在使用 CI 设置时遇到 GitLab 集成问题，请确保按照[这些指南](/app/continuous-integration/overview#Git-information)正确发送 git 信息。如果在此之后仍然遇到问题，请[联系我们](mailto:support@cypress.io)。
 
 :::
 
-## GitLab for Enterprise (Self-managed)
+## 企业版 GitLab（自托管）
 
 :::tip
 
-<Icon name="star" /> **Premium Cypress Cloud Feature**
+<Icon name="star" /> **Cypress Cloud 高级功能**
 
-GitLab for Enterprise (Self-managed) is included in our
-[Business and Enterprise paid pricing plans](https://www.cypress.io/pricing).
+企业版 GitLab（自托管）包含在我们的[商业和企业付费定价计划](https://www.cypress.io/pricing)中。
 
 :::
 
-GitLab for Enterprise (Self-managed) Integration depends on your GitLab instance
-being able to reach our Cypress Cloud API on the open internet. If your instance
-is running behind a firewall, you may need to reconfigure your security
-infrastructure to allow communication with our servers.
+企业版 GitLab（自托管）集成依赖于你的 GitLab 实例能够通过开放互联网访问我们的 Cypress Cloud API。如果你的实例运行在防火墙后面，可能需要重新配置安全基础设施以允许与我们的服务器通信。
 
-## Installing the GitLab integration
+## 安装 GitLab 集成
 
 :::caution
 
-GitLab OAuth2 applications will allow Cypress Cloud to authenticate as the user
-that registered the application. That means Cypress will have visibility into
-every GitLab repo the registered user can access. If you want tighter control of
-the repos that Cypress will see, consider creating a service account in GitLab
-with more limited access permissions.
+GitLab OAuth2 应用程序将允许 Cypress Cloud 以注册用户的身份进行认证。这意味着 Cypress 将能够看到注册用户可以访问的每个 GitLab 仓库。如果你想更严格地控制 Cypress 可见的仓库，可以考虑在 GitLab 中创建一个具有更有限访问权限的服务账户。
 
 :::
 
-1. Go to Cypress Cloud
-   [Organizations page](https://cloud.cypress.io/organizations) or open the
-   organization switcher.
-2. Select the organization you wish to integrate with a GitLab.
+1. 访问 Cypress Cloud 的[组织页面](https://cloud.cypress.io/organizations)或打开组织切换器。
+2. 选择你希望与 GitLab 集成的组织。
 
    <DocsImage
      src="/img/cloud/organizations/select-cypress-organization.jpg"
-     alt="Select an organization"
+     alt="选择一个组织"
      width={600}
    />
 
-3. Visit the selected organization's **Integrations** page via the side
-   navigation.
+3. 通过侧边导航访问所选组织的**集成**页面。
 
    <DocsImage
      src="/img/cloud/organizations/navigate-to-organization-integrations.jpg"
-     alt="Install Cypress GitLab from Integrations"
+     alt="从集成中安装 Cypress GitLab"
      width={600}
    />
 
-4. Click the enable button under **GitLab** or **GitLab for Enterprise
-   (Self-managed)**.
-5. Follow the instructions to create a new OAuth2 application in GitLab. See the
-   [GitLab docs](https://docs.gitlab.com/ee/integration/oauth_provider.html#adding-an-application-through-the-profile)
-   for more details.
-6. Copy the Application ID and Secret back to Cypress Cloud.
-7. (GitLab Self-managed only) Copy the base URL of your GitLab instance to the
-   GitLab URL field in Cypress Cloud.
-8. Connect your projects to a GitLab repo in **Project Settings → GitLab
-   Integration** or **GitLab for Enterprise Integration**.
-9. (Optional) Configure the behavior for each project.
+4. 点击 **GitLab** 或 **企业版 GitLab（自托管）**下的启用按钮。
+5. 按照说明在 GitLab 中创建一个新的 OAuth2 应用程序。详情请参阅 [GitLab 文档](https://docs.gitlab.com/ee/integration/oauth_provider.html#adding-an-application-through-the-profile)。
+6. 将应用程序 ID 和密钥复制回 Cypress Cloud。
+7. （仅限自托管 GitLab）将你的 GitLab 实例的基础 URL 复制到 Cypress Cloud 的 GitLab URL 字段。
+8. 在**项目设置 → GitLab 集成**或**企业版 GitLab 集成**中将项目连接到 GitLab 仓库。
+9. （可选）为每个项目配置行为。
 
 :::warning
 
-If you are running the tests from within a restrictive VPN, see
-[which subdomains to add to your allowlist for Cypress Cloud and your GitLab integration to work properly](/cloud/faq#Im-working-with-a-restrictive-VPN-Which-subdomains-do-I-have-to-allow-on-my-VPN-for-Cypress-Cloud-to-work-properly)
+如果你在限制性 VPN 内运行测试，请参阅[需要将哪些子域名添加到允许列表以使 Cypress Cloud 和 GitLab 集成正常工作](/cloud/faq#Im-working-with-a-restrictive-VPN-Which-subdomains-do-I-have-to-allow-on-my-VPN-for-Cypress-Cloud-to-work-properly)
 
 :::
 
-## Configuring the GitLab integration
+## 配置 GitLab 集成
 
-### Status checks
+### 状态检查
 
-By default, Cypress will post a **cypress/run** commit status containing the
-results of the Cypress run. This will prevent your team from merging any MRs
-with failing Cypress tests.
+默认情况下，Cypress 会发布一个 **cypress/run** 提交状态，包含 Cypress 运行的结果。这将阻止你的团队合并任何带有失败 Cypress 测试的 MR。
 
-Additionally, Cypress can post a **cypress/flake** commit status indicating
-whether the Cypress run contained any flaky tests. This will prevent your team
-from merging any MRs with flaky tests.
+此外，Cypress 可以发布一个 **cypress/flake** 提交状态，指示 Cypress 运行是否包含任何不稳定的测试。这将阻止你的团队合并任何带有不稳定测试的 MR。
 
-You can manage this behavior on your project's **Project Settings** page.
+你可以在项目的**项目设置**页面管理此行为。
 
 <DocsImage
   src="/img/cloud/integrations/gitlab/gitlab-status-checks.jpg"
-  alt="Project Settings page toggle for Status Checks to toggle Report run status or Report flaky tests"
+  alt="项目设置页面切换状态检查以切换报告运行状态或报告不稳定测试"
   width={800}
 />
 
 :::tip
 
-<Icon name="star" /> **Premium Cypress Cloud Feature**
+<Icon name="star" /> **Cypress Cloud 高级功能**
 
-Reporting on flaky status checks is included in our
-[Team, Business and Enterprise paid pricing plans](https://www.cypress.io/pricing).
+报告不稳定状态检查包含在我们的[团队、商业和企业付费定价计划](https://www.cypress.io/pricing)中。
 
 :::
 
-### Merge Request comments
+### 合并请求评论
 
-By default, Cypress will post an MR comment summarizing the run when the run
-completes. It will include test results, run info, and a summary of tests that
-failed or were flaky.
+默认情况下，Cypress 会在运行完成时发布一个 MR 评论，总结运行情况。它将包括测试结果、运行信息和失败或不稳定测试的摘要。
 
-You can manage this behavior on your project's **Project Settings** page.
+你可以在项目的**项目设置**页面管理此行为。
 
 <DocsImage
   src="/img/cloud/integrations/gitlab/gitlab-merge-requests.jpg"
-  alt="Project Settings page toggle for Merge Request comments to toggle Run status comments"
+  alt="项目设置页面切换合并请求评论以切换运行状态评论"
   width={800}
 />
 
 <TestReplayInfo />
 
-## Uninstalling the GitLab integration
+## 卸载 GitLab 集成
 
-You can remove this integration by visiting the **Integrations → GitLab** or
-**GitLab for Enterprise Integration** page of your organization. This will stop
-all commit checks and MR comments from Cypress.
+你可以通过访问组织的**集成 → GitLab** 或**企业版 GitLab 集成**页面来移除此集成。这将停止所有来自 Cypress 的提交检查和 MR 评论。

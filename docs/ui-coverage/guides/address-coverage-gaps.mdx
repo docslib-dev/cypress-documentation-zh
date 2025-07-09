@@ -1,71 +1,71 @@
 ---
-sidebar_label: Address coverage gaps
-title: 'Address coverage gaps | Cypress UI Coverage Documentation'
-description: 'Learn how to address test coverage gaps with Cypress UI Coverage to ensure quality of your application.'
+sidebar_label: 解决覆盖率缺口
+title: '解决覆盖率缺口 | Cypress UI Coverage 文档'
+description: '学习如何使用 Cypress UI Coverage 解决测试覆盖率缺口，确保应用程序质量。'
 sidebar_position: 20
 ---
 
 <ProductHeading product="ui-coverage" />
 
-# Address coverage gaps
+# 解决覆盖率缺口
 
-After [identifying test coverage gaps](/ui-coverage/guides/identify-coverage-gaps) using Cypress UI Coverage, the next step is to address these gaps to ensure your application is comprehensively tested. This guide outlines best practices and strategies for improving coverage and closing the identified gaps effectively.
+使用 Cypress UI Coverage [识别测试覆盖率缺口](/ui-coverage/guides/identify-coverage-gaps)后，下一步是解决这些缺口以确保应用程序得到全面测试。本指南概述了提高覆盖率并有效填补已识别缺口的最佳实践和策略。
 
-## Prioritize Gaps
+## 优先级排序
 
-Not all coverage gaps are equally critical. Use the information provided in the UI Coverage reports to prioritize testing efforts based on:
+并非所有覆盖率缺口都同等重要。使用 UI Coverage 报告中的信息，根据以下因素确定测试工作的优先级：
 
-- **Critical Views**: Focus on views or components that represent high-priority user journeys, such as checkout pages, login screens, or submission forms.
-- **Untested Links**: Address testing pages that are not being visited by your current test suite. You won't get insight into the untested elements on these pages until you visit them.
+- **关键视图**：重点关注代表高优先级用户流程的视图或组件，例如结账页面、登录界面或提交表单。
+- **未测试链接**：解决当前测试套件未访问的页面测试问题。在访问这些页面之前，您无法获取其中未测试元素的洞察。
 
-By prioritizing based on application context and business impact, you can address the most significant gaps first.
+通过根据应用程序上下文和业务影响确定优先级，您可以首先解决最重要的缺口。
 
-## Enhance Test Coverage
+## 提升测试覆盖率
 
-Once you've identified priority areas, create or update tests to cover these gaps.
+确定优先级区域后，创建或更新测试以填补这些缺口。
 
-### Generate Targeted Tests :sparkles:
+### 生成针对性测试 :sparkles:
 
-UI Coverage provides AI-powered Test Generation from the Cypress Cloud, to help you quickly add tests for the untested elements detected in UI Coverage reports, in a way that follows your existing practices and conventions.
+UI Coverage 提供由 AI 驱动的测试生成功能，帮助您快速为 UI Coverage 报告中检测到的未测试元素添加测试，同时遵循您现有的实践和约定。
 
-It works in just three steps:
+只需三个步骤：
 
-1. Select an interactive element in your UI Coverage report, from any state of your application
-2. Click “Generate test code”
-3. Choose where to add the tests, from a list of specs that already render this element
+1. 在 UI Coverage 报告中选择应用程序任何状态下的交互元素
+2. 点击“生成测试代码”
+3. 从已渲染该元素的规范列表中选择添加测试的位置
 
 <DocsImage
   src="/img/ui-coverage/guides/cypress-ui-coverage-generate-test.png"
-  alt="Cypress Cloud screenshot cropped to show a generated test after clicking on the 'Generate Test' button for the '/commands/cookies' link."
+  alt="Cypress Cloud 截图，裁剪显示点击 '/commands/cookies' 链接的 'Generate Test' 按钮后生成的测试。"
 />
 
-Cypress will generate a new test that includes all the required setup steps to reach the element in your UI, and performs an appropriate interaction for the element type and surrounding context.
+Cypress 将生成一个新测试，包括到达 UI 中元素所需的所有设置步骤，并根据元素类型和上下文执行适当的交互。
 
-The generated code will use your existing patterns for navigating and interacting with your application, including custom commands you may have for locating elements or setting up state, and will recommend where followup assertions should be written after the actions are complete.
+生成的代码将使用您现有的导航和与应用程序交互的模式，包括用于定位元素或设置状态的自定义命令，并建议在操作完成后应编写的后续断言。
 
-This test can be copied directly into your spec file at the suggested location, and from there you can continue writing the test locally.
+此测试可以直接复制到建议位置的规范文件中，然后您可以继续在本地编写测试。
 
-### Write Targeted Tests
+### 编写针对性测试
 
-Focus on creating tests that interact with the specific untested elements or pages identified in the coverage reports. For example:
+专注于创建与覆盖率报告中识别的特定未测试元素或页面交互的测试。例如：
 
 ```js
 describe('Dashboard', () => {
   it('Submits form on landing page', () => {
     cy.visit('/request-trial')
 
-    // Interact with previously untested elements
+    // 与之前未测试的元素交互
     cy.get('[data-cy="email"]').type('test@email.com')
     cy.contain('Request Trial').click()
-    // UI Coverage will now surface the coverage of the thank you page
+    // UI Coverage 现在将显示感谢页面的覆盖率
     cy.url().should('include', '/thank-you')
   })
 })
 ```
 
-### Cover Untested Links
+### 覆盖未测试链接
 
-Use the **Untested Links** section of the UI Coverage report to identify pages your tests haven't visited. Add navigation steps to your tests to include these pages:
+使用 UI Coverage 报告的**未测试链接**部分识别测试未访问的页面。在测试中添加导航步骤以包含这些页面：
 
 ```js
 describe('Cover Untested Links', () => {
@@ -74,78 +74,78 @@ describe('Cover Untested Links', () => {
 
     untestedLinks.forEach((link) => {
       cy.visit(link)
-      // Perform basic checks to ensure the page loads correctly
+      // 执行基本检查以确保页面正确加载
       cy.get('h1').should('exist')
-      // UI Coverage will now surface the coverage of these pages
+      // UI Coverage 现在将显示这些页面的覆盖率
     })
   })
 })
 ```
 
-## Refine Tests
+## 优化测试
 
-### Ensure Element Visibility
+### 确保元素可见性
 
-Some gaps occur because elements are hidden or not rendered during tests. Update your tests to reveal these elements:
+某些缺口是由于元素在测试期间隐藏或未渲染导致的。更新测试以显示这些元素：
 
 ```js
-cy.get('[data-cy="dropdown-toggle"]').click() // Reveal hidden elements
+cy.get('[data-cy="dropdown-toggle"]').click() // 显示隐藏元素
 cy.get('[data-cy="dropdown-item"]').should('be.visible')
 cy.get('[data-cy="dropdown-item"]').click()
 ```
 
-### Handle Dynamic Content
+### 处理动态内容
 
-If coverage gaps are caused by dynamic or conditional rendering, ensure your tests account for various application states:
+如果覆盖率缺口是由动态或条件渲染引起的，确保测试考虑各种应用程序状态：
 
 ```js
-// Login to render elements that only display after login
+// 登录以渲染仅在登录后显示的元素
 cy.get('[data-cy="login-button"]').click()
 cy.get('[data-cy="user-profile"]')
 ```
 
-## Optimize Configuration
+## 优化配置
 
-To maximize the effectiveness of UI Coverage, consider refining your configuration:
+为了最大化 UI Coverage 的效果，考虑优化配置：
 
-- Element Filters: Exclude irrelevant elements (e.g., placeholders, ads) from coverage reports.
-- Significant Attributes: Define custom attributes that accurately identify elements.
-- Attribute Filters: Remove auto-generated attributes to prevent redundant element identification.
+- 元素过滤器：从覆盖率报告中排除不相关的元素（例如占位符、广告）。
+- 重要属性：定义准确识别元素的自定义属性。
+- 属性过滤器：移除自动生成的属性以避免冗余元素识别。
 
-Refer to the [Configuration Guide](/ui-coverage/configuration/overview) to learn how to customize UI Coverage to address these common needs:
+参考[配置指南](/ui-coverage/configuration/overview)了解如何自定义 UI Coverage 以满足这些常见需求：
 
-- **Filtering**: Exclude specific elements or views from coverage reports.
-  - [Element Filters](/ui-coverage/configuration/elementfilters): Exclude specific elements from coverage reports.
-  - [View Filters](/ui-coverage/configuration/viewfilters): Exclude specific views from coverage reports.
-- **Grouping**: Group similar elements together for easier analysis.
-  - [Elements](/ui-coverage/configuration/elements): Specify selectors to uniquely identify elements, even when they lack stable identifiers across snapshots.
-  - [Element Grouping](/ui-coverage/configuration/elementgroups): Group similar elements together for easier analysis.
-  - [Views](/ui-coverage/configuration/views): Group views together based on defined URL patterns.
-- **Defining Attribute Patterns**: Define patterns for identifying and grouping elements by attributes.
-  - [Attribute Filters](/ui-coverage/configuration/attributefilters): Specify patterns for attributes and their values that should not be used for identifying and grouping elements.
-  - [Significant Attributes](/ui-coverage/configuration/significantattributes): Define selectors to prioritize above the default attributes Cypress uses for the purpose of identification and grouping.
+- **过滤**：从覆盖率报告中排除特定元素或视图。
+  - [元素过滤器](/ui-coverage/configuration/elementfilters)：从覆盖率报告中排除特定元素。
+  - [视图过滤器](/ui-coverage/configuration/viewfilters)：从覆盖率报告中排除特定视图。
+- **分组**：将相似元素分组以便于分析。
+  - [元素](/ui-coverage/configuration/elements)：指定选择器以唯一标识元素，即使它们在快照中缺乏稳定的标识符。
+  - [元素分组](/ui-coverage/configuration/elementgroups)：将相似元素分组以便于分析。
+  - [视图](/ui-coverage/configuration/views)：根据定义的 URL 模式将视图分组。
+- **定义属性模式**：定义用于通过属性识别和分组元素的模式。
+  - [属性过滤器](/ui-coverage/configuration/attributefilters)：指定不应用于识别和分组元素的属性及其值的模式。
+  - [重要属性](/ui-coverage/configuration/significantattributes)：定义优先于 Cypress 默认用于识别和分组目的的属性的选择器。
 
-## Iterate and Monitor
+## 迭代与监控
 
-### Review Coverage Reports
+### 审查覆盖率报告
 
-After updating your tests, record them again to Cypress Cloud and review the new coverage reports. Verify that:
+更新测试后，再次将其记录到 Cypress Cloud 并审查新的覆盖率报告。验证：
 
-- Untested elements and links have been addressed.
-- Overall coverage score has improved.
+- 未测试元素和链接已解决。
+- 整体覆盖率得分有所提高。
 
-### Automate Coverage Enforcement
+### 自动化覆盖率执行
 
-Use the [Results API](/ui-coverage/results-api) to integrate coverage checks into your CI/CD pipeline. Set thresholds for coverage scores to enforce quality standards. This ensures your application maintains high test coverage over time.
+使用[结果 API](/ui-coverage/results-api)将覆盖率检查集成到 CI/CD 流水线中。设置覆盖率得分的阈值以强制执行质量标准。这确保您的应用程序长期保持高测试覆盖率。
 
-### Collaborate with Your Team
+### 与团队协作
 
-Improving test coverage often requires collaboration. Share insights from the UI Coverage reports with your team to:
+提高测试覆盖率通常需要团队协作。与团队分享 UI Coverage 报告的洞察以：
 
-- Prioritize testing efforts collectively.
-- Align on critical areas that require attention.
-- Distribute tasks for writing or updating tests.
+- 共同确定测试工作的优先级。
+- 对齐需要关注的关键区域。
+- 分配编写或更新测试的任务。
 
-## Next Steps
+## 后续步骤
 
-You can also leverage UI Coverage to reduce test duplication to optimize your test suite further. Learn how to [reduce test duplication](/ui-coverage/guides/reduce-test-duplication) with UI Coverage to streamline your testing process.
+您还可以利用 UI Coverage 减少测试重复以进一步优化测试套件。学习如何使用 UI Coverage [减少测试重复](/ui-coverage/guides/reduce-test-duplication)以简化测试流程。

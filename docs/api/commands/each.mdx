@@ -1,6 +1,6 @@
 ---
-title: 'each | Cypress Documentation'
-description: Iterate through an array like structure in Cypress (arrays or objects with a `length` property).
+title: 'each | Cypress 文档'
+description: 在Cypress中遍历类数组结构（数组或具有`length`属性的对象）。
 sidebar_label: each
 ---
 
@@ -8,40 +8,38 @@ sidebar_label: each
 
 # each
 
-Iterate through an array like structure (arrays or objects with a `length`
-property).
+遍历类数组结构（数组或具有`length`属性的对象）。
 
-It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried) to
-chain further commands that rely on the subject after `.each()`.
+在`.each()`之后继续链式调用依赖于该主题的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Syntax
+## 语法
 
 ```javascript
 .each(callbackFn)
 ```
 
-### Usage
+### 用法
 
-<Icon name="check-circle" color="green" /> **Correct Usage**
-
-```javascript
-cy.get('ul>li').each(() => {...}) // Iterate through each 'li'
-cy.getCookies().each(() => {...}) // Iterate through each cookie
-```
-
-<Icon name="exclamation-triangle" color="red" /> **Incorrect Usage**
+<Icon name="check-circle" color="green" /> **正确用法**
 
 ```javascript
-
-cy.each(() => {...})            // Errors, cannot be chained off 'cy'
-cy.clock().each(() => {...})    // Errors, 'clock' does not yield an array
+cy.get('ul>li').each(() => {...}) // 遍历每个'li'
+cy.getCookies().each(() => {...}) // 遍历每个cookie
 ```
 
-### Arguments
+<Icon name="exclamation-triangle" color="red" /> **错误用法**
 
-<Icon name="angle-right" /> **callbackFn _(Function)_**
+```javascript
 
-Pass a function that is invoked with the following arguments:
+cy.each(() => {...})            // 错误，不能从'cy'开始链式调用
+cy.clock().each(() => {...})    // 错误，'clock'不返回数组
+```
+
+### 参数
+
+<Icon name="angle-right" /> **callbackFn _(函数)_**
+
+传入一个函数，该函数接收以下参数：
 
 - `value`
 - `index`
@@ -49,33 +47,31 @@ Pass a function that is invoked with the following arguments:
 
 <HeaderYields />
 
-- `.each()` yields the same subject it was given.
-- It is [unsafe](/app/core-concepts/retry-ability#Only-queries-are-retried)
-  to chain further commands that rely on the subject after `.each()`.
+- `.each()`返回与传入时相同的主题。
+- 在`.each()`之后继续链式调用依赖于该主题的命令是[不安全的](/app/core-concepts/retry-ability#Only-queries-are-retried)。
 
-## Examples
+## 示例
 
-### DOM Elements
+### DOM元素
 
-**Iterate over an array of DOM elements**
+**遍历DOM元素数组**
 
 ```javascript
 cy.get('ul>li').each(($el, index, $list) => {
-  // $el is a wrapped jQuery element
+  // $el是一个包装的jQuery元素
   if ($el.someMethod() === 'something') {
-    // wrap this element so we can
-    // use cypress commands on it
+    // 包装该元素以便我们可以
+    // 在其上使用Cypress命令
     cy.wrap($el).click()
   } else {
-    // do something else
+    // 执行其他操作
   }
 })
 ```
 
-**The original array is always yielded**
+**始终返回原始数组**
 
-No matter what is returned in the callback function, `.each()` will always yield
-the original array.
+无论回调函数返回什么，`.each()`始终返回原始数组。
 
 ```javascript
 cy.get('li')
@@ -88,12 +84,11 @@ cy.get('li')
   })
 ```
 
-### Promises
+### Promise
 
-**Promises are awaited**
+**等待Promise**
 
-If your callback function returns a `Promise`, it will be awaited before
-iterating over the next element in the collection.
+如果回调函数返回一个`Promise`，在遍历集合中的下一个元素之前会等待该Promise完成。
 
 ```javascript
 cy.wrap([1, 2, 3]).each((num, i, array) => {
@@ -105,35 +100,33 @@ cy.wrap([1, 2, 3]).each((num, i, array) => {
 })
 ```
 
-## Notes
+## 注意事项
 
-### Return early
+### 提前返回
 
-**Stop `each` prematurely**
+**提前停止`each`循环**
 
-You can stop the `.each()` loop early by returning `false` in the callback
-function.
+通过在回调函数中返回`false`，可以提前停止`.each()`循环。
 
-## Rules
+## 规则
 
 <HeaderRequirements />
 
-- `.each()` requires being chained off a previous command.
+- `.each()`需要链式调用在前一个命令之后。
 
 <HeaderAssertions />
 
-- `.each()` will only run assertions you have chained once, and will not
-  [retry](/app/core-concepts/retry-ability).
+- `.each()`只会运行一次你链式调用的断言，不会[重试](/app/core-concepts/retry-ability)。
 
 <HeaderTimeouts />
 
-- `.each()` can time out waiting for a promise you've returned to resolve.
+- `.each()`可能会因等待你返回的Promise解析而超时。
 
-## Command Log
+## 命令日志
 
-- `cy.each()` does _not_ log in the Command Log
+- `cy.each()`不会在命令日志中记录
 
-## See also
+## 另请参阅
 
 - [`.spread()`](/api/commands/spread)
 - [`.then()`](/api/commands/then)

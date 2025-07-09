@@ -1,6 +1,6 @@
 ---
-title: 'Cypress.SelectorPlayground | Cypress Documentation'
-description: 'The Selector Playground exposes APIs that enable you to change the default selector strategy and override the selectors that are returned per element.'
+title: 'Cypress.SelectorPlayground | Cypress 文档'
+description: 'Selector Playground 提供了 API，允许您更改默认的选择器策略并覆盖每个元素返回的选择器。'
 sidebar_label: SelectorPlayground
 ---
 
@@ -8,42 +8,41 @@ sidebar_label: SelectorPlayground
 
 # Cypress.SelectorPlayground
 
-The [Selector Playground](/app/core-concepts/open-mode#Selector-Playground)
-exposes APIs that enable you to:
+[Selector Playground](/app/core-concepts/open-mode#Selector-Playground)
+提供了 API，允许您：
 
-- Change the default selector strategy
-- Override the selectors that are returned per element
+- 更改默认的选择器策略
+- 覆盖每个元素返回的选择器
 
-## Syntax
+## 语法
 
 ```javascript
 Cypress.SelectorPlayground.defaults(options)
 Cypress.SelectorPlayground.getSelector($el)
 ```
 
-### Arguments
+### 参数
 
 <Icon name="angle-right" /> **options _(Object)_**
 
-An object containing any or all of the following options:
+包含以下任意或全部选项的对象：
 
-| Option             | Accepts            | Description                                                                                                                                                           |
-| ------------------ | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `selectorPriority` | `Array of strings` | Determines the order of preference for which selector is chosen for the element.                                                                                      |
-| `onElement`        | `function`         | A function called with the element that should return a unique selector string for the element. If a falsey value is returned, the default selector function is used. |
+| 选项                | 接受类型           | 描述                                                                                                                                                           |
+| ------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `selectorPriority`  | `字符串数组`       | 确定元素选择器的优先级顺序。                                                                                                                                    |
+| `onElement`         | `函数`             | 一个接收元素并应返回该元素唯一选择器字符串的函数。如果返回假值，则使用默认选择器函数。                                                                          |
 
 <DefaultSelectorPriority />
 
 <Icon name="angle-right" /> **$el _(Object)_**
 
-The [jQuery element](http://api.jquery.com/Types/#jQuery) that you want to get
-the selector value for.
+您想要获取选择器值的 [jQuery 元素](http://api.jquery.com/Types/#jQuery)。
 
-## Examples
+## 示例
 
-### Selector Priority
+### 选择器优先级
 
-Set the selector priority to favor IDs, then classes, then attributes.
+设置选择器优先级，优先使用 ID，然后是类，最后是属性。
 
 ```javascript
 Cypress.SelectorPlayground.defaults({
@@ -51,10 +50,9 @@ Cypress.SelectorPlayground.defaults({
 })
 ```
 
-### onElement Callback
+### onElement 回调
 
-Set a custom function for determining the selector for an element. Falls back to
-default behavior if returning a falsey value.
+设置一个自定义函数来确定元素的选择器。如果返回假值，则回退到默认行为。
 
 ```javascript
 Cypress.SelectorPlayground.defaults({
@@ -68,27 +66,24 @@ Cypress.SelectorPlayground.defaults({
 })
 ```
 
-### Get Selector
+### 获取选择器
 
-Returns you the selector value for a given element as determined by the selector
-strategy.
+根据选择器策略返回给定元素的选择器值。
 
-For example, consider this HTML fragment.
+例如，考虑以下 HTML 片段。
 
 ```html
 <button id="bingo" class="number3">Cup of tea</button>
 ```
 
-With the default selector strategy, the selector value will be `'#bingo'`
-because IDs have priority over classes.
+使用默认选择器策略时，选择器值将是 `'#bingo'`，因为 ID 优先级高于类。
 
 ```js
 const $el = Cypress.$('button')
 const selector = Cypress.SelectorPlayground.getSelector($el) // '#bingo'
 ```
 
-With a custom selector strategy that favours classes, the selector value will be
-`'.number3'`.
+使用优先考虑类的自定义选择器策略时，选择器值将是 `'.number3'`。
 
 ```js
 Cypress.SelectorPlayground.defaults({
