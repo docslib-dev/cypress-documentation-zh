@@ -1,0 +1,71 @@
+---
+sidebar_label: 概述
+title: '配置 | Cypress 无障碍测试'
+description: '配置允许您自定义和微调 Cypress 无障碍测试报告。'
+sidebar_position: 10
+---
+
+<ProductHeading product="accessibility" />
+
+# 配置
+
+配置允许您自定义和微调 Cypress 中的无障碍测试报告。虽然 Cypress 无障碍测试设计为开箱即用，但在某些情况下可能需要或倾向于进行自定义配置。通过配置，您可以避免报告对团队不重要的页面或元素，将相关 URL 合并到单个视图中，并修改元素识别和去重行为以反映应用程序的特定结构。
+
+**注意**：默认情况下，配置设置仅限于管理员用户。根据您的要求，可以更改为允许所有用户设置配置。如需更改此设置，请联系您的 Cypress 对接人员。
+
+### 设置配置
+
+要为项目添加或修改配置，请导航至项目设置中的"应用质量"选项卡。
+
+<DocsImage
+  src="/img/accessibility/configuration/cypress-accessibility-configuration-editor.png"
+  alt="Cypress Cloud 用户界面显示配置编辑器"
+/>
+
+您可以使用提供的编辑器以 JSON 格式编写配置。包含所有可用选项的完整配置如下所示：
+
+```typescript
+{
+  "views": [
+    {
+      "pattern": string,
+      "groupBy": [
+        string
+      ]
+    }
+  ],
+  "viewFilters": [
+    {
+      "pattern": string,
+      "include": boolean
+    }
+  ],
+  "elementFilters": [
+    {
+      "selector": string,
+      "include": boolean
+    }
+  ],
+  "significantAttributes": [
+    string
+  ]
+  "attributeFilters": [
+    {
+      "attribute": string,
+      "value": string,
+      "include": boolean
+    }
+  ]
+}
+```
+
+请注意，这些根级别的应用质量配置属性（`elementFilters`、`views` 和 `viewFilters`）会影响 UI 覆盖率和无障碍测试。
+
+### 查看运行配置
+
+您可以在"属性"选项卡中查看每次运行的配置信息，如下所示。这是运行开始时为项目设置的配置。
+
+<DocsImage
+  src="/img/accessibility/configuration/cypress-cloud-properties-tab-application-quality-config.png"
+  alt="运行属性选项卡底部显示应用质量配置部分"
+/>

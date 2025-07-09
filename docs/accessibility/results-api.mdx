@@ -1,0 +1,448 @@
+---
+title: '结果API | Cypress Accessibility'
+description: '在CI环境中以编程方式获取无障碍测试结果，如果不符合标准则使流水线失败。'
+sidebar_label: 结果API
+sidebar_position: 100
+---
+
+<ProductHeading product="accessibility" />
+
+# 结果API
+
+`@cypress/extract-cloud-results`模块提供了`getAccessibilityResults`工具，使您能够在CI环境中以编程方式获取运行的无障碍测试结果。它会确定为给定CI工作流创建的Cypress运行，并返回与该运行关联的无障碍测试结果。一旦Cypress运行完成且无障碍报告处理完毕，结果将被返回。
+
+这使您可以在CI中审查结果，并确定这些结果是否可以接受，或者在代码变更合并前是否需要解决。它为运行提供了整体无障碍评分和违规详情，以及页面或组件级别的反馈。这支持了广泛的需求，包括在应用程序特定焦点区域发出失败警报，或根据每个页面当前满足的标准创建细粒度的回归监控。
+
+:::info
+
+##### <Icon name="question-circle" color="#0097A8" /> 示例和用例
+
+本页重点介绍结果API的工作原理以及可以访问哪些类型的信息。有关如何使用此API的示例，请参阅我们的高级指南：
+
+- [拉取请求和策略指南](/accessibility/guides/block-pull-requests)展示了如何使用结果API设置策略并使拉取请求失败。
+- [检测和管理变更指南](/accessibility/guides/detect-changes#Results-API)展示了一些其他常见用例。
+
+:::
+
+## 支持的CI提供商
+
+获取运行的无障碍测试结果支持以下CI提供商。请参阅以下文档了解一般设置信息。
+
+- [Azure](/app/continuous-integration/overview#Azure-Pipelines) (需要Cypress v13.13.1)
+- [CircleCI ](/app/continuous-integration/circleci)
+- [GitHub Actions](/app/continuous-integration/github-actions)
+- [GitLab](/app/continuous-integration/gitlab-ci)
+- [Jenkins](/app/continuous-integration/overview#Jenkins)
+- [AWS CodeBuild](/app/continuous-integration/aws-codebuild)
+
+如需支持其他提供商，请联系Cypress支持。
+
+## 安装
+
+在CI的安装步骤中安装`@cypress/extract-cloud-results`模块。
+
+```shell
+npm install --force https://cdn.cypress.io/extract-cloud-results/v1/extract-cloud-results.tgz
+```
+
+:::caution
+
+不要将此模块作为依赖项检查到代码库中。您应将其单独安装在常规模块安装之外。使用`--force`获取最新版本。
+
+如果将其作为依赖项检查到代码库中，当我们更新包时，您的安装将失败。
+
+:::
+
+## 使用
+
+### **1. 获取结果**
+
+使用`getAccessibilityResults`工具编写脚本以检索结果，并执行一个或多个断言来验证变更是否可接受。此脚本将在CI中执行。
+
+Cypress App[仓库](https://github.com/cypress-io/cypress)使用结果API确保没有引入新的违规。您可以参考[此脚本](https://github.com/cypress-io/cypress/blob/develop/scripts/verify-accessibility-results.js)作为实际示例。
+
+```javascript title="scripts/verifyAccessibilityResults.js"
+const { getAccessibilityResults } = require('@cypress/extract-cloud-results')
+
+/**
+ * 当前在Cypress无障碍报告中标记为违规的规则列表，
+ * 这些规则需要解决。
+ *
+ * 一旦在无障碍报告中修复了违规，
+ * 应从该列表中移除已修复的规则。
+ *
+ * 查看Cloud中Cypress运行的无障碍报告，
+ * 了解如何解决这些失败的详细信息。
+ */
+const rulesWithExistingViolations = [
+  'aria-required-children',
+  'empty-heading',
+  'aria-dialog-name',
+  'link-in-text-block',
+  'list',
+]
+
+getAccessibilityResults({
+  projectId: '...', // 如果从环境变量设置则为可选
+  recordKey: '...', // 如果从环境变量设置则为可选
+  runTags: [process.env.RUN_TAGS], // 如果记录多个运行则为必需
+}).then((results) => {
+  const { runNumber, accessibilityReportUrl, summary, rules } = results
+  const { total } = summary.violationCounts
+
+  console.log(
+    `收到运行 #${runNumber} 的${summary.isPartialReport ? '部分' : ''}结果。`
+  )
+  console.log(`完整报告请见 ${accessibilityReportUrl}。`)
+
+  // 编写逻辑根据结果有条件地失败
+  if (total === 0) {
+    console.log('未检测到无障碍违规！')
+    return
+  }
+
+  const { critical, serious, moderate, minor } = summary.violationCounts
+
+  console.log(`检测到 ${total} 个无障碍违规：`)
+  console.log(`  - ${critical} 个严重`)
+  console.log(`  - ${serious} 个重要`)
+  console.log(`  - ${moderate} 个中等`)
+  console.log(`  - ${minor} 个轻微。`)
+
+  const newRuleViolations = rules.filter((rule) => {
+    return !rulesWithExistingViolations.includes(rule.name)
+  })
+
+  if (newRuleViolations.length > 0) {
+    console.error(
+      '以下规则之前通过但现在出现违规：'
+    )
+    console.error(newRuleViolations)
+    throw new Error(
+      `引入了 ${newRuleViolations.length} 个规则回归，必须修复。`
+    )
+  }
+
+  if (total < rulesWithExistingViolations.length) {
+    console.warn(
+      `看起来您已解决 ${rulesWithExistingViolations.length - total} 个规则。从问题规则列表中移除它们，以免引入回归。`
+    )
+  }
+
+  console.log('未检测到新的无障碍违规！')
+})
+```
+
+#### `getAccessibilityResults`参数
+
+`getAccessibilityResults`使用以下属性来识别Cypress运行并返回无障碍测试结果：
+
+```javascript
+getAccessibilityResults({
+  // Cypress项目ID。
+  // 如果设置了CYPRESS_PROJECT_ID环境变量则为可选
+  // 可以显式传递以覆盖环境变量
+  projectId: string
+
+  // 项目的记录密钥。
+  // 如果设置了CYPRESS_RECORD_KEY环境变量则为可选
+  // 可以显式传递以覆盖环境变量
+  recordKey: string
+
+  // 与运行关联的运行标签。
+  // 如果从单个CI构建记录多个Cypress运行则为必需。
+  // 传递在每个运行中记录时使用的运行标签
+  // 详见下文更多信息
+  runTags: string[]
+})
+```
+
+#### 结果类型
+
+运行的无障碍测试结果作为包含以下数据的对象返回：
+
+```javascript
+{
+  // 识别构建的运行编号。
+  runNumber: number
+
+  // 识别构建的运行URL。
+  runUrl: 'https://cloud.cypress.io/projects/:project_id/runs/:run_number'
+
+  // 识别构建的状态。
+  runStatus: 'passed' | 'failed' | 'errored' | 'timedOut' | 'cancelled' | 'noTests'
+
+   // 深度链接到识别构建的汇总无障碍报告的URL。
+  accessibilityReportUrl: 'https://cloud.cypress.io/[...]'
+
+  // 生成无障碍报告时使用的axe-core库版本。
+  // 参见 https://github.com/dequelabs/axe-core。示例：4.10.0
+  axeVersion: string
+
+  summary: {
+    // 指示是否生成了完整的无障碍报告。
+    // 例如，如果运行被取消且报告预期运行
+    // 20个规范，但只运行了10个，这将导致部分报告。
+    isPartialReport: boolean
+
+    // 检测到的违规总数及按规则严重性分类的明细。
+    violationCounts: {
+      // 检测到违规的唯一规则计数。
+      total: number,
+      // 检测到违规的严重规则计数。
+      critical: number,
+      // 检测到违规的重要规则计数。
+      serious: number,
+      // 检测到违规的中等规则计数。
+      moderate: number,
+      // 检测到违规的轻微规则计数。
+      minor: number,
+    },
+
+    // 整个运行的无障碍评分，保留两位小数
+    score: number,
+
+    // 运行期间检测到的不同失败元素计数，跨所有视图
+    failedElements: number
+
+  }
+
+  // 违规规则列表。
+  rules: [{
+    // 规则名称。参见 https://github.com/dequelabs/axe-core/blob/develop/doc/rule-descriptions.md。
+    name: string
+    // 该规则对残障用户的可能影响。
+    severity: 'critical' | 'serious' | 'moderate' | 'minor'
+    // 该规则在运行中的状态。
+    status: 'violation'
+    // 深度链接到该特定规则违规报告的URL。
+    accessibilityReportUrl: 'https://cloud.cypress.io/[...]'
+  }]
+
+  // 检测到无障碍违规的视图列表，
+  // 以及每个视图上失败规则的详细信息
+  views: [
+      {
+        // 深度链接到该视图报告的URL，未预选规则
+        accessibilityReportUrl: 'https://cloud.cypress.io/[...]'
+        // 视图中显示的名称
+        displayName: "/app/get-started/why-cypress",
+        // 该特定视图的无障碍评分
+        score: number
+        // 该特定视图的违规规则列表
+        rules: Rule[]
+      }
+    ]
+
+}
+```
+
+### **2. 添加到CI工作流**
+
+在运行Cypress测试的CI工作流中，
+
+1. 更新安装作业以安装`@cypress/extract-cloud-results`模块。
+2. 向`getAccessibilityResults`传递必要的参数。
+3. 向运行Cypress测试的作业添加一个新步骤以验证无障碍测试结果。
+
+:::info
+
+如果在单个CI构建中记录多个运行，必须使用`--tag`参数记录这些运行，然后为每个运行使用`runTags`参数调用`getAccessibilityResults`。
+
+这是识别每个唯一运行并返回相应结果集所必需的。标签是识别每个运行的方式。
+
+**示例**
+
+- 假设在单个CI构建中多次调用`cypress run --record`，因为您正在针对`staging`环境运行一组测试，然后是`production`环境。
+- 在此场景中，您向每个cypress运行传递不同的`--tag`
+  - `cypress run --record --tag staging`
+  - `cypress run --record --tag production`
+- 调用`getAccessibilityResults`时，您将传递这些相同的标签以获取每个运行的唯一结果集
+  - `getAccessibilityResults({ runTags: ['staging']})`
+  - `getAccessibilityResults({ runTags: ['production']})`
+
+:::
+
+#### 示例作业工作流更新：
+
+<Tabs groupId="a11y-results-api">
+<TabItem value="GitHub Actions" active>
+
+```diff title="test_cypress.yaml"
+name: My Workflow
+on: push
+
+env:
+  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+
+jobs:
+  run-cypress:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: install
+        run: npm install
+      - name: Run
+        run: npx cypress run --record
++     - name: Verify Accessibility Results
++       run: |
++          npm install --force https://cdn.cypress.io/extract-cloud-results/v1/extract-cloud-results.tgz
++          node ./scripts/verifyAccessibilityResults.js
+```
+
+</TabItem>
+
+<TabItem value="GitLab">
+
+```diff title=".git-ci.yml"
+name: Run Cypress Tests
+
+image: node:latest
+
+stages:
+  - test
+
+run-cypress:
+  stage: test
+  secrets:
+    CYPRESS_RECORD_KEY:
+      vault: vault/cypressRecordKey
+  script:
+    - npm install
+    - npx cypress run --record
++   - npm install --force https://cdn.cypress.io/extract-cloud-results/v1/extract-cloud-results.tgz
++   - node ./scripts/verifyAccessibilityResults.js
+```
+
+</TabItem>
+
+<TabItem value="Jenkins">
+
+```diff
+pipeline {
+  agent {
+    docker {
+      image 'cypress/base:22.15.0'
+    }
+  }
+
+  environment {
+    CYPRESS_PROJECT_ID: 'xxxx'
+    CYPRESS_RECORD_KEY = credentials('cypress-record-key')
+  }
+
+  stages {
+    stage('build and test') {
+      steps {
+        sh 'npm ci'
+        sh 'npx cypress run --record'
+      }
+    }
+
++   stage('Verify Accessibility Results') {
++     steps {
++       sh 'npm install --force https://cdn.cypress.io/extract-cloud-results/v1/extract-cloud-results.tgz'
++       sh 'node ./scripts/verifyAccessibilityResults.js'
++     }
++   }
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="Azure">
+
+```diff
+jobs:
+  - job: run_tests
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '20.x'
+          displayName: 'Install Node.js'
+
+      - script: npm i
+        displayName: 'Install npm dependencies'
+
+      - script: npx cypress run --record
+        displayName: 'Run Cypress tests'
+        env:
+          # avoid warnings about terminal
+          TERM: xterm
+          CYPRESS_RECORD_KEY: $(CYPRESS_RECORD_KEY)
+
++     - script: |
++           npm install --force https://cdn.cypress.io/extract-cloud-results/v1/extract-cloud-results.tgz
++           node ./scripts/verifyAccessibilityResults.js
++       displayName: 'Verify Accessibility Results'
++       env:
++         CYPRESS_PROJECT_ID: $(CYPRESS_PROJECT_ID)
++         CYPRESS_RECORD_KEY: $(CYPRESS_RECORD_KEY)
+```
+
+</TabItem>
+
+<TabItem value="CircleCI">
+
+```diff
+version: 2.1
+
+jobs:
+  linux-test:
+    docker:
+      - image: cypress/base:22.15.0
+
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: npm install
+      - run: npx run cypress:run --record
++     - run: npm install --force https://cdn.cypress.io/extract-cloud-results/v1/extract-cloud-results.tgz
++     - run: node ./scripts/verifyAccessibilityResults.js
+
+workflows:
+  version: 2
+  tests:
+    jobs:
+      - run-cypress
+```
+
+</TabItem>
+
+<TabItem value="AWS CodeBuild" >
+
+```diff title="buildspec.yaml"
+phases:
+  install:
+    runtime-versions:
+      nodejs: latest
+    commands:
+      # 设置COMMIT_INFO变量以在记录时向Cypress Cloud发送Git详细信息
+      # https://docs.cypress.io/app/continuous-integration/overview#Git-information
+      - export COMMIT_INFO_BRANCH="$(git rev-parse HEAD | xargs git name-rev |
+        cut -d' ' -f2 | sed 's/remotes\/origin\///g')"
+      - export COMMIT_INFO_MESSAGE="$(git log -1 --pretty=%B)"
+      - export COMMIT_INFO_EMAIL="$(git log -1 --pretty=%ae)"
+      - export COMMIT_INFO_AUTHOR="$(git log -1 --pretty=%an)"
+      - export COMMIT_INFO_SHA="$(git log -1 --pretty=%H)"
+      - export COMMIT_INFO_REMOTE="$(git config --get remote.origin.url)"
+      - npm ci
+  pre_build:
+    commands:
+      - npm run cypress:verify
+      - npm run cypress:info
+  build:
+    commands:
+      - CYPRESS_INTERNAL_ENV=staging CYPRESS_PROJECT_ID=[slug] npx cypress run --record --key [KEY]
++  post_build:
++    commands:
++      - npm install --force https://cdn.cypress.io/extract-cloud-results/v1/extract-cloud-results.tgz
++      - CYPRESS_INTERNAL_ENV=staging CYPRESS_PROJECT_ID=[slug] CYPRESS_RECORD_KEY=[KEY] node ./scripts/verifyAccessibilityResults.js
+```
+
+</TabItem>
+</Tabs>

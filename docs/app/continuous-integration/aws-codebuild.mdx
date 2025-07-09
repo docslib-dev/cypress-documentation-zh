@@ -1,0 +1,281 @@
+---
+title: '在AWS CodeBuild中运行Cypress测试：分步指南'
+description: 学习如何在AWS CodeBuild中设置和运行Cypress测试，缓存依赖项和构建产物，并行运行测试，以及将Cypress Cloud与AWS CodeBuild结合使用。
+sidebar_label: AWS CodeBuild
+---
+
+<ProductHeading product="app" />
+
+# 在AWS CodeBuild中运行Cypress
+
+:::info
+
+##### <Icon name="question-circle" color="#4BBFD2" /> 您将学习到
+
+- 如何在AWS CodeBuild中设置Cypress测试
+- 如何缓存依赖项和构建产物
+- 如何在AWS CodeBuild中并行运行Cypress测试
+- 如何将Cypress Cloud与AWS CodeBuild结合使用
+
+:::
+
+## 基础设置
+
+以下示例展示了使用[AWS CodeBuild](https://aws.amazon.com/codebuild/)在Electron浏览器中运行Cypress测试的基础CI设置和任务。此AWS CodeBuild配置位于`buildspec.yml`中。
+
+详细文档请参阅[AWS CodeBuild文档](https://docs.aws.amazon.com/codebuild/)。
+
+```yaml title="buildspec.yml"
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: latest
+    commands:
+      # 设置COMMIT_INFO变量以便在录制时将Git信息发送到Cypress Cloud
+      # https://docs.cypress.io/app/continuous-integration/overview#Git-information
+      - export COMMIT_INFO_BRANCH="$(git rev-parse HEAD | xargs git name-rev |
+        cut -d' ' -f2 | sed 's/remotes\/origin\///g')"
+      - export COMMIT_INFO_MESSAGE="$(git log -1 --pretty=%B)"
+      - export COMMIT_INFO_EMAIL="$(git log -1 --pretty=%ae)"
+      - export COMMIT_INFO_AUTHOR="$(git log -1 --pretty=%an)"
+      - export COMMIT_INFO_SHA="$(git log -1 --pretty=%H)"
+      - export COMMIT_INFO_REMOTE="$(git config --get remote.origin.url)"
+      - npm ci
+  pre_build:
+    commands:
+      - npm run cy:verify
+      - npm run cy:info
+  build:
+    commands:
+      - npm run start:ci &
+      - npx cypress run --record
+```
+
+**此buildspec的工作原理：**
+
+- 当代码推送到此仓库时，此任务将启动一个AWS托管的Amazon Linux实例，并安装Node.js以运行配置中`commands`部分声明的`pre_build`和`build`命令。
+- [AWS CodeBuild](https://aws.amazon.com/codebuild/)将从我们的GitHub仓库检出代码。
+- 最后，我们的`buildspec.yml`配置将：
+  - 安装npm依赖项
+  - 启动项目Web服务器（`npm start:ci`）
+  - 在Electron中运行GitHub仓库中的Cypress测试。
+
+:::tip
+
+<strong>尝试一下</strong>
+
+要亲自尝试上述示例，请分叉[Cypress Kitchen Sink](https://github.com/cypress-io/cypress-example-kitchensink)示例项目，并将上述[AWS CodeBuild](https://aws.amazon.com/codebuild/)配置放入`buildspec.yml`。
+
+:::
+
+## 使用Cypress Docker镜像测试
+
+从版本0.2开始，CodeBuild不提供为单个构建配置指定自定义镜像的方法。一种解决方法是使用[AWS CodeBuild批量构建列表策略](https://docs.aws.amazon.com/codebuild/latest/userguide/batch-build-buildspec.html#build-spec.batch.build-list)。
+
+### 启用批量构建
+
+根据[AWS CodeBuild批量构建文档](https://docs.aws.amazon.com/codebuild/latest/userguide/batch-build-buildspec.html)，AWS CodeBuild为[批量构建列表策略](https://docs.aws.amazon.com/codebuild/latest/userguide/batch-build-buildspec.html#build-spec.batch.build-list)中的每个可能配置组合创建单独的构建。因此，必须创建或更新AWS CodeBuild项目以运行批量配置。
+
+按照以下步骤为现有的AWS CodeBuild项目启用批量配置：
+
+- 导航到AWS CodeBuild控制台
+- 选择项目
+- 点击"编辑" **-->** "批量配置"
+- 创建"新服务角色"并输入角色名称
+- 保留其他选项为可选
+- 点击"更新批量配置"
+- 开始构建
+
+### Cypress Amazon公共ECR
+
+AWS CodeBuild提供了一种[构建列表策略](https://docs.aws.amazon.com/codebuild/latest/userguide/batch-build-buildspec.html#build-spec.batch.build-list)，用于为单个作业定义指定不同的作业配置。
+
+[构建列表策略](https://docs.aws.amazon.com/codebuild/latest/userguide/batch-build-buildspec.html#build-spec.batch.build-list)提供了一种方法来指定托管在[Docker Hub](https://hub.docker.com/)或[Amazon Elastic Container Registry (ECR)](https://aws.amazon.com/ecr/)上的镜像。
+
+用于在本地和CI中运行Cypress的[Docker镜像](https://github.com/cypress-io/cypress-docker-images)发布到[Amazon ECR公共画廊](https://gallery.ecr.aws)：
+
+- [Cypress 'base' Amazon ECR公共画廊](https://gallery.ecr.aws/cypress-io/cypress/base)
+- [Cypress 'browsers' Amazon ECR公共画廊](https://gallery.ecr.aws/cypress-io/cypress/browsers)
+- [Cypress 'included' Amazon ECR公共画廊](https://gallery.ecr.aws/cypress-io/cypress/included)
+
+阅读[Cypress docker变体](/app/continuous-integration/overview#Cypress-Docker-variants)以决定哪个镜像最适合您的项目。
+
+```yaml title="buildspec.yml"
+version: 0.2
+
+## AWS CodeBuild批量配置
+## https://docs.aws.amazon.com/codebuild/latest/userguide/batch-build-buildspec.html
+
+## 定义使用Cypress Amazon ECR公共画廊中的
+## "cypress/browsers:22.15.0"镜像运行的构建
+batch:
+  fast-fail: false
+  build-list:
+    - identifier: cypress-e2e-tests
+      env:
+        image: public.ecr.aws/cypress-io/cypress/browsers:22.15.0
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: latest
+    commands:
+      # 设置COMMIT_INFO变量以便在录制时将Git信息发送到Cypress Cloud
+      # https://docs.cypress.io/app/continuous-integration/overview#Git-information
+      - export COMMIT_INFO_BRANCH="$(git rev-parse HEAD | xargs git name-rev |
+        cut -d' ' -f2 | sed 's/remotes\/origin\///g')"
+      - export COMMIT_INFO_MESSAGE="$(git log -1 --pretty=%B)"
+      - export COMMIT_INFO_EMAIL="$(git log -1 --pretty=%ae)"
+      - export COMMIT_INFO_AUTHOR="$(git log -1 --pretty=%an)"
+      - export COMMIT_INFO_SHA="$(git log -1 --pretty=%H)"
+      - export COMMIT_INFO_REMOTE="$(git config --get remote.origin.url)"
+      - npm ci
+  pre_build:
+    commands:
+      - npm run cy:verify
+      - npm run cy:info
+  build:
+    commands:
+      - npm run start:ci &
+      - npx cypress run --record --browser firefox
+```
+
+## 缓存依赖项和构建产物
+
+直接使用[AWS CodeBuild](https://aws.amazon.com/codebuild/)进行缓存可能具有挑战性。[AWS CodeBuild中的构建缓存](https://docs.aws.amazon.com/codebuild/latest/userguide/build-caching.html)文档详细介绍了本地或Amazon S3缓存。
+
+根据文档，"本地缓存在构建主机上本地存储缓存，仅对该构建主机可用"。这在并行测试运行期间不会有用。
+
+"Amazon S3缓存在Amazon S3桶中存储缓存，可在多个构建主机之间共享"。虽然这听起来很有用，但实际上上传缓存的依赖项可能需要一些时间。此外，每个工作器都会尝试将其依赖项缓存保存到Amazon S3，这会显著增加构建时间。
+
+超出本指南范围，但[AWS CodePipeline](https://aws.amazon.com/codepipeline)可能有助于缓存初始源代码、依赖项和构建输出，以便在使用[AWS CodePipeline输入和输出产物](https://docs.aws.amazon.com/codepipeline/latest/userguide/welcome-introducing-artifacts.html)的AWS CodeBuild作业中使用。
+
+参考[AWS CodePipeline与CodeBuild集成及多输入源和输出产物示例](https://docs.aws.amazon.com/codebuild/latest/userguide/sample-pipeline-multi-input-output.html)示例，了解如何配置带有输出产物的CodePipeline。
+
+## 并行化
+
+[Cypress Cloud](/cloud/get-started/introduction)提供了[并行化和分组测试运行](/cloud/features/smart-orchestration/parallelization)的能力，以及Cypress测试的额外洞察和[分析](/cloud/features/analytics/overview)。
+
+AWS CodeBuild提供了一种[批量构建矩阵策略](https://docs.aws.amazon.com/codebuild/latest/userguide/batch-build-buildspec.html#build-spec.batch.build-matrix)，用于为单个作业定义声明不同的作业配置。[批量构建矩阵策略](https://docs.aws.amazon.com/codebuild/latest/userguide/batch-build-buildspec.html#build-spec.batch.build-matrix)提供了指定作业容器镜像的选项。在构建矩阵策略中声明的作业可以并行运行，这使我们能够同时运行多个Cypress实例，如本节后面所示。
+
+有关如何启用批量构建的说明，请参阅[启用批量构建](#Enabling-batch-builds)。
+
+:::info
+
+以下配置使用`--parallel`和`--record`标志到[cypress run](//app//app/command-line#cypress-run)，需要将测试结果录制到[Cypress Cloud](/cloud/get-started/introduction)。
+
+:::
+
+### 并行化构建
+
+要设置多个容器并行运行，`build-matrix`配置使用一组变量（`CY_GROUP_SPEC`和`WORKERS`），其中包含构建中每个组的特定项目列表。
+
+字段由管道（`|`）字符分隔，如下所示：
+
+```yaml
+## 组名 | 浏览器 | 测试规范 | Cypress配置选项（可选）
+
+'UI-Chrome-Mobile|chrome|cypress/tests/ui/*|viewportWidth=375,viewportHeight=667'
+```
+
+`build-matrix`将运行所有分隔项目的排列组合。
+
+```yaml title="buildspec.yml"
+batch:
+  fast-fail: false
+  build-matrix:
+    # ...
+    dynamic:
+      env:
+        # ...
+        variables:
+          CY_GROUP_SPEC:
+            - 'UI-Chrome|chrome|cypress/tests/ui/*'
+            - 'UI-Chrome-Mobile|chrome|cypress/tests/ui/*|viewportWidth=375,viewportHeight=667'
+            - 'API|chrome|cypress/tests/api/*'
+            - 'UI-Firefox|firefox|cypress/tests/ui/*'
+            - 'UI-Firefox-Mobile|firefox|cypress/tests/ui/*|viewportWidth=375,viewportHeight=667'
+```
+
+在安装阶段，我们使用shell脚本和[cut命令](<https://en.wikipedia.org/wiki/Cut_(Unix)>)将传递给工作器的分隔`CY_GROUP_SPEC`中的值分配给shell变量，这些变量将在`build`阶段运行`cypress run`时使用。
+
+```yaml title="buildspec.yml"
+batch:
+  # ...
+
+phases:
+  install:
+    commands:
+      # 设置COMMIT_INFO变量以便在录制时将Git信息发送到Cypress Cloud
+      # https://docs.cypress.io//app/continuous-integration/overview#Git-information
+      - export COMMIT_INFO_BRANCH="$(git rev-parse HEAD | xargs git name-rev |
+        cut -d' ' -f2 | sed 's/remotes\/origin\///g')"
+      - export COMMIT_INFO_MESSAGE="$(git log -1 --pretty=%B)"
+      - export COMMIT_INFO_EMAIL="$(git log -1 --pretty=%ae)"
+      - export COMMIT_INFO_AUTHOR="$(git log -1 --pretty=%an)"
+      - export COMMIT_INFO_SHA="$(git log -1 --pretty=%H)"
+      - export COMMIT_INFO_REMOTE="$(git config --get remote.origin.url)"
+      - CY_GROUP=$(echo $CY_GROUP_SPEC | cut -d'|' -f1)
+      - CY_BROWSER=$(echo $CY_GROUP_SPEC | cut -d'|' -f2)
+      - CY_SPEC=$(echo $CY_GROUP_SPEC | cut -d'|' -f3)
+      - CY_CONFIG=$(echo $CY_GROUP_SPEC | cut -d'|' -f4)
+      - npm ci
+## ...
+```
+
+为了并行化运行，我们需要向[构建矩阵策略](https://docs.aws.amazon.com/codebuild/latest/userguide/batch-build-buildspec.html#build-spec.batch.build-matrix)添加一个额外的变量`WORKERS`。
+
+```yaml title="buildspec.yml"
+batch:
+  fast-fail: false
+  build-matrix:
+    # ...
+    dynamic:
+      env:
+        # ...
+        variables:
+          CY_GROUP_SPEC:
+            # ...
+          WORKERS:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+```
+
+:::info
+
+<strong>注意</strong>
+
+`WORKERS`数组填充了填充（或_虚拟_）项目，以在[批量构建矩阵策略](https://docs.aws.amazon.com/codebuild/latest/userguide/batch-build-buildspec.html#build-spec.batch.build-matrix)中配置所需数量的CI机器实例，并将为`CY_GROUP_SPEC`中定义的每个组提供5个工作器。
+
+:::
+
+最后，脚本变量传递给`cypress run`的调用。
+
+```yaml title="buildspec.yml"
+phases:
+  install:
+    # ...
+  build:
+    commands:
+      - npm start:ci &
+      - npx cypress run --record --parallel --browser $CY_BROWSER --ci-build-id
+        $CODEBUILD_INITIATOR --group "$CY_GROUP" --spec "$CY_SPEC" --config
+        "$CY_CONFIG"
+```
+
+## 将Cypress Cloud与AWS CodeBuild结合使用
+
+:::caution
+
+仪表板分析依赖于您的CI环境可靠地提供提交SHA数据（通常通过环境变量），而这在默认情况下并不总是存在。这对大多数用户来说不是问题，但如果您在与CodeBuild设置集成时遇到问题，请确保按照[这些指南](//app/continuous-integration/overview#Git-information)正确发送git信息，或者只需查看[本页顶部的示例`codebuild.yml`文件](#Basic-Setup)。如果在此之后仍然遇到问题，请[联系我们](mailto:hello@cypress.io)。
+
+:::
+
+在我们在前一节中定义的AWS CodeBuild配置中，我们利用了[Cypress Cloud](/cloud/get-started/introduction)的三个有用功能：
+
+<CiProviderCloudSteps />
