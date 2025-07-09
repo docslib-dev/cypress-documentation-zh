@@ -22,7 +22,8 @@
     "test": "cypress run",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "vercel-build": "NODE_OPTIONS='' npm run build"
   },
   "dependencies": {
     "@cypress-design/css": "^1.0.0",
