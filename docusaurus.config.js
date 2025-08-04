@@ -109,6 +109,7 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     {
+      name: 'description', content: 'Cypress官方文档中文版，为浏览器中运行的任何内容提供快速、简单且可靠的测试。',
       image: 'img/logo/cypress-logo-circle-dark.png',
       navbar: {
         style: 'dark',
