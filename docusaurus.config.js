@@ -91,6 +91,12 @@ const config = {
         id: 'docs-fullstory',
       },
     ],
+    [
+      './plugins/seo-optimizer',
+      {
+        id: 'docs-seo-optimizer',
+      },
+    ],
     'docusaurus-plugin-sass',
     require.resolve('docusaurus-plugin-image-zoom'),
     // ....
@@ -109,7 +115,56 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     {
-      name: 'description', content: 'Cypress官方文档中文版，为浏览器中运行的任何内容提供快速、简单且可靠的测试。',
+      metadata: [
+        {
+          name: 'description',
+          content: 'Cypress官方文档中文版，为浏览器中运行的任何内容提供快速、简单且可靠的测试。',
+        },
+        {
+          name: 'keywords',
+          content: 'Cypress, 测试, 自动化测试, E2E测试, 前端测试, 浏览器测试, 中文文档',
+        },
+        {
+          name: 'author',
+          content: 'Cypress.io',
+        },
+        {
+          property: 'og:title',
+          content: 'Cypress 官方文档中文版',
+        },
+        {
+          property: 'og:description',
+          content: 'Cypress官方文档中文版，为浏览器中运行的任何内容提供快速、简单且可靠的测试。',
+        },
+        {
+          property: 'og:type',
+          content: 'website',
+        },
+        {
+          property: 'og:url',
+          content: 'https://cypress.docslib.dev',
+        },
+        {
+          property: 'og:image',
+          content: 'https://cypress.docslib.dev/img/logo/cypress-logo-circle-dark.png',
+        },
+        {
+          name: 'twitter:card',
+          content: 'summary_large_image',
+        },
+        {
+          name: 'twitter:title',
+          content: 'Cypress 官方文档中文版',
+        },
+        {
+          name: 'twitter:description',
+          content: 'Cypress官方文档中文版，为浏览器中运行的任何内容提供快速、简单且可靠的测试。',
+        },
+        {
+          name: 'twitter:image',
+          content: 'https://cypress.docslib.dev/img/logo/cypress-logo-circle-dark.png',
+        },
+      ],
       image: 'img/logo/cypress-logo-circle-dark.png',
       navbar: {
         style: 'dark',
