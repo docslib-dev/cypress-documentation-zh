@@ -1,0 +1,21 @@
+{
+  "name": "Cypress 官方文档中文版",
+  "short_name": "Cypress 文档",
+  "description": "Cypress官方文档中文版，为浏览器中运行的任何内容提供快速、简单且可靠的测试。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#172a3a",
+  "theme_color": "#172a3a",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+} 

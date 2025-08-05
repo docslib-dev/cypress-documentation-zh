@@ -51,6 +51,23 @@ module.exports = async function seoOptimizer(context) {
               href: 'https://cypress.docslib.dev',
             },
           },
+          // 添加额外的favicon链接以确保搜索引擎识别
+          {
+            tagName: 'link',
+            attributes: {
+              rel: 'icon',
+              type: 'image/x-icon',
+              href: '/favicon.ico',
+            },
+          },
+          {
+            tagName: 'link',
+            attributes: {
+              rel: 'shortcut icon',
+              type: 'image/x-icon',
+              href: '/favicon.ico',
+            },
+          },
           // 添加结构化数据
           {
             tagName: 'script',
