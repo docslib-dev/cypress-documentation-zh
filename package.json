@@ -7,7 +7,11 @@
     "postinstall": "patch-package",
     "prestart": "node ./scripts/checkRemarkPluginsBuild.js",
     "start": "docusaurus start",
+<<<<<<< HEAD
     "prebuild": "npm run build:plugins",
+=======
+    "prebuild": "if exist dist rmdir /s /q dist && npm run build:plugins",
+>>>>>>> 1bf3c8c14dffc3a3ba0202a7d1ce896eab761166
     "build": "docusaurus build --out-dir dist",
     "build:plugins": "npm --prefix ./plugins/cypressRemarkPlugins run build",
     "lint": "npm run lint:markdown",
