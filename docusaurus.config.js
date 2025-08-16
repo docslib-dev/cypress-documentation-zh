@@ -97,6 +97,12 @@ const config = {
         id: 'docs-seo-optimizer',
       },
     ],
+    [
+      './plugins/vercel-analytics',
+      {
+        id: 'docs-vercel-analytics',
+      },
+    ],
     'docusaurus-plugin-sass',
     require.resolve('docusaurus-plugin-image-zoom'),
     // ....
