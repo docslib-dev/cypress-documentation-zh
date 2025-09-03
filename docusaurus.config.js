@@ -62,8 +62,9 @@ const config = {
         theme: {
           customCss: require.resolve('./src/css/custom.scss'),
         },
-        googleAnalytics: {
-          trackingID: 'UA-59606812-1',
+        gtag: {
+          trackingID: 'G-3FDPZ9D5QS',
+          anonymizeIP: true,
         },
         googleTagManager: {
           containerId: 'GTM-KNKBWLD',
@@ -101,6 +102,12 @@ const config = {
       './plugins/vercel-analytics',
       {
         id: 'docs-vercel-analytics',
+      },
+    ],
+    [
+      './plugins/google-analytics',
+      {
+        id: 'docs-google-analytics',
       },
     ],
     'docusaurus-plugin-sass',
