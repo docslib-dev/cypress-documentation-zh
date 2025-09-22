@@ -24,6 +24,15 @@ const config = {
   onBrokenMarkdownLinks: 'warn',
   favicon: '/favicon.ico',
 
+  // Google AdSense 脚本
+  scripts: [
+    {
+      src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1149581082118045',
+      async: true,
+      crossorigin: 'anonymous',
+    },
+  ],
+
   // 即使不使用国际化，也可以使用此字段设置有用的元数据，如html lang。
   // 例如，如果您的站点是中文的，您可能希望将"en"替换为"zh-Hans"。
   i18n: {
